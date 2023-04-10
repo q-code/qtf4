@@ -1,0 +1,1 @@
+Dit scherm staat u toe die de regels van de systeemveiligheid stemmen. De wijze van de registratie per <b><i>e-mail</i></b> zal tijdelijk wachtwoord naar e-mail van de gebruiker voorafgaand aan registratie verzenden. Deze methode is een goed alternatief wanneer u de beeldcode niet kunt gebruiken om uw registratie te beveiligen.

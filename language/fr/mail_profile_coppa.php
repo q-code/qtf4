@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var string $strSubject
+ * @var string $strMessage
+ */
+$strSubject = "Profile mis à jour"; 
+
+$strMessage = "
+Cher parent/tuteur,
+
+Nous vous informons votre enfant (login: %s) a changé son profil sur le forum {$_SESSION[QT]['site_name']}. Vous pouvez contrôler ces informations dans la page Profil.
+
+Pour accéder au forum vous aurez besoin de son login et mot de passe qui vous a été communiqué dans un mail précédent.
+
+---- COPPA ----
+Ce mail vous est adressé parce que votre enfant nous a indiqué être àgé(e) de moins de 13 ans et parce que ce forum applique les règles de COPPA (Children's Online Privacy Protection Act).
+Pour en savoir plus sur le COPPA, visitez cette page: http://www.ftc.gov/opa/1999/10/childfinal.htm
+Veuillez également prendre connaissance du règlement de ce forum : {$_SESSION[QT]['site_url']}/qtf_privacy.php
+----------------
+
+Salutations,
+Le webmaster de {$_SESSION[QT]['site_name']}
+";

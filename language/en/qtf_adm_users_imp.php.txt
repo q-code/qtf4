@@ -1,0 +1,3 @@
+CSV files must include: role, username, password, email. Roles are: A (administrator), M (staff member), U (user). For the password you can use the sha1 hashed string or add the prefix SHA to generate the hashed string. Let the password empty to use the username as password.<br/><b><i>Example of csv file:</i></b><br/>M; Jen; 5753a498f025464d72e088a9d5d6e8725; jenn@corp.com<br/>
+U; william; SHAwilly03; william@corp.com<br/>
+U; robert; ; robert@corp.com

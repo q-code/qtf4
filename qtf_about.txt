@@ -1,0 +1,76 @@
+* QuickTalk forum v4.0
+*
+* @package    QuickTalk
+* @author     Philippe Vandenberghe <info@qt-cute.org>
+* @copyright  2015 The PHP Group
+* @version    4.0 build:20230205
+* PHP 7 LICENSE: This source file is subject to version 3 of the PHP license
+* that is available through the world-wide-web at the following URI:
+* http://www.php.net/license.
+
+INSTALLATION NOTES can be found in the /install/ directory
+
+RELEASE NOTES
+
+New features
+------------
+
+a. Simple search page is replaced by a simple search bar (popup)
+   This allow making quick search while looking in a forum or a search result.
+
+b. Security improvement
+   In addition to text code and image code, now reCAPTCHA v2 and v3 services can by used to secure registration form.
+
+c. Statistics improved
+   Allow changing reference year in the trend analysis
+   Use of chartjs library to render charts
+
+d. Module management improvement
+   Module can now include description informations
+
+e. Application can use an other server for memcache. Support of memcached and memache library
+   Shared memory performence improvement
+
+f. CSS improvements
+   Use of flexbox to simplify css page layout
+   Support for a custom stylesheet that can be added by the webmaster (ex skin/default/custom.css)
+
+g. Release notes accessible in the administration page
+
+h. Tag management includes csv file editor
+
+
+Changes
+-------
+
+Configuration files are grouped in a /config/ folder:
+- bin/config.php (database connection parametres) is now config/config_db.php
+- the constants in bin/qtf_init.php (v3.x) are moved into config/config_cst.php
+- bin/qtf_lang.php (languages configuration) is moved into config/config_lang.php
+ -bin/qtf_upload.php (filetype permissions) is moved into config/config_upload.php
+
+Language directories are named with the iso-code ex: language/en/
+
+Fontawesome symbol library replaced by inline svg and svg-referenced symbols (increasing speed)
+jQuery replaced by default javascript
+
+
+Track minimum requirement
+-------------------------
+
+PHP minimum requirement 7.1
+PHP recommanded 7.3.21 (or next)
+
+Code validation :
+Version php 7.4 - successful on build 20210711
+Version php 7.2 - successful on build 20210711
+Version php 7.1 - successful on build 20210711
+Version php 7.0 - failed on build 20210711 - requires Memcached library
+
+Unit tests:
+Version php 7.3.21 (CLI) - successfull on build 20210711 with PHPUnit
+
+Server tests:
+Version php 7.4.90 - successful on build 20210711 with WAMPServer(64) version 3.2.3
+Version php 7.4.20 - successful on build 20210711 with Lunix Debian(64) version 4.19
+Version php 7.3.21 - successful on build 20210711 with WAMPServer(64) version 3.2.3

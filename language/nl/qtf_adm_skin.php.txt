@@ -1,0 +1,1 @@
+U kunt hier de algemene stijl van het forum veranderen. Om een nieuwe stijl tot stand te brengen, voeg uw stylesheet (css) en pictogrammen in een folder onder huid toe. Het welkome bericht is in het dossier language/nederlands/app_welcome.txt

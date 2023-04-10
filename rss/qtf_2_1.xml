@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="windows-1252" ?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+<title>QT-cute - Forum one</title><link>http://localhost/qtcute/soft/qtf3/qtf_items.php?s=1</link><description>Forum one</description><language>en</language>
+<generator>QuickTalk 3.0</generator>
+<managingEditor>phvandenberghe@gmail.com (webmaster)</managingEditor>
+<category>Troubleticket</category>
+<image><url>http://localhost/qtcute/soft/qtf3/rss/qtf_logo.gif</url><title>QT-cute - Forum one</title><link>http://localhost/qtcute/soft/qtf3/qtf_items.php?s=1</link><width>110</width><height>50</height></image>
+<atom:link href="http://localhost/qtcute/soft/qtf3/rss/qtf_2_1.xml" rel="self" type="application/rss+xml" />
+<item>
+<title>Message from Phil</title>
+<link>http://localhost/qtcute/soft/qtf3/qtf_item.php?t=4&amp;p=4</link>
+<description>Message from Phil</description>
+<pubDate>Fri, 30 Nov 2012 08:48:00 +0100</pubDate>
+<guid>http://localhost/qtcute/soft/qtf3/qtf_item.php?t=4&amp;p=4</guid>
+</item>
+<item>
+<title>Test with photo</title>
+<link>http://localhost/qtcute/soft/qtf3/qtf_item.php?t=3&amp;p=3</link>
+<description>Test with photo
+@</description>
+<pubDate>Sat, 17 Nov 2012 10:17:00 +0100</pubDate>
+<guid>http://localhost/qtcute/soft/qtf3/qtf_item.php?t=3&amp;p=3</guid>
+</item>
+<item>
+<title>Test with attachment</title>
+<link>http://localhost/qtcute/soft/qtf3/qtf_item.php?t=2&amp;p=2</link>
+<description>Test with attachment</description>
+<pubDate>Sat, 17 Nov 2012 10:14:00 +0100</pubDate>
+<guid>http://localhost/qtcute/soft/qtf3/qtf_item.php?t=2&amp;p=2</guid>
+</item>
+</channel></rss>

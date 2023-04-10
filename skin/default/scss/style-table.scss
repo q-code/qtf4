@@ -1,0 +1,102 @@
+/* Global */
+th, th a{color:#AAA;text-decoration:none}
+th a:hover{color:#666;text-decoration:underline}
+
+/* Paddings and rowline */
+.t-sec th, .t-sec td,
+.t-item th, .t-user th{padding:0.4rem 0.2rem}
+.t-sec td, .t-item td, .t-user td{border-top:solid 1px #e0e0e0}
+.t-sec th{vertical-align:baseline}
+
+/* Special domain/section */
+.t-sec.domain:not(:first-child){margin-top:2rem}
+.t-sec th.c-section, .t-sec a.section{font-size:1.4rem}
+.t-sec .c-section p.sectiondesc{font-style:italic}
+
+@media print{a.csv{display:none}}
+
+/* Row highlight */
+tr.rowlight:has(:checked){background-color:var(--rowlight)}
+tr.rowlight:has(:checked):hover{background-color:var(--rowlighthover)}
+
+/* SECTION/ITEM TABLE */
+.t-sec th, .t-sec td, .t-item th, .t-item td{text-align:center}
+th.c-section, th.c-issue, th.c-info, th.c-title, th.c-firstpostname, th.c-lastpostdate,
+td.c-section, td.c-issue, td.c-info, td.c-title, td.c-firstpostname, td.c-lastpostdate{text-align:left}
+
+/* SECTION table */
+.t-sec .c-icon{width:64px;max-width:64px}
+.t-sec .c-issue{width:180px;max-width:180px}
+.t-sec .c-items, .t-sec .c-replies{width:120px;max-width:120px}
+  /* cell section grow limit */
+  .t-sec .c-section{max-width:46vw}
+  .t-sec .c-section p{white-space:break-spaces}
+@media screen and (max-width:1023px){
+  .t-sec .c-icon{width:60px;max-width:60px}
+  .t-sec .c-issue{width:150px;max-width:150px}
+  .t-sec .c-items, .t-sec .c-replies{width:90px;max-width:90px}
+}
+@media screen and (min-width:1280px){
+  .t-sec .c-issue{width:200px;max-width:200px}
+  .t-sec .c-items, .t-sec .c-replies{width:140px;max-width:140px}
+  .t-sec .c-section{max-width:600px} /* cell section grow limit */
+}
+
+/* ITEM table */
+.t-item .c-checkbox{width:32px;max-width:32px;padding-left:0;padding-right:0}
+  .t-item th.c-checkbox{background-color:#E0E0E0}
+  .t-item td.c-checkbox{background-color:#EEE}
+.t-item .c-icon{width:40px;max-width:40px}
+.t-item .c-numid{width:85px;max-width:85px}
+.t-item .c-section{width:150px;max-width:150px}
+.t-item .c-firstpostname{width:150px;max-width:150px}
+.t-item .c-lastpostdate{width:155px;max-width:155px}
+.t-item .c-replies, .t-item .c-views, .t-item .c-id{width:90px;max-width:90px}
+.t-item .c-tags{width:150px;max-width:150px}
+.t-item .c-status{width:100px;max-width:100px}
+  .t-item .c-status.opened{background-color:#AAFFAA}
+  .t-item .c-status.closed{background-color:#ffb8b8}
+  .t-item .c-status span{font-size:0.9rem;text-shadow:1px 1px #fff}
+@media screen and (min-width:1280px){
+  .t-item .c-numid{width:90px;max-width:90px}
+  .t-item .c-section{width:155px;max-width:155px}
+  .t-item .c-firstpostname{width:155px;max-width:155px}
+  .t-item .c-lastpostdate{width:180px;max-width:180px}
+  .t-item .c-replies, .t-item .c-views, .t-item .c-id{width:100px;max-width:100px}
+  .t-item .c-tags{width:155px;max-width:155px}
+  .t-item .c-status{width:105px;max-width:105px}
+}
+@media screen and (min-width:641px) and (max-width:870px){.c-usernumpost, .c-views{display:none} /*cleared before orther .secondary at 640px*/}
+
+.table-ui-export{margin:0.4rem 0}
+@media print{.table-ui-export{display:none}}
+
+/* Item title */
+.t-item .item{text-decoration:underline}
+.t-item .item:visited{color:var(--av);text-decoration-color:var(--av)}
+.t-item .item:hover{text-decoration:underline;color:var(--ah)}
+
+/* Columns Users */
+.t-user th, .t-user td{text-align:center}
+  .t-user .c-username, .t-user .c-userrole, .t-user .c-usercontact, .t-user .c-userlocation{text-align:left}
+.t-user .c-userphoto{width:60px}
+.t-user .c-usernumpost{width:75px}
+.t-user .c-userpriv{width:30px}
+  .t-user .c-usercontact a{color:#3198ff}
+  .t-user .c-usercontact a:hover{color:#0000FF}
+  @media screen and (min-width:1024px){
+  .t-user .c-userpriv{width:35px}
+  .t-user .c-usernumpost{width:80px}}
+
+/* STATISTICS */
+#nav-charts,
+#nav-blocktime{padding:0.5rem 0;text-align:right}
+#nav-blocktime > .actif{border-bottom:solid 4px #d0d0d0}
+.t-stat{border:1px solid #DDD}
+.t-stat th,
+.t-stat td{padding:4px;text-align:center}
+.t-stat th{background-color:#e2e2e2;font-weight:bold;color:#555}
+.t-stat th:first-child{width:100px;text-align:left}
+.t-stat td.legendcolor{width:25px;background-color:#e2e2e2}
+div.charts{display:flex;justify-content:space-around;flex-direction:row;flex-wrap:wrap}
+div.chart{margin:10px}

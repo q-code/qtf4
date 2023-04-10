@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+<title>QT-cute - User Section</title><link>http://localhost/qtcute/soft/qtf4/qtf_items.php?s=2</link><description></description><language>en</language>
+<generator>QuickTalk 4.0</generator>
+<managingEditor>phvandenberghe@gmail.com (webmaster)</managingEditor>
+<category>Troubleticket</category>
+<image><url>http://localhost/qtcute/soft/qtf4/rss/qtf_logo.gif</url><title>QT-cute - User Section</title><link>http://localhost/qtcute/soft/qtf4/qtf_items.php?s=2</link><width>110</width><height>50</height></image>
+<atom:link href="http://localhost/qtcute/soft/qtf4/rss/qtf_rss2_2.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>Test for rss</title>
+<link>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=54&amp;p=73</link>
+<description>Test for rss</description>
+<pubDate>Today</pubDate>
+<guid>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=54&amp;p=73</guid>
+</item>
+<item>
+<title>Line1 LIne2</title>
+<link>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=44&amp;p=62</link>
+<description>Line1 LIne2</description>
+<pubDate>Fri, 01 Apr 2022 11:36:00 +0200</pubDate>
+<guid>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=44&amp;p=62</guid>
+</item>
+<item>
+<title>Test from John</title>
+<link>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=40&amp;p=57</link>
+<description>Test from John</description>
+<pubDate>Tue, 21 Sep 2021 11:22:00 +0200</pubDate>
+<guid>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=40&amp;p=57</guid>
+</item>
+</channel></rss>

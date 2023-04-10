@@ -1,0 +1,1 @@
+This module will import QuickTalk data. Only messages (and author name) will be imported. Subjects and replies will be imported in one forum.<br/>It's recommended to <b>turn the board off-line</b> while exporting <a href="qtf_adm_index.php">here</a>.

@@ -1,0 +1,1 @@
+This module will import QuickTalk data. Subjects and replies will be imported in one section. Author names are imported, but new profiles will not be created.

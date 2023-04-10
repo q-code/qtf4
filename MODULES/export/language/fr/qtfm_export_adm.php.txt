@@ -1,0 +1,1 @@
+This module will export the content of the database to a xml file. Only messages (and author name) will be exported. Forum description and member's profiles are skipped.

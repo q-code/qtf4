@@ -1,0 +1,89 @@
+<?php
+
+/*****
+ * Name    : TabTable
+ * Content : TabTable is a package of 5 classes (TabItem, TabHead, TabData and TabTable)
+ * version : 2.0 (replace CTable v1.6)
+ * Date    : 12/03/2022
+ * Author  : qt-cute.org
+ * Abstract: These classes allow creating table and populating cells and cells headers in an easy way.
+ *           It also supports header hyperlinks management option (allowing to build a change order mechanism).
+ *           It makes possible to define attributes with a single compacted-string
+ *
+ * Package contains:
+ * TabItem class  - Base properties and methods avalaible in all classes
+ * TabData class  - TabItem having a content string (td|caption)
+ * TabHead class  - TabItem having a content string and link management (th)
+ * TabTable class - TabItem having multiple other properties and methods (table)
+ *
+ * This TabTable class is designed to work sequentially, row by row,
+ * with methods setTDtag() or setTDcontent() that creates one row of several columns.
+ * Other methods allow applying attribute(s) to all columns at once (or to specific columns)
+ * The method getTHrow() or getTDrow() allows outputing the <tr> row
+ * Attributes can be an array [attribute=>value] or a compacted-string format ex: 'title=My title|colspan=2|hidden|width=125px'
+ */
+
+--------------
+NOTE: about the hyperlink management of the header
+--------------
+
+TabHeader objects have an extra property (link) allowing to define an anchor <a> that must be added to the content.
+This allows having clickable headers (for exemple if you need to have sortable columns).
+The TabTable class includes an active column property and active link property
+in order to remove/change the header link (also a the minium rows allows removing all header links)
+
+Example: (we want a table with 3 columns where 2 columns are sortables (ascending/descending)
+
+// Define table and headers
+$t = new TabTable('', 2, 1); // header-links <th> will be used if the table includes at least 2 <td> rows
+$t->setTHcontent(['column0','column1','column2']); // creates a row including 3 <th>
+$t->arrTh[0]->link = ''; // column is not sortable
+$t->arrTh[1]->link = '<a href="'.$_SERVER['PHP_SELF'].'?col=1&order=asc">%s</a>'; // add link to the header of column 1
+$t->arrTh[2]->link = '<a href="'.$_SERVER['PHP_SELF'].'?col=2&order=asc">%s</a>'; // add link to the header of column 2
+
+$t->activecol = 1; // or use $_GET['col']
+$t->activelink = '<a href="'.$_SERVER['PHP_SELF'].'?col='.$t->activecol.'&order=desc">%s</a>'; // invert the sorting order of the active column
+
+// Output table and several data rows
+echo $t->start();
+echo $t->getTHrow();
+$t->setTDcontent(['value00','value01','value02']);    // creates a row including 3 <td>
+echo $t->getTDrow();
+$t->setTDcontent(['value10','value11','value12']);    // creates a row including 3 <td>
+echo $t->getTDrow();
+echo $t->end();
+
+
+--------------
+NOTE: about the optional group tags <thead|tbody|tfoot> and the tag <caption>
+--------------
+
+The tags <thead|tbody|tfoot> requires to be initialized with the methods thead(), tbody() or tfoot()
+Then use method start() or end() to get the opening tag (with attributes) or the closing tag
+
+The tag <caption> requires to be initialized with the method caption().
+When initialized, it will be automatically included in the table. No need to use methods start() or end()
+
+Example:
+
+// Define the table and the content
+$t = new TabTable();
+$t->caption('My table');                           // creates a <caption> tag with inner text (no attribute)
+$t->thead('id=head-1');                            // creates a <thead> tag with an id attribute
+$t->tbody('id=body-1');                            // creates a <tbody> tag with an id attribute
+$t->setTHcontent(['column0','column1','column2']); // creates a row including 3 <th>
+$t->setTDcontent(['value0','value1','value2']);    // creates a row including 3 <td>
+$t->setTDcompactAttr('class=value|title=Computed value|style=padding:5px;background-color:yellow'); // add several attributes in each <td>
+
+// Display the table sequentially, with <thead> and <tbody>
+echo $t->start();
+echo $t->thead->start();
+echo $t->getTHrow();
+echo $t->thead->end();
+echo $t->tbody->start();
+echo $t->getTDrow();
+echo $t->tbody->end();
+echo $t->end();
+
+// Display single row table: only one td row (and one th row) can be outputted with the getTable() method (thead/tbody/tfoot are skipped)
+echo $t->getTable();

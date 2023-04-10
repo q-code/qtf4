@@ -1,0 +1,3 @@
+<h1>Syst&egrave;me d&eacute;connect&eacute;</h1>
+<p>L'administrateur a d&eacute;connect&eacute; le service.</p>
+<p>Veuillez patienter...</p>

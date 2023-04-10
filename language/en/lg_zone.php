@@ -1,0 +1,57 @@
+<?php
+$L['Change_time']='Change server time';
+$L['Language']='Language';
+$L['Date_time']='Date and time';
+$L['Clock']='Clock';
+$L['Clock_setting']='Clock setting';
+
+$L['Time_zone']='Time zone';
+$L['Show_time_zone']='Show clock';
+$L['H_Show_time_zone']='Show clock and gmt zone (bottom of the page)';
+$L['Date_format']='Date format';
+$L['H_Date_format']='Uses <a href="http://www.php.net/manual/en/function.date.php" target="_blank">php formats</a> (e.g. j M Y).';
+$L['Time_format']='Time format';
+$L['H_Time_format']='Uses <a href="http://www.php.net/manual/en/function.date.php" target="_blank">php formats</a> (e.g. G:i).';
+$L['Normal_time']='Normal time';
+$L['Daylight_time']='Daylight saving time';
+$L['Refresh_leftpane']='Refresh menu panel';
+$L['H_refresh_leftpane']='Save completed...<br><br>Click the link here to switch administration panel in english.';
+
+$L['Dflt_language']='Default language';
+$L['User_language']='Show languages';
+$L['H_User_language']='Allows user to change language';
+
+$L['GMT_time']='GMT time';
+$L['Local_time']='Local time';
+$L['tz']['gmt-12']='GMT -12 Hours';
+$L['tz']['gmt-11']='GMT -11 Hours';
+$L['tz']['gmt-10']='GMT -10 Hours';
+$L['tz']['gmt-9']='GMT -9 Hours';
+$L['tz']['gmt-8']='GMT -8 Hours';
+$L['tz']['gmt-7']='GMT -7 Hours';
+$L['tz']['gmt-6']='GMT -6 Hours';
+$L['tz']['gmt-5']='GMT -5 Hours';
+$L['tz']['gmt-4']='GMT -4 Hours';
+$L['tz']['gmt-3.5']='GMT -3.5 Hours';
+$L['tz']['gmt-3']='GMT -3 Hours';
+$L['tz']['gmt-2']='GMT -2 Hours';
+$L['tz']['gmt-1']='GMT -1 Hour';
+$L['tz']['gmt0']='GMT';
+$L['tz']['gmt1']='GMT +1 Hour';
+$L['tz']['gmt2']='GMT +2 Hours';
+$L['tz']['gmt3']='GMT +3 Hours';
+$L['tz']['gmt3.5']='GMT +3.5 Hours';
+$L['tz']['gmt4']='GMT +4 Hours';
+$L['tz']['gmt4.5']='GMT +4.5 Hours';
+$L['tz']['gmt5']='GMT +5 Hours';
+$L['tz']['gmt5.5']='GMT +5.5 Hours';
+$L['tz']['gmt6']='GMT +6 Hours';
+$L['tz']['gmt6.5']='GMT +6.5 Hours';
+$L['tz']['gmt7']='GMT +7 Hours';
+$L['tz']['gmt8']='GMT +8 Hours';
+$L['tz']['gmt9']='GMT +9 Hours';
+$L['tz']['gmt9.5']='GMT +9.5 Hours';
+$L['tz']['gmt10']='GMT +10 Hours';
+$L['tz']['gmt11']='GMT +11 Hours';
+$L['tz']['gmt12']='GMT +12 Hours';
+$L['tz']['gmt13']='GMT +13 Hours';

@@ -1,0 +1,1 @@
+This module will import QuickTalk data. Only messages (and author name) will be imported. Tickets and replies will be imported in one section.

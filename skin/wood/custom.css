@@ -1,0 +1,21 @@
+/*
+Custom css style can be added here by webmaster
+Note: contrast mode will overwrite custom style
+*/
+body{background:#d1d1d1 url('img/malik-skydsgaard-wood.jpg') repeat left top;}
+#menulang, #banner[data-layout="0"] #menulang a {color:#ddd}
+#banner[data-layout="0"] #menulang .active,
+#banner[data-layout="0"] #menulang a:hover{color:white}
+#contrast-ctrl{background:#333;padding:0 2px;border-radius:5px}
+@media print{
+  body{background:none;background-color:white}
+  #menulang{color:#000}
+}
+footer, footer a{color:#ddd;text-shadow: 1px 1px #000;}
+footer a:hover{color:#fff;}
+
+/*menu*/
+#banner[data-layout="0"] nav,
+#banner[data-layout="1"] nav,
+#banner[data-layout="2"] nav{text-align:center}
+nav a{padding:0.1rem 0.5rem}

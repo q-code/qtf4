@@ -1,0 +1,1 @@
+Vous pouvez ici déplacer, effacer ou élaguer les sujets par forum. Elaguer signifie : effacer les messages abandonnés, c'est à dire les messages ouverts et sans réponse depuis plusieurs jours. Le menu "Abandonnés" permet redéfinir le nombre de jours.

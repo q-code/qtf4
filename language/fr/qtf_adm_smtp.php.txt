@@ -1,0 +1,1 @@
+Vous pouvez tester ici vos paramètres SMTP.<br/>L'adresse du serveur hôte (Smtp host) a généralement la forme mail.domain.com ou smtp.domain.com<br/>Vous pouvez laisser le username et password vide si votre serveur le permet!

@@ -1,0 +1,1 @@
+U kunt hier uw SMTP instellingen testen. De naam van de smtp host is vaak mail.domain.com of smtp.domain.com. U kan de gebruikersbenaming en het wachtwoord leeg laten als uw server niet vereist het!

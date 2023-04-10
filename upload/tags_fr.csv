@@ -1,0 +1,18 @@
+Airside;Incident côté air
+Landside;Incident côté terre
+Seaside;Incident côté mer
+
+Europe;Incident en Europe
+Africa;Incident en Africa
+America;Incident en América
+Asia;Incident en Asia
+
+L-damage;Dégats faibles (Low)
+M-damage;Dégats moyens (Medium)
+H-damage;Dégats important (Heavy)
+
+Building;Dans un bâtiment
+Facility;Dans une usine
+Arpon;Sur un apron
+Dock;Sur un dock
+Stand;Sur un stand

@@ -1,0 +1,1 @@
+Dit is de einde stap van de moduleinstallatie. Typ hier de <b>naam</b> van de module u wilt gebruiken. De standaard parameters zullen worden toegevoegd en een nieuw menupunt zal in het beleidspaneel (of verwijderd in het geval van desinstallatie) worden omvat.

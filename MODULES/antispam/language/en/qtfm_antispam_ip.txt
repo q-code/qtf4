@@ -1,0 +1,4 @@
+List of the rejected IPv4/IPv6 addresses. Type one IP per line. When a line doesn't start by an IP address (or use a wrong format), the line is skipped.<br>
+&#8226; You can add a description after the IP, separated by a space.<br>
+&#8226; The range selector * is allowed only on the last byte. Ex: 175.1.8.*<br>
+&#8226; Use format IPv4 (175.8.1.15), IPv6 (2001:0db8::ffff) or IPv4 over IPv6 (::ffff:192.0.2.123)<br>

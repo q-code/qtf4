@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="windows-1252" ?><feed xmlns="http://www.w3.org/2005/Atom">
+<title>QT-cute - Forum one</title><link href="http://localhost/qtcute/soft/qtf3/qtf_items.php?s=1"/><link href="http://localhost/qtcute/soft/qtf3/rss/qtf_atom_1.xml" rel="self"/><id>http://localhost/qtcute/soft/qtf3/qtf_items.php?s=1</id>
+<updated>2012-11-30T08:48:09+01:00</updated>
+<author><name>Webmaster</name><email>phvandenberghe@gmail.com</email></author>
+<category term="Troubleticket"/><generator>QuickTalk 3.0</generator>
+<icon>http://localhost/qtcute/soft/qtf3/rss/qtf_icon.gif</icon>
+<logo>http://localhost/qtcute/soft/qtf3/rss/qtf_logo.gif</logo>
+<entry>
+<id>http://localhost/qtcute/soft/qtf3/qtf_item.php?t=4&amp;p=4</id>
+<title>Message from Phil</title>
+<updated>2012-11-30T08:48:09+01:00</updated>
+<author><name>Phil</name></author>
+<content>Message from Phil</content>
+<link href="http://localhost/qtcute/soft/qtf3/qtf_item.php?t=4&amp;p=4"/></entry>
+<entry>
+<id>http://localhost/qtcute/soft/qtf3/qtf_item.php?t=3&amp;p=3</id>
+<title>Test with photo</title>
+<updated>2012-11-17T10:17:52+01:00</updated>
+<author><name>Admin</name></author>
+<content>Test with photo
+@</content>
+<link href="http://localhost/qtcute/soft/qtf3/qtf_item.php?t=3&amp;p=3"/></entry>
+<entry>
+<id>http://localhost/qtcute/soft/qtf3/qtf_item.php?t=2&amp;p=2</id>
+<title>Test with attachment</title>
+<updated>2012-11-17T10:14:38+01:00</updated>
+<author><name>Admin</name></author>
+<content>Test with attachment</content>
+<link href="http://localhost/qtcute/soft/qtf3/qtf_item.php?t=2&amp;p=2"/></entry>
+</feed>

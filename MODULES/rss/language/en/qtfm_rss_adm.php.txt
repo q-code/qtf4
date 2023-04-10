@@ -1,0 +1,1 @@
+RSS (Realy Simple Syndication or Rich Site Summary) are xml feeds of the forum last subjects. User can subscrite to these feeds by clicking on the RSS logo. From this page, you can activate (or stop) this module and define the settings.

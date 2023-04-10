@@ -1,0 +1,1 @@
+Vous pouvez changer ici le style général de votre forum. Pour créer un nouveau style, ajoutez votre feuille de style (css) et vos icones dans un répertoire sous skin. Le message de bienvenue est constitué par le fichier language/fr/app_welcome.txt

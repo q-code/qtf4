@@ -1,0 +1,1 @@
+Cet écran donne un aperçu de quelques statistiques de vos forums. Pour retourner à l'index des forum, cliquez sur <b><i>Exit</i></b> dans le panneau de gauche. Les autres liens sur la gauche de cet écran vous permettront de contrôler chaque aspect de vos forums.

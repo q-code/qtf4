@@ -1,0 +1,5 @@
+<p class="bold">Règles COPPA</p>
+<p>Tout utilisateur de moins de 13 ans doit obtenir l'autorisation de leur parent ou tuteur avant de devenir membre d'une communauté. Comme ce forum accepte la participation de membre de moins de 13 ans, il faut qu'un parent ou tuteur nous fax ou nous renvoit le formulaire signé avant que cet enfant ne devienne membre effectif.</p>
+<p>Vous pouvez poursuivre le processus d'enregistrement mais le compte ne sera activé qu'après reception du formulaire de permission signé Si vous souhaitez annuler l'enregistrement, cliquez <a href="index.php">ici</a> et vous retournerez à l'index du forum.</p>
+<p>Une copie du formulaire d'inscription est disponible <a href="qtf_form_coppa.php">ici</a>.<br/>
+Pour plus d'information sur la COPPA voyez : <a href="http://www.coppa.org">www.coppa.org</a></p>

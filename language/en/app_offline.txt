@@ -1,0 +1,3 @@
+<h1>Board off-line</h1>
+<p>The administrator has turned this service off-line.</p>
+<p>Please wait...</p>

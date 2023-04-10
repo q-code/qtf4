@@ -1,0 +1,3 @@
+This screen will give you a quick overview of various statistics of your application. 
+To return to the application, click the <b><i>Exit</i></b> in the left pane. 
+The other links on the left hand side of this screen will allow you to control every aspect of your application, each screen will have instructions on how to use the tools.

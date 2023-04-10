@@ -1,0 +1,1 @@
+This module will check the content of the messages posted by the users. It can also check the origin (IP). The rules here after will <b>not</b> be applied to the messages issued by the administrators.

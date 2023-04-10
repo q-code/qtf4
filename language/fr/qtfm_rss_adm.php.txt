@@ -1,0 +1,1 @@
+RSS (Realy Simple Syndication ou Rich Site Summary) sont des flux xml contenant les derniers sujets des forums. Les utilisateurs peuvent souscrire à ces flux en cliquant sur le logo RSS. Cette page permet d'activer (ou d'arrêter) ce module et d'en définir les paramètres.

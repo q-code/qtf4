@@ -1,0 +1,1 @@
+You can here manage the forums and the domains. A domain is nothing more than a group of forums. You can here change position of the domains or move forum within a domain. Click <b>Edit</b> to manage the  settings of a forum.

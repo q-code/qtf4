@@ -1,0 +1,4 @@
+<p class="bold">COPPA Policy</p>
+<p>All users under the age of 13 must seek permission from their parent or guardian in order to gain membership of a community. While this forum welcomes participation from members under 13, we require that a parent or guardian fax or mail back a signed permission form before we grant this children as member.</p>
+<p>You can continue the registration process but the account will be activated only after we received a signed permission form. If you would like to cancel the registration, click <a href="index.php">here</a> to return to the forum index.</p>
+<p>A copy of the permission form is available <a href="qtf_form_coppa.php">here</a>.<br/>More info on COPPA: <a href="http://www.coppa.org">www.coppa.org</a></p>

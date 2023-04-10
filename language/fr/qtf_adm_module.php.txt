@@ -1,0 +1,1 @@
+Ceci est la dernière étape de l'installation d'un module. Indiquez ici le <b>nom</b> du module que vous voulez utiliser. Les paramètres par défaut de ce module seront ajoutés ainsi qu'un nouveau lien dans le menu de votre paneau d'administration (ou retirer pour une déinstallation).

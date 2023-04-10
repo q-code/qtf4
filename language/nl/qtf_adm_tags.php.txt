@@ -1,0 +1,2 @@
+De <b>tags</b> zijn markeringen de gebruiker aan een bericht kan vastmaken. Deze tags worden om berichten groepen of specifieke statistieken te produceren. De tags een gebruiker kan vastmaken is vrij. Niettemin, als een lijst van tags wordt bepaald, zal het systeem deze <b>voorgestelde tags</b> in een drop-down lijst tonen. Zie deze <a href="qtf_adm_tags_help.php" target="_blank">hulppagina</a>.
+

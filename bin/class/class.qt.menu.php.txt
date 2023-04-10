@@ -1,0 +1,106 @@
+/**
+ * Content : class CMenu
+ * Version : 1.1 (requires php 7.3 or next)
+ * Date    : 14/08/2022
+ * Author  : qt-cute.org
+ * Abstract: The class CMenu allows defining menu-items using compacted-string(s).
+ *   The output method allows rendering all menu items, while one "active" menu can have attributes modified
+ *   (adding highligh class, not-clickable, changing the html tag, ...)
+ */
+
+// -----
+// Usage Overview
+// -----
+
+To initialize a menu object use:
+  $m = new CMenu();
+  $m->add( 'menu_definition' );
+  $m->add( 'menu_definition' );
+  ...
+Or the one line alternative:
+  $m = new CMenu( ['array_of_menu_definitions'] )
+To output the menus use:
+  echo $m->build();
+
+// -----
+// CODE EXAMPLE #1
+// -----
+
+  $m = new CMenu();
+  $m->separator = ' &middot; ';
+  $m->add( 'Home|href=home.php|id=menu-home' );
+  $m->add( 'Profile|href=profile.php|id=menu-profile' );
+
+  // One line equivalent using an array in the definitions
+  $m = new CMenu( ['Home|href=home.php|id=menu-home', 'Profile|href=profile.php|id=menu-profile'], ' &middot; ' );
+
+  // Ouput the menus. The active menu can be specified by the id-value or the href-value
+  echo $m->build('menu-profile');
+
+// -----
+// CODE EXAMPLE #2 using index for each menu definition
+// -----
+
+  $m = new CMenu();
+  $m->separator = ' &middot; ';
+  $m->add( 'home',    'Home|href=home.php|id=menu-home' );
+  $m->add( 'profile', 'Profile|href=profile.php|id=menu-profile' );
+
+  // One line equivalent (using an array in the definitions)
+  $m = new CMenu( ['home'=>'Home|href=home.php|id=menu-home', 'profile'=>'Profile|href=profile.php|id=menu-profile'], ' &middot; ' );
+
+  // Ouput the menus. The active menu can be specified by the index key, the id-value or the href-value
+  echo $m->build('profile');
+
+// -----
+// CODE EXAMPLE #3 changing the menu after declaration, reading value inside definitions
+// -----
+
+  $m = new CMenu(); // Using menu(s) with string-index is required to use update() or get() methods
+  $m->add( 'home',    'text=Home|href=home.php|id=menu-home' );
+  $m->add( 'profile', 'text=Profile|href=profile.php|id=menu-profile' );
+
+  $m->update( 'profile', 'text', 'My profile' ); // change the inner text
+  $m->update( 'profile', 'accesskey', 'p' ); // insert a new attribute
+  $m->update( 'profile', 'title', 'Accesskey is '.$m->get('profile','accesskey') ); // read value and insert title attribute
+
+  echo $m->build();
+
+// -----
+// CODE EXAMPLE #4 using json format instead of compacted-string
+// -----
+
+  $m = new CMenu([], ' ', 'json');
+  $m->add( 'home',    '{"text":"Home","href":"home.php","id":"menu-home"}' );
+  $m->add( 'profile', '{"text":"Profile","href":"profile.php","id":"menu-profile"}' );
+  echo $m->build();
+
+// -----
+// ABOUT compacted-string (used for menu definition)
+// -----
+
+Compacted-string is a string where html attributes (keys/values) are compacted and separated by '|'
+Ex: 'text=Profile|id=item-1|href=profile.php|title=My Profile|class=menu|onclick=return true'
+In compacted-string doublequotes arround values can be skipped (as spaces arround delimiters)
+
+SPECIFIC ATTRIBUTES:
+Compacted-string can have 4 specific attributes that are not rendered as attributes, but used for:
+- tag= defines the html element (uses <a> by default)
+- text= defines the inner text of the element
+- addclass=myclass, will append 'myclass' to the class values (also generates the class if not yet existing)
+- activewith= indicates other pages (space separated) for which this menu is also active
+  ex: 'text=Profile|href=profile.php|activewith=change_password.php change_picture.php unregister.php'
+
+AUTO DETECT TEXT:
+When the compacted-string do not include 'text=', the render method checks if the first element can be the text (no = sign).
+  'Profile|href=profile.php|id=item-1|title=My Profile|class=menu-level-1'
+  Is equal to
+  'text=Profile|tag=a|href=profile.php|id=item-1|title=My Profile|class=menu-level-1'
+
+ESCAPE:
+A definition starting with '!' will not be decoded, but is returned as a string (static).
+This can be used to insert extra separator between some menu items.
+
+TIPS:
+If you need the | character in a value (ex: javascript event attribute),
+use array (or json format) instead of compacted-string.

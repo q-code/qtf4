@@ -1,0 +1,1 @@
+Vous pouvez ici générer vos forums et domaines. Un domaine n'est rien de plus qu'un groupe de forums. Vous pouvez ici modifier l'ordre de vos domaines et des forums dans les domaines. Cliquez <b>Editer</b> pour paramétrer vos forums.

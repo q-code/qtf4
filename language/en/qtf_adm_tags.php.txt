@@ -1,0 +1,2 @@
+The <b>tags</b> are keywords the users can attach to a subject. These tags are used to group subjects or to generate statistics on a specific subset of subjects. The tags a user can attach is free. Nevertheless, if a list of tags is defined, the system will present these <b>proposed tags</b> in a drop-down list. See this <a href="qtf_adm_tags_help.php" target="_blank">help page</a>, for more information.
+

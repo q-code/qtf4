@@ -1,0 +1,18 @@
+Airside;Incident airside related
+Landside;Incident landside related
+Seaside;Incident seaside related
+
+Europe;Incident related to Europe
+Africa;Incident related to Africa
+America;Incident related to America
+Asia;Incident related to Asia
+
+L-damage;Low damages
+M-damage;Medium damages
+H-damage;Heavy damages
+
+Building;In building
+Facility;In facility
+Arpon;On apron
+Dock;On dock
+Stand;On stand

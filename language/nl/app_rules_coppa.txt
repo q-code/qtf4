@@ -1,0 +1,4 @@
+<p class="bold">COPPA Policy</p>
+<p>Alle gebruikers onder de leeftijd van 13 moeten naar toestemming van hun ouder of beschermer streven om lidmaatschap van een Forumgemeenschap te bereiken. Terwijl dit forum met participatie van leden onder 13 instemt, vereisen wij dat een ondertekende toestemmingsvorm van de ouder of de beschermer per fax of per post alvorens wij deze kinderen als lid verlenen.</p>
+<p>U kunt het registratieproces voortzetten maar de rekening zal worden geactiveerd slechts nadat wij een ondertekende toestemmingsvorm ontvingen. Als u de registratie zou willen annuleren klik <a href="index.php">hier</a>.</p>
+<p>Een exemplaar van de toestemmingsvorm is <a href="qtf_form_coppa.php">hier</a> beschikbaar.<br/>Meer info van COPPA: <a href="http://www.coppa.org">www.coppa.org</a></p>

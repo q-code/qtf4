@@ -1,0 +1,1 @@
+Elke forum kan drie niveaus van zicht hebben: het normale gedrag is <b><i>Zichtbaar (pupliek)</i></b> zichtbaar voor gebruikers, <b><i>Zichtbaar (privé)</i></b> betekent dat een gebruiker slechts zijn eigen onderwerpen zal zien, en de <b><i>Verborgen</i></b> forums zijn gereserveerd voor de beheerders en de moderatoren.

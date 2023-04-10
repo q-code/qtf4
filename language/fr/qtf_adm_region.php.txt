@@ -1,0 +1,1 @@
+L'heure de l'application (server time) est utilisée comme heure de création des messages. L'horloge affichée en bas de page peut indiquer une autre heure (l'heure de référence de votre organisation comme par exemple l'heure GMT).

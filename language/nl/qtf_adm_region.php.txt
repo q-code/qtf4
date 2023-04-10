@@ -1,0 +1,1 @@
+Applicatie tijd (server time) wordt gebruikt als bericht tijd. De klok, zichtbaar bij de bodem van de pagina's, kan een andere tijd tonen, zoals een referentietijd specifiek voor uw organisatie (b.v.b. GMT tijd).

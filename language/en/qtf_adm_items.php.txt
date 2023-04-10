@@ -1,0 +1,1 @@
+You can here move, delete or prune subjects per forum. Prune means: delete unreplied subjects older than a certain number of days. Use the Unreplied menu to change the number of days.

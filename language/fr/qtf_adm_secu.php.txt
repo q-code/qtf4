@@ -1,0 +1,2 @@
+Cet écran vous permet d'ajuster les règles de sécurité du système.<br/>
+La méthode d'inscription par e-mail va envoyer un mot de passe temporaire à l'utilisateur avant qu'il puisse s'enregistrer. Cette méthode est une bonne alternative si vous ne pouvez pas utiliser le code image ou un service en ligne pour sécuriser le formulaire d'inscription.

@@ -1,0 +1,3 @@
+Le fichier CSV doit contenir: role, login, mot de passe, email. Les roles sont : A (administrateur), M (membre du staff), U (utilisateur). Pour le mot de passe vous pouvez utiliser : le code au format sha1 ou le préfixe SHA pour générer le code. Laisser le mot de passe vide pour utiliser le login comme mot de passe.<br/><b><i>Exemple de fichier csv:</i></b><br/>M; Jennifer; 5753a498f025464d72e088a9d5d6e8725; jenn@corp.com<br/>
+U; william; SHAwilly03; william@corp.com<br/>
+U; robert; ; robert@corp.com

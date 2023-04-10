@@ -1,0 +1,1 @@
+The application time (server time) is used as message issue time. The clock, visible at the bottom of the pages, can show an other time like a reference time specific to your organisation (e.g. the GMT time).

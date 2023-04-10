@@ -1,0 +1,4 @@
+Liste des adresses IPv4/IPv6 à rejeter. Indiquez une adresse par ligne. Lorsqu'une ligne ne commence pas par une adresse (or une adresse incorrecte), elle sera ignorée.<br>
+&#8226; Vous pouvez ajouter une description après l'IP, séparée par un espace.<br>
+&#8226; Le sélecteur multiple * est possible uniquement pour le dernier byte. Ex: 175.1.8.*<br>
+&#8226; Les formats sont soit IPv4 (175.8.1.15), IPv6 (2001:0db8::ffff) ou IPv4 sur IPv6 (::ffff:192.0.2.123)<br>

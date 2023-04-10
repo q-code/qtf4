@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1" ?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+<title>QuickTalk forum - temp</title><link>http://www.qt-cute.org/soft/qtf2/qtf_topics.php?s=4</link><description></description><language>en</language>
+<generator>QuickTalk 2.5</generator>
+<managingEditor>webmaster@qt-cute.org (webmaster)</managingEditor>
+<category>Troubleticket</category>
+<image><url>http://www.qt-cute.org/soft/qtf2/rss/qtf_logo.gif</url><title>QuickTalk forum - temp</title><link>http://www.qt-cute.org/soft/qtf2/qtf_topics.php?s=4</link><width>110</width><height>50</height></image>
+<atom:link href="http://www.qt-cute.org/soft/qtf2/rss/qtf_2_4.xml" rel="self" type="application/rss+xml" />
+<item>
+<title>test</title>
+<link>http://www.qt-cute.org/soft/qtf2/qtf_topic.php?t=50&amp;p=91</link>
+<description>test</description>
+<pubDate>Mon, 13 Sep 2010 09:58:00 +0200</pubDate>
+<guid>http://www.qt-cute.org/soft/qtf2/qtf_topic.php?t=50&amp;p=91</guid>
+</item>
+</channel></rss>

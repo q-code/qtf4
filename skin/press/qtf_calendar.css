@@ -1,0 +1,25 @@
+/* CALENDAR */
+#calendar{margin:1vw 0;border:solid 1px #AAA}
+  #calendar td,#calendar th,#calendarnext td,#calendarnext th{padding:4px}
+  #calendar th, #calendar td{vertical-align:top;width:13.8%}
+  #calendar .week{width:3.4%;border-color:#AAA;font-size:0.9rem;text-align:center}
+  #calendar th{background-color:#FF9933;color:#FFF}
+  #calendar td{background-color:#FFF;border-style:solid;border-width:1px 0 0 1px;border-color:#DDD;}
+#calendarnext{width:100%;border:solid 1px #AAA}
+  #calendarnext th{vertical-align:middle;text-align:center;background-color:#666;color:#FFF;font-size:9pt;font-weight:bold}
+  #calendarnext td{vertical-align:middle;padding:1px 4px;text-align:center;border-style:solid;border-width:1px 0 0 1px;border-color:#DDD}
+#calendar .outdate,
+#calendarnext .outdate{background-color:#EEE;font-weight:normal}
+@media screen and (max-width:640px){.pg-calendar div.t-stat{display:none}}
+
+/* Date icons */
+.dateicon{text-align:right;font-size:0.9rem}
+
+/* Date number */
+a.date_next{font-weight:bold;text-decoration:none}
+a.date_next:hover{text-decoration:underline}
+#today .datenumber{display:inline-block;padding:1px 5px 1px 3px;background-color:#ffce9d;border-radius:3px}
+#todaynext{background-color:#ffce9d}
+#calendarnext td.date{font-weight:normal}
+#calendarnext td.date a{font-weight:bold}
+#calendarnext td.outdate{font-weight:normal}

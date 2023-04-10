@@ -1,0 +1,1 @@
+You can test here your SMTP settings.<br/>The smtp host name is often mail.domain.com or smtp.domain.com<br/>You can let the username and password empty if your server does not requires it!.
