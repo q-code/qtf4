@@ -124,21 +124,25 @@ echo '<div id="aside__status">'.$strStatusText.'</div>'.PHP_EOL;
 echo '</aside>'.PHP_EOL.PHP_EOL;
 
 $oH->scripts[] = 'function iniAsideState(){
-  if( typeof(Storage)=="undefined" ) return;
-  let d = document.getElementById("aside-ctrl");
-  if ( d ) {
-    let isExpanded = sessionStorage.getItem("asidestate")==="expanded";
+  let d = document.getElementById("aside-ctrl"); if ( !d ) return;
+  try {
+    const isExpanded = localStorage.getItem("qtf_aside")==="on";
     d.classList.toggle("expanded", isExpanded);
     d = document.getElementById("aside__status"); if (d) d.style.display = isExpanded ? "none" : "block";
     d = document.getElementById("aside__info"); if (d) d.style.display = isExpanded ? "block" : "none";
     d = document.getElementById("aside__detail"); if (d) d.style.display = isExpanded ? "block" : "none";
     d = document.getElementById("aside__legend"); if (d) d.style.display = isExpanded ? "block" : "none";
+  } catch {
+    console.log("localStorage not available"); return;
   }
 }
 function storeAsideState(){
-  if ( typeof(Storage)==="undefined" ) return;
-  let d = document.getElementById("aside-ctrl");
-  if ( d ) sessionStorage.setItem("asidestate", d.classList.contains("expanded") ? "expanded" : "collapsed");
+  const d = document.getElementById("aside-ctrl"); if ( !d ) return;
+  try {
+    localStorage.setItem("qtf_aside", d.classList.contains("expanded") ? "on" : "off");
+  } catch {
+    console.log("localStorage not available"); return;
+  }
 }
 function toggleAside(){
   qtToggle("aside__status");
