@@ -34,7 +34,7 @@ else
     }
   }
   if ( QT_MENU_CONTRAST )
-    $m->add( 'text='.getSVG('adjust').'|href='.Href($oH->selfurl).'?'.getURI('css').'&css='.($_SESSION[QT]['contrast'] ? 'css' : 'contrast' ).'|id=contrast-ctrl|title=High contrast display' );
+    $m->add( 'text='.getSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|title=High contrast display' );
   // group the menus
   $strLangMenu = '<div id="menulang">'.$m->build('lang-'.QT_LANG, 'tag=span|class=active').'</div>';
 }

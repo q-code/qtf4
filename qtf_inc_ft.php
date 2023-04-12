@@ -136,7 +136,7 @@ $oH->scripts[] = 'function iniAsideState(){
   }
 }
 function storeAsideState(){
-  if( typeof(Storage)=="undefined" ) return;
+  if ( typeof(Storage)==="undefined" ) return;
   let d = document.getElementById("aside-ctrl");
   if ( d ) sessionStorage.setItem("asidestate", d.classList.contains("expanded") ? "expanded" : "collapsed");
 }

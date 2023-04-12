@@ -102,15 +102,14 @@ $oH->links['ico'] = '<link rel="shortcut icon" href="'.QT_SKIN.'img/qtf_icon.ico
 $oH->links['cssBase'] = '<link rel="stylesheet" type="text/css" href="bin/css/qt_base.css"/>';
 $oH->links['css'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.'qtf_styles.css"/>';
 if ( file_exists(QT_SKIN.'custom.css') ) $oH->links['cssCustom'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.'custom.css"/>';
+if ( QT_MENU_CONTRAST ) {
+  if ( !isset($_SESSION[QT]['contrast']) ) $_SESSION[QT]['contrast'] = false;
+  $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/qtf_contrast.css" disabled/>';
+  $oH->scripts[] = '<script type="text/javascript" src="bin/js/qtf_contrast.js"></script>';
+  $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', toggleContrast); applyContrast();";
+}
 $oH->scripts_top['base'] = '<script type="text/javascript" src="bin/js/qt_base.js"></script>';
 $oH->scripts_top[] = 'const acOnClicks = [];'; /* const required before autocomplete api configuration */
-
-// Contrast check
-if ( QT_MENU_CONTRAST ) {
-  if ( !isset($_SESSION[QT]['contrast']) ) $_SESSION[QT]['contrast']=false;
-  if ( isset($_GET['css']) ) $_SESSION[QT]['contrast'] = $_GET['css']==='contrast';
-  if ( $_SESSION[QT]['contrast'] ) $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/qtf_contrast.css"/>';
-}
 
 // -----------------
 //  Time setting (for PHP >=5.2)
