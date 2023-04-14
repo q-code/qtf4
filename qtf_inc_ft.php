@@ -62,7 +62,7 @@ $stats = isset($_SectionsStats) ? $_SectionsStats : SMem::get('_SectionsStats');
 $strStatusText = '';
 
 echo '<aside>'.PHP_EOL;
-echo '<a id="aside-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="toggleAside(); return false;" title="'.L('Showhide_legend').'">'.getSVG('info').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a>'.PHP_EOL;
+echo '<a id="aside-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="toggleAside(); return false;" title="'.L('Showhide_legend').'" aria-current="false">'.getSVG('info').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a>'.PHP_EOL;
 echo '<div id="aside__info" class="article" style="display:none">'.PHP_EOL;
   echo '<h1>'.L('Information').'</h1>'.PHP_EOL;
   // section info
@@ -126,8 +126,9 @@ echo '</aside>'.PHP_EOL.PHP_EOL;
 $oH->scripts[] = 'function iniAsideState(){
   let d = document.getElementById("aside-ctrl"); if ( !d ) return;
   try {
-    const isExpanded = localStorage.getItem("qtf_aside")==="on";
+    const isExpanded = localStorage.getItem("qt-aside-ctrl")==="true";
     d.classList.toggle("expanded", isExpanded);
+    d.setAttribute("aria-current", isExpanded ? "true" : "false");
     d = document.getElementById("aside__status"); if (d) d.style.display = isExpanded ? "none" : "block";
     d = document.getElementById("aside__info"); if (d) d.style.display = isExpanded ? "block" : "none";
     d = document.getElementById("aside__detail"); if (d) d.style.display = isExpanded ? "block" : "none";
@@ -136,20 +137,14 @@ $oH->scripts[] = 'function iniAsideState(){
     console.log("localStorage not available"); return;
   }
 }
-function storeAsideState(){
-  const d = document.getElementById("aside-ctrl"); if ( !d ) return;
-  try {
-    localStorage.setItem("qtf_aside", d.classList.contains("expanded") ? "on" : "off");
-  } catch {
-    console.log("localStorage not available"); return;
-  }
-}
 function toggleAside(){
+  const d = document.getElementById("aside-ctrl"); if ( !d ) return;
+  d.setAttribute("aria-current", d.getAttribute("aria-current")==="false" ? "true" : "false" );
   qtToggle("aside__status");
   qtToggle("aside__legend");
   qtToggle("aside__detail");
   qtToggle("aside__info",null,"aside-ctrl");
-  storeAsideState();
+  qtAttrStorage("aside-ctrl");
 }
 iniAsideState();';
 

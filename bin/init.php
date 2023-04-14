@@ -105,8 +105,7 @@ if ( file_exists(QT_SKIN.'custom.css') ) $oH->links['cssCustom'] = '<link rel="s
 if ( QT_MENU_CONTRAST ) {
   if ( !isset($_SESSION[QT]['contrast']) ) $_SESSION[QT]['contrast'] = false;
   $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/qtf_contrast.css" disabled/>';
-  $oH->scripts[] = '<script type="text/javascript" src="bin/js/qtf_contrast.js"></script>';
-  $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', toggleContrast); applyContrast();";
+  $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', qtToggleContrast); qtApplyContrast();";
 }
 $oH->scripts_top['base'] = '<script type="text/javascript" src="bin/js/qt_base.js"></script>';
 $oH->scripts_top[] = 'const acOnClicks = [];'; /* const required before autocomplete api configuration */
