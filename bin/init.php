@@ -102,21 +102,6 @@ $oH->links['ico'] = '<link rel="shortcut icon" href="'.QT_SKIN.'img/qtf_icon.ico
 $oH->links['cssBase'] = '<link rel="stylesheet" type="text/css" href="bin/css/qt_base.css"/>';
 $oH->links['css'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.'qtf_styles.css"/>';
 if ( file_exists(QT_SKIN.'custom.css') ) $oH->links['cssCustom'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.'custom.css"/>';
-if ( QT_MENU_CONTRAST ) {
-  if ( !isset($_SESSION[QT]['contrast']) ) $_SESSION[QT]['contrast'] = false;
-  $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/qtf_contrast.css" disabled/>';
-  $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', toggleContrast);
-   qtApplyStoredState('contrast');
-   function toggleContrast() {
-    const d = document.getElementById('contrastcss');
-    if ( !d ) { console.log('toggleContrast: no element with id=contrastcss'); return; }
-    const ctrl = document.getElementById('contrast-ctrl');
-    if ( !ctrl ) { console.log('toggleContrast: no element with id=contrast-ctrl'); return; }
-    d.toggleAttribute('disabled');
-    ctrl.setAttribute('aria-current', d.disabled ? 'false' : 'true');
-    qtAttrStorage('contrast-ctrl','qt-contrast');
-  }";
-}
 $oH->scripts_top['base'] = '<script type="text/javascript" src="bin/js/qt_base.js"></script>';
 $oH->scripts_top[] = 'const acOnClicks = [];'; /* const required before autocomplete api configuration */
 

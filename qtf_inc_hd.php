@@ -33,8 +33,21 @@ else
       $m->add('!missing file:config/config_lang.php');
     }
   }
-  if ( QT_MENU_CONTRAST )
+  if ( QT_MENU_CONTRAST ) {
     $m->add( 'text='.getSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|title=High contrast display|aria-current=false' );
+    $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/qtf_contrast.css" disabled/>';
+    $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', toggleContrast);
+      qtApplyStoredState('contrast');
+      function toggleContrast() {
+      const d = document.getElementById('contrastcss');
+      if ( !d ) { console.log('toggleContrast: no element with id=contrastcss'); return; }
+      const ctrl = document.getElementById('contrast-ctrl');
+      if ( !ctrl ) { console.log('toggleContrast: no element with id=contrast-ctrl'); return; }
+      d.toggleAttribute('disabled');
+      ctrl.setAttribute('aria-current', d.disabled ? 'false' : 'true');
+      qtAttrStorage('contrast-ctrl','qt-contrast');
+    }";
+  }
   // group the menus
   $strLangMenu = '<div id="menulang">'.$m->build('lang-'.QT_LANG, 'tag=span|class=active').'</div>';
 }
