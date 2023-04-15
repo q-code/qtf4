@@ -123,30 +123,16 @@ echo '</p></div>'.PHP_EOL;
 echo '<div id="aside__status">'.$strStatusText.'</div>'.PHP_EOL;
 echo '</aside>'.PHP_EOL.PHP_EOL;
 
-$oH->scripts[] = 'function iniAsideState(){
-  let d = document.getElementById("aside-ctrl"); if ( !d ) return;
-  try {
-    const isExpanded = localStorage.getItem("qt-aside-ctrl")==="true";
-    d.classList.toggle("expanded", isExpanded);
-    d.setAttribute("aria-current", isExpanded ? "true" : "false");
-    d = document.getElementById("aside__status"); if (d) d.style.display = isExpanded ? "none" : "block";
-    d = document.getElementById("aside__info"); if (d) d.style.display = isExpanded ? "block" : "none";
-    d = document.getElementById("aside__detail"); if (d) d.style.display = isExpanded ? "block" : "none";
-    d = document.getElementById("aside__legend"); if (d) d.style.display = isExpanded ? "block" : "none";
-  } catch {
-    console.log("localStorage not available"); return;
-  }
-}
-function toggleAside(){
+$oH->scripts[] = 'function toggleAside(){
   const d = document.getElementById("aside-ctrl"); if ( !d ) return;
   d.setAttribute("aria-current", d.getAttribute("aria-current")==="false" ? "true" : "false" );
   qtToggle("aside__status");
   qtToggle("aside__legend");
   qtToggle("aside__detail");
   qtToggle("aside__info",null,"aside-ctrl");
-  qtAttrStorage("aside-ctrl");
+  qtAttrStorage("aside-ctrl","qt-aside");
 }
-iniAsideState();';
+qtApplyStoredState("aside");';
 
 }}}
 
