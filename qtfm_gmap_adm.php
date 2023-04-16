@@ -87,7 +87,7 @@ $oH->scripts[] = 'var enterkeyPressed=false;
 function ValidateForm(theForm,enterkeyPressed) {
   if (enterkeyPressed) return false;
 }
-function radioHighlight(src) { document.getElementById("markerpicked").src = src; }';
+function previewMarker(src) { document.getElementById("previewmarker").src = src; }';
 
 include 'qtf_adm_inc_hd.php';
 
@@ -97,7 +97,7 @@ echo '
 <table class="t-conf">
 <tr>
 <th style="width:150px"><label for="m_gmap_gkey">Google API key</label></th>
-<td colspan="2"><input id="m_gmap_gkey" name="m_gmap_gkey" size="40" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gkey'].'" onchange="qtFormSafe.not();"/></td>
+<td><input id="m_gmap_gkey" name="m_gmap_gkey" size="40" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gkey'].'" onchange="qtFormSafe.not();"/></td>
 </tr>
 ';
 
@@ -110,7 +110,7 @@ $current = empty($_SESSION[QT]['m_gmap_gsymbol']) ? 'default' : $_SESSION[QT]['m
 
 echo '<tr>
 <th style="width:150px">'.L('Gmap.API_ctrl').'</th>
-<td colspan="2">
+<td>
 <input type="checkbox" id="map" name="map"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],2,1)=='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="map">'.L('Gmap.Ctrl.Background').'</label>
 &nbsp; <input type="checkbox" id="scale" name="scale"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],3,1)=='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="scale">'.L('Gmap.Ctrl.Scale').'</label>
 &nbsp; <input type="checkbox" id="fullscreen" name="fullscreen"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],4,1)=='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="fullscreen">'.L('Gmap.Ctrl.Fullscreen').'</label>
@@ -118,36 +118,27 @@ echo '<tr>
 </td>
 </tr>
 <th style="width:150px">'.L('Gmap.API_services').'</th>
-<td colspan="2">
-<input type="checkbox" id="streetview" name="streetview"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],1,1)=='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="streetview">'.L('Gmap.Ctrl.Streetview').'</label>
-&nbsp; <input type="checkbox" id="geocode" name="geocode"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)=='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="geocode">'.L('Gmap.Ctrl.Geocode').'</label>
-</td>
+<td><input type="checkbox" id="streetview" name="streetview"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],1,1)=='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="streetview">'.L('Gmap.Ctrl.Streetview').'</label>
+&nbsp; <input type="checkbox" id="geocode" name="geocode"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)=='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="geocode">'.L('Gmap.Ctrl.Geocode').'</label></td>
 </tr>
 <tr>
 <th style="width:150px">'.L('Gmap.Symbol').'</th>
-<td style="width:70px;text-align:center">
-<img id="markerpicked" title="default" src="qtfm_gmap/'.$current.'.png" alt="i"/>
-</td>
-<td>
-<p class="small" style="text-align:center">'.L('Gmap.Click_to_change').'</p>
-<div class="markerpicker">
+<td style="display:flex;gap:1rem;align-items:flex-end">
+<p><img id="previewmarker" class="markerpicked" title="default" src="qtfm_gmap/'.$current.'.png" alt="i"/></p>
+<p class="markerpicker small">'.L('Gmap.Click_to_change').'<br>
 ';
-foreach ($arrFiles as $strFile=>$strName)
-{
-  echo '<input type="radio" id="symbol_'.$strFile.'" data-src="qtfm_gmap/'.$strFile.'.png" name="m_gmap_gsymbol" value="'.$strFile.'"'.($current===$strFile ? 'checked' : '').' onchange="radioHighlight(this.dataset.src);qtFormSafe.not();"/><label for="symbol_'.$strFile.'"><img class="marker" title="'.$strName.'" src="qtfm_gmap/'.$strFile.'.png" alt="i"/></label>'.PHP_EOL;
+foreach ($arrFiles as $file=>$name){
+  echo '<input type="radio" id="symbol_'.$file.'" data-src="qtfm_gmap/'.$file.'.png" name="m_gmap_gsymbol" value="'.$file.'"'.($current===$file ? 'checked' : '').' onchange="previewMarker(this.dataset.src);qtFormSafe.not();" style="display:none"/><label for="symbol_'.$file.'"><img class="marker" title="'.$name.'" src="qtfm_gmap/'.$file.'.png" alt="i" aria-checked="'.($current===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
 }
-echo '</div>
-</td>
+echo '</p></td>
 </tr>
 <tr>
 <th style="width:150px;">'.L('Gmap.Memberlist').'</th>
-<td style="width:70px;text-align:center">
+<td>
 <select name="sections" size="1">
 <option value=""'.(in_array('U',$arrSections) ? '' : ' selected').'>'.L('N').'</option>
 <option value="U"'.(in_array('U',$arrSections) ? ' selected' : '').'>'.L('Y').'</option>
-</select>
-</td>
-<td><span class="small">'.L('Gmap.H_Memberlist').'</span> &middot; <a href="qtfm_gmap_adm_options.php" onclick="return qtFormSafe.exit(e0);">'.L('Gmap.Symbol_by_role').'...</a></td>
+</select><span class="indent small">'.L('Gmap.H_Memberlist').'</span> &middot; <a href="qtfm_gmap_adm_options.php" onclick="return qtFormSafe.exit(e0);">'.L('Gmap.Symbol_by_role').'...</a></td>
 </tr>
 </table>
 ';

@@ -81,7 +81,7 @@ if ( count($arrSymbols)!=3 ) $arrSymbols = array('U'=>'0','M'=>'0','A'=>'0');
 if ( !isset($arrSymbols['A']) || !isset($arrSymbols['M']) || !isset($arrSymbols['U']) ) $arrSymbols = array('U'=>'0','M'=>'0','A'=>'0');
 
 $oH->links[]='<link rel="stylesheet" type="text/css" href="qtfm_gmap.css"/>';
-$oH->scripts[] = 'function radioHighlight(src,key) { document.getElementById("markerpicked_"+key).src = src; }';
+$oH->scripts[] = 'function previewMarker(id,src) { document.getElementById(id).src = src; }';
 
 include 'qtf_adm_inc_hd.php';
 
@@ -106,16 +106,16 @@ foreach($arrSymbols as $key=>$strSymbol)
   $current = empty($strSymbol) ? 'default' : $strSymbol;
 
 echo '<tr>
-<th style="padding-right:10px">',L('Role_'.$key.'s'),'</th>
-<td id="symbol_cb_'.$key.'" style="width:60px;text-align:center"><img id="markerpicked_'.$key.'" title="default" src="qtfm_gmap/',$current,'.png"/></td>
-<td id="picker_cb_'.$key.'">
-<div class="markerpicker">
+<th style="padding-right:10px">',L('Role_'.$key.'+'),'</th>
+<td style="display:flex;gap:1rem;align-items:flex-end">
+<p><img id="previewmarker-'.$key.'" class="markerpicked" title="default" src="qtfm_gmap/',$current,'.png"/></p>
+<p class="markerpicker small">
 ';
-foreach ($arrFiles as $strFile=>$strName)
+foreach ($arrFiles as $file=>$name)
 {
-  echo '<input type="radio" data-key="'.$key.'" data-src="qtfm_gmap/'.$strFile.'.png" name="symbol_'.$key.'" value="'.$strFile.'" id="symbol_'.$strFile.'_'.$key.'"'.($current===$strFile ? 'checked' : '').' onchange="radioHighlight(this.dataset.src,this.dataset.key);qtFormSafe.not();"/><label for="symbol_'.$strFile.'_'.$key.'"><img class="marker'.($current==$strFile ? ' checked' : '').'" title="'.$strName.'" src="qtfm_gmap/'.$strFile.'.png"/></label>'.PHP_EOL;
+  echo '<input type="radio" data-preview="previewmarker-'.$key.'" data-src="qtfm_gmap/'.$file.'.png" name="symbol_'.$key.'" value="'.$file.'" id="symbol_'.$file.'_'.$key.'"'.($current===$file ? ' checked' : '').' onchange="previewMarker(this.dataset.preview,this.dataset.src);qtFormSafe.not();" style="display:none"/><label for="symbol_'.$file.'_'.$key.'"><img class="marker" title="'.$name.'" src="qtfm_gmap/'.$file.'.png" aria-checked="'.($current===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
 }
-echo '</div>
+echo '</p>
 </td>
 </tr>
 ';
