@@ -122,7 +122,7 @@ echo '<tr>
 &nbsp; <input type="checkbox" id="geocode" name="geocode"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)=='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="geocode">'.L('Gmap.Ctrl.Geocode').'</label></td>
 </tr>
 <tr>
-<th style="width:150px">'.L('Gmap.Symbol').'</th>
+<th style="width:150px">'.L('Gmap.Default_symbol').'</th>
 <td style="display:flex;gap:1rem;align-items:flex-end">
 <p><img id="previewmarker" class="markerpicked" title="default" src="qtfm_gmap/'.$current.'.png" alt="i"/></p>
 <p class="markerpicker small">'.L('Gmap.Click_to_change').'<br>
@@ -142,6 +142,7 @@ echo '</p></td>
 </tr>
 </table>
 ';
+
 echo '<h2 class="config">'.L('Gmap.Mapping_config').'</h2>
 <table class="t-conf">
 <tr>

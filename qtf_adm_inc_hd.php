@@ -32,7 +32,7 @@ echo '
 <div id="banner"><img id="logo" src="bin/css/'.APP.'_logo.gif" style="border-width:0" alt="'.APPNAME.'" title="'.APPNAME.'"/></div>
 ';
 
-if ( defined('HIDE_MENU_PROFILE') && HIDE_MENU_PROFILE )
+if ( defined('HIDE_MENU_LANG') && HIDE_MENU_LANG )
 {
   // Skip toc when bShowlang explicitly false
 }

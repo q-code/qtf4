@@ -51,7 +51,7 @@ if ( $rows<15 || $rows>40 ) $rows=15;
 // INITIALISE
 
 const HIDE_MENU_TOC=true;
-const HIDE_MENU_PROFILE=true;
+const HIDE_MENU_LANG=true;
 
 $oH->selfurl = 'tool_txt.php';
 $oH->selfname = empty($title) ? L('File') : $title;

@@ -28,7 +28,6 @@ function sectionsAsOption($selected='', array $reject=[], array $disabled=[], st
   }
   return $str;
 }
-
 function getCheckedIds($checkbox='t1-cb',$altCsv='')
 {
   if ( isset($_POST[$checkbox]) ) {
@@ -40,7 +39,6 @@ function getCheckedIds($checkbox='t1-cb',$altCsv='')
   }
   return array();
 }
-
 function htmlCsvLink($strUrl,$intCount=20,$intPage=1)
 {
   if ( empty($strUrl) ) return '';
@@ -55,7 +53,6 @@ function htmlCsvLink($strUrl,$intCount=20,$intPage=1)
   }
   return $strCsv;
 }
-
 function htmlLettres(string $baseFile, string $current='ALL', string $strAll='All', string $strClass='lettres', string $strTitle='Username starting with ', int $intSize=1, bool $bFilterForm=true)
 {
   // When $baseFile have other arguments, group argument will be appended
@@ -86,7 +83,6 @@ function htmlLettres(string $baseFile, string $current='ALL', string $strAll='Al
   $strGroups .= '</div>';
   return $strGroups;
 }
-
 function bbcButtons($size=1)
 {
   if ( !QT_BBC || $size==0 ) return '';
@@ -103,7 +99,6 @@ function bbcButtons($size=1)
   if ( $size>2 ) $str .= '<a class="bbc" onclick="qtCaret(`img`)" title="'.L('Bbc.image').'">'.getSVG('image').'</a>';
   return $str;
 }
-
 function icoPrefix(string $serie, int $i, string $src='config/prefix/')
 {
   if ( file_exists($src.'serie-'.$serie.'.php') ) {
@@ -119,15 +114,14 @@ function icoPrefix(string $serie, int $i, string $src='config/prefix/')
     }
   }
 }
-
-function exitPage($content='Page not defined', string $title='!', bool $hideMenuProfile=true)
+function exitPage($content='Page not defined', string $title='!', bool $hideMenuLang=true)
 {
   if ( !is_string($content) && !is_int($content) ) die('exitPage: invalid argument');
   // title can be one svg icon (if ends with '.svg')
   if ( substr($title,-4)==='.svg' ) $title = getSVG(substr($title,0,-4));
   global $oH;
   $oH->exiturl = APP.'_index.php';
-  include APP.'_inc_hd.php';
+  include APP.'_inc_hd.php'; // uses $hideMenuLang (true by default for error/exit pages)
   CHtml::msgBox($title, 'class=msgbox');
   if ( is_int($content) ) {
     if ( $content===99 ) {
@@ -135,7 +129,7 @@ function exitPage($content='Page not defined', string $title='!', bool $hideMenu
       if ( file_exists($content) ) { include $content; } else { echo L('E_99'); }
     } else {
       echo L('E_'.$content);
-      if ( !SUser::auth() ) echo '<p><a href="qtf_login.php">'.L('Login').'...</a></p>';
+      if ( !SUser::auth() ) echo '<p><a href="'.APP.'_login.php">'.L('Login').'...</a></p>';
     }
   } else {
     echo $content;
@@ -144,7 +138,6 @@ function exitPage($content='Page not defined', string $title='!', bool $hideMenu
   include APP.'_inc_ft.php';
   exit; //...
 }
-
 function formatCsvRow($arrFLD,$row,$oS=null)
 {
   if ( !is_array($row) ) die('formatItemRow: Wrong argument #3');
@@ -211,7 +204,6 @@ function formatCsvRow($arrFLD,$row,$oS=null)
   }
   return implode(';',$arrValues);
 }
-
 function renderUserMailSymbol($row)
 {
   // required $row['id|privacy|mail']
@@ -223,14 +215,12 @@ function renderUserMailSymbol($row)
   if ( SUser::id()==$row['id'] || SUser::isStaff() ) $str = asEmails($row['mail'],'symbol'.(QT_JAVA_MAIL ? 'java' : ''));
   return $str;
 }
-
 function renderUserWwwSymbol($row)
 {
   if ( empty($row['www']) || !isset($row['privacy']) )
   return '<span class="disabled" title="no web site"><svg class="svg-symbol svg-125"><use href="#symbol-home" xlink:href="#symbol-home"></use></svg></span>';
   return '<a href="'.$row['www'].'" title="web site"><svg class="svg-symbol svg-125"><use href="#symbol-home" xlink:href="#symbol-home"></use></svg></a>';
 }
-
 function renderUserPrivSymbol(array $row=[], string $empty='')
 {
   // required $row['id|privacy']
@@ -242,7 +232,6 @@ function renderUserPrivSymbol(array $row=[], string $empty='')
   }
   return $empty;
 }
-
 function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, array $arrOptions=[])
 {
   if ( is_a($row,'CTopic') ) $row = get_object_vars($row);

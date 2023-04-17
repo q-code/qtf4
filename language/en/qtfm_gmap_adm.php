@@ -6,6 +6,7 @@ $L['Gmap']['Version']='Quicktalk google map version';
 $L['Gmap']['Mapping_settings']='Mapping settings';
 $L['Gmap']['Mapping_config']='Configuration to use by default';
 $L['Gmap']['Preview']='Preview map with default symbol';
+$L['Gmap']['Default_symbol']='Default symbol';
 $L['Gmap']['Other_symbols']='Other symbols';
 $L['Gmap']['API_key']='Map API key';
 $L['Gmap']['API_ctrl']='Map controls';

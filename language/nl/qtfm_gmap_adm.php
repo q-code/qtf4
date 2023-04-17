@@ -6,6 +6,7 @@ $L['Gmap']['Version']='Module versie';
 $L['Gmap']['Mapping_settings']='Kaart instellingen';
 $L['Gmap']['Mapping_config']='Configuratie aan gebruik door gebrek';
 $L['Gmap']['Preview']='Voorproef van de kaart met standaardsymbool';
+$L['Gmap']['Default_symbol']='Standaard symbool';
 $L['Gmap']['Other_symbols']='Andere symbolen';
 $L['Gmap']['API_key']='Map API sleutel';
 $L['Gmap']['API_ctrl']='Controlen';
