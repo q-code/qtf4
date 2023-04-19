@@ -32,72 +32,62 @@ echo '
 <div id="banner"><img id="logo" src="bin/css/'.APP.'_logo.gif" style="border-width:0" alt="'.APPNAME.'" title="'.APPNAME.'"/></div>
 ';
 
-if ( defined('HIDE_MENU_LANG') && HIDE_MENU_LANG )
+if ( !defined('HIDE_MENU_LANG') || !HIDE_MENU_LANG )
 {
-  // Skip toc when bShowlang explicitly false
-}
-else
-{
-  $arrM = [];
-  $arrM[] = 'text='.getSVG('caret-square-left').'|id=lang-exit|href='.APP.'_index.php|title='.L('Exit').'|onclick=return qtFormSafe.exit(e0);';
-  if ( is_array(LANGUAGES) && count(LANGUAGES)>1 ) {
-    foreach (LANGUAGES as $iso=>$lang) {
-      $lang = explode(' ',$lang);
-      $lang = empty($lang[1]) ? strtoupper($iso) : $lang[1]; // uppercase iso code if no description
-      $arrM['lang-'.$iso] = strtoupper($iso).'|href='.$oH->selfurl.'?'.getURI('lang').'&lang='.$iso.'||title='.$lang.'|onclick=return qtFormSafe.exit(e0);';
+  $langMenu = new CMenu();
+  $langMenu->add('text='.getSVG('caret-square-left').'|id=lang-exit|href='.APP.'_index.php|title='.L('Exit').'|onclick=return qtFormSafe.exit(e0);');
+  // lang
+  if ( $_SESSION[QT]['userlang'] ) {
+    if ( is_array(LANGUAGES) && count(LANGUAGES)>1 ) {
+      foreach (LANGUAGES as $iso=>$lang) {
+        $lang = explode(' ',$lang);
+        $lang = empty($lang[1]) ? strtoupper($iso) : $lang[1]; // uppercase iso code if no description
+        $langMenu->add('lang-'.$iso, strtoupper($iso).'|href='.$oH->selfurl.'?'.getURI('lang').'&lang='.$iso.'||title='.$lang.'|onclick=return qtFormSafe.exit(e0);');
+      }
+    } else {
+      $langMenu->add('!missing file:config/config_lang.php');
     }
-  } else {
-    $arrM[] = '!missing file:config/config_lang.php';
   }
-  $m = new CMenu($arrM, '&nbsp;');
-  echo '<div id="menulang">'.$m->build('lang-'.QT_LANG, 'tag=span|onclick=return false').'</div>';
+  $langMenu->separator = '&nbsp;';
+  echo '<div id="menulang">'.$langMenu->build('lang-'.QT_LANG, 'tag=span|onclick=return false').'</div>';
 }
 
 echo '<div id="pg-layout">
 ';
 
-if ( defined('HIDE_MENU_TOC') && HIDE_MENU_TOC )
+if ( !defined('HIDE_MENU_TOC') || !HIDE_MENU_TOC )
 {
-  // Skip toc when HIDE_MENU_TOC explicitly false
-}
-else
-{
+  $navMenu = new CMenu(null,'');
   echo '<div id="toc">'.PHP_EOL;
-  $arrM = array();
-  $arrM[] = L('Info').          '|tag=p|class=group';
-  $arrM[] = L('Board_status').  '|href=qtf_adm_index.php|class=item|onclick=return qtFormSafe.exit(e0);';
-  $arrM[] = L('Board_general'). '|href=qtf_adm_site.php|class=item|onclick=return qtFormSafe.exit(e0);';
-  $m = new CMenu($arrM, '');
-  echo '<div class="group">'.$m->build($oH->selfurl).'</div>';
+  $navMenu->add(L('Info').          '|tag=p|class=group');
+  $navMenu->add(L('Board_status').  '|href=qtf_adm_index.php|class=item|onclick=return qtFormSafe.exit(e0);');
+  $navMenu->add(L('Board_general'). '|href=qtf_adm_site.php|class=item|onclick=return qtFormSafe.exit(e0);');
+  echo '<div class="group">'.$navMenu->build($oH->selfurl).'</div>';
   // group settings
-  $arrM = array();
-  $arrM[] = L('Settings').      '|tag=p|class=group';
-  $arrM[] = L('Board_region').  '|href=qtf_adm_region.php|class=item|onclick=return qtFormSafe.exit(e0);|activewith=qtf_adm_time.php';
-  $arrM[] = L('Board_layout').  '|href=qtf_adm_skin.php|class=item|onclick=return qtFormSafe.exit(e0);';
-  $arrM[] = L('Board_security').'|href=qtf_adm_secu.php|class=item|onclick=return qtFormSafe.exit(e0);';
-  $m = new CMenu($arrM, '');
-  echo '<div class="group">'.$m->build($oH->selfurl).'</div>';
+  $navMenu->menu = [];
+  $navMenu->add(L('Settings').      '|tag=p|class=group');
+  $navMenu->add(L('Board_region').  '|href=qtf_adm_region.php|class=item|onclick=return qtFormSafe.exit(e0);|activewith=qtf_adm_time.php');
+  $navMenu->add(L('Board_layout').  '|href=qtf_adm_skin.php|class=item|onclick=return qtFormSafe.exit(e0);');
+  $navMenu->add(L('Board_security').'|href=qtf_adm_secu.php|class=item|onclick=return qtFormSafe.exit(e0);');
+  echo '<div class="group">'.$navMenu->build($oH->selfurl).'</div>';
   // group Content
-  $arrM = array();
-  $arrM[] = L('Board_content'). '|tag=p|class=group';
-  $arrM[] = L('Section+').      '|href=qtf_adm_sections.php|class=item|onclick=return qtFormSafe.exit(e0);|activewith=qtf_adm_section.php qtf_adm_domain.php';
-  $arrM[] = L('Item+').         '|href=qtf_adm_items.php|class=item|onclick=return qtFormSafe.exit(e0);';
-  $arrM[] = L('Tags').          '|href=qtf_adm_tags.php|class=item|onclick=return qtFormSafe.exit(e0);';
-  $arrM[] = L('Users').         '|href=qtf_adm_users.php|class=item|onclick=return qtFormSafe.exit(e0);|activewith=qtf_adm_users_exp.php qtf_adm_users_imp.php';
-  $m = new CMenu($arrM, '');
-  echo '<div class="group">'.$m->build($oH->selfurl).'</div>'; // let the menu active (dont use 'default')
+  $navMenu->menu = [];
+  $navMenu->add(L('Board_content'). '|tag=p|class=group');
+  $navMenu->add(L('Section+').      '|href=qtf_adm_sections.php|class=item|onclick=return qtFormSafe.exit(e0);|activewith=qtf_adm_section.php qtf_adm_domain.php');
+  $navMenu->add(L('Item+').         '|href=qtf_adm_items.php|class=item|onclick=return qtFormSafe.exit(e0);');
+  $navMenu->add(L('Tags').          '|href=qtf_adm_tags.php|class=item|onclick=return qtFormSafe.exit(e0);');
+  $navMenu->add(L('Users').         '|href=qtf_adm_users.php|class=item|onclick=return qtFormSafe.exit(e0);|activewith=qtf_adm_users_exp.php qtf_adm_users_imp.php');
+  echo '<div class="group">'.$navMenu->build($oH->selfurl).'</div>';
   // group modules
-  $arrM = array();
-  $arrM[] = L('Board_modules'). '|tag=p|class=group';
-  // list modules
+  $navMenu->menu = [];
+  $navMenu->add(L('Board_modules'). '|tag=p|class=group');
   if ( !isset($_SESSION[QT]['mModules']) ) $_SESSION[QT]['mModules'] = $oDB->getSettings('param LIKE "module%"'); // store list of modules in memory if not yet done
-  foreach($_SESSION[QT]['mModules'] as $key=>$module)
+  foreach($_SESSION[QT]['mModules'] as $k=>$module)
   {
-    $key = str_replace('module_','',$key);
-    $arrM[] = $module.'|href=qtfm_'.$key.'_adm.php|class=item|onclick=return qtFormSafe.exit(e0);';
+    $k = str_replace('module_','',$k);
+    $navMenu->add($module.'|href=qtfm_'.$k.'_adm.php|class=item|onclick=return qtFormSafe.exit(e0);');
   }
-  $m = new CMenu($arrM, '');
-  echo '<div class="group">'.$m->build($oH->selfurl).'<p class="item"><a href="qtf_adm_module.php?a=add" onclick="return qtFormSafe.exit(e0);">['.L('Add').']</a> &middot; <a href="qtf_adm_module.php?a=rem" onclick="return qtFormSafe.exit(e0);">['.L('Remove').']</a></p></div>';
+  echo '<div class="group">'.$navMenu->build($oH->selfurl).'<p class="item"><a href="qtf_adm_module.php?a=add" onclick="return qtFormSafe.exit(e0);">['.L('Add').']</a> &middot; <a href="qtf_adm_module.php?a=rem" onclick="return qtFormSafe.exit(e0);">['.L('Remove').']</a></p></div>';
   echo '<a style="display:block;margin:8px 0" class="button center" href="'.APP.'_index.php" onclick="return qtFormSafe.exit(e0);">'.L('Exit').'</a>';
   echo getSVG('user-A', 'class=filigrane');
   echo '</div>'.PHP_EOL;
