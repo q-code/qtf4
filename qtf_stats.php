@@ -114,8 +114,8 @@ $intStartmonth = intval(substr($row['startdate'],4,2));
 $intEndyear = intval(date('Y'));
 $intEndmonth = intval(date('n'));
 
-$colorFade = array('96,96,255','241,184,255','0,231,183','200,200,200', '255,100,100');
-$colorBase = array('0,0,102',  '153,0,153',  '0,153,153','150,150,150', '200,0,0');
+$colorFade = ['96,96,255', '241,184,255', '0,231,183', '200,200,200', '255,100,100'];
+$colorBase = ['0,0,102', '153,0,153', '0,153,153', '150,150,150', '200,0,0'];
 
 // --------
 // HTML BEGIN
@@ -217,7 +217,7 @@ foreach($arrSeries as $serie)
   foreach($arrYears as $year) $arrD[$year][$serie]=qtArrayzero($arrD[$year][$serie]);
 }
 
-// display graphs
+// display graphs.
 if ( !file_exists('bin/js/chart.css') || !file_exists('bin/js/chart.js') ) { echo '<p>Missing chart library...</p>'; exit; }
 $arrA = array_values(getAbscissa($bt,MAXBT,$strTendaysago)); // abscisse (not indexed)
 echo '<p id="nav-charts">
@@ -227,6 +227,7 @@ echo '<p id="nav-charts">
 </select> &nbsp; <span class="cblabel"><input type="checkbox" id="chartsPercent" onclick="chartY([1,2,3,4]);storeChartsOptions();"> <label for="chartsPercent">'.L('Percent').'</label></span>
 </p>
 ';
+// Tips: canvas needs a div block to limit chart size (otherwise it would be 100% width, because parent "charts" is displayed as grid)
 echo '<div class="charts">
 <div class="chart"><canvas id="chart1" width="350px" height="250px"></canvas></div>
 <div class="chart"><canvas id="chart2" width="350px" height="250px"></canvas></div>
@@ -307,6 +308,7 @@ echo '<div id="nav-charts">
 </select> &nbsp; <span class="cblabel"><input type="checkbox" id="chartsPercent" onclick="chartY([1,2,3,4]);storeChartsOptions();"> <label for="chartsPercent">'.L('Percent').'</label></span>
 </div>
 ';
+// Tips: canvas needs a div block to limit chart size (otherwise it would be 100% width, because parent "charts" is displayed as grid)
 echo '<div class="charts">
 <div class="chart"><canvas id="chart1" width="350px" height="250px"></canvas></div>
 <div class="chart"><canvas id="chart2" width="350px" height="250px"></canvas></div>
@@ -389,6 +391,7 @@ echo '<div id="nav-charts">
 </select> &nbsp; <span class="cblabel"><input type="checkbox" id="chartsPercent" onclick="chartY([1,2],[\'stack0\',\'stack0\']);chartY([3,4]);storeChartsOptions();" > <label for="chartsPercent">'.L('Percent').'</label></span>
 </div>
 ';
+// Tips: canvas needs a div block to limit chart size (otherwise it would be 100% width, because parent "charts" is displayed as grid)
 echo '<div class="charts">
 <div class="chart"><canvas id="chart1" width="350px" height="250px"></canvas></div>
 <div class="chart"><canvas id="chart2" width="350px" height="250px"></canvas></div>
@@ -483,6 +486,7 @@ echo '<div id="nav-charts">
 </select> &nbsp; <span class="cblabel"><input type="checkbox" id="chartsPercent" onclick="chartY([1,2],[\'stack0\',\'stack0\',\'stack1\',\'stack1\']);chartY([3,4]);storeChartsOptions();"> <label for="chartsPercent">'.L('Percent').'</label></span>
 </div>
 ';
+// Tips: canvas needs a div block to limit chart size (otherwise it would be 100% width, because parent "charts" is displayed as grid)
 echo '<div class="charts">
 <div class="chart"><canvas id="chart1" width="350px" height="250px"></canvas></div>
 <div class="chart"><canvas id="chart2" width="350px" height="250px"></canvas></div>

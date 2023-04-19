@@ -72,7 +72,7 @@ a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
 a.page.last{border-radius:0 3px 3px 0}
 .t-conf{margin:0 0 10px 0;border-spacing:3px;background-color:#FFF;border:1px solid #AAA}
 .t-item{background-color:#FFF;border:1px solid #BBB}
-.t-sec{margin:0 0 10px 0;background-color:#FFF;border:1px solid #CCC;}
+.t-sec{margin:0.5rem 0;background-color:#FFF;border:1px solid #CCC}
 .t-sec th, .t-conf th, .t-item th{background-color:#DDD;}
 .t-item td,
 .t-sec tr.hover td{border-bottom:1px solid #eee;}
@@ -98,9 +98,9 @@ a.page.last{border-radius:0 3px 3px 0}
 #participants .title{margin-bottom:0.3rem;font-weight:bold}
 #participants a{color:#EEE}
 #participants a:hover{color:#FFF}
-#tgl-container.adduser{min-width:300px;max-width:325px;margin:0 0 20px 0;padding:10px;background-color:#777;color:#EEE;border:none;border-radius:0;box-shadow:-3px 3px 4px #CCC;text-align:right}
-#tgl-container.adduser input[type=submit]{background-color:#DDD;color:#000;opacity:0.8}
-#tgl-container.adduser input[type=submit]:hover{opacity:1}
+.add-user{min-width:300px;max-width:325px;margin:0 0 20px 0;padding:10px;background-color:#777;color:#EEE;border:none;border-radius:0;box-shadow:-3px 3px 4px #CCC;text-align:right}
+.add-user input[type=submit]{background-color:#DDD;color:#000;opacity:0.8}
+.add-user input[type=submit]:hover{opacity:1}
 
 /* SECTION/ITEM TABLE */
 .t-sec th, .t-sec td, .t-item th, .t-item td{text-align:center}
@@ -180,11 +180,11 @@ span.draghandler:hover{background-color:#9eddff;border:1px solid #666}
 /* add domain/section */
 div.toggle-d{margin-bottom:20px}
 div.toggle-u{margin-bottom:10px}
-#tgl-container{margin-bottom:20px}
-#tgl-container.adddomainsection{border:1px solid #BBB}
-#adddomain{padding:5px;background-color:#e2e2e2}
-#addsection{padding:5px;background-color:#F6F6F6}
-#unreplied-option{margin-bottom:20px;text-align:right;border:1px solid #BBB;padding:5px 10px;background-color:#F6F6F6;box-shadow:0px 4px 6px 2px #CCC}
+.opt-unreplied{margin:0.7rem 0;padding:0.5rem;border:1px solid #BBB}
+.add-dom-sec{margin:0.7rem 0;border:1px solid #BBB}
+.add-dom{padding:0.5rem;background-color:#e2e2e2}
+.add-sec{padding:0.5rem;background-color:#F6F6F6}
+
 div.filterusers{margin:0 0 10px 0;padding:5px; background-color:#DDD;border-radius:5px}
 table.subtable{width:100%;margin-bottom:10px;background-color:#F2F2F2;border:solid 1px #c3d9ff}
 table.subtable tr{background-color:transparent}

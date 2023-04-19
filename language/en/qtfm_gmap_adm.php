@@ -2,7 +2,7 @@
 /**
  * @var array $L
  */
-$L['Gmap']['Version']='Quicktalk google map version';
+$L['Gmap']['Version']='Module version';
 $L['Gmap']['Mapping_settings']='Mapping settings';
 $L['Gmap']['Mapping_config']='Configuration to use by default';
 $L['Gmap']['Preview']='Preview map with default symbol';
@@ -36,12 +36,14 @@ $L['Gmap']['Back']['M']='Map';
 $L['Gmap']['Back']['S']='Satellite';
 $L['Gmap']['Back']['H']='Satellite & labels';
 $L['Gmap']['Back']['P']='Terrain';
+$L['Gmap']['Back']['O']='Street (OpenStreetMap)';
 $L['Gmap']['Ctrl']['Streetview']='Streetview';
 $L['Gmap']['Ctrl']['Background']='Backgrounds';
 $L['Gmap']['Ctrl']['Scale']='Scale bar';
 $L['Gmap']['Ctrl']['Fullscreen']='Fullscreen';
 $L['Gmap']['Ctrl']['Mousewheel']='Mousewheel zoom';
 $L['Gmap']['Ctrl']['Geocode']='Geocode address';
+
 $L['Gmap']['List']['0']='No';
 $L['Gmap']['List']['1']='Yes';
 $L['Gmap']['List']['M']='Yes (staff only)';

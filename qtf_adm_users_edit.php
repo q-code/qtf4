@@ -64,7 +64,7 @@ if ( isset($_POST['add']) && $_POST['add']===$certificate ) try {
 
 // Security: only administrator can create roles A|M
 $formAddUser = '
-<div id="tgl-container" class="adduser article"'.(isset($_POST['title']) ? '' : ' style="display:none"').'>
+<div id="tgl-container" class="add-user article"'.(isset($_POST['title']) ? '' : ' style="display:none"').'>
 <form method="post" action="'.$oH->selfurl.'">
 <p>'.L('Role').'&nbsp;<select name="role" size="1">'.(SUser::role()=='A' ? '<option value="A">'.L('Role_A').'</option><option value="M">'.L('Role_M').'</option>' : '').'<option value="U" selected>'.L('Role_U').'</option></select></p>
 <p>'.getSVG('user').'&nbsp;<input required id="newname" name="title" type="text" size="24" minlength="3" maxlength="24" value="'.(isset($_POST['title']) ? $_POST['title'] : '').'" onfocus="document.getElementById(\'newname-error\').innerHTML=\'\';" placeholder="'.L('Username').'"/></p>

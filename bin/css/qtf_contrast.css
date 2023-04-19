@@ -109,13 +109,13 @@ div.pan{background-color:#222}
 /* special */
 .pg-privacy img{background-color:#fff;padding:0.5rem;box-sizing:content-box;border-radius:3px}
 #participants,
-#tgl-container.adduser{background:none;background-color:#000;border-color:#555}
+.add-user{background:none;background-color:#000;border-color:#555}
 #signature,#signature-preview{background-color:transparent;border:none}
 
 /* STATS */
 .t-stat{border-color:#000}
 .t-stat th {background-color:#000;color:var(--c)}
-div.charts{background-color:#e0e0e0}
+.charts{background-color:#e0e0e0}
 
 /* CALENDAR */
 #calendar, #calendarnext{border-color:#777}

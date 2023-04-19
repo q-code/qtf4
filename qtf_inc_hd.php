@@ -15,42 +15,81 @@ if ( $_SESSION[QT]['board_offline'] ) $oH->log[] = 'Warning: the board is offlin
 if ( !isset($_SESSION[QT]['show_banner']) ) $_SESSION[QT]['show_banner'] = '0';
 
 // Menus definition
-$arrMenus = [];
-if ( $_SESSION[QT]['home_menu']=='1' && !empty($_SESSION[QT]['home_url']) )
-$arrMenus['home']    = 'text='.qtAttr($_SESSION[QT]['home_name']).'|href='.$_SESSION[QT]['home_url'];
-$arrMenus['privacy'] = 'text='.L('Legal').'|href=qtf_privacy.php';
-$arrMenus['index']   = 'text='. SLang::translate().'|href=qtf_index.php|accesskey=i|class=secondary|activewith=qtf_items.php qtf_item.php qtf_edit.php';
-$arrMenus['search']  = 'text='.L('Search').'|id=nav-search|activewith=qtf_search.php';
+$navMenus = [];
+if ( $_SESSION[QT]['home_menu']==='1' && !empty($_SESSION[QT]['home_url']) )
+$navMenus['home']    = 'text='.qtAttr($_SESSION[QT]['home_name']).'|href='.$_SESSION[QT]['home_url'];
+$navMenus['privacy'] = 'text='.L('Legal').'|href=qtf_privacy.php';
+$navMenus['index']   = 'text='. SLang::translate().'|href=qtf_index.php|accesskey=i|class=secondary|activewith=qtf_items.php qtf_item.php qtf_edit.php';
+$navMenus['search']  = 'text='.L('Search').'|id=nav-search|activewith=qtf_search.php';
 if ( $oH->selfurl!=='qtf_search.php' )
-$arrMenus['search'] .= '|href=qtf_search.php|accesskey=s'.(QT_SIMPLESEARCH ? '|onclick=if (document.getElementById(`searchbar`).style.display===`flex`) return true; qtToggle(`searchbar`,`flex`); qtFocusAfter(`qkw`); return false' : '');
+$navMenus['search'] .= '|href=qtf_search.php|accesskey=s'.(QT_SIMPLESEARCH ? '|onclick=if (document.getElementById(`searchbar`).style.display===`flex`) return true; qtToggle(`searchbar`,`flex`); qtFocusAfter(`qkw`); return false' : '');
   // SUser::canAccess('search') not included here... We want the searchbar/page shows a message for not granted users
 if ( SUser::canAccess('show_memberlist') )
-$arrMenus['users']   = 'text='.L('Memberlist').'|href=qtf_users.php';
+$navMenus['users']   = 'text='.L('Memberlist').'|href=qtf_users.php';
 if ( SUser::canAccess('show_stats') )
-$arrMenus['stats']   = 'text='.L('Statistics').'|href=qtf_stats.php';
+$navMenus['stats']   = 'text='.L('Statistics').'|href=qtf_stats.php';
 if ( SUser::auth() ) {
-$arrMenus['profile'] = 'text='.L('Profile').'|href=qtf_user.php?id='.SUser::id().'|class=secondary|activewith=qtf_user.php qtf_register.php';
-$arrMenus['sign']    = 'text='.L('Logout').'|href=qtf_login.php?a=out|class=nav-sign';
+$navMenus['profile'] = 'text='.L('Profile').'|href=qtf_user.php?id='.SUser::id().'|class=secondary|activewith=qtf_user.php qtf_register.php';
+$navMenus['sign']    = 'text='.L('Logout').'|href=qtf_login.php?a=out|class=nav-sign';
 } else {
-$arrMenus['profile'] = 'text='.L('Register').'|href=qtf_register.php?a=rules|class=secondary';
-$arrMenus['sign']    = 'text='.L('Login').'|href=qtf_login.php|class=nav-sign';
+$navMenus['profile'] = 'text='.L('Register').'|href=qtf_register.php?a=rules|class=secondary';
+$navMenus['sign']    = 'text='.L('Login').'|href=qtf_login.php|class=nav-sign';
 }
 
 // Menu when board offline or urlrewrite
 if ( $_SESSION[QT]['board_offline'] && SUser::role()!=='A' ) {
-  $m = new CMenu($arrMenus);
-  $m->update('search','href', '');
-  $m->update('search','onclick', '');
-  $m->update('profile','href', '');
-  $arrMenus = $m->menu;
+  $m = new CMenu($navMenus);
+  $m->update('search', 'href', '');
+  $m->update('search', 'onclick', '');
+  $m->update('profile', 'href', '');
+  $navMenus = $m->menu;
 }
 if ( QT_URLREWRITE ) {
-  $m = new CMenu($arrMenus);
+  $m = new CMenu($navMenus);
   foreach(array_keys($m->menu) as $k) {
     $m->update( $k, 'href', Href($m->get($k,'href')) );
     $m->update( $k, 'activewith', implode(' ',array_map('Href',explode(' ',$m->get($k,'activewith')))) );
   }
-  $arrMenus = $m->menu;
+  $navMenus = $m->menu;
+}
+
+if ( !isset($hideMenuLang) ) $hideMenuLang = false;
+if ( defined('HIDE_MENU_LANG') && HIDE_MENU_LANG ) $hideMenuLang = true;
+
+// menu-lang (user,lang,contrast)
+if ( !$hideMenuLang ) {
+  $langMenu = new CMenu();
+  // user
+  $langMenu->add( '!'.getSVG('user-'.SUser::role(), 'title='.L('Role_'.SUser::role())) );
+  $langMenu->add( SUser::id()>0 ? 'text='.SUser::name().'|id=logname|href='.Href(APP.'_user.php').'?id='.SUser::id() : 'text='.L('Role_V').'|tag=span|id=logname');
+  // lang
+  if ( $_SESSION[QT]['userlang'] ) {
+    if ( is_array(LANGUAGES) && count(LANGUAGES)>1 ) {
+      $langMenu->add( '!|' );
+      foreach (LANGUAGES as $iso=>$language) {
+        $arr = explode(' ', $language, 2);
+        $langMenu->add( 'text='.$arr[0].'|id=lang-'.$iso.'|href='.Href($oH->selfurl).'?'.getURI('lang').'&lang='.$iso.'|title='.(isset($arr[1]) ? $arr[1] : $arr[0]) );
+      }
+    } else {
+      $langMenu->add('!missing file:config/config_lang.php');
+    }
+  }
+  // contrast
+  if ( QT_MENU_CONTRAST ) {
+    $langMenu->add( 'text='.getSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|title=High contrast display|aria-current=false' );
+    $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/'.APP.'_contrast.css" disabled/>';
+    $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', toggleContrast);
+      qtApplyStoredState('contrast');
+      function toggleContrast() {
+      const d = document.getElementById('contrastcss');
+      if ( !d ) { console.log('toggleContrast: no element with id=contrastcss'); return; }
+      const ctrl = document.getElementById('contrast-ctrl');
+      if ( !ctrl ) { console.log('toggleContrast: no element with id=contrast-ctrl'); return; }
+      d.toggleAttribute('disabled');
+      ctrl.setAttribute('aria-current', d.disabled ? 'false' : 'true');
+      qtAttrStorage('contrast-ctrl','qt-contrast');
+    }";
+  }
 }
 
 // --------
@@ -71,46 +110,9 @@ echo '<header id="banner" data-layout="'.$_SESSION[QT]['show_banner'].'">'.PHP_E
 // logo
 if ( $_SESSION[QT]['show_banner']!=='0' ) echo '<div id="logo"><img src="'.QT_SKIN.'img/'.APP.'_logo.gif" alt="'.qtAttr($_SESSION[QT]['site_name'],24).'" title="'.qtAttr($_SESSION[QT]['site_name']).'"/></div>'.PHP_EOL;
 // menu-lang (user,lang,contrast)
-if ( !isset($hideMenuLang) ) $hideMenuLang = false;
-if ( defined('HIDE_MENU_LANG') && HIDE_MENU_LANG ) $hideMenuLang = true;
-if ( !$hideMenuLang ) {
-  // user
-  $m = new CMenu();
-  $m->add( '!'.getSVG('user-'.SUser::role(), 'title='.L('Role_'.SUser::role())) );
-  $m->add( SUser::id()>0 ? 'text='.SUser::name().'|id=logname|href='.Href(APP.'_user.php').'?id='.SUser::id() : 'text='.L('Role_V').'|tag=span|id=logname');
-  // lang
-  if ( $_SESSION[QT]['userlang'] ) {
-    if ( is_array(LANGUAGES) && count(LANGUAGES)>1 ) {
-      $m->add( '!|' );
-      foreach (LANGUAGES as $iso=>$language) {
-        $arr = explode(' ',$language,2);
-        $m->add( 'text='.$arr[0].'|id=lang-'.$iso.'|href='.Href($oH->selfurl).'?'.getURI('lang').'&lang='.$iso.'|title='.(isset($arr[1]) ? $arr[1] : $arr[0]) );
-      }
-    } else {
-      $m->add('!missing file:config/config_lang.php');
-    }
-  }
-  // contrast
-  if ( QT_MENU_CONTRAST ) {
-    $m->add( 'text='.getSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|title=High contrast display|aria-current=false' );
-    $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/'.APP.'_contrast.css" disabled/>';
-    $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', toggleContrast);
-      qtApplyStoredState('contrast');
-      function toggleContrast() {
-      const d = document.getElementById('contrastcss');
-      if ( !d ) { console.log('toggleContrast: no element with id=contrastcss'); return; }
-      const ctrl = document.getElementById('contrast-ctrl');
-      if ( !ctrl ) { console.log('toggleContrast: no element with id=contrast-ctrl'); return; }
-      d.toggleAttribute('disabled');
-      ctrl.setAttribute('aria-current', d.disabled ? 'false' : 'true');
-      qtAttrStorage('contrast-ctrl','qt-contrast');
-    }";
-  }
-  // group the menus
-  echo '<div id="menulang">'.$m->build('lang-'.QT_LANG, 'tag=span|class=active').'</div>'.PHP_EOL;
-}
+if ( !$hideMenuLang ) echo '<div id="menulang">'.$langMenu->build('lang-'.QT_LANG, 'tag=span|class=active').'</div>'.PHP_EOL;
 // header nav (intersect to use only some head menus)
-$m = new CMenu( array_intersect_key($arrMenus, array_flip(['home','index','search','users','profile','sign'])) );
+$m = new CMenu( array_intersect_key($navMenus, array_flip(['home','index','search','users','profile','sign'])) );
 echo '<nav>'.$m->build(Href($oH->selfurl)).'</nav>'.PHP_EOL;
 echo '</header>'.PHP_EOL;
 
@@ -142,7 +144,7 @@ if ( QT_SIMPLESEARCH && $oH->selfurl!==APP.'_search.php' ) {
 // WELCOME
 // ----------
 $showWelcome = false;
-if ( ( $_SESSION[QT]['show_welcome']=='2' || ($_SESSION[QT]['show_welcome']==='1' && !SUser::auth()) ) && file_exists(translate('app_welcome.txt')) && !$_SESSION[QT]['board_offline'] ) $showWelcome = true;
+if ( ( $_SESSION[QT]['show_welcome']==='2' || ($_SESSION[QT]['show_welcome']==='1' && !SUser::auth()) ) && file_exists(translate('app_welcome.txt')) && !$_SESSION[QT]['board_offline'] ) $showWelcome = true;
 if ( $showWelcome && $oH->selfurl!==APP.'_register.php' ) {
   echo '<div id="intro">';
   include translate('app_welcome.txt');

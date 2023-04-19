@@ -25,7 +25,7 @@ function arrShift(array $arr, $item, int $step=1)
 $a='';
 $d=-1;
 $s=-1;
-$add = false;
+$showAddForm = false;
 qtHttp('a int:d int:s bool:add');
 
 $oH->selfurl = APP.'_adm_sections.php';
@@ -126,13 +126,13 @@ include APP.'_adm_inc_hd.php';
 // Add domain/section
 echo '
 <div style="position:relative">
-<p style="margin:0 0 10px 0;text-align:right">
-<a id="tgl-ctrl" class="tgl-ctrl'.($add ? ' expanded' : '' ).'" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Add').' '.L('domain').'/'.L('section').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a>
+<p class="right">
+<a id="tgl-ctrl" class="tgl-ctrl'.($showAddForm ? ' expanded' : '' ).'" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Add').' '.L('domain').'/'.L('section').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a>
 </p>
 ';
-echo '<div id="tgl-container" class="adddomainsection" style="display:'.($add ? 'block' : 'none' ).'">
+echo '<div id="tgl-container" class="add-dom-sec" style="display:'.($showAddForm ? 'block' : 'none' ).'">
 <form method="post" action="'.$oH->selfurl.'">
-<div id="adddomain">
+<div class="add-dom">
 <div class="flex-sp">
 <p>'.L('Domain').' <input required id="domain" name="title" type="text" size="24" maxlength="64" /></p>
 <p><input type="hidden" name="add" value="1"/><button type="submit" name="add_dom" value="add_dom">'.L('Add').'</button></p>
@@ -140,7 +140,7 @@ echo '<div id="tgl-container" class="adddomainsection" style="display:'.($add ? 
 </div>
 </form>
 <form method="post" action="'.$oH->selfurl.'">
-<div id="addsection">
+<div class="add-sec">
 <div class="flex-sp">
 <p>'.L('Section').' <input required id="section" name="title" type="text" size="24" maxlength="64" /> '.L('in_domain').' <select name="indomain" size="1">'.asTags($arrDomains).'</select></p>
 <p><input type="hidden" name="add" value="1"/><button type="submit" name="add_sec" value="add_sec">'.L('Add').'</button></p>

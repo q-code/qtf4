@@ -93,5 +93,5 @@ td.c-section, td.c-issue, td.c-info, td.c-title, td.c-firstpostname, td.c-lastpo
 .t-stat th{background-color:#e2e2e2;font-weight:bold;color:#555}
 .t-stat th:first-child{width:100px;text-align:left}
 .t-stat td.legendcolor{width:25px;background-color:#e2e2e2}
-div.charts{display:flex;justify-content:space-around;flex-direction:row;flex-wrap:wrap}
+.charts{display:grid;justify-items:center;grid-template-columns:1fr 1fr}
 div.chart{margin:10px}

@@ -49,8 +49,8 @@ include APP.'_adm_inc_hd.php';
 $arrDomains = CDomain::getTitles(); // no cache, titles translated
 $stats = CSection::getSectionsStats(); // force recompute stats
 
-echo '<p style="margin:0 0 10px 0;text-align:right"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Unreplied').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a></p>
-<div id="tgl-container" style="display:none;padding:6px;text-align:right;border:1px solid #CCC;background-color:#F6F6F6">
+echo '<p class="right"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Unreplied').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a></p>
+<div id="tgl-container" class="opt-unreplied right" style="display:none">
 <form method="post" action="'.$oH->selfurl.'">'.
 sprintf(L('Unreplied_def'),'<input type="number" name="d" min="1" max="99" value="'.$d.'"/>').
 '&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></form>

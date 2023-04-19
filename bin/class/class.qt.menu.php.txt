@@ -31,7 +31,7 @@ To output the menus use:
   $m->add( 'Home|href=home.php|id=menu-home' );
   $m->add( 'Profile|href=profile.php|id=menu-profile' );
 
-  // One line equivalent using an array in the definitions
+  // One line equivalent using an array for the definitions
   $m = new CMenu( ['Home|href=home.php|id=menu-home', 'Profile|href=profile.php|id=menu-profile'], ' &middot; ' );
 
   // Ouput the menus. The active menu can be specified by the id-value or the href-value
@@ -103,4 +103,35 @@ This can be used to insert extra separator between some menu items.
 
 TIPS:
 If you need the | character in a value (ex: javascript event attribute),
-use array (or json format) instead of compacted-string.
+use json format instead of compacted-string.
+
+// -----
+// ABOUT active menu
+// -----
+
+The build() method allows specifying one "active" menu-item, representing the current page.
+For the current page, the corresponding menu-item can have specific style (highlighted or gey-out),
+or specific behavior (no more clickable)...
+The "active" menu-item can be referenced by its index name (if an index is declared during the menus definitions)
+or by the id value, or by the href value (in the menu definition).
+
+Example: to render the menus with the "profile" item as the active item, use
+  echo $m->build('profile');
+or
+  echo $m->build('profile.php');
+
+What's happen to the active menu-item?
+----------------------------------------
+The attribute values (as specified in the menu definition)
+are overwritted by adding a default or a specific set of new attributes.
+
+BY DEFAULT, this menu will be changed as follow:
+- the href value is changed to "javascript:void(0)"
+- the onclick value is changed to "return false"
+- the class "active" is added the existing classes (or is created when class is no defined)
+Note: these default changes make the link no more clickable and add a class for styling purposes with css
+
+To create specific changes, just add a definition as second argument in the build() method.
+Example:
+  echo $m->build('profile', 'href=javascript:void(0)|addclass=highlight|title=Your profile');
+Note: you must use the same format (compacted-string or json) for the menus and this active menu definitions.
