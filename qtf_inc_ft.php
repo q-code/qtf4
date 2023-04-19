@@ -151,17 +151,14 @@ echo '<footer class="flex-sp">
 // MODULE RSS
 if ( !$_SESSION[QT]['board_offline'] && useModule('rss') && $_SESSION[QT]['m_rss']=='1' ) {
 if ( SUser::role()!=='V' || SUser::role().substr($_SESSION[QT]['m_rss_conf'],0,1)=='VV' ) {
-  $navMenus['rss'] = 'text='.getSVG('rss-square').'|id=menu-rss|href=qtfm_rss.php';
+  $navMenu['rss'] = 'text='.getSVG('rss-square').'|id=menu-rss|href=qtfm_rss.php';
 }}
 
 // footer menu extra definition
-if ( SUser::role()==='A' ) {
-  $navMenus['admin'] = '['.L('Administration').']|id=menu-admin|href=qtf_adm_index.php|accesskey=a';
-}
-
-$m = new CMenu(array_intersect_key($navMenus, array_flip(['home','privacy','stats','rss','sign','admin'])), ' &middot; ');
-
-echo '<p id="footer-menu">'.$m->build($oH->selfurl, 'tag=span|onclick=return false').'</p>'.PHP_EOL;
+$navMenu->separator = ' &middot; ';
+if ( SUser::role()==='A' ) $navMenu->add('admin', '['.L('Administration').']|id=menu-admin|href=qtf_adm_index.php|accesskey=a');
+$skip = array_diff(array_keys($navMenu->menu), ['home','privacy','stats','rss','sign','admin']);
+echo '<p id="footer-menu">'.$navMenu->build($oH->selfurl, 'tag=span|onclick=return false', $skip).'</p>'.PHP_EOL;
 echo '<p id="footer-credit">powered by <a href="http://www.qt-cute.org">QT-cute</a> <span title="'.VERSION.' '.BUILD.'">v'.VERSION.'</span></p>
 </footer>
 ';

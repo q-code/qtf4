@@ -34,14 +34,15 @@ class CMenu
     // definitions {null|string|array}
     if ( $def===null ) return;
     if ( is_string($def) || is_array($def) ) return $this->add($def);
-    die(__METHOD__.' invalid argument (def)' );
+    die( __METHOD__.' invalid argument (def)' );
   }
 
   /**
    * @param string $activeid active menu (menu-index or id/href value included in the definition)
    * @param string $activeattr attributes to apply to the active menu ('default' or your own definition)
+   * @param array $skip list of menu (index) to be skipped
    */
-  public function build(string $activeid='', string $activeattr='default')
+  public function build(string $activeid='', string $activeattr='default', array $skip=[])
   {
     // if using activeid and activeattr, prepares activeConf
     if ( $activeid!=='' && $activeattr!=='' ) {
@@ -55,7 +56,10 @@ class CMenu
     }
     // render the menus
     $res = [];
-    foreach($this->menu as $k=>$attr) $res[] = self::render($attr, (string)$k, $activeid);
+    foreach($this->menu as $k=>$attr) {
+      if ( !empty($skip) && in_array($k, $skip, true) ) continue;
+      $res[] = self::render($attr, (string)$k, $activeid);
+    }
     return implode($this->separator,$res);
   }
 
