@@ -32,12 +32,13 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 
 /* SEARCH BAR */
 #searchbar{padding:0.5rem;background-color:#f0f0f0;justify-content:flex-end;gap:0.5rem;align-items:center}
-#searchbar .img{margin:0 0 2px 0}
+#searchbar .img{vertical-align:baseline}
 #searchbar .button-x{padding:0.1rem 0.4rem;font-size:1.2rem}
 @media print{#searchbar{display:none !important}}
 
 /* MSGBOX general */
 .msgbox{width:450px;margin:0 auto;background-color:var(--bgform);border:1px solid var(--bgbtn);box-shadow:2px 2px 4px #DDD}
+.msgbox.next{margin-top:1.5rem}
 .msgbox.short{width:350px}
 @media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:500px} .msgbox.short{width:380px}}
 @media screen and (min-width:1280px){.msgbox{width:525px}  .msgbox.short{width:400px}}
@@ -48,8 +49,7 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 /* MSGBOX specific */
 .msgbox.formRegister{width:650px}
 .msgbox.formPwd{width:550px}
-.pg-privacy{display:flex;flex-direction:column;gap:1.2rem;align-items:center}
-.pg-privacy .msgbox{width:720px;margin:0}
+.pg-privacy .msgbox{width:720px}
 @media screen and (min-width:1280px){
   .msgbox.formRegister{width:700px}
   .msgbox.formPwd{width:600px}

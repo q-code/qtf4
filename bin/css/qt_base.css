@@ -8,7 +8,7 @@ table{table-layout:auto;width:100%;border-collapse:separate;border-spacing:0;bor
 th, td{padding:0.2rem;text-align:left;vertical-align:middle;font-weight:normal}
 form{display:inline}
 input, button, textarea, select, optgroup, option{font:inherit}
-a, button, .button, .clickable, .magnifier{cursor:pointer} .disabled, .active, .current{cursor:default}
+button, .button, .clickable, .magnifier{cursor:pointer} .disabled, .active, .current{cursor:default}
 img{border:none;vertical-align:middle}
 button.nostyle,
 button.nostyle:hover{margin:0;padding:0;background:none;border:none}

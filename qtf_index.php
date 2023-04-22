@@ -37,7 +37,7 @@ if ( $_SESSION[QT]['visitor_right']<1 && SUser::role()=='V' ) exitPage(11,'user-
 
 include 'qtf_inc_hd.php';
 
-$t = new TabTable('class=t-sec domain');
+$t = new TabTable('class=t-sec');
 $t->thead();
 $t->tbody();
 $t->arrTh[0] = new TabHead('&nbsp;', 'class=c-icon');
@@ -84,7 +84,7 @@ foreach(array_keys($_Domains) as $idDom) {
     $t->arrTd[2]->content = $strLastpost;
     $t->arrTd[3]->content = $mSec['items'];
     $t->arrTd[4]->content = $mSec['replies'];
-    echo $t->getTDrow('class=data_s hover');
+    echo $t->getTDrow('class=hover');
 
   }
 

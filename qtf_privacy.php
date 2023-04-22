@@ -26,7 +26,7 @@ if ( isset($_SESSION[QT]['register_coppa']) && $_SESSION[QT]['register_coppa']==
 
 CHtml::msgBox('/');
 
-CHtml::msgBox(L('About'));
+CHtml::msgBox(L('About'), 'class=msgbox next');
 
 $strFile = translate('app_about.php');
 if ( file_exists($strFile) ) { include $strFile; } else { echo 'Missing file:<br>'.$strFile; }

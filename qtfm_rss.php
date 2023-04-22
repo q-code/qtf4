@@ -72,7 +72,7 @@ echo '<h2>'.$oH->selfname.'</h2><p>Format: '.($strForm=='atom' ? 'Atom' : 'Rss 2
 foreach($arrDS as $domId=>$arrSections)
 {
 //  $arrSections = getSections('V',$intDomain);
-    echo '<table class="t-sec domain">'.PHP_EOL;
+    echo '<table class="t-sec">'.PHP_EOL;
     echo '<tr class="t-sec">';
     echo '<th style="width:50px">&nbsp;</th>';
     echo '<th style="width:35%" class="c-section">'.SLang::translate('domain', 'd'.$domId, empty($_Domains[$domId]['title']) ? '(domain-'.$domId.')' : $_Domains[$domId]['title'] ).'</th>';

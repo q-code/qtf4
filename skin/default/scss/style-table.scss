@@ -9,11 +9,9 @@ th a:hover{color:#666;text-decoration:underline}
 .t-sec th{vertical-align:baseline}
 
 /* Special domain/section */
-.t-sec.domain:not(:first-child){margin-top:2rem}
+.t-sec:not(:first-child){margin-top:2rem}
 .t-sec th.c-section, .t-sec a.section{font-size:1.4rem}
 .t-sec .c-section p.sectiondesc{font-style:italic}
-
-@media print{a.csv{display:none}}
 
 /* Row highlight */
 tr.rowlight:has(:checked){background-color:var(--rowlight)}

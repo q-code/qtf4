@@ -17,7 +17,6 @@ function iconSpin() {
   if (document.getElementById("opt-s").value!=="*" || document.getElementById("opt-st").value!=="*") icon.classList.add("spinning");
 }
 function broadcastOption(option,value) {
-  console.log(option, value);//!!!
   ["ref-","id-","kw-","tag-","user-"].forEach( id => {
      if ( document.getElementById(id+option) ) document.getElementById(id+option).setAttribute("value", value);
   });

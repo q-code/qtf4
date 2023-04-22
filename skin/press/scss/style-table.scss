@@ -15,7 +15,6 @@ th a:hover{color:#666;text-decoration:underline}
 .t-sec th.c-section, .t-sec a.section{font-size:1.4rem;text-decoration:none}
 .t-sec a.section:hover{text-decoration:underline}
 .t-sec .sectiondesc{font-style:italic}
-@media print{a.csv{display:none}}
 
 /* Row highlight */
 .t-item tr.rowlight:has(:checked){background-color:var(--rowlight)}

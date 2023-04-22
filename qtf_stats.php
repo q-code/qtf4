@@ -30,9 +30,9 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
     echo '<th class="legendcolor"></th>'.PHP_EOL;
     switch($bt)
     {
-    case 'q': for ($i=1;$i<=MAXBT;++$i) { echo '<th style="text-align:center;">Q',$i,'</td>'; } break;
-    case 'm': for ($i=1;$i<=MAXBT;++$i) { echo '<th style="text-align:center;">',$L['dateMM'][$i],'</td>'; } break;
-    case 'd': for ($i=1;$i<=MAXBT;++$i) { echo '<th style="text-align:center;">',str_replace(' ','<br>',QTdatestr(addDate($strTendaysago,$i,'day'),'d M','')),'</td>'; } break;
+    case 'q': for ($i=1;$i<=MAXBT;++$i) { echo '<th>Q',$i,'</td>'; } break;
+    case 'm': for ($i=1;$i<=MAXBT;++$i) { echo '<th>',$L['dateMM'][$i],'</td>'; } break;
+    case 'd': for ($i=1;$i<=MAXBT;++$i) { echo '<th>',str_replace(' ','<br>',QTdatestr(addDate($strTendaysago,$i,'day'),'d M','')),'</td>'; } break;
     }
     echo '<th><b>',($bt==='d' ? '10 '.strtolower(L('Days')) : L('Total')),'</b></td>
     </tr>';
@@ -202,7 +202,7 @@ case 'g':
 $arrC[$y] = array_combine($arrSeries,array_slice($colorBase,0,count($arrSeries)));
 $titles = array('T'=>L('Item+'),'R'=>L('Reply+'),'U'=>L('Users').'*');
 renderTables($arrYears,$bt,$titles,$arrD,$arrS,$strTendaysago,$arrC);
-echo '* <small>',L('Distinct_users'),'</small>';
+echo '<p>* <span class="small">'.L('Distinct_users').'</span></p>';
 
 // Add cumulative to series
 $arrSeries[] = 'CT';
@@ -546,10 +546,8 @@ echo '
 ';
 
 // CSV
-
-if ( file_exists('qtf_stats_csv.php') )
-{
-  echo '<p class="right"><a class="csv" href="qtf_stats_csv.php?'.parse_url($_SERVER['REQUEST_URI'],PHP_URL_QUERY).'" title="'.L('H_Csv').'">'.L('Csv').'</a></p>';
+if ( file_exists('qtf_stats_csv.php') ) {
+  echo '<p class="right table-ui-export"><a class="csv" href="qtf_stats_csv.php?'.parse_url($_SERVER['REQUEST_URI'],PHP_URL_QUERY).'" title="'.L('H_Csv').'">'.L('Csv').'</a></p>';
 }
 
 // --------
