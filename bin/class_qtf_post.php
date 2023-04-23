@@ -161,7 +161,7 @@ public static function getIconType(string $type='P', string $parentType='T', str
   $parentStatus = strtolower($parentStatus);
   switch($type){
     case 'P':
-      $strIcon = '<img src="'.$skin.'img/topic_'.$parentType.'_'.$parentStatus.$suffix.'.gif" alt="'.$parentType.'" title="'.L('Ico_item_a_0'.$suffix).'" class="i-item" data-type="'.$parentType.'" data-status="'.$parentStatus.'"/>';
+      $strIcon = '<img src="'.$skin.'img/topic_'.$parentType.'_'.$parentStatus.$suffix.'.gif" alt="'.$parentType.'" title="'.L('Ico_item_'.$parentType.'_'.$parentStatus.$suffix).'" class="i-item" data-type="'.$parentType.'" data-status="'.$parentStatus.'"/>';
       break;
     case 'R':
       $strIcon = getSVG('comment-dots', 'class=i-item|title='.L('Ico_post_r').'|data-type='.$parentType.'|data-status='.$parentStatus);
