@@ -10,7 +10,7 @@
  */
 function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate') {
   if ( empty($tf) || $tf==='*' ) return ''; // no timeframe
-  if ( !is_string($dbtype) || !is_string($tf) || !is_string($prefix) || !is_string($prefix) || empty($field) ) die(__FUNCTION__.' requires string arguments');
+  if ( !is_string($dbtype) || !is_string($tf) || !is_string($prefix) || !is_string($prefix) || empty($field) ) die( __FUNCTION__.' requires string arguments');
   // $tf can be {y|m|w|1..12|YYYY|YYYYMM} i.e. this year, this month, last week, previous month#, a specific year YYYY, a specific yearmonth YYYYMM
   $operator = '=';
   switch($tf)
@@ -26,7 +26,7 @@ function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate
       $strDate = (string)date('Ymd', strtotime("-8 day", strtotime(date('Ymd'))));
       break;
     default: // $tf is the month number or a specific datemonth
-      if ( !qtCtype_digit($tf) ) die(__FUNCTION__.' invalid tf argument');
+      if ( !qtCtype_digit($tf) ) die( __FUNCTION__.' invalid tf argument');
       switch(strlen($tf))
       {
         case 1:
@@ -41,7 +41,7 @@ function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate
         case 6:
           $strDate = $tf;
           break;
-        default: die(__FUNCTION__.' invalid tf argument');
+        default: die( __FUNCTION__.' invalid tf argument');
       }
   }
   $len = strlen($strDate);
@@ -66,7 +66,7 @@ function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate
  */
 function validateQueryArguments($query,$trimV=true)
 {
-  if ( !is_string($query) && !is_array($query) ) die(__FUNCTION__.' first argument must be string or array of strings');
+  if ( !is_string($query) && !is_array($query) ) die( __FUNCTION__.' first argument must be string or array of strings');
   $args = is_array($query) ? $query : array();
   if ( is_string($query) ) parse_str($query,$args);
   // check
@@ -77,12 +77,12 @@ function validateQueryArguments($query,$trimV=true)
   {
     case 's':
       if ( !isset($args['s']) || !is_numeric($args['s']) || $args['s']<0 ) $args['s'] = -1;
-      if ( count($args)!==2 ) die(__FUNCTION__.' Invalid arguments'); // For section-query, only q and s can be used
+      if ( count($args)!==2 ) die( __FUNCTION__.' Invalid arguments'); // For section-query, only q and s can be used
       break;
     case 'ref':
     case 'kw':
     case 'qkw':
-      if ( empty($args['v']) || strlen($args['v'])>64 ) die(__FUNCTION__.' Invalid argument v');
+      if ( empty($args['v']) || strlen($args['v'])>64 ) die( __FUNCTION__.' Invalid argument v');
       if ( $trimV ) $args['v'] = trim($args['v']);
       break;
     case 'news':
@@ -91,30 +91,30 @@ function validateQueryArguments($query,$trimV=true)
     case 'userm':
       // search using userid [v2] (search [v2] from [v] if missing)
       if ( empty($args['v2']) && !empty($args['v']) ) { global $oDB; $args['v2'] = SUser::getUserId($oDB,$args['v']); } // return false if not found)
-      if ( empty($args['v2']) || !is_numeric($args['v2']) || $args['v2']<0 ) die(__FUNCTION__.' Invalid argument v2');
+      if ( empty($args['v2']) || !is_numeric($args['v2']) || $args['v2']<0 ) die( __FUNCTION__.' Invalid argument v2');
       break;
     case 'btw':
-      if ( empty($args['v']) || empty($args['v2']) || $args['v']<'19000101' || $args['v2']>'21000101' ) die(__FUNCTION__.' Invalid argument dates');
+      if ( empty($args['v']) || empty($args['v2']) || $args['v']<'19000101' || $args['v2']>'21000101' ) die( __FUNCTION__.' Invalid argument dates');
       $args['v'] = QTdateclean($args['v'],8); // Returns YYYYMMDD (no time) while browser should provide YYYY-MM-DD. Returns '' if format not supported. If $v='now', returns today
       $args['v2'] = QTdateclean($args['v2'],8);
-      if ( $args['v']>$args['v2'] ) die(__FUNCTION__.' Invalid date (date1 > date2)');
+      if ( $args['v']>$args['v2'] ) die( __FUNCTION__.' Invalid date (date1 > date2)');
       break;
     case 'adv':
-      if ( empty($args['v']) && $args['v2']==='*' ) die(__FUNCTION__.' Invalid argument date or tag');
-      if ( strlen($args['v'])>128 ) die(__FUNCTION__.' Invalid argument tag');
-      if ( strlen($args['v2'])>2 ) die(__FUNCTION__.' Invalid argument date');
+      if ( empty($args['v']) && $args['v2']==='*' ) die( __FUNCTION__.' Invalid argument date or tag');
+      if ( strlen($args['v'])>128 ) die( __FUNCTION__.' Invalid argument tag');
+      if ( strlen($args['v2'])>2 ) die( __FUNCTION__.' Invalid argument date');
       if ( $trimV ) $args['v'] = trim($args['v']);
       break;
     case 'last':
-      if ( isset($args['v']) ) die(__FUNCTION__.' Invalid argument v'); // only filter arguments, no text argument
+      if ( isset($args['v']) ) die( __FUNCTION__.' Invalid argument v'); // only filter arguments, no text argument
       break;
-    default: die(__FUNCTION__.' Invalid query argument q');
+    default: die( __FUNCTION__.' Invalid query argument q');
   }
   // check injection
   if ( isset($args['s']) && $args['s']==='*' ) $args['s']='-1';
-  if ( isset($args['s']) && !is_numeric($args['s']) ) die(__FUNCTION__.' Invalid argument s');
-  if ( isset($args['v2']) && ( strpos($args['v2'],'"')!==false || strpos($args['v2'],"'")!==false ) ) die(__FUNCTION__.' Invalid timeframe');
-  if ( isset($args['st']) && strlen($args['st'])>1 ) die(__FUNCTION__.' Invalid status');
+  if ( isset($args['s']) && !is_numeric($args['s']) ) die( __FUNCTION__.' Invalid argument s');
+  if ( isset($args['v2']) && ( strpos($args['v2'],'"')!==false || strpos($args['v2'],"'")!==false ) ) die( __FUNCTION__.' Invalid timeframe');
+  if ( isset($args['st']) && strlen($args['st'])>1 ) die( __FUNCTION__.' Invalid status');
 
   return $args;
 }
@@ -133,7 +133,7 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
 {
   $result = '';
   $args = validateQueryArguments($query); // values are string and can be '*', except s that must be a numeric-string. arg[v|v2] are slashed
-  if ( count($args)==0 ) die(__FUNCTION__.' missing query argument');
+  if ( count($args)==0 ) die( __FUNCTION__.' missing query argument');
 
   // Assgin query arguments or set to default
   $s = isset($args['s']) && is_numeric($args['s']) && $args['s']>=0 ? (int)$args['s'] : -1;
@@ -310,7 +310,7 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
       $sqlCount = "SELECT count(*) as countid".$sqlFrom.$sqlWhere;
       break;
 
-    default: die(__FUNCTION__.' invalid argument q ['.$args['q'].']' );
+    default: die( __FUNCTION__.' invalid argument q ['.$args['q'].']' );
   }
   return $result;
 }

@@ -127,7 +127,7 @@ class CMenu
     if ( !isset($attr['text']) ) $attr['text'] = 'menu';
     if ( !isset($attr['tag'])) $attr['tag'] = 'a';
     if ( $attr['tag']==='a' && empty($attr['href']) ) $attr['href'] = 'javascript:void(0)';
-    if ( !empty($attr['addclass']) ) self::appendClass($attr, $attr['addclass']);
+    if ( isset($attr['addclass']) ) { self::attrAddClass($attr, $attr['addclass']); unset($attr['addclass']); }
     // check if active
     if ( $activeid!=='') {
       $b = false;
@@ -141,8 +141,8 @@ class CMenu
           if ( ($k==='tag' && empty($value)) || $k==='addclass' || $k==='activewith' ) continue; // don't change tag if active-tag is not specified
           $attr[$k] = $value;
         }
-        // in case of 'addclass' append value
-        if ( !empty(self::$activeConf['addclass']) ) self::appendClass($attr, self::$activeConf['addclass']);
+        // in case of 'addclass' in activeConf, appends the value
+        if ( isset(self::$activeConf['addclass']) ) self::attrAddClass($attr, self::$activeConf['addclass']);
       }
     }
     // render
@@ -150,7 +150,7 @@ class CMenu
     // include href attribute
     $str .= $attr['tag']==='a' ? ' href="'.$attr['href'].'"' : '';
     // include other attributes
-    foreach(array_keys($attr) as $k) $str .= in_array($k,['text','tag','href','addclass','activewith']) || empty($k) ? '' : ' '.$k.'="'.$attr[$k].'"';
+    foreach(array_keys($attr) as $k) $str .= in_array($k,['text','tag','href','activewith']) || empty($k) ? '' : ' '.$k.'="'.$attr[$k].'"';
     // exit
     return '<'.$str.'>'.$attr['text'].'</'.$attr['tag'].'>';
   }
@@ -189,7 +189,7 @@ class CMenu
     return array_change_key_case($attr);
   }
 
-  private static function appendClass(array &$arr, string $value='')
+  private static function attrAddClass(array &$arr, string $value='')
   {
     if ( empty($arr) || empty($value) ) return;
     if ( empty($arr['class']) ) { $arr['class'] = $value; return; }

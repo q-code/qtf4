@@ -1,7 +1,7 @@
 /* TYPO */
 a.button{display:inline-block;padding:6px 10px;color:var(--bgbtn);background-color:#e8e7d7;font-weight:bold;text-shadow:-1px -1px 0 white;text-decoration:none}
   a.button:hover{color:var(--ah);text-decoration:none}
-  a.button.disabled, a.button.disabled:hover{pointer-events:none;opacity:0.7;color:#AAA}
+  a.button.disabled, a.button.disabled:hover{opacity:0.7;color:#AAA}
 .btn-prefix{margin:0 0.5rem 2px 0}
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
 input,textarea{padding:3px 5px}

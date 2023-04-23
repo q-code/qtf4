@@ -133,7 +133,7 @@ public static function translate(int $id, string $type='sec')
   switch($type){
     case 'sec': return SLang::translate('sec', 's'.$id, empty($GLOBALS['_Sections'][$id]['title']) ? '' : $GLOBALS['_Sections'][$id]['title']);
     case 'secdesc': return SLang::translate('secdesc', 's'.$id, empty($GLOBALS['_Sections'][$id]['descr']) ? '' : $GLOBALS['_Sections'][$id]['descr']);
-    default: die(__FUNCTION__.' invalid argument #2');
+    default: die( __FUNCTION__.' invalid argument #2');
   }
 }
 /**

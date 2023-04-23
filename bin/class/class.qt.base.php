@@ -134,7 +134,7 @@ class SLang
   }
   public static function delete(string $type='', string $id='')
   {
-    if ( empty($type) || empty($id) ) die(__FUNCTION__.' invalid argument');
+    if ( empty($type) || empty($id) ) die( __FUNCTION__.' invalid argument');
     $type = implode(',', QTquoted(explode(',',$type), "'"));
     global $oDB;
     $oDB->exec( "DELETE FROM TABLANG WHERE objid='$id' AND objtype IN ($type)" );
@@ -173,7 +173,7 @@ class SLang
   {
     // Returns the translation - if defined! - (must be in session[QT]['L'])
     // Otherwhise returns $alt (or a default objectname is $alt is empty)
-    if ( empty($type) || empty($id) ) die(__FUNCTION__.' invalid argument');
+    if ( empty($type) || empty($id) ) die( __FUNCTION__.' invalid argument');
     // Look in translations
     $str = empty($GLOBALS['_L'][$type][$id]) ? '' : $GLOBALS['_L'][$type][$id];
     if ( empty($str) )

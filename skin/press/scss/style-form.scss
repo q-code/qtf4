@@ -2,7 +2,7 @@
 a.button{display:inline-block;padding:0.4rem 0.6rem;opacity:0.7;background-color:#e5e5e5;color:var(--c);text-decoration:none;border:solid 1px #aaa;border-radius:3px}
   a.button:hover{opacity:1}
   a.button:focus{opacity:1; outline:1px solid #000; outline-offset:-2px}
-  a.button.disabled, a.button.disabled:hover{pointer-events:none;opacity:0.7;color:#AAA}
+  a.button.disabled, a.button.disabled:hover{opacity:0.7;color:#AAA}
 .nav-top a.button,
 .nav-bot a.button{font-weight:bold}
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}

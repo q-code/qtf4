@@ -92,16 +92,14 @@ echo '</div>
 // CONTENT
 
 // Navigation buttons
-$navCommands = $oH->backButton();
-if ( $oS->status==='1' ) {
-  $navCommands .= '<a class="button disabled" title="'.L('E_section_closed').'">'.L('Reply').'</a>';
-} elseif ( $oT->status==='1' ) {
-  $navCommands .= '<a class="button disabled" title="'.L('Closed_item').'">'.L('Reply').'</a>';
-} elseif ( SUser::role()==='V' && $_SESSION[QT]['visitor_right']<6 ) {
-  $navCommands .= '<a class="button disabled">'.L('Reply').'</a>';
-} else {
-  $navCommands .= '<a class="button" href="'.Href('qtf_edit.php').'?t='.$oT->id.'&a=re">'.L('Reply').'</a>';
+$def = 'href='.Href('qtf_edit.php').'?t='.$oT->id.'&a=re|class=button';
+if ( $oS->status==='1' || $oT->status==='1' || (SUser::role()==='V' && $_SESSION[QT]['visitor_right']<6) ) {
+  $def .= ' disabled|href=javascript:void(0)|tabindex=-1'; // class=button disabled
+  if ( $oS->status==='1' )     { $def .= '|title='.L('E_section_closed'); }
+  elseif ( $oT->status==='1' ) { $def .= '|title='.L('Closed_item'); }
+  else                         { $def .= '|title='.L('R_member'); }
 }
+$navCommands = $oH->backButton().'<a'.attrRender($def).'>'.L('Reply').'</a>';
 echo '<div id="t1-nav-top" class="nav-top">'.$navCommands.'</div>
 ';
 

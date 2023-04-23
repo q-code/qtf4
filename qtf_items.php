@@ -29,7 +29,7 @@ $v = asCleanArray($v); // array of (unique) values trimmed (not empty)
 
 // initialise section
 $s = (int)$s;
-if ($q==='s' && $s<0 ) die(__FILE__.' Missing argument $s');
+if ($q==='s' && $s<0 ) die( __FILE__.' Missing argument $s');
 if ($q==='s' || $s>=0 ) {
   $oS = new CSection($_Sections[$s]); // new CSection($s)
   // exit if user role not granted
@@ -121,10 +121,12 @@ if ( ($q=='s' && $oS->type!==2) || ( $q=='s' && SUser::isStaff()) ) {
 $intCount = $oH->items - $oH->itemsHidden;
 
 // BUTTON LINE AND PAGER
-if ($q==='s') {
-  $navCommands = '<a class="button btn-cmd" href="'.Href('qtf_edit.php').'?s='.$oS->id.'&a=nt">'.L('New_item').'</a>';
-  if (SUser::role()=='V' && $_SESSION[QT]['visitor_right']<7) $navCommands = '<a class="button disabled btn-cmd" href="javascript:void(0)">'.L('New_item').'</a>';
-  if ($oS->status==='1') $navCommands = '<a class="button disabled btn-cmd" href="javascript:void(0)" tabindex="-1">'.L('E_section_closed').'</a>';
+if ( $q==='s' ) {
+  $def = 'href="'.Href('qtf_edit.php').'?s='.$oS->id.'&a=nt|class=button btn-cmd';
+  if ( $oS->status==='1' || (SUser::role()==='V' && $_SESSION[QT]['visitor_right']<7) ) {
+    $def .= ' disabled|href=javascript:void(0)|tabindex=-1|title='.($oS->status==='1' ? L('E_section_closed') : L('R_member')); // class=button btn-cmd disabled
+  }
+  $navCommands .= '<a'.attrRender($def).'>'.L('New_item').'</a>';
 }
 $navCommands .= '<a class="button btn-search" href="'.Href('qtf_search.php').'?'.$oH->selfuri.'" title="'.L('Search').'">'.getSVG('search').'</a>';
 
