@@ -154,31 +154,24 @@ public function getSrcAttach(){
   if ( substr($str,0,strlen($n))==$n ) $str = substr($str,strlen($n));
   return $str;
 }
-public static function getIconType(string $type='P', string $parentType='T', string $parentStatus='1', string $skin='skin/default/', string $id='', string $suffix='')
+public static function getIconType(string $type='P', string $parentType='T', string $parentStatus='1', string $skin='skin/default/', string $suffix='')
 {
   // suffix is '_h' in case of hottopic
-  switch($type)
-  {
-  case 'P':
-    if ( strtoupper($parentType)=='A' ) {
-      $strIcon = '<img id="'.$id.'" src="'.$skin.'img/topic_a_0'.$suffix.'.gif" alt="T" title="'.L('Ico_item_a_0'.$suffix).'" class="i-item"/>';
-    } else {
-      if ( $parentStatus=='1' ) {
-        $strIcon = '<img id="'.$id.'" src="'.$skin.'img/topic_t_1'.$suffix.'.gif" alt="T" title="'.L('Ico_item_t_1'.$suffix).'" class="i-item"/>';
-      } else {
-        $strIcon = '<img id="'.$id.'" src="'.$skin.'img/topic_t_0'.$suffix.'.gif" alt="T" title="'.L('Ico_item_t_0'.$suffix).'" class="i-item"/>';
-      }
-    }
-    break;
-  case 'R':
-    $strIcon = getSVG('comment-dots', 'class=i-item|title='.L('Ico_post_r').(empty($id) ? '' : '|id='.$id));
-    break;
-  case 'D':
-    $strIcon = getSVG('trash', 'class=i-item|title='.L('Ico_post_d').(empty($id) ? '' : '|id='.$id));
-    break;
-  default:
-    $strIcon = '<img id="'.$id.'" src="'.$skin.'img/post_'.strtolower($type).'.gif" alt="P" title="'.L('Ico_post_'.strtolower($type)).'" class="i-item"/>';
-    break;
+  $parentType = strtolower($parentType);
+  $parentStatus = strtolower($parentStatus);
+  switch($type){
+    case 'P':
+      $strIcon = '<img src="'.$skin.'img/topic_'.$parentType.'_'.$parentStatus.$suffix.'.gif" alt="'.$parentType.'" title="'.L('Ico_item_a_0'.$suffix).'" class="i-item" data-type="'.$parentType.'" data-status="'.$parentStatus.'"/>';
+      break;
+    case 'R':
+      $strIcon = getSVG('comment-dots', 'class=i-item|title='.L('Ico_post_r').'|data-type='.$parentType.'|data-status='.$parentStatus);
+      break;
+    case 'D':
+      $strIcon = getSVG('trash', 'class=i-item|title='.L('Ico_post_d').'|data-type='.$parentType.'|data-status='.$parentStatus);
+      break;
+    default:
+      $strIcon = '<img src="'.$skin.'img/post_'.strtolower($type).'.gif" alt="P" title="'.L('Ico_post_'.strtolower($type)).'" class="i-item" data-type="'.$parentType.'" data-status="'.$parentStatus.'"/>';
+      break;
   }
   return $strIcon;
 }

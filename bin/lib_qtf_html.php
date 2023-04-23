@@ -274,7 +274,7 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
   // icon
   if ( isset($arrFLD['icon']) ) {
     if ( !isset($row['posttype']) ) $row['posttype'] = 'P';
-    $strTicon = CPost::getIconType($row['posttype'], $row['type'], $row['status'], QT_SKIN, '', CTopic::isHot($row['replies']) ? '_h' : '');
+    $strTicon = CPost::getIconType($row['posttype'], $row['type'], $row['status'], QT_SKIN, CTopic::isHot($row['replies']) ? '_h' : '');
   }
 
   // FORMAT

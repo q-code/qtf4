@@ -90,11 +90,12 @@ if ( $_SESSION[QT]['lastcolumn']!=='default' ) $strLastcol = $_SESSION[QT]['last
 // QUERY parts definition
 // -----
 
-$sqlFields = ($_SESSION[QT]['news_on_top'] ? "CASE t.type WHEN 'A' THEN 'A' ELSE 'Z' END as typea," : '').'t.*,p.title,p.icon,p.id as postid,p.type as posttype,p.textmsg,p.issuedate,p.username,p.attach';
+$sqlFields = ($_SESSION[QT]['news_on_top'] ? "CASE WHEN t.type='A' AND t.status='0' THEN 'A' ELSE 'Z' END as typea," : '');
+$sqlFields .= 't.*,p.title,p.icon,p.id as postid,p.type as posttype,p.textmsg,p.issuedate,p.username,p.attach';
 $sqlFrom = ' FROM TABTOPIC t INNER JOIN TABPOST p ON t.firstpostid=p.id'; // warning: include only firstpostid (not the replies)
 $sqlWhere = ' WHERE t.forum'.($q==='s' ? '='.$s : '>=0');
-  // In private section, show topics created by user himself (or announces)
-  if ( $q==='s' && $oS->type==='2' && !SUser::isStaff()) $sqlWhere .= " AND (t.firstpostuser=".SUser::id()." OR t.type='A')";
+  // In private section, show topics created by user himself
+  if ( $q==='s' && $oS->type==='2' && !SUser::isStaff()) $sqlWhere .= " AND (t.firstpostuser=".SUser::id()." OR (t.type='A' AND t.status='0'))";
 $sqlValues = array(); // list of values for the prepared-statements
 $sqlCount = "SELECT count(*) as countid FROM TABTOPIC t ".$sqlWhere;
 $sqlCountAlt='';

@@ -109,13 +109,13 @@ if ( $oH->selfurl==='qtf_index.php' )
 }
 else
 {
-  echo asImg( QT_SKIN.'img/topic_a_0.gif', 'alt=N|class=i-item' ) . ' '.L('Ico_item_a_0');
+  echo asImg( QT_SKIN.'img/topic_a_0.gif', 'alt=N|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_a_0');
   if ( QT_LIST_ME && $oH->selfurl!=='qtf_item.php' ) echo ' &nbsp;<svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"></use></svg>'.' '.L('You_reply');
   echo '<br>';
-  echo asImg( QT_SKIN.'img/topic_t_0.gif', 'alt=T|class=i-item' ) . ' '.L('Ico_item_t_0').' &nbsp;';
-  echo asImg( QT_SKIN.'img/topic_t_0_h.gif', 'alt=T|class=i-item' ) . ' '.L('Ico_item_t_0_h');
+  echo asImg( QT_SKIN.'img/topic_t_0.gif', 'alt=T|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_t_0').' &nbsp;';
+  echo asImg( QT_SKIN.'img/topic_t_0_h.gif', 'alt=T|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_t_0_h');
   echo '<br>';
-  echo asImg( QT_SKIN.'img/topic_t_1.gif', 'alt=T|class=i-item' ) . ' '.L('Ico_item_t_1').' ';
+  echo asImg( QT_SKIN.'img/topic_t_1.gif', 'alt=T|class=i-item|data-type=t|data-status=1' ) . ' '.L('Ico_item_t_1').' ';
   echo '<br>';
   if ( $oH->selfurl==='qtf_item.php' ) echo getSVG('comment-dots').' '.L('Ico_post_r').'<br>';
 }
