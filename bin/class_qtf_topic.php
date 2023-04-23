@@ -133,7 +133,7 @@ function getIcon(string $skin='skin/default/', string $strHref='', string $strTi
 {
   $type = strtolower($this->type);
   $status = strtolower($this->status);
-  return asImg( $skin.'img/topic_'.$type.'_'.$status.'.gif', 'class=i-item i-status-'.$status.'|alt='.strtoupper($type).'|title='.sprintf($strTitleFormat,$this->getIconName()), $strHref);
+  return asImg( $skin.'img/topic_'.$type.'_'.$status.'.gif', 'class=i-item|data-type='.$type.'|data-status='.$status.'|alt='.strtoupper($type).'|title='.sprintf($strTitleFormat,$this->getIconName()), $strHref);
 }
 function getIconName()
 {
