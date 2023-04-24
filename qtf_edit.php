@@ -284,7 +284,7 @@ echo '
 ';
 
 echo '<div class="edit-post">
-<div class="edit-type"><p class="i-container">'.CPost::getIconType($oP->type,$oT->type,$oT->status,QT_SKIN,'form-icon').'</p></div>
+<div class="edit-type"><p class="i-container">'.CPost::getIconType($oP->type,$oT->type,$oT->status,QT_SKIN).'</p></div>
 <div class="edit-form">
 <input type="hidden" name="s" value="'.$s.'"/>
 <input type="hidden" name="t" value="'.$t.'"/>
@@ -427,14 +427,16 @@ if ( $tagEditor || SUser::isStaff() ) {
   if ( focusInput.id=="behalf" ) document.getElementById("behalfid").value = btn.dataset.id;
 }
 function changeIcon(){
-  let type = document.getElementById("newtopictype").value;
-  let status = document.getElementById("newtopicstatus").value;
-  let d = document.getElementById("form-icon");
+  const type = document.getElementById("newtopictype").value.toLowerCase();
+  const status = document.getElementById("newtopicstatus").value.toLowerCase();
+  const d = document.querySelector(".i-container img");
   if ( d ){
     let src = d.getAttribute("src");
     if ( src ) {
-      src = src.replace(/topic_._./, "topic_"+type.toLowerCase()+"_"+status.toLowerCase());
+      src = src.replace(/topic_._./, "topic_"+type+"_"+status);
       d.setAttribute("src",src);
+      d.setAttribute("data-type",type);
+      d.setAttribute("data-status",status);
     }
   }
 }';
