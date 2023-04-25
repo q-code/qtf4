@@ -167,7 +167,7 @@ case 'itemsTags':
   $frm[] = '<p>'.implode('',ListTags($ids)).'</p>';
   $frm[] = '</article>';
   $frm[] = '<article>';
-  $frm[] = '<p>'.L('Change').' '.L('item',count($ids)).':</p>
+  $frm[] = '<p class="row-confirm">'.L('Change').' '.L('item',count($ids)).':</p>
   <div id="ac-wrapper-tag-edit" class="ac-wrapper">
   <div style="display:flex;align-items:center">
   <input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/>
