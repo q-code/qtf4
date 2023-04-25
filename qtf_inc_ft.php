@@ -64,7 +64,7 @@ $strStatusText = '';
 echo '<aside>'.PHP_EOL;
 echo '<a id="aside-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="toggleAside(); return false;" title="'.L('Showhide_legend').'" aria-current="false">'.getSVG('info').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a>'.PHP_EOL;
 echo '<div id="aside__info" class="article" style="display:none">'.PHP_EOL;
-  echo '<h1>'.L('Information').'</h1>'.PHP_EOL;
+  echo '<h2>'.L('Information').'</h2>'.PHP_EOL;
   // section info
   echo '<p>';
   if ( isset($oS) && is_a($oS,'CSection') && $oS->id>=0 )
@@ -95,20 +95,17 @@ echo '<div id="aside__info" class="article" style="display:none">'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 
 echo '<div id="aside__detail" class="secondary" style="display:none">'.PHP_EOL;
-if ( isset($strDetailLegend) ) echo '<h1>'.L('Details').'</h1>'.PHP_EOL.$strDetailLegend.PHP_EOL;
+if ( isset($strDetailLegend) ) echo '<h2>'.L('Details').'</h2>'.PHP_EOL.$strDetailLegend.PHP_EOL;
 echo '</div>'.PHP_EOL;
 
 echo '<div id="aside__legend" style="display:none">'.PHP_EOL;
-echo '<h1>'.L('Legend').'</h1>'.PHP_EOL;
+echo '<h2>'.L('Legend').'</h2>'.PHP_EOL;
 echo '<p>';
-if ( $oH->selfurl==='qtf_index.php' )
-{
+if ( $oH->selfurl==='qtf_index.php' ) {
   echo asImg( QT_SKIN.'img/section_0_0.gif', 'title='.L('Ico_section_0_0') ) . ' ' . L('Ico_section_0_0') . '<br>';
   echo asImg( QT_SKIN.'img/section_2_0.gif', 'title='.L('Ico_section_2_0') ) . ' ' . L('Ico_section_2_0') . '<br>';
   echo asImg( QT_SKIN.'img/section_0_1.gif', 'title='.L('Ico_section_0_1') ) . ' ' . L('Ico_section_0_1') . '<br>';
-}
-else
-{
+} else {
   echo asImg( QT_SKIN.'img/topic_a_0.gif', 'alt=N|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_a_0');
   if ( QT_LIST_ME && $oH->selfurl!=='qtf_item.php' ) echo ' &nbsp;<svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"></use></svg>'.' '.L('You_reply');
   echo '<br>';

@@ -94,8 +94,7 @@ main>div{padding:1vw 1.7vw}
 #main-ft{display:flex;justify-content:space-between;align-items:center}
 
 #crumbtrail-info{font-size:max(0.8rem,9pt)}
-aside{padding:0.5rem 0.7rem;display:flex;gap:1rem;background-color:#efefef;color:#888;border-top:solid 1px var(--bgbtn)}
-  aside{background-color:#fff;border-bottom:solid 1px var(--bgbtn)}
+aside{padding:0.5rem 0.7rem;display:flex;gap:1rem;color:#888;border-top:solid 1px var(--bgbtn)}
 
 #aside-ctrl{align-self: flex-end;white-space:nowrap}
 #aside-ctrl:hover{cursor:pointer;color:var(--bgbtn)}
