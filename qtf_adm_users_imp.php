@@ -52,7 +52,7 @@ if ( isset($_POST['ok']) ) try {
         $strRole = 'U'; if ( $row[0]=='A' || $row[0]=='M' || $row[0]=='a' || $row[0]=='m') $strRole=strtoupper($row[0]);
         $strLog = trim($row[1]); if ( !empty($strLog) ) $strLog=utf8_decode($strLog);
         $strPwd = trim($row[2]);
-        if ( substr($strPwd,0,3)=='SHA' || substr($strPwd,0,3)=='sha' ) $strPwd = sha1($strPwd);
+        if ( substr($strPwd,0,3)==='SHA' || substr($strPwd,0,3)==='sha' ) $strPwd = sha1($strPwd);
         if ( empty($strPwd) ) $strPwd=sha1($strLog);
         $strMail = $row[3];
         // insert

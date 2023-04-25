@@ -123,7 +123,7 @@ case 'Scntdelete':
       if ( $oDB->count( CSection::sqlCountItems($s,'items',$_POST['status'],$_POST['type'],$_POST['year']) )==0 ) throw new Exception( L('Delete').' '.L('item+').': 0 '.L('found') );
       CSection::deleteItems( $s, $_POST['status'], $_POST['type'], $_POST['year'] );
     } elseif ( isset($_POST['deleteR']) ) {
-      if ($oDB->count( CSection::sqlCountItems($s,'replies',$_POST['status'],$_POST['type'],$_POST['year']) )==0 ) throw new Exception( L('Delete').' '.L('reply+').': 0 '.L('found') );
+      if ( $oDB->count( CSection::sqlCountItems($s,'replies',$_POST['status'],$_POST['type'],$_POST['year']) )==0 ) throw new Exception( L('Delete').' '.L('reply+').': 0 '.L('found') );
       CSection::deleteItems( $s, $_POST['status'], $_POST['type'], $_POST['year'] );
     } elseif  ( isset($_POST['dropattach']) ) {
       if ( $oDB->count( CSection::sqlCountItems($s,'attachs',$_POST['status'],$_POST['type'],$_POST['year']) )==0 ) throw new Exception( L('Drop_attachments').': 0 '.L('found') );

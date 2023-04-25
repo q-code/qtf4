@@ -111,7 +111,7 @@ $e1 = empty($L['E_try_other_lettres'])   ? 'Try other lettres'   : $L['E_try_oth
 $e2 = empty($L['E_try_without_options']) ? 'Try without options' : $L['E_try_without_options'];
 $e4 = empty($L['E_failed'])              ? 'Action failed'       : $L['E_failed'];
 
-if ( substr($v,0,1)=='*' ) { echo $e4,'|',$e1.PHP_EOL; return; }
+if ( substr($v,0,1)==='*' ) { echo $e4,'|',$e1.PHP_EOL; return; }
 // options
 $s = isset($_GET['s']) ? $_GET['s'] : '*'; // section {*|id}
 $t = isset($_GET['t']) ? $_GET['t'] : '*'; // item type {*|A|T|...} or user type {*|A|M|U}
@@ -198,8 +198,8 @@ case 'qkw':
     {
       if ( stripos($row['title'],$v) !== false ) $row['textmsg'] = $row['title']; // when title contains the term, use title instead of textmsg
       $n = stripos($row['textmsg'],$v);
-      if ($n<0) continue;
-      if ($n>10) { $n-=10; } else { $n=0; }
+      if ( $n<0) continue;
+      if ( $n>10) { $n-=10; } else { $n=0; }
       $strArg = substr($row['textmsg'],$n,25);
       if ( $n>0 ) $strArg = '&hellip;'.$strArg;
       if ( isset($row['textmsg'][$n+25]) ) $strArg .='&hellip;';

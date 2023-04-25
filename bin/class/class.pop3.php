@@ -133,7 +133,7 @@ class POP3
     $this->host = $host;
 
     //  If no port value is passed, retrieve it
-    if ($port == false)
+    if ( $port == false)
     {
       $this->port = $this->POP3_PORT;
     }
@@ -143,7 +143,7 @@ class POP3
     }
 
     //  If no port value is passed, retrieve it
-    if ($tval == false)
+    if ( $tval == false)
     {
       $this->tval = $this->POP3_TIMEOUT;
     }
@@ -162,11 +162,11 @@ class POP3
       //  Connect
     $result = $this->Connect($this->host, $this->port, $this->tval);
 
-    if ($result)
+    if ( $result)
     {
       $login_result = $this->Login($this->username, $this->password);
 
-      if ($login_result)
+      if ( $login_result)
       {
         $this->Disconnect();
 
@@ -192,7 +192,7 @@ class POP3
   function Connect ($host, $port = false, $tval = 30)
     {
     //  Are we already connected?
-    if ($this->connected)
+    if ( $this->connected)
     {
       return true;
     }
@@ -217,13 +217,13 @@ class POP3
     restore_error_handler();
 
     //  Does the Error Log now contain anything?
-    if ($this->error && $this->do_debug >= 1)
+    if ( $this->error && $this->do_debug >= 1)
     {
         $this->displayErrors();
     }
 
     //  Did we connect?
-      if ($this->pop_conn == false)
+      if ( $this->pop_conn == false)
       {
         //  It would appear not...
         $this->error = array(
@@ -232,7 +232,7 @@ class POP3
           'errstr' => $errstr
         );
 
-        if ($this->do_debug >= 1)
+        if ( $this->do_debug >= 1)
         {
           $this->displayErrors();
         }
@@ -243,14 +243,14 @@ class POP3
       //  Increase the stream time-out
 
       //  Check for PHP 4.3.0 or later
-      if (version_compare(phpversion(), '4.3.0', 'ge'))
+      if ( version_compare(phpversion(), '4.3.0', 'ge'))
       {
         stream_set_timeout($this->pop_conn, $tval, 0);
       }
       else
       {
         //  Does not work on Windows
-        if (substr(PHP_OS, 0, 3) !== 'WIN')
+        if ( substr(PHP_OS, 0, 3) !== 'WIN')
         {
           socket_set_timeout($this->pop_conn, $tval, 0);
         }
@@ -260,7 +260,7 @@ class POP3
       $pop3_response = $this->getResponse();
 
       //  Check for the +OK
-      if ($this->checkResponse($pop3_response))
+      if ( $this->checkResponse($pop3_response))
       {
       //  The connection is established and the POP3 server is talking
       $this->connected = true;
@@ -278,22 +278,22 @@ class POP3
      */
     function Login ($username = '', $password = '')
     {
-      if ($this->connected == false)
+      if ( $this->connected == false)
       {
         $this->error = 'Not connected to POP3 server';
 
-        if ($this->do_debug >= 1)
+        if ( $this->do_debug >= 1)
         {
           $this->displayErrors();
         }
       }
 
-      if (empty($username))
+      if ( empty($username))
       {
         $username = $this->username;
       }
 
-      if (empty($password))
+      if ( empty($password))
       {
         $password = $this->password;
       }
@@ -305,13 +305,13 @@ class POP3
       $this->sendString($pop_username);
       $pop3_response = $this->getResponse();
 
-      if ($this->checkResponse($pop3_response))
+      if ( $this->checkResponse($pop3_response))
       {
         //  Send the Password
         $this->sendString($pop_password);
         $pop3_response = $this->getResponse();
 
-        if ($this->checkResponse($pop3_response))
+        if ( $this->checkResponse($pop3_response))
         {
           return true;
         }
@@ -378,7 +378,7 @@ class POP3
      */
     function checkResponse ($string)
     {
-      if (substr($string, 0, 3) !== '+OK')
+      if ( substr($string, 0, 3) !== '+OK')
       {
         $this->error = array(
           'error' => "Server reported an error: $string",
@@ -386,7 +386,7 @@ class POP3
           'errstr' => ''
         );
 
-        if ($this->do_debug >= 1)
+        if ( $this->do_debug >= 1)
         {
           $this->displayErrors();
         }

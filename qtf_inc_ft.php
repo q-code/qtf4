@@ -71,19 +71,19 @@ echo '<div id="aside__info" class="article" style="display:none">'.PHP_EOL;
   {
     $strStatusText = SLang::translate('sec', 's'.$s, $oS->title).': ';
     echo $strStatusText.'<br>';
-    echo '&nbsp; '.L('item',$stats[$s]['items']).', '.L('reply',$stats[$s]['replies']).'<br>';
+    echo '&nbsp; '.L('item', $stats[$s]['items'], 'k w').', '.L('reply', $stats[$s]['replies'], 'k w').'<br>';
     if ( !$_SESSION[QT]['show_closed'] ) {
       $intTopicsZ = isset($stats[$s]['itemsZ']) ? $stats[$s]['itemsZ'] : $oDB->count( CSection::sqlCountItems($s,'items','1') );
-      echo '&nbsp; '.L('closed_item',$intTopicsZ).'<br>';
+      echo '&nbsp; '.L('closed_item', $intTopicsZ, 'k w').'<br>';
     }
-    $strStatusText .= L('item',$stats[$s]['items']).(empty($intTopicsZ) ? '' : ' ('.L('closed_item',$intTopicsZ).')').', '.L('reply',$stats[$s]['replies']);
+    $strStatusText .= L('item', $stats[$s]['items'], 'k w').(empty($intTopicsZ) ? '' : ' ('.L('closed_item',$intTopicsZ, 'k w').')').', '.L('reply', $stats[$s]['replies'], 'k w');
   }
   echo '</p>';
   // application info
   echo '<p>';
   echo L('Total').' '.SLang::translate().':<br>';
-  if ( isset($stats['all']) ) echo '&nbsp; ',L('item', $stats['all']['items']),', ',L('reply',$stats['all']['replies']);
-  if ( empty($strStatusText) ) $strStatusText = L('Total').' '.SLang::translate().': '.L('item',$stats['all']['items']).', '.L('reply',$stats['all']['replies']);
+  if ( isset($stats['all']) ) echo '&nbsp; '.L('item', $stats['all']['items'], 'k w').', '.L('reply', $stats['all']['replies'], 'k w');
+  if ( empty($strStatusText) ) $strStatusText = L('Total').' '.SLang::translate().': '.L('item', $stats['all']['items'], 'k w').', '.L('reply', $stats['all']['replies'], 'k w');
   echo '</p>';
   // new user info (from memcache)
   $newuser = SMem::get('_NewUser',false,0); // no default, no expire, regenerated if missing
@@ -151,7 +151,7 @@ echo '<footer class="flex-sp">
 
 // MODULE RSS
 if ( !$_SESSION[QT]['board_offline'] && useModule('rss') && $_SESSION[QT]['m_rss']=='1' ) {
-if ( SUser::role()!=='V' || SUser::role().substr($_SESSION[QT]['m_rss_conf'],0,1)=='VV' ) {
+if ( SUser::role()!=='V' || SUser::role().substr($_SESSION[QT]['m_rss_conf'],0,1)==='VV' ) {
   $navMenu->add('rss', 'text='.getSVG('rss-square').'|id=menu-rss|href=qtfm_rss.php');
 }}
 

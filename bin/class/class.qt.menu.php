@@ -34,7 +34,7 @@ class CMenu
     // definitions {null|string|array}
     if ( $def===null ) return;
     if ( is_string($def) || is_array($def) ) return $this->add($def);
-    die( __METHOD__.' invalid argument (def)' );
+    die(__METHOD__.' invalid argument (def)' );
   }
 
   /**

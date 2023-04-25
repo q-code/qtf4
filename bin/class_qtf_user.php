@@ -105,8 +105,8 @@ public static function canAccess(string $param)
   // Valid parametre settings: upload, show_calendar, show_stats, show_memberlist
   if ( empty($param) || !isset($_SESSION[QT][$param]) ) return false;
   if ( $_SESSION[QT][$param]=='V' ) return true;
-  if ( $_SESSION[QT][$param]=='M' && self::role()=='M' ) return true;
-  if ( $_SESSION[QT][$param]=='U' && self::role()!='V' ) return true;
+  if ( $_SESSION[QT][$param]=='M' && self::role()==='M' ) return true;
+  if ( $_SESSION[QT][$param]=='U' && self::role()!=='V' ) return true;
   return false;
 }
 public static function canView(string $level='V4', bool $offlinestop=true)
@@ -118,7 +118,7 @@ public static function canView(string $level='V4', bool $offlinestop=true)
   if ( self::role()==='A' ) return true;
   if ( $level=='U' && self::role()==='V' ) return false;
   if ( $level=='M' && !self::isStaff() ) return false;
-  if ( $level=='A' && self::role()!='A' ) return false;
+  if ( $level=='A' && self::role()!=='A' ) return false;
   $level = isset($level[1]) ? $level[1] : '4'; // use second char, otherwize 4
   if ( self::role()==='V' && $_SESSION[QT]['visitor_right']<$level ) return false;
   if ( $_SESSION[QT]['board_offline'] && $offlinestop ) return false;
@@ -129,7 +129,7 @@ public static function canSeePrivate(int $userprivacy, int $userid)
   // Function is used to hide information: returns false when userinfo is private and current user is not granted
   if ( self::isStaff() ) return true;
   if ( $userprivacy==2 || self::id()==$userid ) return true; // public or user's own info
-  if ( $userprivacy==1 && self::role()!='V') return true;
+  if ( $userprivacy==1 && self::role()!=='V') return true;
   return false;
 }
 public static function canEditTags(CTopic $oT)

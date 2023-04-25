@@ -51,7 +51,7 @@ if ( isset($_POST['ok']) )
   // read and check mandatory
   if ( isset($_POST['dropbbc']) ) { $_SESSION['m_export_xml']['dropbbc']='Y'; } else { $_SESSION['m_export_xml']['dropbbc']='N'; }
   if ( empty($_POST['title']) ) $oH->error='Filename '.L('invalid');
-  if ( substr($_POST['title'],-4,4)!='.xml' ) $_POST['title'] .= '.xml';
+  if ( substr($_POST['title'],-4,4)!=='.xml' ) $_POST['title'] .= '.xml';
   if ( $_POST['section']=='-' ) $oH->error='No data found';
   if ( $_POST['year']=='-' ) $oH->error='No data found';
 
@@ -76,7 +76,7 @@ if ( isset($_POST['ok']) )
 
     // start export
 
-    if (!headers_sent())
+    if ( !headers_sent())
     {
       header('Content-Type: text/xml; charset='.QT_XML_CHAR);
       header('Content-Disposition: attachment; filename="'.$_POST['title'].'"');

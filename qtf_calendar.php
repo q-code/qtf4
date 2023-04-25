@@ -37,7 +37,7 @@ function FirstDayDisplay($intYear,$intMonth,$intWeekstart=1)
 function ArraySwap($arr,$n=1)
 {
   // Move the first value to the end of the array. Action is repeated $n times. Keys are not moved.
-  if ($n>0)
+  if ( $n>0)
   {
     $arrK = array_keys($arr);
     while($n>0) { array_push($arr,array_shift($arr)); $n--; }
@@ -133,7 +133,7 @@ include APP.'_inc_hd.php';
 $dCurrentDate = mktime(0,0,0,$intMonth,1,$intYear);
 $dMainDate = $dCurrentDate;
 $dFirstDay = mktime(0,0,0,$intMonth,1,$intYear);
-if ( date('l',$dFirstDay)!='Monday' )
+if ( date('l',$dFirstDay)!=='Monday' )
 {
   $dFirstDay = strtotime('-1 week',$dFirstDay);
   $dFirstMonday = strtotime('next monday',$dFirstDay);
@@ -242,7 +242,7 @@ echo '<div class="cal_info left">'.PHP_EOL;
 
   $dCurrentDate = mktime(0,0,0,$intMonthN,1,$intYearN);
   $dFirstDay = mktime(0,0,0,$intMonthN,1,$intYearN);
-  if ( date("l",$dFirstDay)!='Monday' )
+  if ( date("l",$dFirstDay)!=='Monday' )
   {
     $dFirstDay = strtotime('-1 week',$dFirstDay);
     $dFirstMonday = strtotime('next monday',$dFirstDay);

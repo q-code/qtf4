@@ -74,7 +74,7 @@ if ( $s!=='*' ) $sqlSection = 'forum='.$s.' AND '; // int to avoid injection
 if ( $y0>=$y ) $y0=$y-1;
 if ( !empty($tag) )
 {
-  $tag = urldecode($tag); if ( substr($tag,-1,1)==';' ) $tag = substr($tag,0,-1);
+  $tag = urldecode($tag); if ( substr($tag,-1,1)===';' ) $tag = substr($tag,0,-1);
   $arrTags = explode(';',$tag);
   $str = '';
   foreach($arrTags as $strTag)

@@ -12,7 +12,7 @@ define( 'QT', 'qtf'.(defined('QDB_INSTALL') ? substr(QDB_INSTALL,-1) : '') );
 if ( !isset($_GET['ref']) || $_GET['ref']!== MD5(QT.session_id()) ) { echo 'Unable to save tags'; exit; }
 if ( !isset($_GET['id']) ) { echo 'Unable to save tags'; exit; }
 if ( !isset($_GET['tag']) ) { echo 'Unable to save tags'; exit; }
-if ( substr($_GET['tag'],-1,1)==';' ) $_GET['tag'] = substr($_GET['tag'],0,-1);
+if ( substr($_GET['tag'],-1,1)===';' ) $_GET['tag'] = substr($_GET['tag'],0,-1);
 
 include 'class/class.qt.db.php';
 function QTdropaccent(string $txt) {
@@ -22,7 +22,7 @@ function QTdropaccent(string $txt) {
 
 // format input
 $str = str_replace('"','',trim($_GET['tag'])); // trim and no doublequote
-if ( substr($str,-1,1)==';' ) $str = substr($str,0,-1);
+if ( substr($str,-1,1)===';' ) $str = substr($str,0,-1);
 $str = QTdropaccent($str);
 // query
 $oDBAJAX = new CDatabase();

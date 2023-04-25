@@ -30,11 +30,11 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
     echo '<th class="legendcolor"></th>'.PHP_EOL;
     switch($bt)
     {
-    case 'q': for ($i=1;$i<=MAXBT;++$i) { echo '<th>Q',$i,'</td>'; } break;
-    case 'm': for ($i=1;$i<=MAXBT;++$i) { echo '<th>',$L['dateMM'][$i],'</td>'; } break;
-    case 'd': for ($i=1;$i<=MAXBT;++$i) { echo '<th>',str_replace(' ','<br>',QTdatestr(addDate($strTendaysago,$i,'day'),'d M','')),'</td>'; } break;
+    case 'q': for ($i=1;$i<=MAXBT;++$i) { echo '<th>Q'.$i.'</td>'; } break;
+    case 'm': for ($i=1;$i<=MAXBT;++$i) { echo '<th>'.$L['dateMM'][$i].'</td>'; } break;
+    case 'd': for ($i=1;$i<=MAXBT;++$i) { echo '<th>'.str_replace(' ','<br>',QTdatestr(addDate($strTendaysago,$i,'day'),'d M','')).'</td>'; } break;
     }
-    echo '<th><b>',($bt==='d' ? '10 '.strtolower(L('Days')) : L('Total')),'</b></td>
+    echo '<th><b>'.($bt==='d' ? '10 '.strtolower(L('Days')) : L('Total')).'</b></td>
     </tr>';
     echo '<tr>'.PHP_EOL;
     foreach($arrSeries as $k=>$title)
@@ -43,9 +43,9 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
       echo '<td class="legendcolor"><div style="display:inline-block;width:12px;height:12px;border-radius:50%;background-color:rgb('.$arrC[$y][$k].')"></div></td>'.PHP_EOL;
       for ($intBt=1;$intBt<=MAXBT;$intBt++)
       {
-      echo '<td>',(isset($arrD[$y][$k][$intBt]) ? $arrD[$y][$k][$intBt] : '&middot;'),'</td>'.PHP_EOL;
+      echo '<td>'.(isset($arrD[$y][$k][$intBt]) ? qtIntK($arrD[$y][$k][$intBt]) : '&middot;').'</td>'.PHP_EOL;
       }
-      echo '<td class="bold">',$arrS[$y][$k],'</td>'.PHP_EOL;
+      echo '<td class="bold">'.qtIntK($arrS[$y][$k]).'</td>'.PHP_EOL;
       echo '</tr>';
       echo '<tr>'.PHP_EOL;
     }
@@ -80,7 +80,7 @@ if ( $s!=='*' ) $sqlSection = 'forum='.$s.' AND '; // int to avoid injection
 if ( $y0>=$y ) $y0=$y-1;
 if ( !empty($tag) )
 {
-  $tag = urldecode($tag); if ( substr($tag,-1,1)==';' ) $tag = substr($tag,0,-1);
+  $tag = urldecode($tag); if ( substr($tag,-1,1)===';' ) $tag = substr($tag,0,-1);
   $arrTags = explode(';',$tag);
   $str = '';
   foreach($arrTags as $strTag)

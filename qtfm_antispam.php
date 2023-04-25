@@ -72,7 +72,7 @@ if ( $_SESSION[QT]['m_antispam']>0 ) // this parametre can be >1
   }
 
   // check IPs
-  if ($strMIp=='1' )
+  if ( $strMIp=='1' )
   {
     $file = QT_DIR_DOC.'qtfm_spamip.txt';
     $arrIP = file_exists($file) ? explode("\n", file_get_contents($file)) : array();

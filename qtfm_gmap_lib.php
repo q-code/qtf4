@@ -77,7 +77,7 @@ function QTgempty($i)
   // Returns true when $i is empty or a value starting with '0.000000'
   if ( empty($i) ) return true;
   if ( !is_string($i) && !is_float($i) && !is_int($i) ) die('QTgempty: Invalid argument #1');
-  if ( substr((string)$i,0,8)=='0.000000' ) return true;
+  if ( substr((string)$i,0,8)==='0.000000' ) return true;
   return false;
 }
 function QTgemptycoord($a)
@@ -212,10 +212,10 @@ function QTstr2yx($str)
   foreach($arr as $intKey=>$str)
   {
     $str = trim(strtoupper($str));
-    if ( substr($str,0,1)=='N' || substr($str,0,1)=='E' ) $str = substr($str,1);
-    if ( substr($str,0,1)=='S' || substr($str,0,1)=='W' ) $str = '-'.substr($str,1);
-    if ( substr($str,-1,1)=='N' || substr($str,-1,1)=='E' ) $str = trim(substr($str,0,-1));
-    if ( substr($str,-1,1)=='S' || substr($str,-1,1)=='W' ) $str = '-'.trim(substr($str,0,-1));
+    if ( substr($str,0,1)==='N' || substr($str,0,1)==='E' ) $str = substr($str,1);
+    if ( substr($str,0,1)==='S' || substr($str,0,1)==='W' ) $str = '-'.substr($str,1);
+    if ( substr($str,-1,1)==='N' || substr($str,-1,1)==='E' ) $str = trim(substr($str,0,-1));
+    if ( substr($str,-1,1)==='S' || substr($str,-1,1)==='W' ) $str = '-'.trim(substr($str,0,-1));
     $str = str_replace('--','-',$str);
 
     // convert dms to dd
@@ -224,7 +224,7 @@ function QTstr2yx($str)
       $str = str_replace(array('SEC','S',"''",'??','"'),'/',$str);
       $str = str_replace(array('MIN','M',"'",'?'),'/',$str);
       $str = str_replace(array('DEG','D','?',':'),'/',$str);
-      if ( substr($str,-1,1)=='/' ) $str = substr($str,0,-1);
+      if ( substr($str,-1,1)==='/' ) $str = substr($str,0,-1);
       $arrValues = explode('/',$str);
       $intD = intval($arrValues[0]); if ( !QTisbetween($intD,($intKey==0 ? -90 : -180),($intKey==0 ? 90 : 180)) ) return false;
       $intM = 0;

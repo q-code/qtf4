@@ -38,15 +38,15 @@ function qtEncrypt(string $key=APP, string $str='install')
   // to decrypt use; return openssl_decrypt(base64_decode($str), 'AES-256-CBC', $key, 0, $iv);
 }
 function deleteDir(string $dirPath) {
-  if (! is_dir($dirPath)) {
+  if ( ! is_dir($dirPath)) {
     throw new Exception( "$dirPath must be a directory" );
   }
-  if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+  if ( substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
     $dirPath .= '/';
   }
   $files = glob($dirPath . '*', GLOB_MARK);
   foreach ($files as $file) {
-    if (is_dir($file)) {
+    if ( is_dir($file)) {
       deleteDir($file);
     } else {
       unlink($file);

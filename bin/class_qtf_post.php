@@ -191,7 +191,7 @@ public function render(CSection $oS, CTopic $oT, bool $avatar=true, bool $cmd=tr
   // show the image (if any)
   if ( !empty($this->attach) && strpos($str, 'src="@"') && in_array(substr($this->attach,-4,4),array('.gif','.jpg','jpeg','.png')) ) $str = str_replace('src="@"','src="'.QT_DIR_DOC.$this->attach.'"',$str);
   // if message shortened
-  if ( $_SESSION[QT]['viewmode']=='C' && substr($str,-3)=='...' ) $str .= '<a id="viewmode" href="'.Href('qtf_item.php').'?t='.$this->topic.'&view=N" title="'.L('View_n').'">'.getSVG('window-maximize').' '.getSVG('long-arrow-alt-down').'</a>';
+  if ( $_SESSION[QT]['viewmode']=='C' && substr($str,-3)==='...' ) $str .= '<a id="viewmode" href="'.Href('qtf_item.php').'?t='.$this->topic.'&view=N" title="'.L('View_n').'">'.getSVG('window-maximize').' '.getSVG('long-arrow-alt-down').'</a>';
   $msg .= $str.'</p>'.PHP_EOL;
   // attachements
   if ( !empty($this->attach) ) $msg .= '<p class="post-attachment">'.getSVG('paperclip', 'title='.L('Attachment')).' <a href="'.QT_DIR_DOC.$this->attach.'" class="attachment" target="_blank">'.$this->getSrcAttach().'</a></p>';
@@ -215,7 +215,7 @@ public function render(CSection $oS, CTopic $oT, bool $avatar=true, bool $cmd=tr
       if ( $this->userid==SUser::id() || SUser::isStaff() )
       {
         $strEndLine .= '<a class="button" href="'.Href('qtf_edit.php').'?t='.$oT->id.'&p='.$this->id.'&a=ed">'.L('Edit').'</a>';
-        if ($this->type=='P')
+        if ( $this->type=='P')
         {
           $strEndLine .= '<a class="button" href="'.Href('qtf_dlg.php').'?s='.$oS->id.'&a=itemDelete&ids='.$oT->id.($this->type=='P' ? '' : '&p='.$this->id).'">'.L('Delete').'</a>';
         }else{

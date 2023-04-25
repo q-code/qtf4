@@ -429,7 +429,7 @@ class PHPMailer {
    * @return bool
    */
   function SendmailSend($header, $body) {
-    if ($this->Sender != '') {
+    if ( $this->Sender != '') {
       $sendmail = sprintf("%s -oi -f %s -t", escapeshellcmd($this->Sendmail), escapeshellarg($this->Sender));
     } else {
       $sendmail = sprintf("%s -oi -t", escapeshellcmd($this->Sendmail));
@@ -444,7 +444,7 @@ class PHPMailer {
     fputs($mail, $body);
 
     $result = pclose($mail);
-    if (version_compare(phpversion(), '4.2.3') == -1) {
+    if ( version_compare(phpversion(), '4.2.3') == -1) {
       $result = $result >> 8 & 0xFF;
     }
     if($result != 0) {
@@ -470,10 +470,10 @@ class PHPMailer {
     $toArr = explode(',', $to);
 
     $params = sprintf("-oi -f %s", $this->Sender);
-    if ($this->Sender != '' && strlen(ini_get('safe_mode')) < 1) {
+    if ( $this->Sender != '' && strlen(ini_get('safe_mode')) < 1) {
       $old_from = ini_get('sendmail_from');
       ini_set('sendmail_from', $this->Sender);
-      if ($this->SingleTo === true && count($toArr) > 1) {
+      if ( $this->SingleTo === true && count($toArr) > 1) {
         foreach($toArr as $val) {
           $rt = @mail($val, $this->EncodeHeader($this->SecureHeader($this->Subject)), $body, $header, $params);
         }
@@ -481,7 +481,7 @@ class PHPMailer {
         $rt = @mail($to, $this->EncodeHeader($this->SecureHeader($this->Subject)), $body, $header, $params);
       }
     } else {
-      if ($this->SingleTo === true && count($toArr) > 1) {
+      if ( $this->SingleTo === true && count($toArr) > 1) {
         foreach($toArr as $val) {
           $rt = @mail($val, $this->EncodeHeader($this->SecureHeader($this->Subject)), $body, $header, $params);
         }
@@ -490,7 +490,7 @@ class PHPMailer {
       }
     }
 
-    if (isset($old_from)) {
+    if ( isset($old_from)) {
       ini_set('sendmail_from', $old_from);
     }
 
@@ -598,7 +598,7 @@ class PHPMailer {
       }
 
       if($this->smtp->Connect(((!empty($this->SMTPSecure))?$this->SMTPSecure.'://':'').$host, $port, $this->Timeout)) {
-        if ($this->Helo != '') {
+        if ( $this->Helo != '') {
           $this->smtp->Hello($this->Helo);
         } else {
           $this->smtp->Hello($this->ServerHostname());
@@ -647,7 +647,7 @@ class PHPMailer {
   function SetLanguage($lang_type, $lang_path = 'language/') {
     if(file_exists($lang_path.'phpmailer.lang-'.$lang_type.'.php')) {
       include $lang_path.'phpmailer.lang-'.$lang_type.'.php';
-    } elseif (file_exists($lang_path.'phpmailer.lang-en.php')) {
+    } elseif ( file_exists($lang_path.'phpmailer.lang-en.php')) {
       include $lang_path.'phpmailer.lang-en.php';
     } else {
       $PHPMAILER_LANG = array();
@@ -721,7 +721,7 @@ class PHPMailer {
     $is_utf8 = (strtolower($this->CharSet) == "utf-8");
 
     $message = $this->FixEOL($message);
-    if (substr($message, -1) == $this->LE) {
+    if ( substr($message, -1) == $this->LE) {
       $message = substr($message, 0, -1);
     }
 
@@ -732,16 +732,16 @@ class PHPMailer {
       $buf = '';
       for ($e = 0; $e<count($line_part); ++$e) {
         $word = $line_part[$e];
-        if ($qp_mode and (strlen($word) > $length)) {
+        if ( $qp_mode and (strlen($word) > $length)) {
           $space_left = $length - strlen($buf) - 1;
-          if ($e != 0) {
-            if ($space_left > 20) {
+          if ( $e != 0) {
+            if ( $space_left > 20) {
               $len = $space_left;
-              if ($is_utf8) {
+              if ( $is_utf8) {
                 $len = $this->UTF8CharBoundary($word, $len);
-              } elseif (substr($word, $len - 1, 1) == "=") {
+              } elseif ( substr($word, $len - 1, 1) == "=") {
                 $len--;
-              } elseif (substr($word, $len - 2, 1) == "=") {
+              } elseif ( substr($word, $len - 2, 1) == "=") {
                 $len -= 2;
               }
               $part = substr($word, 0, $len);
@@ -755,17 +755,17 @@ class PHPMailer {
           }
           while (strlen($word) > 0) {
             $len = $length;
-            if ($is_utf8) {
+            if ( $is_utf8) {
               $len = $this->UTF8CharBoundary($word, $len);
-            } elseif (substr($word, $len - 1, 1) == "=") {
+            } elseif ( substr($word, $len - 1, 1) == "=") {
               $len--;
-            } elseif (substr($word, $len - 2, 1) == "=") {
+            } elseif ( substr($word, $len - 2, 1) == "=") {
               $len -= 2;
             }
             $part = substr($word, 0, $len);
             $word = substr($word, $len);
 
-            if (strlen($word) > 0) {
+            if ( strlen($word) > 0) {
               $message .= $part . sprintf("=%s", $this->LE);
             } else {
               $buf = $part;
@@ -775,7 +775,7 @@ class PHPMailer {
           $buf_o = $buf;
           $buf .= ($e == 0) ? $word : (' ' . $word);
 
-          if (strlen($buf) > $length and $buf_o != '') {
+          if ( strlen($buf) > $length and $buf_o != '') {
             $message .= $buf_o . $soft_break;
             $buf = $word;
           }
@@ -802,22 +802,22 @@ class PHPMailer {
     while (!$foundSplitPos) {
       $lastChunk = substr($encodedText, $maxLength - $lookBack, $lookBack);
       $encodedCharPos = strpos($lastChunk, "=");
-      if ($encodedCharPos !== false) {
+      if ( $encodedCharPos !== false) {
         // Found start of encoded character byte within $lookBack block.
         // Check the encoded byte value (the 2 chars after the '=')
         $hex = substr($encodedText, $maxLength - $lookBack + $encodedCharPos + 1, 2);
         $dec = hexdec($hex);
-        if ($dec < 128) { // Single byte character.
+        if ( $dec < 128) { // Single byte character.
           // If the encoded char was found at pos 0, it will fit
           // otherwise reduce maxLength to start of the encoded char
           $maxLength = ($encodedCharPos == 0) ? $maxLength :
           $maxLength - ($lookBack - $encodedCharPos);
           $foundSplitPos = true;
-        } elseif ($dec >= 192) { // First byte of a multi byte character
+        } elseif ( $dec >= 192) { // First byte of a multi byte character
           // Reduce maxLength to split at start of character
           $maxLength = $maxLength - ($lookBack - $encodedCharPos);
           $foundSplitPos = true;
-        } elseif ($dec < 192) { // Middle byte of a multi byte character, look further back
+        } elseif ( $dec < 192) { // Middle byte of a multi byte character, look further back
           $lookBack += 3;
         }
       } else {
@@ -874,7 +874,7 @@ class PHPMailer {
     if($this->Mailer != 'mail') {
       if(count($this->to) > 0) {
         $result .= $this->AddrAppend('To', $this->to);
-      } elseif (count($this->cc) == 0) {
+      } elseif ( count($this->cc) == 0) {
         $result .= $this->HeaderLine('To', 'undisclosed-recipients:;');
       }
     }
@@ -919,7 +919,7 @@ class PHPMailer {
     for($index = 0; $index < count($this->CustomHeader); ++$index) {
       $result .= $this->HeaderLine(trim($this->CustomHeader[$index][0]), $this->EncodeHeader(trim($this->CustomHeader[$index][1])));
     }
-    if (!$this->sign_key_file) {
+    if ( !$this->sign_key_file) {
       $result .= $this->HeaderLine('MIME-Version', '1.0');
       $result .= $this->GetMailMIME();
     }
@@ -969,7 +969,7 @@ class PHPMailer {
    */
   function CreateBody() {
     $result = '';
-    if ($this->sign_key_file) {
+    if ( $this->sign_key_file) {
       $result .= $this->GetMailMIME();
     }
 
@@ -1010,14 +1010,14 @@ class PHPMailer {
 
     if($this->IsError()) {
       $result = '';
-    } else if ($this->sign_key_file) {
+    } else if ( $this->sign_key_file) {
       $file = tempnam("", "mail");
       $fp = fopen($file, "w");
       fwrite($fp, $result);
       fclose($fp);
       $signed = tempnam("", "signed");
 
-      if (@openssl_pkcs7_sign($file, $signed, "file://".$this->sign_cert_file, array("file://".$this->sign_key_file, $this->sign_key_pass), null)) {
+      if ( @openssl_pkcs7_sign($file, $signed, "file://".$this->sign_cert_file, array("file://".$this->sign_key_file, $this->sign_key_pass), null)) {
         $fp = fopen($signed, "r");
         $result = fread($fp, filesize($this->sign_key_file));
         $result = '';
@@ -1159,7 +1159,7 @@ class PHPMailer {
     for($i = 0; $i < count($this->attachment); ++$i) {
       /* Check for string attachment */
       $bString = $this->attachment[$i][5];
-      if ($bString) {
+      if ( $bString) {
         $string = $this->attachment[$i][0];
       } else {
         $path = $this->attachment[$i][0];
@@ -1240,7 +1240,7 @@ class PHPMailer {
       case '7bit':
       case '8bit':
         $encoded = $this->FixEOL($str);
-        if (substr($encoded, -(strlen($this->LE))) != $this->LE)
+        if ( substr($encoded, -(strlen($this->LE))) != $this->LE)
           $encoded .= $this->LE;
           break;
       case 'binary':
@@ -1266,10 +1266,10 @@ class PHPMailer {
     $matches = array();
     switch(strtolower($position)) {
       case 'phrase':
-        if (!preg_match('/[\200-\377]/', $str)) {
+        if ( !preg_match('/[\200-\377]/', $str)) {
           /* Can't use addslashes as we don't know what value has magic_quotes_sybase. */
           $encoded = addcslashes($str, "\0..\37\177\\\"");
-          if (($str == $encoded) && !preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $str)) {
+          if ( ($str == $encoded) && !preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $str)) {
             return ($encoded);
           } else {
             return ("\"$encoded\"");
@@ -1286,15 +1286,15 @@ class PHPMailer {
         break;
     }
 
-    if ($x == 0) {
+    if ( $x == 0) {
       return ($str);
     }
 
     $maxlen = 75 - 7 - strlen($this->CharSet);
     /* Try to select the encoding which should produce the shortest output */
-    if (strlen($str)/3 < $x) {
+    if ( strlen($str)/3 < $x) {
       $encoding = 'B';
-      if (function_exists('mb_strlen') && $this->HasMultiBytes($str)) {
+      if ( function_exists('mb_strlen') && $this->HasMultiBytes($str)) {
         // Use a custom function which correctly encodes and wraps long
         // multibyte strings without breaking lines within a character
         $encoded = $this->Base64EncodeWrapMB($str);
@@ -1323,7 +1323,7 @@ class PHPMailer {
    * @return bool
    */
   function HasMultiBytes($str) {
-    if (function_exists('mb_strlen')) {
+    if ( function_exists('mb_strlen')) {
       return (strlen($str) > mb_strlen($str, $this->CharSet));
     } else { // Assume no multibytes (we can't handle without mbstring functions anyway)
       return False;
@@ -1649,9 +1649,9 @@ class PHPMailer {
    * @return string
    */
   function ServerHostname() {
-    if ($this->Hostname != '') {
+    if ( $this->Hostname != '') {
       $result = $this->Hostname;
-    } elseif ($this->ServerVar('SERVER_NAME') != '') {
+    } elseif ( $this->ServerVar('SERVER_NAME') != '') {
       $result = $this->ServerVar('SERVER_NAME');
     } else {
       $result = 'localhost.localdomain';
@@ -1716,7 +1716,7 @@ class PHPMailer {
     if(isset($images[2])) {
       foreach($images[2] as $i => $url) {
         // do not change urls for absolute images (thanks to corvuscorax)
-        if (!preg_match('/^[A-z][A-z]*:\/\//',$url)) {
+        if ( !preg_match('/^[A-z][A-z]*:\/\//',$url)) {
           $filename = basename($url);
           $directory = dirname($url);
           ($directory == '.')?$directory='':'';
@@ -1863,7 +1863,7 @@ class PHPMailer {
    */
   function getFile($filename) {
     $return = '';
-    if ($fp = fopen($filename, 'rb')) {
+    if ( $fp = fopen($filename, 'rb')) {
       while (!feof($fp)) {
         $return .= fread($fp, 1024);
       }

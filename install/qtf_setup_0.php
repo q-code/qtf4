@@ -32,7 +32,7 @@ if ( isset($_POST['ok']) && !empty($_POST['template']) && file_exists('../config
 // --------
 $intHandle = opendir('../config');
 $arrFiles = array();
-while(false!==($strFile=readdir($intHandle))) if ( $strFile!='.' && $strFile!='..' && substr($strFile,0,10)=='config_db_' ) $arrFiles[]=$strFile;
+while(false!==($strFile=readdir($intHandle))) if ( $strFile!='.' && $strFile!='..' && substr($strFile,0,10)==='config_db_' ) $arrFiles[]=$strFile;
 closedir($intHandle);
 asort($arrFiles);
 

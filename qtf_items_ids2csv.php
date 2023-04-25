@@ -24,9 +24,9 @@ $v2 = ''; // timeframe [string]
 $ids = '';
 qtHttp('q s st v v2 ids',true,false); // $_GET only
 if ( empty($ids) ) die('Missing ids');
-if (empty($q)) $q = 's';
+if ( empty($q)) $q = 's';
 if ( $s==='*' || $s==='' || !is_numeric($s) ) $s = '-1';
-if (empty($st)) $st = '*';
+if ( empty($st)) $st = '*';
 $v        = asCleanArray($v); // array of (unique) values trimmed (not empty)
 $intCount = count(explode(',',$ids));
 $intLimit = 0;
@@ -34,16 +34,16 @@ $intLen   = (int)$_SESSION[QT]['items_per_page'];
 
 // initialise section
 $s = (int)$s;
-if ($q==='s' && $s<0 ) die('Missing argument $s');
-if ($q==='s' || $s>=0 ) {
+if ( $q==='s' && $s<0 ) die('Missing argument $s');
+if ( $q==='s' || $s>=0 ) {
   $oS = new CSection($_Sections[$s]); // new CSection($s)
   // exit if user role not granted
-  if ($oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U')) {
+  if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U')) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
     exitPage(12, 'user-lock.svg'); //...
   }
-  if ($oS->type==='2' && SUser::role()==='V') {
+  if ( $oS->type==='2' && SUser::role()==='V') {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
     exitPage(11, 'user-lock.svg'); //...
@@ -55,7 +55,7 @@ if ($q==='s' || $s>=0 ) {
 }
 
 // initialise others
-$strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)=='none' ) $strLastcol='0';
+$strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)==='none' ) $strLastcol='0';
 if ( !isset($_SESSION[QT]['lastcolumn']) || $_SESSION[QT]['lastcolumn']=='none' ) $_SESSION[QT]['lastcolumn'] = 'default';
 $csv = '';
 // change lastcolumn if a preference exists

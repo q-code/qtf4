@@ -122,7 +122,7 @@ echo '</table>
 ';
 
 echo '</div>
-<div id="participants">
+<div id="participants" class="strongbox">
 <p class="title">'.L('Top_participants').'</p>
 <table>
 ';
@@ -133,7 +133,7 @@ echo '</div>
   {
     $row = $oDB->getRow();
     if ( !$row ) break;
-    echo '<tr><td><a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.$row['numpost'].'</td></tr>';
+    echo '<tr><td><a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.qtIntK((int)$row['numpost']).'</td></tr>';
   }
 echo '</table>';
 
@@ -270,11 +270,11 @@ else
     $strLock = $intLock ? '<span class="ban" title="'.L('Banned').' '.L('day',$days[$intLock]).'">'.$days[$intLock].'<span>' : L('n');
 
     // prepare row
-    $t->arrTd['checkbox']->content = '<input type="checkbox" name="t1-cb[]" id="t1-cb-'.$row['id'].'" value="'.$row['id'].'"'.($bChecked ? ' checked' : '').' data-row="'.$intRow.'"/>'; if ($row['id']<2) $t->arrTd['checkbox']->content = '&nbsp;';
+    $t->arrTd['checkbox']->content = '<input type="checkbox" name="t1-cb[]" id="t1-cb-'.$row['id'].'" value="'.$row['id'].'"'.($bChecked ? ' checked' : '').' data-row="'.$intRow.'"/>'; if ( $row['id']<2) $t->arrTd['checkbox']->content = '&nbsp;';
     $t->arrTd['name']->content = '<a href="'.Href('qtf_user.php').'?id='.$row['id'].'" title="'.qtAttr($row['name'],24).'">'.QTtrunc($row['name'],24).'</a>';
     $t->arrTd['pic']->content = '<div class="magnifier center">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', '').'</div>';
     $t->arrTd['role']->content = L('Role_'.strtoupper($row['role']));
-    $t->arrTd['numpost']->content = $row['numpost'];
+    $t->arrTd['numpost']->content = qtIntK((int)$row['numpost']);
     if ( $strCateg=='FM' || $strCateg=='SC' )
     {
     $t->arrTd['firstdate']->content = empty($row['firstdate']) ? '' : QTdatestr($row['firstdate'],'$','',true);

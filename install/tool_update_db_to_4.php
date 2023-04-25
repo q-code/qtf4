@@ -130,7 +130,7 @@ if ( $row['setting']=='3.0' )
 
 include APP.'_setup_hd.php';
 
-if (!empty($strMessage) ) echo $strMessage;
+if ( !empty($strMessage) ) echo $strMessage;
 
 if ( isset($_SESSION['qtfInstalled']) )
 {

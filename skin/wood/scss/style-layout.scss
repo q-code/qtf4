@@ -13,7 +13,7 @@ input:-webkit-autofill::first-line{font-family:var(--font) !important} /* specia
 /* site margins */
 #site, footer{margin:1vw 2vw}
 #site:has(header[data-layout="0"]){margin-top:0.5vw}
-@media screen and (min-width:1240px){
+@media screen and (min-width:1280px){
   #site, footer{margin:0.8vw auto;width:1200px}
 }
 @media screen and (max-width:840px){
@@ -91,14 +91,14 @@ nav a.active::after{
 main{background-color:#FFF}
 /* padding */
 main>div{padding:1vw 2vw}
-@media screen and (min-width:1240px){ main>div{padding:14px 28px} }
+@media screen and (min-width:1280px){ main>div{padding:14px 28px} }
 /* style */
 #main-hd{display:flex;justify-content:space-between;align-items:center}
   #ct-title{margin:0 0 15px 0}
   #ct-filter{margin:0 0 15px 0}
 div.nav-top, div.nav-bot{display:flex;gap:5px}
 #main-ft{display:flex;justify-content:space-between;align-items:center}
-@media screen and (min-width:1240px){ #main-hd, #main-ct, #main-ft{padding:15px 30px} }
+@media screen and (min-width:1280px){ #main-hd, #main-ct, #main-ft{padding:15px 30px} }
 
 aside{padding:0.5rem;display:flex;gap:1rem;background-color:#efefef;color:#888}
   @media print{aside{background-color:#fff}}

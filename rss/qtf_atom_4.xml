@@ -1,15 +1,29 @@
-<?xml version="1.0" encoding="iso-8859-1" ?><feed xmlns="http://www.w3.org/2005/Atom">
-<title>QuickTalk forum - temp</title><link href="http://www.qt-cute.org/soft/qtf2/qtf_topics.php?s=4"/><link href="http://www.qt-cute.org/soft/qtf2/rss/qtf_atom_4.xml" rel="self"/><id>http://www.qt-cute.org/soft/qtf2/qtf_topics.php?s=4</id>
-<updated>2010-09-13T09:58:23+02:00</updated>
-<author><name>Webmaster</name><email>webmaster@qt-cute.org</email></author>
-<category term="Troubleticket"/><generator>QuickTalk 2.5</generator>
-<icon>http://www.qt-cute.org/soft/qtf2/rss/qtf_icon.gif</icon>
-<logo>http://www.qt-cute.org/soft/qtf2/rss/qtf_logo.gif</logo>
+<?xml version="1.0" encoding="utf-8" ?><feed xmlns="http://www.w3.org/2005/Atom">
+<title>QT-cute - REF</title><link href="http://localhost/qtcute/soft/qtf4/qtf_items.php?s=4"/><link href="http://localhost/qtcute/soft/qtf4/rss/qtf_atom_4.xml" rel="self"/><id>http://localhost/qtcute/soft/qtf4/qtf_items.php?s=4</id>
+<updated>2023-04-25T08:01:31+02:00</updated>
+<author><name>Webmaster</name><email>phvandenberghe@gmail.com</email></author>
+<category term="Troubleticket"/><generator>QuickTalk 4.0</generator>
+<icon>http://localhost/qtcute/soft/qtf4/rss/qtf_icon.gif</icon>
+<logo>http://localhost/qtcute/soft/qtf4/rss/qtf_logo.gif</logo>
 <entry>
-<id>http://www.qt-cute.org/soft/qtf2/qtf_topic.php?t=50&amp;p=91</id>
-<title>test</title>
-<updated>2010-09-13T09:58:23+02:00</updated>
+<id>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=72&p=98</id>
+<title>Test</title>
+<updated>2023-04-25T08:01:31+02:00</updated>
+<author><name>1234Anonymous</name></author>
+<content>Test</content>
+<link href="http://localhost/qtcute/soft/qtf4/qtf_item.php?t=72&p=98"/></entry>
+<entry>
+<id>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=52&p=71</id>
+<title>First message</title>
+<updated>2022-11-11T12:09:17+01:00</updated>
 <author><name>Admin</name></author>
-<content>test</content>
-<link href="http://www.qt-cute.org/soft/qtf2/qtf_topic.php?t=50&amp;p=91"/></entry>
+<content>First message</content>
+<link href="http://localhost/qtcute/soft/qtf4/qtf_item.php?t=52&p=71"/></entry>
+<entry>
+<id>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=64&p=87</id>
+<title>On behalf</title>
+<updated>2022-11-11T10:56:49+01:00</updated>
+<author><name>John</name></author>
+<content>On behalf</content>
+<link href="http://localhost/qtcute/soft/qtf4/qtf_item.php?t=64&p=87"/></entry>
 </feed>

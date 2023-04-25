@@ -106,11 +106,12 @@ div.tagbox p{color:#ccc}
 
 div.pan{background-color:#222}
 
-/* special */
-.pg-privacy img{background-color:#fff;padding:0.5rem;box-sizing:content-box;border-radius:3px}
-#participants,
-.add-user{background:none;background-color:#000;border-color:#555}
+/* SPECIFIC */
+.strongbox{background:none;background-color:#000;border:none;border-radius:0}
+#participants{width:240px} .add-user{width:330px}
+@media screen and (min-width:1280px){#participants{width:260px} .add-user{width:360px}}
 #signature,#signature-preview{background-color:transparent;border:none}
+.pg-privacy img{background-color:#fff;padding:0.5rem;box-sizing:content-box;border-radius:3px}
 
 /* STATS */
 .t-stat{border-color:#000}

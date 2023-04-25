@@ -181,7 +181,7 @@ function formatCsvRow($arrFLD,$row,$oS=null)
         }
         break;
       case 'tags':
-        $arrTags = ( empty($row['tags']) ? array() : explode(';',$row['tags']) );
+        $arrTags = empty($row['tags']) ? array() : explode(';',$row['tags']);
         foreach (array_keys($arrTags) as $i) if ( empty($arrTags[$i]) ) unset($arrTags[$i]);
         if ( count($arrTags)>5 ) {
           $arrTags = array_slice($arrTags,0,5);
@@ -194,7 +194,6 @@ function formatCsvRow($arrFLD,$row,$oS=null)
       case 'user.role': $str = $row['role']; break;
       case 'user.contact': $str = (isset($row['mail']) ? $row['mail'].' ' : '').(isset($row['www']) ? $row['www'] : ''); break;
       case 'user.location': $str = $row['location']; break;
-      case 'user.name': $str = $row['name']; break;
       case 'user.notes': $str = (int)$row['notes']; break;
       case 'user.firstdate': $str = QTdatestr($row['firstdate'],'Y-m-d',''); break;
       case 'user.lastdate': $str = QTdatestr($row['lastdate'],'Y-m-d','').(empty($row['ip']) ?  '&nbsp;' : ' ('.$row['ip'].')'); break;
@@ -211,7 +210,7 @@ function renderUserMailSymbol($row)
   return '<span class="disabled" title="no e-mail"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"></use></svg></span>';
   $str = '';
   if ( (int)$row['privacy']===2 ) $str = asEmails($row['mail'],'symbol'.(QT_JAVA_MAIL ? 'java' : ''));
-  if ( (int)$row['privacy']===1 && SUser::role()!='V' ) $str = asEmails($row['mail'],'symbol'.(QT_JAVA_MAIL ? 'java' : ''));
+  if ( (int)$row['privacy']===1 && SUser::role()!=='V' ) $str = asEmails($row['mail'],'symbol'.(QT_JAVA_MAIL ? 'java' : ''));
   if ( SUser::id()==$row['id'] || SUser::isStaff() ) $str = asEmails($row['mail'],'symbol'.(QT_JAVA_MAIL ? 'java' : ''));
   return $str;
 }
@@ -267,7 +266,7 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
   }
   // when searching in posts without title, use this to report empty title
   if ( isset($arrFLD['title']) ) {
-    if ( trim($row['title'])=='' ) $row['title']='('.L('reply').')';
+    if ( trim($row['title'])==='' ) $row['title']='('.L('reply').')';
     if ( empty($row['title']) && $row['title']!='0' ) $row['title']='('.L('Reply').')';
   }
 
@@ -312,7 +311,10 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
       break;
     case 'replies':
       // youreply merged in replies
-      $arr[$k] = $row['replies']==='0' ? '0' : '<span id="'.$strTableId.'re'.$row['id'].'"><svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"></use></svg></span><span>'.$row['replies'].'</span>';
+      $arr[$k] = $row['replies']==='0' ? '0' : '<span id="'.$strTableId.'re'.$row['id'].'"><svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"></use></svg></span><span>'.qtIntK((int)$row['replies']).'</span>';
+      break;
+    case 'views':
+      $arr[$k] = $row['views']==='0' ? '0' : qtIntK((int)$row['views']);
       break;
     case 'section':
       $i = (int)$row['forum'];

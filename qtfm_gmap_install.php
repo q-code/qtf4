@@ -76,7 +76,7 @@ if ( !$bStepZ )
 echo '<p>Ok</p>';
 echo '<h2>Installation completed</h2>';
 
-if ( substr($_SESSION[QT]['version'],0,1)=='2' )
+if ( substr($_SESSION[QT]['version'],0,1)==='2' )
 {
   echo '<p class="error">Your database version is 2.x. We recommand you to upgrade to 3.0 (use the installation wizard of QuickTalk).</p>';
 }

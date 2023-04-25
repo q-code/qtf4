@@ -113,13 +113,13 @@ if ( isset($_POST['ok']) ) try {
   if ( empty($_POST['username']) ) throw new Exception( L('Username').' '.L('invalid') );
   if ( $_SESSION[QT]['register_safe']==='text' || $_SESSION[QT]['register_safe']==='image' )
   {
-    if ( trim($_POST['code'])=='' || strlen($_POST['code'])!=6 ) throw new Exception( L('Type_code') );
+    if ( trim($_POST['code'])==='' || strlen($_POST['code'])!=6 ) throw new Exception( L('Type_code') );
   }
   // check name & unique
   if ( $is = SUser::isUsedName($oDB,$_POST['username']) ) throw new Exception($is); // use = (not compare)
   // check mail
   $_POST['mail'] = trim($_POST['mail']);
-  if (!QTismail($_POST['mail'])) throw new Exception( L('Email').' '.L('invalid') );
+  if ( !QTismail($_POST['mail'])) throw new Exception( L('Email').' '.L('invalid') );
   // check password
   if ( $_SESSION[QT]['register_mode']=='direct' ) {
     if ( !QTispwd($_POST['pwd']) || !QTispwd($_POST['conpwd']) || $_POST['conpwd']!=$_POST['pwd'] ) throw new Exception( L('Password').' '.L('invalid') );
@@ -132,13 +132,13 @@ if ( isset($_POST['ok']) ) try {
   case 'text':
   case 'image':
     $strCode = strtoupper(strip_tags(trim($_POST['code'])));
-    if ($strCode=='') $oH->error = L('Type_code');
+    if ( $strCode=='') $oH->error = L('Type_code');
     if ( $_SESSION['textcolor']!=sha1($strCode) ) throw new Exception( L('Type_code') );
     break;
   case 'recaptcha2':
   case 'recaptcha3':
     $strResp = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : false; // error if recaptcha was not used!
-    if ($strResp===false) {
+    if ( $strResp===false) {
       throw new Exception( L('reCAPTCHA_failed') );
     } else {
       $strResp = file_get_contents( 'https://www.google.com/recaptcha/api/siteverify?secret='.urlencode($_SESSION[QT]['register_safe']==='recaptcha3' ? $_SESSION[QT]['recaptcha3sk'] : $_SESSION[QT]['recaptcha2sk']).'&response='.urlencode($strResp) );
@@ -384,7 +384,7 @@ if ( isset($_POST['ok']) ) try {
   // save new password
   $oDB->exec( "UPDATE TABUSER SET pwd=? WHERE id=$id", [sha1($_POST['newpwd'])] );
   // send parent email (if coppa)
-  if ($_POST['child']!='0' && $_SESSION[QT]['register_coppa']=='1') {
+  if ( $_POST['child']!='0' && $_SESSION[QT]['register_coppa']=='1') {
     $strSubject="New password";
     $strMessage="We inform you that your children has changed his/her password on the board {$_SESSION[QT]['site_name']}.\nLogin: %s\nPassword: %s";
     $strFile = getLangDir().'mail_pwd_coppa.php';
@@ -496,7 +496,7 @@ $frm_hd = '<div class="user-dlg msg-role">
 ';
 $frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
 $frm[] = '<p>'.$name.' <select name="role" size="1">
-<option value="A"'.($row['role']=='A' ? ' selected' : '').(SUser::role()!='A' ? ' disabled' : '').'>'.L('Role_A').'</option>
+<option value="A"'.($row['role']=='A' ? ' selected' : '').(SUser::role()!=='A' ? ' disabled' : '').'>'.L('Role_A').'</option>
 <option value="M"'.($row['role']=='M' ? ' selected' : '').'>'.L('Role_M').'</option>
 <option value="U"'.($row['role']=='U' ? ' selected' : '').'>'.L('Role_U').'</option>
 </select></p>';

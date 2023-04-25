@@ -14,7 +14,7 @@ if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) exitPage(99,'tools.
 if ( !SUser::canAccess('show_memberlist') ) exitPage(11,'user-lock.svg'); //...
 
 // CHANGE USER INTERFACE
-if (isset($_GET['view'])) $_SESSION[QT]['viewmode'] = substr($_GET['view'],0,1);
+if ( isset($_GET['view'])) $_SESSION[QT]['viewmode'] = substr($_GET['view'],0,1);
 
 // INITIALISE
 $pageGroup = 'all';
@@ -84,7 +84,7 @@ echo '</p>
 </div>
 ';
 
-echo '<div id="participants"'.(isset($_POST['title']) ? ' style="display:none"' : '').'>
+echo '<div id="participants"'.(isset($_POST['title']) ? ' style="display:none"' : '').' class="strongbox">
 <p class="title">'.L('Top_participants').'</p>
 <table>
 ';
@@ -94,7 +94,7 @@ $oDB->query( sqlLimit($strState,'numpost DESC',0,5) );
 for ($i=0;$i<($_SESSION[QT]['viewmode']=='C' ? 2 : 5);++$i) {
   $row = $oDB->getRow();
   if ( !$row ) break;
-  echo '<tr><td><a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.$row['numpost'].'</td></tr>';
+  echo '<tr><td><a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.qtIntK((int)$row['numpost']).'</td></tr>';
 }
 echo '</table>
 </div>';
@@ -120,7 +120,7 @@ if ( $intCount>$_SESSION[QT]['items_per_page'] || $pageGroup!=='all' ) echo html
 if ( !empty($strPaging) ) echo '<p id="tabletop" class="paging">'.$strPaging.'</p>'.PHP_EOL;
 
 // end if no result
-if ($intCount==0) {
+if ( $intCount==0) {
   echo '<p>'.L('None').'</p><br>';
   include 'qtf_inc_ft.php';
   exit;
@@ -184,7 +184,7 @@ while($row=$oDB->getRow()) {
   $t->arrTd['userrole']->content = L('Role_'.strtoupper($row['role']));
   $t->arrTd['usercontact']->content = renderUserMailSymbol($row).' '.renderUserWwwSymbol($row);
   $t->arrTd['userlocation']->content = empty($row['location']) ? '' : $row['location'];
-  $t->arrTd['usernumpost']->content = $row['numpost'];
+  $t->arrTd['usernumpost']->content = qtIntK((int)$row['numpost']);
   if ( isset($t->arrTh['userpriv']) )
   $t->arrTd['userpriv']->content = renderUserPrivSymbol($row);
 
@@ -310,7 +310,7 @@ if ( $bMap && !$_SESSION[QT]['m_gmap_hidelist'] ) {
   {
     if ( infowindow ) infowindow.close();
     geocoder.geocode( { "address": address}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK)
+      if ( status == google.maps.GeocoderStatus.OK)
       {
         map.setCenter(results[0].geometry.location);
         if ( marker )

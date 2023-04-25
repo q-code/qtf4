@@ -30,7 +30,7 @@ if ( isset($_POST['ok']) ) try {
 
   // check siteurl
   if ( strpos($_POST['site_url'],'<')!==false ) $strHelper = L('Tags_not_allowed');
-  $str = QTdb(trim($_POST['site_url'])); if ( substr($str,-1,1)=='/' ) $str = substr($str,0,-1); // drop final /
+  $str = QTdb(trim($_POST['site_url'])); if ( substr($str,-1,1)==='/' ) $str = substr($str,0,-1); // drop final /
   if ( empty($str) || strlen($str)<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$str) ) { $_SESSION[QT]['site_url']='https://'; throw new Exception( L('Site_url').' '.L('invalid') ); }
   $_SESSION[QT]['site_url'] = $str;
 
@@ -71,7 +71,7 @@ if ( isset($_POST['ok']) ) try {
   // Save translations (cache unchanged)
   SLang::delete('index','i');
   foreach($_POST as $k=>$posted) {
-    if ( substr($k,0,3)=='tr-'  && !empty($posted) ) {
+    if ( substr($k,0,3)==='tr-'  && !empty($posted) ) {
       if ( strpos($posted,'<')!==false ) $strHelper = L('Tags_not_allowed');
       SLang::add('index', substr($k,3), 'i', $posted);
     }

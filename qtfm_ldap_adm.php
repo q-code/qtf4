@@ -107,7 +107,7 @@ if ( isset($_POST['ok']) && $pan>0 )
 
     // open connection
     $c = @ldap_connect($_SESSION[QT]['m_ldap_host']);
-    if ($c===false) throw new Exception( 'Unable to connect ldap service' );
+    if ( $c===false) throw new Exception( 'Unable to connect ldap service' );
 
     // admin(anonymous) bind
     $test_conn='<span style="color:green">started</span>';
@@ -120,12 +120,12 @@ if ( isset($_POST['ok']) && $pan>0 )
     } else {
       $b = @ldap_bind($c); // bind (anonymous by default)
     }
-    if ($b===false) throw new Exception( 'Connection result: '.ldap_err2str(ldap_errno($c)) );
+    if ( $b===false) throw new Exception( 'Connection result: '.ldap_err2str(ldap_errno($c)) );
 
     // search test user
     $filter = str_replace('$username',$username,$_SESSION[QT]['m_ldap_s_filter']);
     $s = @ldap_search($c,$_SESSION[QT]['m_ldap_s_rdn'],$filter,explode(',',$_SESSION[QT]['m_ldap_s_info']));
-    if ($s===false) throw new Exception( 'Search result: '.ldap_err2str(ldap_errno($c)) );
+    if ( $s===false) throw new Exception( 'Search result: '.ldap_err2str(ldap_errno($c)) );
 
     // analyse search results
     $intEntries = ldap_count_entries($c,$s);

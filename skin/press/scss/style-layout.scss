@@ -14,7 +14,7 @@ input:-webkit-autofill::first-line{font-family:var(--font) !important} /* specia
 /* site margins */
 #site, footer{margin:1vw 2vw}
 #site:has(header[data-layout="0"]){margin-top:0.5vw}
-@media screen and (min-width:1240px){
+@media screen and (min-width:1280px){
   #site, footer{margin:0.8vw auto;width:1200px}
 }
 @media screen and (max-width:840px){
@@ -85,7 +85,7 @@ footer p{padding-bottom:4px;text-align:center;font-size:0.9rem;color:#999} foote
 /* MAIN */
 /* padding */
 main>div{padding:1vw 1.7vw}
-@media screen and (min-width:1240px){ main>div{padding:14px 25px} }
+@media screen and (min-width:1280px){ main>div{padding:14px 25px} }
 /* style */
 #main-hd{display:flex;justify-content:space-between;align-items:center}
   #ct-title{margin:0 0 15px 0}

@@ -133,7 +133,7 @@ public static function translate(int $id, string $type='sec')
   switch($type){
     case 'sec': return SLang::translate('sec', 's'.$id, empty($GLOBALS['_Sections'][$id]['title']) ? '' : $GLOBALS['_Sections'][$id]['title']);
     case 'secdesc': return SLang::translate('secdesc', 's'.$id, empty($GLOBALS['_Sections'][$id]['descr']) ? '' : $GLOBALS['_Sections'][$id]['descr']);
-    default: die( __FUNCTION__.' invalid argument #2');
+    default: die(__FUNCTION__.' invalid argument #2');
   }
 }
 /**
@@ -145,7 +145,7 @@ public static function translate(int $id, string $type='sec')
 public static function getImage(int $id=0, $attr=[], string $altSrc='')
 {
   if ( is_string($attr) ) $attr = attrDecode($attr);
-  if ( !is_array($attr) || isset($attr['src']) ) die(__METHOD__.' invalid attr' );
+  if ( !is_array($attr) || isset($attr['src']) ) die(__METHOD__.' invalid attr');
   if ( !isset($attr['alt']) ) $attr['alt'] = $id;
   $path = QT_DIR_DOC.'section/';
   if ( empty($path) ) return empty($altSrc) ? '' : '<img src="'.$altSrc.'"'.attrRender($attr).'/>';

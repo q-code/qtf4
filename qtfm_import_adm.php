@@ -124,7 +124,7 @@ function endElement($parser, $strTag)
     break;
 
   default:
-    if ( trim($strValue)!='' ) $arrTopic[$strTag]=$strValue;
+    if ( trim($strValue)!=='' ) $arrTopic[$strTag]=$strValue;
     break;
   }
 }
@@ -153,7 +153,7 @@ if ( isset($_POST['ok']) )
 {
   // check file
 
-  if (!is_uploaded_file($_FILES['title']['tmp_name'])) $oH->error = L('Import_E_nofile');
+  if ( !is_uploaded_file($_FILES['title']['tmp_name'])) $oH->error = L('Import_E_nofile');
 
   // check form value
 

@@ -22,18 +22,18 @@ $intLimit = 0;
 $intLen   = (int)$_SESSION[QT]['items_per_page'];
 if ( empty($size) || $intCount <= $intLen ) $size='all';
 if ( strlen($size)>6 ) die('Invalid argument');
-if ( substr($size,0,1)!='p' && substr($size,0,1)!='m' && $size!=='all') die('Invalid argument');
-if ( substr($size,0,1)=='p' ) {
+if ( substr($size,0,1)!=='p' && substr($size,0,1)!=='m' && $size!=='all') die('Invalid argument');
+if ( substr($size,0,1)==='p' ) {
   $i = (int)substr($size,1);
   if ( empty($i) || $i<0 ) die('Invalid argument');
   if ( ($i-1) > $intCount/$intLen ) die('Invalid argument');
 }
-if ( substr($size,0,1)=='m' ) {
+if ( substr($size,0,1)==='m' ) {
   if ( $size!='m1' && $size!='m2' && $size!='m5' && $size!='m10' ) die('Invalid argument');
 }
 if ( $intCount>1000 && $size=='all' ) die('Invalid argument');
-if ( $intCount<=1000 && substr($size,0,1)=='m' ) die('Invalid argument');
-if ( $intCount>1000 && substr($size,0,1)=='p' ) die('Invalid argument');
+if ( $intCount<=1000 && substr($size,0,1)==='m' ) die('Invalid argument');
+if ( $intCount>1000 && substr($size,0,1)==='p' ) die('Invalid argument');
 
 // apply size arguments
 if ( $size=='all') { $intLimit=0; $intLen=$intCount; }
@@ -41,7 +41,7 @@ if ( $size=='m1' ) { $intLimit=0; $intLen=999; }
 if ( $size=='m2' ) { $intLimit=1000; $intLen=1000; }
 if ( $size=='m5' ) { $intLimit=0; $intLen=4999; }
 if ( $size=='m10') { $intLimit=5000; $intLen=5000; }
-if ( substr($size,0,1)=='p' ) { $i = (int)substr($size,1); $intLimit = ($i-1)*$intLen; }
+if ( substr($size,0,1)==='p' ) { $i = (int)substr($size,1); $intLimit = ($i-1)*$intLen; }
 
 // check search arguments
 $q = ''; // type of search (if missing will use $q='s')
@@ -50,23 +50,23 @@ $st = ''; // status $st can be '*' or [string]
 $v = ''; // searched text [string] >> array of strings
 $v2 = ''; // timeframe [string]
 qtHttp('q s st v v2'); // assign as [string] by default
-if (empty($q)) $q = 's';
+if ( empty($q)) $q = 's';
 if ( $s==='*' || $s==='' || !is_numeric($s) ) $s = '-1';
-if (empty($st)) $st = '*';
+if ( empty($st)) $st = '*';
 $v = asCleanArray($v); // array of (unique) values trimmed (not empty)
 
 // initialise section
 $s = (int)$s;
-if ($q==='s' && $s<0 ) die('Missing argument $s');
-if ($q==='s' || $s>=0 ) {
+if ( $q==='s' && $s<0 ) die('Missing argument $s');
+if ( $q==='s' || $s>=0 ) {
   $oS = new CSection($_Sections[$s]); // new CSection($s)
   // exit if user role not granted
-  if ($oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U')) {
+  if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U')) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
     exitPage(12, 'user-lock.svg'); //...
   }
-  if ($oS->type==='2' && SUser::role()==='V') {
+  if ( $oS->type==='2' && SUser::role()==='V') {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
     exitPage(11, 'user-lock.svg'); //...
@@ -81,7 +81,7 @@ if ($q==='s' || $s>=0 ) {
 $oH->selfuri = getURI('order,dir');
 $strOrder = 'lastpostdate';
 $strDirec = 'desc';
-$strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)=='none' ) $strLastcol='0';
+$strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)==='none' ) $strLastcol='0';
 $intPage = 1;
 $intLimit = 0;
 if ( isset($_GET['page']) ) { $intPage = (int)$_GET['page']; $intLimit = ($intPage-1)*$_SESSION[QT]['items_per_page']; }

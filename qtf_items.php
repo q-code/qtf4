@@ -21,24 +21,24 @@ $s = ''; // section $s can be '*' or [int] (after argument checking only [int] i
 $st = ''; // status $st can be '*' or [string]
 $v = ''; // searched text [string] >> array of strings
 $v2 = ''; // timeframe [string] or userid
-qtHttp('q s st v v2'); // assign as [string] by default
+qtHttp('q s st v v2'); // as [string]
 if ( empty($q) ) $q = 's';
 if ( $s==='*' || $s==='' || !is_numeric($s) ) $s = '-1';
 if ( $st==='' ) $st = '*';
-$v = asCleanArray($v); // array of (unique) values trimmed (not empty)
+$v = asCleanArray($v);
 
 // initialise section
 $s = (int)$s;
-if ($q==='s' && $s<0 ) die( __FILE__.' Missing argument $s');
-if ($q==='s' || $s>=0 ) {
+if ( $q==='s' && $s<0 ) die(__FILE__.' Missing argument $s');
+if ( $q==='s' || $s>=0 ) {
   $oS = new CSection($_Sections[$s]); // new CSection($s)
   // exit if user role not granted
-  if ($oS->type==='1' && (SUser::role()=='V' || SUser::role()=='U')) {
+  if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U') ) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
     exitPage(12, 'user-lock.svg'); //...
   }
-  if ($oS->type==='2' && SUser::role()=='V') {
+  if ( $oS->type==='2' && SUser::role()==='V' ) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
     exitPage(11, 'user-lock.svg'); //...
@@ -53,7 +53,7 @@ if ($q==='s' || $s>=0 ) {
 $oH->selfuri = getURI('order,dir');
 $strOrder = 'lastpostdate';
 $strDirec = 'desc';
-$strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)=='none' ) $strLastcol='0';
+$strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)==='none' ) $strLastcol='0';
 $intPage = 1;
 $intLimit = 0;
 if ( isset($_GET['page']) ) { $intPage = (int)$_GET['page']; $intLimit = ($intPage-1)*$_SESSION[QT]['items_per_page']; }
@@ -62,7 +62,7 @@ if ( isset($_GET['dir']) ) $strDirec = strtolower(substr($_GET['dir'], 0, 4));
 if ( isset($_GET['cid']) ) $intChecked = (int)strip_tags($_GET['cid']); // allow checking an id in edit mode
 if ( isset($_POST['cid']) ) $intChecked = (int)strip_tags($_POST['cid']);
 if ( !isset($_SESSION['EditByRows']) || !SUser::isStaff() ) $_SESSION['EditByRows'] = 0;
-if ( !isset($_SESSION[QT]['lastcolumn']) || $_SESSION[QT]['lastcolumn']=='none' ) $_SESSION[QT]['lastcolumn'] = 'default';
+if ( !isset($_SESSION[QT]['lastcolumn']) || $_SESSION[QT]['lastcolumn']==='none' ) $_SESSION[QT]['lastcolumn'] = 'default';
 $intChecked = -1; // allows checking an id when EditByRows (-1 means no check)
 $navCommands = '';
 $rowCommands = ''; // commands when EditByRows
@@ -71,16 +71,16 @@ $rowCommands = ''; // commands when EditByRows
 // SUBMITTED preferences and staff action
 // ---------
 
-if (isset($_POST['pref'])) {
-  if (in_array($_POST['pref'], array( 'n10', 'n25', 'n50', 'n100'))) $_SESSION[QT]['items_per_page'] = substr($_POST['pref'], 1, 3);
-  if ($_POST['pref']=='togglenewsontop') $_SESSION[QT]['news_on_top'] = $_SESSION[QT]['news_on_top'] ? '0' : '1';
-  if ($_POST['pref']=='toggleclosed') $_SESSION[QT]['show_closed'] = $_SESSION[QT]['show_closed'] ? '0' : '1';
+if ( isset($_POST['pref']) ) {
+  if ( in_array($_POST['pref'], array( 'n10', 'n25', 'n50', 'n100'))) $_SESSION[QT]['items_per_page'] = substr($_POST['pref'], 1, 3);
+  if ( $_POST['pref']==='togglenewsontop') $_SESSION[QT]['news_on_top'] = $_SESSION[QT]['news_on_top'] ? '0' : '1';
+  if ( $_POST['pref']==='toggleclosed') $_SESSION[QT]['show_closed'] = $_SESSION[QT]['show_closed'] ? '0' : '1';
 }
-if (isset($_POST['modaction']) && SUser::isStaff()) {
-  if ($_POST['modaction']=='nt') $oH->redirect('qtf_edit.php?s='.$s.'&a=nt', L('New_item')); //...
+if ( isset($_POST['modaction']) && SUser::isStaff() ) {
+  if ( $_POST['modaction']==='nt') $oH->redirect('qtf_edit.php?s='.$s.'&a=nt', L('New_item')); //...
   $_SESSION[QT]['lastcolumn'] = $_POST['modaction'];
 }
-if (isset($_POST['toggleedit']) && $_POST['toggleedit']==='1' && SUser::isStaff()) {
+if ( isset($_POST['toggleedit']) && $_POST['toggleedit']==='1' && SUser::isStaff() ) {
   $_SESSION['EditByRows'] = $_SESSION['EditByRows'] ? '0' : '1';
 }
 // change lastcolumn if a preference exists
@@ -95,7 +95,7 @@ $sqlFields .= 't.*,p.title,p.icon,p.id as postid,p.type as posttype,p.textmsg,p.
 $sqlFrom = ' FROM TABTOPIC t INNER JOIN TABPOST p ON t.firstpostid=p.id'; // warning: include only firstpostid (not the replies)
 $sqlWhere = ' WHERE t.forum'.($q==='s' ? '='.$s : '>=0');
   // In private section, show topics created by user himself
-  if ( $q==='s' && $oS->type==='2' && !SUser::isStaff()) $sqlWhere .= " AND (t.firstpostuser=".SUser::id()." OR (t.type='A' AND t.status='0'))";
+  if ( $q==='s' && $oS->type==='2' && !SUser::isStaff() ) $sqlWhere .= " AND (t.firstpostuser=".SUser::id()." OR (t.type='A' AND t.status='0'))";
 $sqlValues = array(); // list of values for the prepared-statements
 $sqlCount = "SELECT count(*) as countid FROM TABTOPIC t ".$sqlWhere;
 $sqlCountAlt='';
@@ -109,7 +109,7 @@ $forceShowClosed = $_SESSION[QT]['show_closed']==='0' && $st==='1';
 $sqlHideClosed = $_SESSION[QT]['show_closed']==='0' && !$forceShowClosed ? " AND t.status<>'1'" : ''; // User preference, hide closed items (not for advanced query having status specified)
 
 // Count topics & visible for current user ONLY
-if ( ($q=='s' && $oS->type!==2) || ( $q=='s' && SUser::isStaff()) ) {
+if ( ($q=='s' && $oS->type!==2) || ( $q==='s' && SUser::isStaff()) ) {
   // Using stats info ($_SectionsStats)
   $info = isset($_SectionsStats) ? $_SectionsStats : SMem::get('_SectionsStats');
   if ( !$forceShowClosed && !isset($info[$s]['itemsZ']) ) $info[$s]['itemsZ'] = $oDB->count(CSection::sqlCountItems($s,'items','1'));
@@ -132,7 +132,7 @@ if ( $q==='s' ) {
 $navCommands .= '<a class="button btn-search" href="'.Href('qtf_search.php').'?'.$oH->selfuri.'" title="'.L('Search').'">'.getSVG('search').'</a>';
 
 $strPaging = makePager( Href($oH->selfurl).'?'.$oH->selfuri, $intCount, (int)$_SESSION[QT]['items_per_page'], $intPage);
-if ($strPaging!='') $strPaging = L('Page').$strPaging;
+if ( $strPaging!='' ) $strPaging = L('Page').$strPaging;
 
 // MAP
 $bMap = false; // map is only used for user's location
@@ -186,8 +186,7 @@ switch($q) {
 
 // search options subtitle
 $pageSubtitle = '';
-if ( $q!=='s' )
-{
+if ( $q!=='s' ) {
   if ( $s>=0 ) $pageSubtitle = L('only_in_section').' &lsquo;'.CSection::translate($s).'&rsquo;';
   if ( $st!=='*' ) $pageSubtitle .= (empty($pageSubtitle) ? '' : ', ').L('status').' '.CTopic::getStatus($st);
 }
@@ -222,7 +221,7 @@ if ( $intCount===0 ) {
   echo '<div class="nav-top">'.$navCommands.'</div>'.PHP_EOL;
   echo '<p class="center" style="margin:1rem 0">'.L('No_result').'...</p>';
   if ( $oS->type==='2' && !SUser::isStaff() ) echo '<p class="center">'.L('Only_your_items').'</p>';
-  if ( $intCount ) echo '<p class="center">'.getSVG('exclamation-triangle').' '.L('Closed_item', $intCount).'. '.L('Closed_hidden_by_pref').' (<a href="javascript:void(0)" onclick="let d=document.getElementById(`pref`); if (d) {d.value=`toggleclosed`;doSubmit(`formPref`);}">'.L('show').' '.L('closed_items').'</a>).</p>';
+  if ( $intCount ) echo '<p class="center">'.getSVG('exclamation-triangle').' '.L('Closed_item', $intCount).'. '.L('Closed_hidden_by_pref').' (<a href="javascript:void(0)" onclick="let d=document.getElementById(`pref`); if ( d) {d.value=`toggleclosed`;doSubmit(`formPref`);}">'.L('show').' '.L('closed_items').'</a>).</p>';
   // alternate query
   $arg = 'q='.$q;
   if ( $q==='user' || $q==='kw' || $q==='adv' ) $arg .= '&v='.implode(';',$v).'&v2='.urlencode($v2);
@@ -240,13 +239,13 @@ $t = new TabTable('id=t1|class=t-item', $intCount);
   $t->thead();
   $t->tbody();
 // Define column headers (note: class are defined after)
-if ($_SESSION['EditByRows'])
+if ( $_SESSION['EditByRows'])
 $t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" name="t1-cb-all" id="t1-cb-all"/>');
 $t->arrTh['icon'] = new TabHead('&bull;', '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=icon&dir=asc">%s</a>');
 if ( $q!=='s' || ( $q==='s' && $oS->numfield!=='N' && $oS->numfield!=='' ) )
 $t->arrTh['numid'] = new TabHead(L('Ref'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=numid&dir=desc">%s</a>');
 $t->arrTh['title'] = new TabHead(L('Item+'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=title&dir=asc">%s</a>');
-if (!empty($q) && $s<0)
+if ( !empty($q) && $s<0)
 $t->arrTh['section'] = new TabHead(L('Section'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=section&dir=asc">%s</a>');
 $t->arrTh['firstpostname'] = new TabHead(L('Author'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=firstpostname&dir=asc">%s</a>');
 $t->arrTh['lastpostdate'] = new TabHead(L('Last_message'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=lastpostdate&dir=desc">%s</a>');
@@ -256,9 +255,9 @@ $t->arrTh[$strLastcol] = new TabHead(L(ucfirst($strLastcol)), '', '<a href="'.$o
 // add default class {c-$k}
 foreach(array_keys($t->arrTh) as $k) $t->arrTh[$k]->add('class', 'c-'.$k);
 // append class secondary
-foreach(['firstpostname','tags','views'] as $k) if (isset($t->arrTh[$k])) $t->arrTh[$k]->append('class', 'secondary');
+foreach(['firstpostname','tags','views'] as $k) if ( isset($t->arrTh[$k])) $t->arrTh[$k]->append('class', 'secondary');
 // append class ellipsis
-foreach(['firstpostname','lastpostdate','replies','views','id','status','section'] as $k) if (isset($t->arrTh[$k])) $t->arrTh[$k]->append('class', 'ellipsis');
+foreach(['firstpostname','lastpostdate','replies','views','id','status','section'] as $k) if ( isset($t->arrTh[$k])) $t->arrTh[$k]->append('class', 'ellipsis');
 // for each th, create td column and add the same class
 foreach(array_keys($t->arrTh) as $k) {
   $class = isset($t->arrTh[$k]->attr['class']) ? $t->arrTh[$k]->attr['class'] : 'c-'.$k;
@@ -266,7 +265,7 @@ foreach(array_keys($t->arrTh) as $k) {
 }
 
 // Edit mode
-if ($_SESSION['EditByRows']) {
+if ( $_SESSION['EditByRows']) {
 
   $rowCommands = '<a class="rowcommands" href="javascript:void(0)" data-action="itemsType">'.L('Type').'/'.L('Status').'</a>';
   $rowCommands .= ' &middot; <a class="rowcommands" href="javascript:void(0)" data-action="itemsTags">'.L('Tags').'</a>';
@@ -307,9 +306,9 @@ echo $rowCommands ? '<div id="t1-edits-top" class="left checkboxcmds">'.getSVG('
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // TABLE START DISPLAY
-if ($_SESSION['EditByRows']) {
+if ( $_SESSION['EditByRows']) {
   echo '<form id="form-items" method="post" action="'.Href('qtf_dlg.php').'">
-<input type="hidden" id="form-items-action" name="a" />
+<input type="hidden" id="form-items-action" name="a"/>
 <input type="hidden" name="uri" value="'.$oH->selfuri.'"/>
 ';
 }
@@ -359,7 +358,7 @@ while($row = $oDB->getRow()) {
   // prepare checkbox (edit mode)
   if ( $_SESSION['EditByRows'] ) {
     $bChecked = $row['id']==$intChecked;
-    if ($row['posttype']==='P') $t->arrTd['checkbox']->content = '<input type="checkbox" name="t1-cb[]" id="t1-cb-'.$row['id'].'" value="'.$row['id'].'"'.($bChecked ? 'checked' : '').' data-row="'.$intRow.'"/>';
+    if ( $row['posttype']==='P') $t->arrTd['checkbox']->content = '<input type="checkbox" name="t1-cb[]" id="t1-cb-'.$row['id'].'" value="'.$row['id'].'"'.($bChecked ? 'checked' : '').' data-row="'.$intRow.'"/>';
   }
   // show row content
   echo $t->getTDrow('id=t1-tr-'.$row['id'].'|class=t-item hover rowlight');
@@ -374,12 +373,12 @@ while($row = $oDB->getRow()) {
 echo $t->tbody->end();
 echo $t->end();
 
-if (SUser::isStaff() && !empty($_SESSION['EditByRows'])) echo '</form>'.PHP_EOL;
+if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) echo '</form>'.PHP_EOL;
 
 // BUTTON LINE AND PAGER
 $strCsv = '';
-if (SUser::isStaff() && !empty($_SESSION['EditByRows'])) $strCsv .= '<a id="cmd-export-selected" class="csv" href="javascript:void(0)" title="'.L('H_Csv').' ('.L('selected').')">'.L('Export').getSVG('check-square').'</a> &middot; ';
-$strCsv .= SUser::role()=='V' ? '' : htmlCsvLink(Href('qtf_items_csv.php').'?'.$oH->selfuri, $intCount, $intPage);
+if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) $strCsv .= '<a id="cmd-export-selected" class="csv" href="javascript:void(0)" title="'.L('H_Csv').' ('.L('selected').')">'.L('Export').getSVG('check-square').'</a> &middot; ';
+$strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(Href('qtf_items_csv.php').'?'.$oH->selfuri, $intCount, $intPage);
 echo '<div id="tablebot" class="table-ui bot">';
 echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.getSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
@@ -397,7 +396,7 @@ if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && count($arrTags)>0 ) {
 }
 
 // Post-compute user's replied items (for topics having replies). Result is added using js.
-if (QT_LIST_ME && count($arrRe)>0 && (int)SUser::getInfo('numpost',0)>0) {
+if ( QT_LIST_ME && count($arrRe)>0 && (int)SUser::getInfo('numpost',0)>0 ) {
   $arr = array();
   $oDB->query( "SELECT topic,issuedate FROM TABPOST WHERE type='R' AND userid=".SUser::id()." AND topic IN (".implode(',', $arrRe).")" );
   while($row = $oDB->getRow())

@@ -94,7 +94,7 @@ function emptyFloat($i)
   // Return true when $i is empty or a value starting with '0.000000'
   if ( empty($i) ) return true;
   if ( !is_string($i) && !is_float($i) && !is_int($i) ) die('emptyFloat: Invalid argument #1, must be a float, int or string');
-  if ( substr((string)$i,0,8)=='0.000000' ) return true;
+  if ( substr((string)$i,0,8)==='0.000000' ) return true;
   return false;
 }
 
@@ -398,38 +398,42 @@ function makePager(string $uri, int $count, int $intPagesize=50, int $currentpag
   return $firstpage.$strPages.$lastpage;
 }
 
-function toCsv($str, string $quote='"',string $quoteAlt="'", string $sep=';', string $null='""')
+function toCsv($val, string $quote='"',string $quoteAlt="'", string $sep=';', string $null='""')
 {
   // Works recursively with an array
-  // Note: null value becomes "" by default, boolean becomes 0 or 1
   // Note: Value can be null, string, bool, int or float (cannot be an object)
-  if ( is_array($str) ) { $arr = []; foreach($str as $v) $arr[] = toCsv($v,$quote,$quoteAlt,$sep,$null); return implode($sep,$arr); }
-  if ( is_int($str) || is_float($str) ) return $str;
-  if ( $str==='' ) return $quote.$quote;
-  if ( is_bool($str)) return (int)$str;
-  if ( is_null($str) ) return $null;
-  if ( !is_string($str) ) die('toCsv: invalid argument');
-  $str = str_replace("\r\n",' ',$str);
-  if ( strpos($str,'&')!==false ) {
-    $str = str_replace('&nbsp;',' ',$str);
-    $str = CDatabase::sqlDecode($str);
+  // Note: null value becomes "" by default, boolean becomes 0|1
+  if ( is_array($val) ) {
+    $arr = [];
+    foreach($val as $v) $arr[] = toCsv($v,$quote,$quoteAlt,$sep,$null);
+    return implode($sep,$arr);
   }
-  $str = str_replace($quote,$quoteAlt,$str);
-  return $quote.$str.$quote;
+  if ( is_int($val) || is_float($val) ) return $val;
+  if ( $val==='' ) return $quote.$quote;
+  if ( is_bool($val) ) return (int)$val;
+  if ( is_null($val) ) return $null;
+  if ( !is_string($val) ) die('toCsv: invalid argument');
+  $val = str_replace("\r\n",' ',$val);
+  if ( strpos($val,'&')!==false ) {
+    $val = str_replace('&nbsp;',' ',$val);
+    $val = CDatabase::sqlDecode($val);
+  }
+  $val = str_replace($quote,$quoteAlt,$val);
+  return $quote.$val.$quote;
 }
 
 function sqlLimit(string $state, string $order='id', int $start=0, int $length=50)
 {
   if ( empty($order) ) die('sqlLimit: invalid argument'); // order is required with limit
   global $oDB;
-  $order = trim($order); if ( strtolower(substr($order,-3,3))!='asc' && strtolower(substr($order,-4,4))!='desc' ) $order .= ' asc';
+  $order = trim($order); if ( strtolower(substr($order,-3,3))!=='asc' && strtolower(substr($order,-4,4))!=='desc' ) $order .= ' asc';
   switch($oDB->type)
   {
   case 'mysql':
   case 'pdo.mysql': return "SELECT $state ORDER BY $order LIMIT $start,$length"; break;
   case 'sqlsrv':
   case 'pdo.sqlsrv':
-    if ($start==0 ) return "SELECT TOP $length $state ORDER BY $order";
+    if ( $start==0 ) return "SELECT TOP $length $state ORDER BY $order";
     return "SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY $order) AS rownum, $state) AS orderrows WHERE rownum BETWEEN ".($start+1)." AND ".($start+$length)." ORDER BY rownum )"; break;
   case 'pdo.pg':
   case 'pg': return "SELECT $state ORDER BY $order LIMIT $length OFFSET $start"; break;
@@ -460,7 +464,7 @@ function sqlFirstChar(string $field, string $case='u', int $len=1)
       if ( $case==='u' ) return "UPPER(SUBSTRING($field FROM 1 FOR $len))";
       if ( $case==='l' ) return "LOWER(SUBSTRING($field FROM 1 FOR $len))";
       if ( $case==='~' ) return "UPPER($field) !~ '^[A-Z]'";
-      if (empty($case) ) return "SUBSTRING($field FROM 1 FOR $len)";
+      if ( empty($case) ) return "SUBSTRING($field FROM 1 FOR $len)";
       break;
     case 'pdo.sqlite':
     case 'sqlite':

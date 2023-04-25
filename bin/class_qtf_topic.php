@@ -190,7 +190,7 @@ public static function tagsClear($str, bool $dropDuplicate=true)
   {
     $str=trim($str);
     if ( empty($str) || $str==='*' ) continue; // '*' can be alone, but not inside other tags
-    if ($dropDuplicate && in_array(strtolower($str),$arrClearLC)) continue;
+    if ( $dropDuplicate && in_array(strtolower($str),$arrClearLC)) continue;
     $arrClear[]=$str;
     $arrClearLC[]=strtolower($str);
   }
@@ -200,7 +200,7 @@ public function tagsUpdate()
 {
   global $oDB;
   if ( empty($this->descr) || $this->descr==';' ) $this->descr='';
-  if ( !empty($this->descr) && substr($this->descr,-1,1)==';' ) $this->descr = substr($this->descr,0,-1);
+  if ( !empty($this->descr) && substr($this->descr,-1,1)===';' ) $this->descr = substr($this->descr,0,-1);
   $oDB->exec( "UPDATE TABTOPIC SET tags=?,modifdate=? WHERE id=".$this->id, [qtAttr($this->descr),date('Ymd His')] ); // no doublequote
 }
 public function tagsAdd(string $str, $oS=false)

@@ -7,7 +7,7 @@ function readTagsFile(string $file, bool $lower=false)
   if ( $h=fopen($file,'r') ) {
     while( ($r=fgetcsv($h,500,';'))!==false )
     {
-      $key = isset($r[0]) ? trim($lower ? strtolower($r[0]) : $r[0]) : ''; if (empty($key) ) continue;
+      $key = isset($r[0]) ? trim($lower ? strtolower($r[0]) : $r[0]) : ''; if ( empty($key) ) continue;
       $val = isset($r[1]) ? trim($r[1]) : '';
       $arr[$key] = $val;
     }

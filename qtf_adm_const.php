@@ -31,7 +31,7 @@ echo '<table class="t-conf const">'.PHP_EOL;
 foreach($arr as $k=>$v)
 {
   if ( $k==='QT_HASHKEY' ) continue;
-  if ( substr($k,0,3)=='QT_' ) echo '<tr><th>'.$k.'</th><td>'.constToString($v).'</td></tr>'.PHP_EOL;
+  if ( substr($k,0,3)==='QT_' ) echo '<tr><th>'.$k.'</th><td>'.constToString($v).'</td></tr>'.PHP_EOL;
 }
 echo '</table>'.PHP_EOL;
 

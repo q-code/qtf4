@@ -50,7 +50,7 @@ define( 'FORMATTIME', empty($_SESSION[QT]['formattime']) ? 'G:i' : $_SESSION[QT]
 define( 'QT_BBC',  empty($_SESSION[QT]['bbc']) ? 0 : (int)$_SESSION[QT]['bbc'] );
 if ( empty($_SESSION[QT]['language']) ) $_SESSION[QT]['language'] = 'en'; // default setting (fallback for language change)
 if ( empty($_SESSION[QT]['skin_dir']) ) $_SESSION[QT]['skin_dir'] = 'skin/default/';
-if ( substr($_SESSION[QT]['skin_dir'],0,5)!='skin/' ) $_SESSION[QT]['skin_dir'] = 'skin/'.$_SESSION[QT]['skin_dir'];
+if ( substr($_SESSION[QT]['skin_dir'],0,5)!=='skin/' ) $_SESSION[QT]['skin_dir'] = 'skin/'.$_SESSION[QT]['skin_dir'];
 if ( substr($_SESSION[QT]['skin_dir'],-1)!=='/' ) $_SESSION[QT]['skin_dir'].='/'; // final / is required (v4.0)
 
 // User changes language

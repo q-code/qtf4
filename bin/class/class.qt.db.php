@@ -249,14 +249,14 @@ public function query(string $sql, array $sqlValues=[])
     case 'pdo.pg':
     case 'pdo.sqlite':
     case 'pdo.oci':
-      $this->qry = $this->con->prepare($sql); // if ($this->qry ===false) throw new Exception('Preparation failed');
+      $this->qry = $this->con->prepare($sql); // if ( $this->qry ===false) throw new Exception('Preparation failed');
       $this->qry->execute($sqlValues); //returns false if failed
       break; // warning this->qry is now a PDOstatement object
-    case 'mysql':  $sql = $this->sqlPrepare($sql,$sqlValues); if ($sql===false) throw new Exception($this->error); $this->qry = mysql_query($sql,$this->con); break;
-    case 'sqlsrv': $sql = $this->sqlPrepare($sql,$sqlValues); if ($sql===false) throw new Exception($this->error); $this->qry = sqlsrv_query($this->con,$sql); break;
-    case 'pg':     $sql = $this->sqlPrepare($sql,$sqlValues); if ($sql===false) throw new Exception($this->error); $this->qry = pg_query($this->con,$sql); break;
-    case 'sqlite': $sql = $this->sqlPrepare($sql,$sqlValues); if ($sql===false) throw new Exception($this->error); $this->qry = sqlite_query($this->con,$sql); break;
-    case 'oci':    $sql = $this->sqlPrepare($sql,$sqlValues); if ($sql===false) throw new Exception($this->error); $this->qry = oci_parse($this->con,$sql); oci_execute($this->qry); break;
+    case 'mysql':  $sql = $this->sqlPrepare($sql,$sqlValues); if ( $sql===false) throw new Exception($this->error); $this->qry = mysql_query($sql,$this->con); break;
+    case 'sqlsrv': $sql = $this->sqlPrepare($sql,$sqlValues); if ( $sql===false) throw new Exception($this->error); $this->qry = sqlsrv_query($this->con,$sql); break;
+    case 'pg':     $sql = $this->sqlPrepare($sql,$sqlValues); if ( $sql===false) throw new Exception($this->error); $this->qry = pg_query($this->con,$sql); break;
+    case 'sqlite': $sql = $this->sqlPrepare($sql,$sqlValues); if ( $sql===false) throw new Exception($this->error); $this->qry = sqlite_query($this->con,$sql); break;
+    case 'oci':    $sql = $this->sqlPrepare($sql,$sqlValues); if ( $sql===false) throw new Exception($this->error); $this->qry = oci_parse($this->con,$sql); oci_execute($this->qry); break;
     default:       die('db_type ['.$this->type.'] not supported.');
     }
   }
@@ -335,7 +335,7 @@ public function exec(string $sql, array $sqlValues=[])
     if ( $this->singlequote && strpos($sql,'"')!==false ) $sql = str_replace('"',"'",$sql);
     if ( $this->debug===true ) echo '<p style="padding:2px;background-color:#fff;color:#1364B7;font-size:9pt;font-weight:normal;font-family:Verdana,Arial">Exec prepared: ['.implode(' ',array_map(function($k,$v){return $k.'='.$v;},array_keys($sqlValues),$sqlValues)).'] '.($this->debugForStaffOnly && !$this->userisstaff ? '...you must be staff member to see the statement' : $sql).'</p>';
     if ( $this->debug==='log' ) { global $oH; $oH->log[] = 'Exec prepared: ['.implode(' ',array_map(function($k,$v){return $k.'='.$v;},array_keys($sqlValues),$sqlValues)).'] '.($this->debugForStaffOnly && !$this->userisstaff ? '...you must be staff member to see the statement' : $sql); }
-    $this->qry = $this->con->prepare($sql); // if ($this->qry ===false) throw new Exception('Preparation failed');
+    $this->qry = $this->con->prepare($sql); // if ( $this->qry ===false) throw new Exception('Preparation failed');
     return $this->qry->execute($sqlValues); // CAUTION: returns true or false (no number of affect rows!)
   }
   catch(PDOException $e)
@@ -447,7 +447,7 @@ private function halt($e, string $sql='', bool $echo=true)
     $this->error = 'Database error';
   }
   if ( $echo ) echo '<p style="padding:2px;background-color:#fff;color:#CC0000;font-size:9pt;font-weight:normal;font-family:Verdana,Arial">'.$this->error.($this->userisstaff ? '<br>'.$sql : '').'</p>';
-  if ( $sql=='CDatabase::connect' ) die( '<p style="padding:2px;background-color:#fff;color:#444;font-size:9pt;font-weight:normal;font-family:Verdana,Arial">Please contact the webmaster for further information.<br>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database.</p>' );
+  if ( $sql=='CDatabase::connect' ) die('<p style="padding:2px;background-color:#fff;color:#444;font-size:9pt;font-weight:normal;font-family:Verdana,Arial">Please contact the webmaster for further information.<br>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database.</p>' );
   if ( $this->throwexception ) throw new Exception('[halt]');
 }
 private function addErrorInfo()

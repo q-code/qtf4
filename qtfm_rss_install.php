@@ -39,7 +39,7 @@ if ( isset($_SESSION[QT]['m_rss_conf']) ) unset($_SESSION[QT]['m_rss_conf']);
 
 // STEP 0: check version
 
-$strQTF = VERSION; if ( substr(VERSION,0,1)=='v') $strQTF = substr(VERSION,1);
+$strQTF = VERSION; if ( substr(VERSION,0,1)==='v') $strQTF = substr(VERSION,1);
 $arrQTF = explode('.',$strQTF);
 if ( intval($arrQTF[0])<2 ) $oH->error="Your QuickTalk version is $strQTF. Please, upgrade to QuickTalk 3.0 before installing this module...";
 if ( !empty($oH->error) ) $bStep0 = false;

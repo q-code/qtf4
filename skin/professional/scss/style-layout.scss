@@ -14,7 +14,7 @@ input:-webkit-autofill::first-line{font-family:var(--font) !important} /* specia
 /* site margins */
 #site, footer{margin:1vw 2vw}
 #site:has(header[data-layout="0"]){margin-top:0.5vw}
-@media screen and (min-width:1240px){
+@media screen and (min-width:1280px){
   #site, footer{margin:10px auto;width:1200px}
 }
 @media screen and (max-width:840px){
@@ -80,7 +80,7 @@ main{background-color:#fff;border:4px solid var(--bgbanner)}
 @media print{ main{border-width:2px} }
 /* padding */
 main>div{padding:1vw 2vw}
-@media screen and (min-width:1240px){ main>div{padding:14px 28px} }
+@media screen and (min-width:1280px){ main>div{padding:14px 28px} }
 /* style */
 #main-hd{display:flex;justify-content:space-between;align-items:center}
   #ct-title{margin:0 0 15px 0}

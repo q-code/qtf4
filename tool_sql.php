@@ -57,7 +57,7 @@ if ( isset($_POST['ok']) )
   $q = trim($q);
   $oDB->debug = 'log';
   $oDB->query( $q );
-  if ( strtoupper(substr($q,0,6))=='SELECT' )
+  if ( strtoupper(substr($q,0,6))==='SELECT' )
   {
     echo '<table id="sqldump">';
     $i=0;

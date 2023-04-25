@@ -14,16 +14,23 @@ a.page.current{background-color:#eee;color:var(--c);text-decoration:none;cursor:
 a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
 a.page.last{border-radius:0 3px 3px 0}
 
+/* SPECIFIC */
+.strongbox{padding:0.6rem;background-color:#666;color:#EEE;box-shadow:-2px 2px 5px #BBB}
+.strongbox .title{margin-bottom:0.5rem;font-weight:700}
+#participants{width:200px}
+  #participants table{table-layout:fixed;width:100%}
+  #participants td:first-child{width:75%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  #participants td{padding:1px 0}
+  #participants a{color:#EEE}
+  #participants a:hover{color:#FFF}
+.add-user{width:300px;margin:0 0 20px 0;text-align:right}
+  .add-user input[type=text], .add-user input[type=email]{width:85%}
+  .add-user button[type=submit]{background-color:#DDD;color:#000;border:none;opacity:0.8}
+  .add-user button[type=submit]:hover{opacity:1}
+  .add-user p:last-of-type{margin-bottom:0}
+@media screen and (min-width:1280px){#participants{width:220px} .add-user{width:330px}}
+
 /* MEMBERLIST PROFILE */
-#participants{min-width:200px;max-width:300px;padding:8px;background-color:#777;color:#FFF;box-shadow:-2px 2px 5px #BBB}
-#participants .title{margin-bottom:0.3rem;font-weight:bold;font-size:1.1rem}
-#participants td{padding:2px 0}
-#participants a{color:#FFF;text-decoration:none}
-#participants a:hover{text-decoration:underline}
-#tgl-container.adduser{min-width:300px;max-width:375px;margin:0 0 20px 0;padding:10px;background-color:#777;color:#FFF;border:none;border-radius:0;box-shadow:-3px 3px 4px #CCC;text-align:right}
-#tgl-container.adduser i.label{color:white}
-#tgl-container.adduser input[type=submit]{background-color:#DDD;color:#000;opacity:0.8}
-#tgl-container.adduser input[type=submit]:hover{cursor:pointer}
 .t-profile{margin:0 0 10px 0}
 .t-profile th{padding:5px;width:150px;color:#555}
 .t-profile td{padding:5px;border-bottom:solid 1px #d0d0d0}
