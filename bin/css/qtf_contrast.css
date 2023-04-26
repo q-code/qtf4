@@ -71,12 +71,12 @@ footer a{color:#bbb} footer a:hover{color:#FFF}
 /* BUTTON */
 button,
 a.button,
-button.tag-btn,
+.tag-btn,
 .post-cmd a.button{opacity:1;background-color:var(--bgbtn);color:var(--c);border:1px solid #388cdf;border-radius:5px;text-decoration:none;text-shadow:none}
 button:hover, button:focus,
 a.button:hover, a.button:focus,
 .post-cmd a.button:hover, .post-cmd a.button:focus,
-button.tag-btn:hover, button.tag-btn:focus{background-color:var(--bgbtn);color:var(--a);border:1px solid var(--ah)}
+.tag-btn:hover, .tag-btn:focus{background-color:var(--bgbtn);color:var(--a);border:1px solid var(--ah)}
 button.disabled, a.button.disabled{opacity:0.8;color:#AAA}
 a.bbc{color:var(--c);border:1px solid #ccc;background-color:transparent}
 a.bbc:hover{color:var(--ah);border:1px solid var(--ah);background-color:var(--bgbtn)}
@@ -92,8 +92,8 @@ a.bbc:hover{color:var(--ah);border:1px solid var(--ah);background-color:var(--bg
 .msgboxbody img.ico{background-color:#999;padding:5px;border-radius:50%}
   fieldset.register{border-color:#00ffff}
   fieldset.register legend{color:#00ffff}
-div.tagbox{border-color:#ddd}
-div.tagbox p{color:#ccc}
+.tag-box{border-color:#ddd}
+.tag-box p{color:#ccc}
 .msgboxbody p.list small {color:#ccc}
 
 /* TAB PANELS (inherit base style) */

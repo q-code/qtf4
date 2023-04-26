@@ -1,29 +1,24 @@
 function acSplit(val) { return val.split( ";" ); }
 function acExtractLast(term) { return acSplit( term ).pop().replace(/^\s+/g,"").replace(/\s+$/g,""); }
-
-let focusInput = null;
-let multiInput = false;
-
-function onInputChange(e) {
+function acInputChange(e) {
   // identify control
   focusInput = e.target;
   multiInput = focusInput.dataset.multi ? true : false;
   // minimum length to trigger auto-complete search is 2, unless a "minlength" value exists in the <input> control
   const minInputLength = focusInput.minLength>0 ? focusInput.minLength : 2;
   // clear and check
-  removeAutocompleteDropdown(focusInput.id);
+  acRemoveDropdown(focusInput.id);
   const value = multiInput ? acExtractLast(e.target.value.toLowerCase()) : e.target.value.toLowerCase();
   if ( value.length<minInputLength ) return;
   // query the url build by the function acUrlConfig(method,value) [ must be defined in the application! ] Note: here the method is just the id of the input
   fetch( acUrlConfig(focusInput.id,value) )
   .then( response => response.json() )
   .then( data => {
-    createAutocompleteDropdown(data);
+    acCreateDropdown(data);
     } )
   .catch( err => console.log(err) );
 }
-
-function onButtonClick(e) {
+function acButtonClick(e) {
   e.preventDefault();
   const btn = e.target.nodeName=='SPAN' ? e.target.parentNode : e.target;
   if ( multiInput ) {
@@ -36,16 +31,14 @@ function onButtonClick(e) {
     focusInput.value = btn.value;
   }
   if ( typeof acOnClicks==='object' && Object.keys(acOnClicks).includes(focusInput.id) ) acOnClicks[focusInput.id](focusInput,btn);
-  removeAutocompleteDropdown(focusInput.id);
+  acRemoveDropdown(focusInput.id);
   focusInput.focus();
 }
-
-function removeAutocompleteDropdown(id) {
+function acRemoveDropdown(id) {
   const listEl = document.getElementById('ac-list-'+id);
   if ( listEl ) listEl.remove();
 }
-
-function createAutocompleteDropdown(responses) {
+function acCreateDropdown(responses) {
   const drop = document.createElement('ul'); drop.className = 'ac-list'; drop.id = 'ac-list-'+focusInput.id;
   responses.forEach( (response) => {
     const buttons = document.createElement('li');
@@ -55,22 +48,24 @@ function createAutocompleteDropdown(responses) {
     button.className = 'li-button';
     const sep = response.rItem==='' || response.rItem.endsWith(' ') || response.rInfo==='' ? '' : ' &middot; ';
     button.innerHTML = `<span class="jvalue">${response.rItem}</span>${sep}<span class="jinfo">${response.rInfo}</span>`;
-    button.addEventListener('click', onButtonClick);
+    button.addEventListener('click', acButtonClick);
     buttons.appendChild(button);
     drop.appendChild(buttons);
   });
   document.getElementById('ac-wrapper-'+focusInput.id).appendChild(drop);
 }
 
+let focusInput = null;
+let multiInput = false;
 const wrappers = document.querySelectorAll(".ac-wrapper");
 wrappers.forEach( (wrapper) => {
   const id = wrapper.id.substring(11);
   const input = document.getElementById(id);
   if ( input ) {
-    input.addEventListener('input', onInputChange);
+    input.addEventListener('input', acInputChange);
     input.addEventListener('focusout', (e) => {
       if ( e.relatedTarget && e.relatedTarget.className=='li-button' ) return;
-      removeAutocompleteDropdown(id);
+      acRemoveDropdown(id);
     });
   }
 } );

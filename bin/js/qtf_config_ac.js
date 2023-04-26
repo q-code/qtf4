@@ -1,4 +1,4 @@
-const acUrlConfig = function(method,value) {
+function acUrlConfig(method,value) {
   let url = 'bin/srv_query.php?q='+method;
   let dir;
   let lang;

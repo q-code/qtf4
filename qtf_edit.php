@@ -375,17 +375,17 @@ if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P')
   }
   if ( $tagEditor )
   {
-    $arr = explode(';',$oT->descr);
-    foreach($arr as $k=>$item) $arr[$k] = empty($item) ? '' : '<span class="tag" onclick="tagClick(this.innerHTML)">'.$item.'</span>';
+    $tags = '';
+    foreach(explode(';',$oT->descr) as $k=>$item) $tags .= empty($item) ? '' : '<span class="tag" onclick="tagClick(this.innerHTML)">'.$item.'</span>';
     echo '<div class="tags right" style="padding:4px 0">'.getSVG('tag'.(count($arrTags)>1 ? 's' : ''), 'title='.L('Tags'));
     echo ' <div id="tag-container" style="display:inline-block">';
-    echo '<div id="tag-shown" style="display:inline-block">'.implode(' ',$arr).'</div> ';
-    echo '<input type="hidden" id="tag-saved" value="'.qtAttr($oT->descr).'"/>
-    <input type="hidden" id="tag-new" name="tag-new" maxlength="255" value="'.qtAttr($oT->descr).'"/>
-    <input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/><input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
-    echo '<div id="ac-wrapper-tag-edit" class="ac-wrapper"><div style="display:flex;align-items:center">';
-    echo '<input type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" autocomplete="off" data-multi="1"/><button class="tag-btn" title="'.L('Reset').'" onclick="qtFocusAfter(`tag-edit`,true); return false;">'.getSVG('backspace').'</button>&nbsp;<button type="button" name="tag-btn" class="tag-btn" value="addtag" title="'.L('Add').'" onclick="tagAdd()">'.getSVG('plus').'</button><button type="button" name="tag-btn" class="tag-btn" value="deltag" title="'.L('Delete_tags').'" onclick="tagDel()">'.getSVG('minus').'</button>';
-    echo '</div></div>';
+    echo '<span id="tag-shown" style="display:inline-block">'.$tags.'</span>';
+    echo '<input type="hidden" id="tag-saved" value="'.qtAttr($oT->descr).'"/>';
+    echo '<input type="hidden" id="tag-new" name="tag-new" maxlength="255" value="'.qtAttr($oT->descr).'"/>';
+    echo '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/><input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
+    echo '<div id="ac-wrapper-tag-edit" class="ac-wrapper">';
+    echo '<input type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" autocomplete="off" data-multi="1"/><button type="reset" class="tag-btn" title="'.L('Reset').'" onclick="document.getElementById(`tag-edit`).value=``;qtFocus(`tag-edit`)">'.getSVG('backspace').'</button>&nbsp;<button type="button" name="tag-btn" class="tag-btn" value="addtag" title="'.L('Add').'" onclick="tagAdd()">'.getSVG('plus').'</button><button type="button" name="tag-btn" class="tag-btn" value="deltag" title="'.L('Delete_tags').'" onclick="tagDel()">'.getSVG('minus').'</button>';
+    echo '</div>';
     echo '</div></div>'.PHP_EOL;
   }
 }

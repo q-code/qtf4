@@ -143,13 +143,13 @@ case 'itemsTags':
   if ( !SUser::isStaff() ) die('Access denied');
 
   // SUBMITTED
-  if ( isset($_POST['tag-btn']) && !empty($_POST['tag-edit']) )
+  if ( isset($_POST['tag-ok']) && !empty($_POST['tag-edit']) )
   {
     // update status
     foreach($ids as $id) {
       $oT = new CTopic($id);
-      if ( $_POST['tag-btn']==='addtag' ) $oT->tagsAdd($_POST['tag-edit']);
-      if ( $_POST['tag-btn']==='deltag' ) $oT->tagsDel($_POST['tag-edit']);
+      if ( $_POST['tag-ok']==='addtag' ) $oT->tagsAdd($_POST['tag-edit']);
+      if ( $_POST['tag-ok']==='deltag' ) $oT->tagsDel($_POST['tag-edit']);
     }
     // exit
     $_SESSION[QT.'splash'] = L('S_update');
@@ -157,35 +157,28 @@ case 'itemsTags':
 
   // FORM (default type/status is U=unchanged)
   $frm_title = L('Change').' '.L('tags');
-  $frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+  $frm[] = '<form method="post" action="'.Href($oH->selfuri).'" autocomplete="off">';
   $frm[] = '<article>';
-  $frm[] = '<p>'.L('Item+').':</p>';
-  $frm[] = renderItems($ids,true);
+  $frm[] = '<p>'.L('Item+').':</p>'.renderItems($ids,true);
   $frm[] = '</article>';
   $frm[] = '<article>';
-  $frm[] = '<p>'.L('Used_tags').':</p>';
-  $frm[] = '<p>'.implode('',ListTags($ids)).'</p>';
+  $frm[] = '<p>'.L('Used_tags').':</p><p>'.implode('',ListTags($ids)).'</p>';
   $frm[] = '</article>';
   $frm[] = '<article>';
-  $frm[] = '<p class="row-confirm">'.L('Change').' '.L('item',count($ids)).':</p>
-  <div id="ac-wrapper-tag-edit" class="ac-wrapper">
-  <div style="display:flex;align-items:center">
-  <input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/>
-  <input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>
-  <input required type="text" id="tag-edit" name="tag-edit" size="15" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/>
-  <button class="tag-btn" title="'.L('Reset').'" onclick="qtFocusAfter(`tag-edit`,true); return false;">'.getSVG('backspace').'</button>&nbsp;
-  <button type="submit" name="tag-btn" class="tag-btn" value="addtag" title="'.L('Add').'">'.getSVG('plus').'</button>
-  <button type="submit" name="tag-btn" class="tag-btn" value="deltag" title="'.L('Delete_tags').'">'.getSVG('minus').'</button>
-  </div>
-  </div>';
+  $frm[] = '<p class="row-confirm">'.L('Change').' '.L('item',count($ids)).':</p>';
+  $frm[] = '<div id="ac-wrapper-tag-edit" class="ac-wrapper">';
+  $frm[] = '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/>';
+  $frm[] = '<input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
+  $frm[] = '<input required type="text" id="tag-edit" name="tag-edit" size="15" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/><button type="reset" class="tag-btn" title="'.L('Reset').'" onclick="qtFocus(`tag-edit`)">'.getSVG('backspace').'</button>&nbsp;<button type="submit" name="tag-ok" class="tag-btn" value="addtag" title="'.L('Add').'">'.getSVG('plus').'</button><button type="submit" name="tag-ok" class="tag-btn" value="deltag" title="'.L('Delete_tags').'">'.getSVG('minus').'</button>';
+  $frm[] = '</div>';
   $frm[] = '</article>';
   $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.Href($oH->exiturl).'\';">'.L('Cancel').'</button></p>';
   $frm[] = '<input type="hidden" name="ids" value="'.$strIds.'"/><input type="hidden" name="uri" value="'.$parentUri.'"/>';
   $frm[] = '</form>';
   $oH->scripts['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" id="tagdesc" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
   $oH->scripts['tags'] = '<script type="text/javascript" src="bin/js/qt_tags.js"></script>';
-  $oH->scripts['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script>
-  <script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
+  $oH->scripts['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
+  $oH->scripts[] = 'qtFocus(`tag-edit`);';
 
   break; //=======
 
