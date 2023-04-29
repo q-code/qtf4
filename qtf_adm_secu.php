@@ -111,8 +111,8 @@ if ( isset($_POST['ok']) ) try {
 
   $format = qtExplode('mime=0;width=100;height=100'); //default values
   if ( !empty($_POST['mime']) ) $format['mime']   = $_POST['mime'];
-  if ( !empty($_POST['maxw']) ) $format['width']  = $_POST['maxw']; if ( !QTisbetween($format['width'],20,200) ) $format['width']='100';
-  if ( !empty($_POST['maxh']) ) $format['height'] = $_POST['maxh']; if ( !QTisbetween($format['height'],20,200) ) $format['height']='100';
+  if ( !empty($_POST['maxw']) ) $format['width']  = $_POST['maxw']; if ( !qtIsBetween($format['width'],20,200) ) $format['width']='100';
+  if ( !empty($_POST['maxh']) ) $format['height'] = $_POST['maxh']; if ( !qtIsBetween($format['height'],20,200) ) $format['height']='100';
   $_SESSION[QT]['formatpicture'] = qtImplode($format,';'); $oDB->updSetting('formatpicture');
 
   // upload
@@ -120,7 +120,7 @@ if ( isset($_POST['ok']) ) try {
   $oDB->updSetting('upload');
   if ( $_SESSION[QT]['upload']!=='0' && isset($_POST['uploadsize']) ) {
     $i = (int)trim($_POST['uploadsize']);
-    if ( !QTisbetween($i,1,QT_UPLOAD_MAXSIZE) ) throw new Exception( L('Allow_upload').' '.L('invalid').' (1-'.QT_UPLOAD_MAXSIZE.' Mb)' );
+    if ( !qtIsBetween($i,1,QT_UPLOAD_MAXSIZE) ) throw new Exception( L('Allow_upload').' '.L('invalid').' (1-'.QT_UPLOAD_MAXSIZE.' Mb)' );
     $_SESSION[QT]['upload_size'] = (string)($i*1024);
     $oDB->updSetting('upload_size');
   }
@@ -134,19 +134,19 @@ if ( isset($_POST['ok']) ) try {
   $_SESSION[QT]['tags']=$_POST['tags'];
   $oDB->updSetting('tags');
 
-  $i = (int)trim($_POST['ppt']); if ( !QTisbetween($i,50,1000) ) throw new Exception( L('Max_replies_per_items').' '.L('invalid').' (10-999)' );
+  $i = (int)trim($_POST['ppt']); if ( !qtIsBetween($i,50,1000) ) throw new Exception( L('Max_replies_per_items').' '.L('invalid').' (10-999)' );
   $_SESSION[QT]['posts_per_item'] = (string)$i;
   $oDB->updSetting('posts_per_item');
 
-  $i = (int)trim($_POST['cpp']); if ( !QTisbetween($i,1,MAX_K) ) throw new Exception( L('Max_char_per_post').' '.L('invalid').' (1-'.MAX_K.')' );
+  $i = (int)trim($_POST['cpp']); if ( !qtIsBetween($i,1,MAX_K) ) throw new Exception( L('Max_char_per_post').' '.L('invalid').' (1-'.MAX_K.')' );
   $_SESSION[QT]['chars_per_post'] = (string)($i*1000);
   $oDB->updSetting('chars_per_post');
 
-  $i = (int)trim($_POST['lpp']); if ( !QTisbetween($i,50,1000) ) throw new Exception( L('Max_line_per_post').' '.L('invalid').' (10-999)' );
+  $i = (int)trim($_POST['lpp']); if ( !qtIsBetween($i,50,1000) ) throw new Exception( L('Max_line_per_post').' '.L('invalid').' (10-999)' );
   $_SESSION[QT]['lines_per_post'] = (string)$i;
   $oDB->updSetting('lines_per_post');
 
-  $i = (int)trim($_POST['ppd']); if ( !QTisbetween($i,50,1000) ) throw new Exception( L('Max_post_per_user').' '.L('invalid').' (1-999)' );
+  $i = (int)trim($_POST['ppd']); if ( !qtIsBetween($i,50,1000) ) throw new Exception( L('Max_post_per_user').' '.L('invalid').' (1-999)' );
   $_SESSION[QT]['posts_per_day'] = (string)$i;
   $oDB->updSetting('posts_per_day');
 

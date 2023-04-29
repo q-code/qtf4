@@ -11,6 +11,9 @@ body{background-color:#e2e2e2}
 body,input,button,textarea,select,optgroup,option{color:var(--c);font-family:var(--font)}
 input:-webkit-autofill::first-line{font-family:var(--font) !important} /* special: to avoid autofill changing input font */
 
+/* site style */
+#site.pagemsg{margin:5vw 0}
+#site{background-color:#FFF;box-shadow:0 8px 5px -3px #BBB}
 /* site margins */
 #site, footer{margin:1vw 2vw}
 #site:has(header[data-layout="0"]){margin-top:0.5vw}
@@ -18,16 +21,13 @@ input:-webkit-autofill::first-line{font-family:var(--font) !important} /* specia
   #site, footer{margin:0.8vw auto;width:1200px}
 }
 @media screen and (max-width:840px){
-  #site{margin:0;box-shadow:none}
+  #site{margin:0 0 10px 0;box-shadow:none}
   footer{margin:5px 0}
 }
 @media print{
   #site{margin:0;box-shadow:none}
   body{background-color:#fff}
 }
-/* site style */
-#site.pagemsg{margin:5vw 0}
-#site{background-color:#FFF;box-shadow:0 8px 5px -3px #BBB}
 
 /* TYPO */
 h1,h2{margin:0.5rem 0}

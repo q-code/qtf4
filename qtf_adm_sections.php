@@ -70,7 +70,7 @@ if ( isset($_POST['add_dom']) ) try {
 // ADD SECTION
 if ( isset($_POST['add_sec']) ) try {
 
-  $_POST['title'] = QTdb(trim($_POST['title']));
+  $_POST['title'] = qtDb(trim($_POST['title']));
   if ( empty($_POST['title']) ) throw new Exception( L('Section').' '.L('invalid') );
   CSection::create($_POST['title'],(int)$_POST['indomain']); // check unique title. Clear cache
   // Successfull end

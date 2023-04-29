@@ -58,7 +58,7 @@ if ( isset($_POST['ok']) ) try {
         // insert
         if ( !empty($strLog) )
         {
-          if ( $oDB->exec( "INSERT INTO TABUSER (id,name,pwd,mail,role) VALUES ($id,?,?,?,?)", [QTdb($strLog),$strPwd,$strMail,$strRole] ) )
+          if ( $oDB->exec( "INSERT INTO TABUSER (id,name,pwd,mail,role) VALUES ($id,?,?,?,?)", [qtDb($strLog),$strPwd,$strMail,$strRole] ) )
           {
             $id++;
             $intCountUser++;

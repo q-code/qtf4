@@ -21,17 +21,17 @@ if ( isset($_POST['add']) && $_POST['add']===$certificate ) try {
   if ( SUser::role()==='M' && $_POST['role']!=='U' ) die('Access denied'); // moderator can't create staff (A|M)
   // check format
   $str = qtAttr(trim($_POST['title']));
-  if ( !QTispwd($str) ) throw new Exception( L('Username').' '.L('invalid') );
+  if ( !qtIsPwd($str) ) throw new Exception( L('Username').' '.L('invalid') );
   $strTitle = $str;
   // check password
   $str = qtAttr($_POST['pass']);
-  if ( !QTispwd($str) ) throw new Exception( L('Password').' '.L('invalid') );
+  if ( !qtIsPwd($str) ) throw new Exception( L('Password').' '.L('invalid') );
   $strNewpwd = $str;
   // check unique
-  if ( $oDB->count( TABUSER." WHERE name=?", [QTdb($strTitle)] )!==0 ) throw new Exception( L('Username').' '.L('already_used') );
+  if ( $oDB->count( TABUSER." WHERE name=?", [qtDb($strTitle)] )!==0 ) throw new Exception( L('Username').' '.L('already_used') );
   // check mail
   $str = $_POST['mail'];
-  if ( !QTismail($str) ) throw new Exception( L('Email').' '.L('invalid') );
+  if ( !qtIsMail($str) ) throw new Exception( L('Email').' '.L('invalid') );
   $strMail = $str;
   // check role
   $str = substr($_POST['role'],0,1);

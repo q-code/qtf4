@@ -71,8 +71,8 @@ function validateQueryArguments($query,$trimV=true)
   if ( is_string($query) ) parse_str($query,$args);
   // check
   if ( !isset($args['q']) ) $args['q']='s'; // if missing q, assume q=s
-  if ( !empty($args['v']) && strpos($args['v'],'"')!==false ) $args['v'] = QTdb(trim($args['v']));
-  if ( !empty($args['v2']) && strpos($args['v2'],'"')!==false ) $args['v2'] = QTdb(trim($args['v2']));
+  if ( !empty($args['v']) && strpos($args['v'],'"')!==false ) $args['v'] = qtDb(trim($args['v']));
+  if ( !empty($args['v2']) && strpos($args['v2'],'"')!==false ) $args['v2'] = qtDb(trim($args['v2']));
   switch($args['q'])
   {
     case 's':

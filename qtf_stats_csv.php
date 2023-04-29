@@ -27,18 +27,18 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
   foreach($arrYears as $y)
   {
     //header
-    $csv .= QTquoted($y).';';
+    $csv .= qtQuoted($y).';';
     switch($bt)
     {
-    case 'q': for ($i=1;$i<=MAXBT;++$i) { $csv .= QTquoted('Q'.$i).';'; } break;
-    case 'm': for ($i=1;$i<=MAXBT;++$i) { $csv .= QTquoted($L['dateMM'][$i]).';'; } break;
-    case 'd': for ($i=1;$i<=MAXBT;++$i) { $csv .= QTquoted(QTdatestr(addDate($strTendaysago,$i,'day'),'d M','')).';'; } break;
+    case 'q': for ($i=1;$i<=MAXBT;++$i) { $csv .= qtQuoted('Q'.$i).';'; } break;
+    case 'm': for ($i=1;$i<=MAXBT;++$i) { $csv .= qtQuoted($L['dateMM'][$i]).';'; } break;
+    case 'd': for ($i=1;$i<=MAXBT;++$i) { $csv .= qtQuoted(QTdatestr(addDate($strTendaysago,$i,'day'),'d M','')).';'; } break;
     }
-    $csv .= QTquoted(($bt==='d' ? '10 '.strtolower(L('Days')) : L('Total'))).'<br>';
+    $csv .= qtQuoted(($bt==='d' ? '10 '.strtolower(L('Days')) : L('Total'))).'<br>';
     // data series
     foreach($arrSeries as $k=>$title)
     {
-      $csv .= QTquoted($title).';';
+      $csv .= qtQuoted($title).';';
       for ($intBt=1;$intBt<=MAXBT;$intBt++)
       {
       $csv .= (isset($arrD[$y][$k][$intBt]) ? $arrD[$y][$k][$intBt] : 0).';';

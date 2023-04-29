@@ -23,26 +23,26 @@ if ( isset($_POST['ok']) ) try {
 
   // check sitename
   if ( strpos($_POST['site_name'],'<')!==false ) $strHelper = L('Tags_not_allowed');
-  $str = QTdb(trim($_POST['site_name'])); // encode
+  $str = qtDb(trim($_POST['site_name'])); // encode
   if ( empty($str) ) throw new Exception( L('Site_name').' '.L('invalid') );
   $_SESSION[QT]['site_name'] = $str;
   $oH->title = $_SESSION[QT]['site_name']; // refresh current title
 
   // check siteurl
   if ( strpos($_POST['site_url'],'<')!==false ) $strHelper = L('Tags_not_allowed');
-  $str = QTdb(trim($_POST['site_url'])); if ( substr($str,-1,1)==='/' ) $str = substr($str,0,-1); // drop final /
+  $str = qtDb(trim($_POST['site_url'])); if ( substr($str,-1,1)==='/' ) $str = substr($str,0,-1); // drop final /
   if ( empty($str) || strlen($str)<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$str) ) { $_SESSION[QT]['site_url']='https://'; throw new Exception( L('Site_url').' '.L('invalid') ); }
   $_SESSION[QT]['site_url'] = $str;
 
   // check indexname
   if ( strpos($_POST['index_name'],'<')!==false ) $strHelper = L('Tags_not_allowed');
-  $str = QTdb(trim($_POST['index_name'])); // encode
+  $str = qtDb(trim($_POST['index_name'])); // encode
   if ( empty($str) ) throw new Exception( L('Name_of_index').' '.L('invalid') );
   $_SESSION[QT]['index_name'] = $str;
 
   // check adminemail
-  $str = QTdb(trim($_POST['admin_mail']));
-  if ( !QTismail($str) ) throw new Exception( L('Adm_e_mail').' '.L('invalid') );
+  $str = qtDb(trim($_POST['admin_mail']));
+  if ( !qtIsMail($str) ) throw new Exception( L('Adm_e_mail').' '.L('invalid') );
   $_SESSION[QT]['admin_email'] = $str;
 
   // check smtp
@@ -55,15 +55,15 @@ if ( isset($_POST['ok']) ) try {
   foreach(['admin_phone','admin_name','admin_addr'] as $key) {
     if ( !isset($_SESSION[QT][$key]) ) continue;
     if ( strpos($_POST[$key],'<')!==false ) $strHelper = L('Tags_not_allowed');
-    $_SESSION[QT][$key] = QTdb(trim($_POST[$key]));
+    $_SESSION[QT][$key] = qtDb(trim($_POST[$key]));
     $oDB->updSetting($key);
   }
 
   if ( $_SESSION[QT]['use_smtp']=='1' ) {
-    $_SESSION[QT]['smtp_host'] = QTdb(trim($_POST['smtp_host'])); if ( empty($_SESSION[QT]['smtp_host']) ) throw new Exception( 'Smtp host '.L('invalid') );
-    $_SESSION[QT]['smtp_port'] = QTdb(trim($_POST['smtp_port']));
-    $_SESSION[QT]['smtp_username'] = QTdb($_POST['smtp_username'],true,false,false); // no trim and allows <>&
-    $_SESSION[QT]['smtp_password'] = QTdb($_POST['smtp_password'],true,false,false); // no trim and allows <>&
+    $_SESSION[QT]['smtp_host'] = qtDb(trim($_POST['smtp_host'])); if ( empty($_SESSION[QT]['smtp_host']) ) throw new Exception( 'Smtp host '.L('invalid') );
+    $_SESSION[QT]['smtp_port'] = qtDb(trim($_POST['smtp_port']));
+    $_SESSION[QT]['smtp_username'] = qtDb($_POST['smtp_username'],true,false,false); // no trim and allows <>&
+    $_SESSION[QT]['smtp_password'] = qtDb($_POST['smtp_password'],true,false,false); // no trim and allows <>&
     $oDB->exec( "DELETE FROM TABSETTING WHERE param='smtp_host' OR param='smtp_port' OR param='smtp_username' OR param='smtp_password'" );
     foreach(['smtp_host','smtp_port','smtp_username','smtp_password'] as $param) $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES (:param,:setting)", [':param'=>$param, ':setting'=>$_SESSION[QT][$param] ] );
   }
@@ -96,7 +96,7 @@ if ( strlen($_SESSION[QT]['site_url'])<10 || !preg_match('/^(http:\/\/|https:\/\
 $str = parse_url($_SESSION[QT]['site_url']); $str = empty($str['path']) ? '' : $str['path']; // site url
 $cur = parse_url($_SERVER['REQUEST_URI']); $cur = empty($cur['path']) ? '' : $cur['path']; // current url
 if ( strpos($cur,$str)===false ) $oH->warning .= 'Url do not match with current site url';
-if ( !QTismail($_SESSION[QT]['admin_email']) ) $oH->warning .= L('Adm_e_mail').' '.L('invalid').'<br>';
+if ( !qtIsMail($_SESSION[QT]['admin_email']) ) $oH->warning .= L('Adm_e_mail').' '.L('invalid').'<br>';
 if ( $strHelper ) $oH->warning .= $strHelper;
 if ( !empty($oH->warning) ) $oH->warning = getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.$oH->warning;
 

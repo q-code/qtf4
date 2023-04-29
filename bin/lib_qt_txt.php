@@ -17,9 +17,9 @@ QTdatestr - v5.3: arguments order changed (for the 2 last arguments)
  * @param bool $keepnumeric int/float are returned as int/float (not quoted)
  * @return string|array (with array, index and non-string element remain unchanged)
  */
-function QTquoted($txt, string $q1='"', string $q2='', bool $keepnumeric=false)
+function qtQuoted($txt, string $q1='"', string $q2='', bool $keepnumeric=false)
 {
-  if ( is_array($txt) ) { foreach($txt as $k=>$item) $txt[$k] = QTquoted($item,$q1,$q2,$keepnumeric); return $txt; }
+  if ( is_array($txt) ) { foreach($txt as $k=>$item) $txt[$k] = qtQuoted($item,$q1,$q2,$keepnumeric); return $txt; }
   // Returns a quoted string, except if you use the option $keepnumeric=true
   if ( empty($q2) ) {
     switch(strtolower($q1)) {
@@ -52,7 +52,7 @@ function QTquoted($txt, string $q1='"', string $q2='', bool $keepnumeric=false)
  * @param boolean $tag convert < and > (true by default)
  * @return string
  */
-function QTdb(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $tag=true)
+function qtDb(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $tag=true)
 {
   // same as CDatabase::sqlEncode (with $amp using config constant)
   if ( empty($str) ) return $str;
@@ -62,7 +62,7 @@ function QTdb(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $ta
   if ( $tag && strpos($str,'>')!==false ) $str = str_replace('>','&#62;',$str);
   return strpos($str,"'")===false ? $str : str_replace("'",'&#39;',$str);
 }
-function QTdbdecode(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $tag=true)
+function qtDbDecode(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $tag=true)
 {
   // same as CDatabase::sqlEncode (with $amp using config constant)
   if ( empty($str) || strpos($str,'&')===false ) return $str;
@@ -75,29 +75,20 @@ function QTdbdecode(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bo
 }
 
 /**
- * Drop accents (works recursively in case of array)
- * @param string|array $txt
- * @param string $case changes case {lower|upper|none}
+ * Drop diacritics (works recursively in case of array)
+ * @param string|array $str
  * @return string|array (with array, indexes remain unchanged)
  */
-function QTdropaccent($txt, string $case='none') {
-  if ( is_array($txt) ) {
-    foreach($txt as $k=>$item) $txt[$k] = QTdropaccent($item,$case);
-    return $txt;
+function qtDropDiacritics($str) {
+  if ( is_array($str) ) {
+    foreach($str as $k=>$item) $str[$k] = qtDropDiacritics($item);
+    return $str;
   }
-  if ( is_string($txt) ) {
-    if  ( empty($txt) ) return $txt;
-    switch($case)
-    {
-    case 'lower': $txt = mb_strtolower($txt); return strtr(utf8_decode($txt), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿ'), 'aaaaaceeeeiiiinooooouuuuyy');
-    case 'upper': $txt = mb_strtoupper($txt); return strtr(utf8_decode($txt), utf8_decode('ÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝŸ'), 'AAAAACEEEEIIIINOOOOOUUUUYY');
-    case 'none': return strtr(utf8_decode($txt), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝŸ'), 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUYY');
-    }
-  }
-  //Throw an exception if an array/sub-array element is not [string], or for an invalid $case option
-  throw new Exception( 'invalid argument' );
+  if ( !is_string($str) ) throw new Exception(__FUNCTION__.' invalid argument');
+  $tl = Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', Transliterator::FORWARD);
+  $res = $tl->transliterate($str);
+  return $res===false ? $str : $res;
 }
-
 /**
  * Truncate and add the trailing $end (works also on an array)
  * @param string|array $txt
@@ -105,16 +96,16 @@ function QTdropaccent($txt, string $case='none') {
  * @param string $end trailing characters
  * @return string|array (with array, index and non-string element remain unchanged)
  */
-function QTtrunc($txt, int $max=255, string $end='...')
+function qtTrunc($txt, int $max=255, string $end='...')
 {
-  if ( $max<1 ) die('QTtrunc arg #2 must be positif');
+  if ( $max<1 ) die('qtTrunc arg #2 must be positif');
   if ( is_string($txt) ) {
     if ( $max<=strlen($end) ) $txt = $end; // truncate too short
     if ( isset($txt[$max]) ) $txt = substr($txt,0,$max-strlen($end)).$end;
     return $txt;
   }
   if ( is_array($txt) ) {
-    foreach($txt as $k=>$item) if ( is_string($item) || is_array($item) ) $txt[$k] = QTtrunc($item,$max,$end);
+    foreach($txt as $k=>$item) if ( is_string($item) || is_array($item) ) $txt[$k] = qtTrunc($item,$max,$end);
     return $txt;
   }
   throw new Exception( 'invalid argument txt' );
@@ -123,25 +114,25 @@ function QTtrunc($txt, int $max=255, string $end='...')
 /**
  * Convert multiline text into one line (truncate and unbbc)
  * @param string $str
- * @param integer $max when >0 uses QTtrunc
- * @param string $end end characters used by QTtrunc
+ * @param integer $max when >0 uses qtTrunc
+ * @param string $end end characters used by qtTrunc
  * @param boolean $unbbc remove bbc tags
  * @param string|array $in text to be replaced
  * @param string|array $out text replacement
  * @return string
  */
-function QTinline(string $str, int $max=255, string $end='...', bool $unbbc=true, $in=array("\r\n",'<br>','  '), $out=array(' ',' ',' '))
+function qtInline(string $str, int $max=255, string $end='...', bool $unbbc=true, $in=array("\r\n",'<br>','  '), $out=array(' ',' ',' '))
 {
   if ( empty($str) ) return $str;
-  if ( !is_string($in) && !is_array($in) ) die('QTinline: arg #5 must be a string or array');
-  if ( !is_string($out) && !is_array($out) ) die('QTinline: arg #6 must be a string or array');
+  if ( !is_string($in) && !is_array($in) ) die('qtInline: arg #5 must be a string or array');
+  if ( !is_string($out) && !is_array($out) ) die('qtInline: arg #6 must be a string or array');
   // unbbc
-  if ( $max>0 ) $str = substr($str,0,$max+64); // optimize for QTtrunc and QTunbbc
-  if ( $unbbc ) $str = QTunbbc($str);
+  if ( $max>0 ) $str = substr($str,0,$max+64); // optimize for qtTrunc and qtUnbbc
+  if ( $unbbc ) $str = qtUnbbc($str);
   // inline
   $str = str_replace($in, $out, $str);
   // truncate
-  return $max>0 ? QTtrunc($str,$max,$end) : $str;
+  return $max>0 ? qtTrunc($str,$max,$end) : $str;
 }
 
 function QTdateclean($s='now', int $size=14)
@@ -224,8 +215,8 @@ function QTdatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
   global $L;
   if ( isset($L['dateSQL']) && is_array($L['dateSQL']) )
   {
-    $sDate = QTdateTranslate($sDate, $L['dateSQL']);
-    $sDateFull = QTdateTranslate($sDateFull, $L['dateSQL']);
+    $sDate = qtDateTranslate($sDate, $L['dateSQL']);
+    $sDateFull = qtDateTranslate($sDateFull, $L['dateSQL']);
   }
 
   // Exit
@@ -233,7 +224,7 @@ function QTdatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
   if ( $title===false ) return $sDate;
   return '<span'.(empty($titleid) ? '' : ' id="'.$titleid.'" ').' title="'.qtAttr($sDateFull).'">'.$sDate.'</span>';
 }
-function QTdateTranslate(string $str, array $translations)
+function qtDateTranslate(string $str, array $translations)
 {
   if ( empty($translations) ) return $str;
   // to avoid recursive replacement, we build a dictionnary containing only the words used in $str
@@ -251,7 +242,7 @@ function QTdateTranslate(string $str, array $translations)
   return str_replace(array_keys($dico),array_values($dico),$str);
 }
 
-function QTbbc(string $str, string $nl='<br>', array $tip=array(), string $bold='<b>$1</b>', string $italic='<i>$1</i>')
+function qtBbc(string $str, string $nl='<br>', array $tip=array(), string $bold='<b>$1</b>', string $italic='<i>$1</i>')
 {
   // Converts bbc to html
   // $str - [mandatory] a string than can contains bbc tags
@@ -259,8 +250,8 @@ function QTbbc(string $str, string $nl='<br>', array $tip=array(), string $bold=
   // $tip - block info tips
   // $bold - (optional) format ex: <b>$1</b> or <span class="b">$1</span>
   // $italic - (optional) format ex: <b>$1</b> or <span class="i">$1</span>
-  // Example QTbbc('[b]Text[/b]') returns <b>Text</b>
-  // Example QTbbc('[i]<b>Text<b>[/i]') returns <i>&lt;b&gt;Text&lt;/b&gt;</i>
+  // Example qtBbc('[b]Text[/b]') returns <b>Text</b>
+  // Example qtBbc('[i]<b>Text<b>[/i]') returns <i>&lt;b&gt;Text&lt;/b&gt;</i>
 
   // check
   if ( strpos($str,'<')!==false) $str = str_replace('<','&#60;',$str);
@@ -317,7 +308,7 @@ function QTbbc(string $str, string $nl='<br>', array $tip=array(), string $bold=
   if ( $nl!=='' ) $str = str_replace( '<p>'.$nl, '<p>', $str );
   return $str;
 }
-function QTunbbc(string $str, bool $deep=true, array $tip=array())
+function qtUnbbc(string $str, bool $deep=true, array $tip=array())
 {
   if ( empty($str) || strpos($str,'[')===false ) return $str;
   if ( !isset($tip['Quotation']) ) $tip['Quotation']='Quotation';
@@ -329,7 +320,7 @@ function QTunbbc(string $str, bool $deep=true, array $tip=array())
       $str );
 }
 
-function QTispwd(string $str, int $intMin=4, int $intMax=50, bool $trim=false)
+function qtIsPwd(string $str, int $intMin=4, int $intMax=50, bool $trim=false)
 {
   if ( empty($str) ) return false;
   if ( $trim && $str!=trim($str) ) return false;
@@ -337,22 +328,22 @@ function QTispwd(string $str, int $intMin=4, int $intMax=50, bool $trim=false)
   if ( !isset($str[$intMin-1]) ) return false; //length < $intMin
   return true;
 }
-function QTismail(string $str, bool $multiple=true)
+function qtIsMail(string $str, bool $multiple=true)
 {
   if ( empty($str) || $str!=trim($str) ) return false;
   $arr = $multiple && strpos($str,',')!==false ? asCleanArray($str,',') : [$str];
   foreach ($arr as $str) if ( !preg_match("/^[A-Z0-9._%-]+@[A-Z0-9][A-Z0-9.-]{0,61}[A-Z0-9]\.[A-Z]{2,6}$/i",$str) ) return false;
   return true;
 }
-function QTisbetween($value,$min=0,$max=99999)
+function qtIsBetween($value,$min=0,$max=99999)
 {
-  if ( !is_numeric($value) || !is_numeric($min) || !is_numeric($max) ) die('QTisbetween: arguments must be a numeric (or a number as string)');
-  if ( $min>=$max ) die('QTisbetween: invalid min or max');
+  if ( !is_numeric($value) || !is_numeric($min) || !is_numeric($max) ) die('qtIsBetween: arguments must be a numeric (or a number as string)');
+  if ( $min>=$max ) die('qtIsBetween: invalid min or max');
   if ( $value<$min ) return false;
   if ( $value>$max ) return false;
   return true;
 }
-function QTisvaliddate($d, bool $past=true, bool $futur=false) // allow past year, disallow futur year
+function qtIsValiddate($d, bool $past=true, bool $futur=false) // allow past year, disallow futur year
 {
   if ( !is_numeric($d) ) return false;
   $d = (string)$d; if ( strlen($d)!=8 ) return false; // only YYYYMMDD
@@ -367,12 +358,12 @@ function QTisvaliddate($d, bool $past=true, bool $futur=false) // allow past yea
   if ( !checkdate($intM,$intD,$intY) ) return false;
   return true;
 }
-function QTisvalidtime($d)
+function qtIsValidtime($d)
 {
   if ( !is_numeric($d) ) return false;
   $d = (string)$d; if ( strlen($d)!==4 && strlen($d)!==6 ) return false; // only HHMM or HHMMSS
-  if ( !QTisbetween(substr($d,0,2),0,23) ) return false;
-  if ( !QTisbetween(substr($d,2,2),0,59) ) return false;
-  if ( strlen($d)==6 && !QTisbetween(substr($d,4,2),0,59) ) return false;
+  if ( !qtIsBetween(substr($d,0,2),0,23) ) return false;
+  if ( !qtIsBetween(substr($d,2,2),0,59) ) return false;
+  if ( strlen($d)==6 && !qtIsBetween(substr($d,4,2),0,59) ) return false;
   return true;
 }

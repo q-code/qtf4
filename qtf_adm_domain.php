@@ -39,7 +39,7 @@ if ( isset($_POST['ok']) ) try {
   // save translations
   SLang::delete('domain','d'.$id,'*');
   foreach($_POST as $k=>$posted) {
-    $posted = QTdb(trim($posted)); // encode simple+doublequote
+    $posted = qtDb(trim($posted)); // encode simple+doublequote
     if ( substr($k,0,3)==='tr-' && !empty($posted) ) SLang::add('domain', substr($k,3), 'd'.$id, $posted);
   }
 

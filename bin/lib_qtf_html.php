@@ -17,11 +17,11 @@ function sectionsAsOption($selected='', array $reject=[], array $disabled=[], st
   }}
   // render as options
   $optgroup = $countS>2 && count($arrDS)>1;
-  $str = ''; if ( !empty($optionAll) ) $str ='<option value="*"'.($selected==='*' ? ' selected' : '').(in_array('*',$disabled,true) ? ' disabled': '').'>'.QTtrunc($optionAll,$textsize).'</option>';
+  $str = ''; if ( !empty($optionAll) ) $str ='<option value="*"'.($selected==='*' ? ' selected' : '').(in_array('*',$disabled,true) ? ' disabled': '').'>'.qtTrunc($optionAll,$textsize).'</option>';
   foreach($arrDS as $domId=>$arrS) {
-    if ( $optgroup ) $str .= '<optgroup label="'.QTtrunc( SLang::translate('domain', 'd'.$domId, $GLOBALS['_Domains'][$domId]['title']), $textsize ).'">';
+    if ( $optgroup ) $str .= '<optgroup label="'.qtTrunc( SLang::translate('domain', 'd'.$domId, $GLOBALS['_Domains'][$domId]['title']), $textsize ).'">';
     foreach($arrS as $id=>$name) {
-      $str .= '<option value="'.$prefixValue.$id.'"'.((string)$id===$selected ? ' selected' : '').(in_array($id,$disabled,true) ? ' disabled': '').'>'.QTtrunc($name,$textsize).'</option>';
+      $str .= '<option value="'.$prefixValue.$id.'"'.((string)$id===$selected ? ' selected' : '').(in_array($id,$disabled,true) ? ' disabled': '').'>'.qtTrunc($name,$textsize).'</option>';
       if ( --$max<1 ) break;
     }
     if ( $optgroup ) $str .= '</optgroup>';
@@ -306,15 +306,15 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
         }
       }
       if ( !empty($row['textmsg']) && $_SESSION[QT]['item_firstline']>0 && $showFirstline ) {
-      $arr[$k] .= '&nbsp;<small class="item-msg-preview">'.QTtrunc(QTunbbc($row['textmsg'],true,L('Bbc.*')),QT_FIRSTLINE_SIZE).(empty($row['attach']) ? '' : ' '.getSVG('paperclip', 'title='.L('Attachment'))).'</small>';
+      $arr[$k] .= '&nbsp;<small class="item-msg-preview">'.qtTrunc(qtUnbbc($row['textmsg'],true,L('Bbc.*')),QT_FIRSTLINE_SIZE).(empty($row['attach']) ? '' : ' '.getSVG('paperclip', 'title='.L('Attachment'))).'</small>';
       }
       break;
     case 'replies':
       // youreply merged in replies
-      $arr[$k] = $row['replies']==='0' ? '0' : '<span id="'.$strTableId.'re'.$row['id'].'"><svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"></use></svg></span><span>'.qtIntK((int)$row['replies']).'</span>';
+      $arr[$k] = $row['replies']==='0' ? '0' : '<span id="'.$strTableId.'re'.$row['id'].'"><svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"></use></svg></span><span>'.intK((int)$row['replies']).'</span>';
       break;
     case 'views':
-      $arr[$k] = $row['views']==='0' ? '0' : qtIntK((int)$row['views']);
+      $arr[$k] = $row['views']==='0' ? '0' : intK((int)$row['views']);
       break;
     case 'section':
       $i = (int)$row['forum'];

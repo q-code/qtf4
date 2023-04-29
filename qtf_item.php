@@ -147,7 +147,7 @@ if ( $oT->items>0 ) {
   while ( $row=$oDB->getRow() )
   {
     $iMsgNum = $iMsgNum+1;
-    $oP = new CPost($row,$iMsgNum); // when compact view $oP->text is QTinline
+    $oP = new CPost($row,$iMsgNum); // when compact view $oP->text is qtInline
     // SHOW MESSAGE
     echo $oP->render($oS,$oT,true,true,QT_SKIN);
     $intWhile++;

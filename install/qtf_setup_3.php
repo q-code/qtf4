@@ -13,9 +13,9 @@ $error='';
 $urlPrev = APP.'_setup_2.php';
 $urlNext = APP.'_setup_4.php';
 
-function QTisEmail($str)
+function qtIsEmail($str)
 {
-  if ( !is_string($str) ) die('QTisEmail: arg #1 must be a string');
+  if ( !is_string($str) ) die('qtIsEmail: arg #1 must be a string');
   if ( $str!=trim($str) ) return false;
   if ( $str!=strip_tags($str) ) return false;
   if ( !preg_match("/^[A-Z0-9._%-]+@[A-Z0-9][A-Z0-9.-]{0,61}[A-Z0-9]\.[A-Z]{2,6}$/i",$str) ) return false;
@@ -41,7 +41,7 @@ include APP.'_setup_hd.php';
 
 if ( !empty($_POST['admin_email']) )
 {
-  if ( QTisEmail($_POST['admin_email']) )
+  if ( qtIsEmail($_POST['admin_email']) )
   {
     $_SESSION[QT]['admin_email'] = $_POST['admin_email'];
     $oDB->updSetting('admin_email');

@@ -18,8 +18,7 @@ input:-webkit-autofill::first-line{font-family:var(--font) !important} /* specia
   #site, footer{margin:10px auto;width:1200px}
 }
 @media screen and (max-width:840px){
-  #site{margin:0;box-shadow:none}
-  footer{margin:5px 0}
+  #site, footer{margin:0 0 6px 0;box-shadow:none}
 }
 @media print{
   #site{margin:0;box-shadow:none}
@@ -88,8 +87,9 @@ main>div{padding:1vw 2vw}
   div.nav-top, div.nav-bot{display:flex;gap:5px} @media print{div.nav-top, div.nav-bot{display:none}}
 #main-ft{display:flex;justify-content:space-between;align-items:center}
 
+/* CROMBTRAIL and ASIDE */
 #crumbtrail-info{font-size:max(0.8rem,9pt)}
-aside{padding:0.5rem 4px;display:flex;gap:1rem;color:#888;border-bottom:solid 1px #BBB}
+aside{padding:0.3rem;display:flex;gap:1rem;color:#888;border-bottom:solid 1px #BBB}
 #aside-ctrl{align-self: flex-end;white-space:nowrap;padding-right:0.5rem;border-right:solid 1px #AAA}
 #aside-ctrl:hover{cursor:pointer;color:var(--bgbtn)}
 #aside__info{flex-grow:1;min-width:200px}

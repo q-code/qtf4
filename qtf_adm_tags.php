@@ -149,7 +149,7 @@ if ( !empty($_GET['a']) && $_GET['a']==='view' )
     $s = isset($_GET['s']) ? $_GET['s'] : '*';
     $arrTags = readTagsFile($file);// read csv
     // display
-    echo '<h2 class="ellipsis" style="margin:20px 0 10px 0">'.L('Proposed_tags').' &middot; '.$file.' &middot; '.($s==='*' ? L('Common_all_sections') : L('Section').' '.QTquoted(CSection::translate((int)$s), "&'")).'</h2>';
+    echo '<h2 class="ellipsis" style="margin:20px 0 10px 0">'.L('Proposed_tags').' &middot; '.$file.' &middot; '.($s==='*' ? L('Common_all_sections') : L('Section').' '.qtQuoted(CSection::translate((int)$s), "&'")).'</h2>';
     echo '<div class="scroll">';
     echo '<table class="tags">'.PHP_EOL;
     foreach($arrTags as $strKey=>$strValue)
@@ -176,7 +176,7 @@ if ( !empty($_GET['a']) && $_GET['a']==='used' )
   if ( count($arrUsed)>=100 ) $arrUsed[]='...';
 
   // display
-  echo '<h2 class="ellipsis" style="margin:20px 0 10px 0">'.L('Used_tags').' &middot; '.L('Section').' '.QTquoted(CSection::translate($s),"&'").'</h2>
+  echo '<h2 class="ellipsis" style="margin:20px 0 10px 0">'.L('Used_tags').' &middot; '.L('Section').' '.qtQuoted(CSection::translate($s),"&'").'</h2>
   ';
 
   if ( count($arrUsed)===0 )

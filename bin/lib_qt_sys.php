@@ -155,7 +155,7 @@ function L(string $k, int $n=null, string $format='n w', array $A=[], string $pk
   }
   // Return the word (with $n if not null)
   if ( $dropDoublequote && strpos($str,'"')!==false ) $str = str_replace('"','',$str);
-  return $n===null ? $str : sprintf($f, $format==='k w' ? qtIntK($n) : $n, $str);
+  return $n===null ? $str : sprintf($f, $format==='k w' ? intK($n) : $n, $str);
 /*
 ABOUT KEYS:
 A dot in the key indicates a sub-dictionnary entry (when words are stored in array of array)
@@ -493,7 +493,6 @@ function qtMail(string $strTo, string $strSubject, string $strMessage, string $s
     break;
   }
 }
-
 function baseFile(string $file, bool $minusUnderscore=true)
 {
   // Returns the selfurl basename: filename without prefix or extension and in lowercase.
@@ -503,9 +502,9 @@ function baseFile(string $file, bool $minusUnderscore=true)
   $i = strrpos($str,'.'); if ( $i===false ) return $str;
   return substr($str,0,$i);
 }
-
-function qtIntK(int $num, string $unit='k', string $unit2='M'){
-  if ( $num<1000 ) return $num;
-  if ( $num<1000000 ) return round(floor($num/100)/10, 1).$unit;
-  return round($num/1000000,1).$unit2;
+function intK(int $n, string $unit='k', string $unit2='M')
+{
+  if ( $n<1000 ) return $n;
+  if ( $n<1000000 ) return round(floor($n/100)/10, 1).$unit;
+  return round($n/1000000,2).$unit2;
 }

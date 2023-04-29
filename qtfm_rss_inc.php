@@ -44,7 +44,7 @@ while ($row = $oDB->getRow())
   $item[$i]['link'] = $_SESSION[QT]['site_url']."/qtf_item.php?t=".$row['id']."&p=".$row['firstpostid'];
 
   // format the RSS text
-  $item[$i]['description'] = toXml( QTinline($row['textmsg'],400) );
+  $item[$i]['description'] = toXml( qtInline($row['textmsg'],400) );
   $item[$i]['pudDate'] = $row['lastpostdate'];
   $item[$i]['author'] = $row['firstpostname'];
   $i++;

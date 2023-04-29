@@ -34,7 +34,7 @@ if ( isset($_POST['ok']) && $pan===1 ) try {
 
   // CHECK MANDATORY VALUE
   $_POST['title'] = trim($_POST['title']); if ( empty($_POST['title']) ) throw new Exception( L('Title').' '.L('invalid') );
-  $_POST['title'] = QTdb($_POST['title']);
+  $_POST['title'] = qtDb($_POST['title']);
   // Check if name is already used (in destination domain) note: same name for same id is allowed
   if ( $oDB->count( TABSECTION." WHERE id<>$s AND domainid=? AND title=?", [(int)$_POST['domain'],$_POST['title']] )>0 ) throw new Exception( L('Name').' '.L('already_used') );
   $oS->pid = (int)$_POST['domain'];
@@ -95,7 +95,7 @@ if ( isset($_POST['ok']) && $pan===3 )
   // Translations (cache unchanged)
   SLang::delete('sec,secdesc','s'.$oS->id);
   foreach($_POST as $k=>$posted) {
-    $posted = QTdb(trim($posted)); // encode simple+doublequote
+    $posted = qtDb(trim($posted)); // encode simple+doublequote
     if ( substr($k,0,3)==='tr-' && !empty($posted) ) SLang::add('sec', substr($k,3), 's'.$oS->id, $posted);
     if ( substr($k,0,5)==='desc-' && !empty($posted) ) SLang::add('secdesc', substr($k,5), 's'.$oS->id, $posted);
   }

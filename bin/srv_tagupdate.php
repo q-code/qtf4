@@ -15,15 +15,16 @@ if ( !isset($_GET['tag']) ) { echo 'Unable to save tags'; exit; }
 if ( substr($_GET['tag'],-1,1)===';' ) $_GET['tag'] = substr($_GET['tag'],0,-1);
 
 include 'class/class.qt.db.php';
-function QTdropaccent(string $txt) {
-  if ( empty($txt) ) return $txt;
-  return strtr(utf8_decode($txt), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
+function srvDropDiacritics(string $str) {
+  $tl = Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', Transliterator::FORWARD);
+  $res = $tl->transliterate($str);
+  return $res===false ? $str : $res;
 }
 
 // format input
 $str = str_replace('"','',trim($_GET['tag'])); // trim and no doublequote
 if ( substr($str,-1,1)===';' ) $str = substr($str,0,-1);
-$str = QTdropaccent($str);
+$str = srvDropDiacritics($str);
 // query
 $oDBAJAX = new CDatabase();
 if ( !empty($oDBAJAX->error) ) { echo 'Unable to save tags'; exit; }

@@ -31,7 +31,7 @@ if ( isset($_POST['ok']) ) try {
   $_SESSION[QT]['show_legend'] = $_POST['show_legend'];
   $_SESSION[QT]['show_banner'] = $_POST['show_banner'];
   $_SESSION[QT]['home_menu'] = $_POST['home_menu'];
-  if ( isset($_POST['home_name']) ) $_SESSION[QT]['home_name'] = QTdb( empty($_POST['home_name']) ? L('Home') : $_POST['home_name'] );
+  if ( isset($_POST['home_name']) ) $_SESSION[QT]['home_name'] = qtDb( empty($_POST['home_name']) ? L('Home') : $_POST['home_name'] );
   if ( isset($_POST['home_url']) ) $_SESSION[QT]['home_url'] = empty($_POST['home_url']) ? 'http://' : $_POST['home_url'];
   $_SESSION[QT]['item_firstline'] = $_POST['item_firstline'];
   $_SESSION[QT]['news_on_top'] = $_POST['news_on_top'];

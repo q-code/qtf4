@@ -94,7 +94,7 @@ $oDB->query( sqlLimit($strState,'numpost DESC',0,5) );
 for ($i=0;$i<($_SESSION[QT]['viewmode']=='C' ? 2 : 5);++$i) {
   $row = $oDB->getRow();
   if ( !$row ) break;
-  echo '<tr><td><a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.qtIntK((int)$row['numpost']).'</td></tr>';
+  echo '<tr><td><a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.intK((int)$row['numpost']).'</td></tr>';
 }
 echo '</table>
 </div>';
@@ -180,11 +180,11 @@ while($row=$oDB->getRow()) {
 	// prepare row
   if ( !$bCompact )
   $t->arrTd['userphoto']->content = '<div class="magnifier center">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', '').'</div>';
-  $t->arrTd['username']->content = '<a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.QTtrunc($row['name'],24).'</a>';
+  $t->arrTd['username']->content = '<a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.qtTrunc($row['name'],24).'</a>';
   $t->arrTd['userrole']->content = L('Role_'.strtoupper($row['role']));
   $t->arrTd['usercontact']->content = renderUserMailSymbol($row).' '.renderUserWwwSymbol($row);
   $t->arrTd['userlocation']->content = empty($row['location']) ? '' : $row['location'];
-  $t->arrTd['usernumpost']->content = qtIntK((int)$row['numpost']);
+  $t->arrTd['usernumpost']->content = intK((int)$row['numpost']);
   if ( isset($t->arrTh['userpriv']) )
   $t->arrTd['userpriv']->content = renderUserPrivSymbol($row);
 

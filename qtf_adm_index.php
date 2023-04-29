@@ -21,7 +21,7 @@ $oH->selfparent = L('Board_info');
 if ( isset($_POST['ok']) && isset($_POST['offline']) ) try {
 
   // check admin email and forum url
-  if ( !QTismail($_SESSION[QT]['admin_email']) ) throw new Exception('Email not yet defined...');
+  if ( !qtIsMail($_SESSION[QT]['admin_email']) ) throw new Exception('Email not yet defined...');
   if ( strlen($_SESSION[QT]['site_url'])<8 ) throw new Exception('Site url not yet defined...');
   // update
   $_SESSION[QT]['board_offline'] = $_POST['offline']==='0' ? '0' : '1'; // only 0|1
@@ -78,7 +78,7 @@ $arrItems = getItemsInfo($oDB);
 
 // Start Helper
 if ( $intSection-$intHidden==0 ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('No_public_section').' <a href="'.APP.'_adm_sections.php?add=1">'.L('Add').' '.L('domain').'/'.L('section').'...</a></p>';
-if ( !QTismail($_SESSION[QT]['admin_email']) ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Contact').' '.L('Adm_e_mail').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
+if ( !qtIsMail($_SESSION[QT]['admin_email']) ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Contact').' '.L('Adm_e_mail').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
 if ( strlen($_SESSION[QT]['site_url'])<10 ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Site_url').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
 if ( $_SESSION[QT]['home_menu'] && (strlen($_SESSION[QT]['home_url'])<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$_SESSION[QT]['home_url'])) ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Home_website_url').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_skin.php">'.L('Board_layout').'...</a></p>';
 if ( is_dir('install') ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:red').' Install folder is accessible: <a href="install/'.APP.'_setup_9.php?lang='.QT_LANG.'">'.L('Change').'...</a></p>';

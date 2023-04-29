@@ -6,10 +6,17 @@
 <image><url>http://localhost/qtcute/soft/qtf4/rss/qtf_logo.gif</url><title>QT-cute - User Section</title><link>http://localhost/qtcute/soft/qtf4/qtf_items.php?s=2</link><width>110</width><height>50</height></image>
 <atom:link href="http://localhost/qtcute/soft/qtf4/rss/qtf_rss2_2.xml" rel="self" type="application/rss+xml"/>
 <item>
+<title>test</title>
+<link>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=73&p=99</link>
+<description>a</description>
+<pubDate>Today</pubDate>
+<guid>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=73&p=99</guid>
+</item>
+<item>
 <title>Test</title>
 <link>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=71&p=97</link>
 <description>Test</description>
-<pubDate>Today</pubDate>
+<pubDate>Tue, 25 Apr 2023 08:01:00 +0200</pubDate>
 <guid>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=71&p=97</guid>
 </item>
 <item>
@@ -18,12 +25,5 @@
 <description>On behalf of John</description>
 <pubDate>Thu, 02 Mar 2023 13:21:00 +0100</pubDate>
 <guid>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=68&p=93</guid>
-</item>
-<item>
-<title>TRest</title>
-<link>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=58&p=79</link>
-<description>Test</description>
-<pubDate>Tue, 27 Sep 2022 11:42:00 +0200</pubDate>
-<guid>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=58&p=79</guid>
 </item>
 </channel></rss>

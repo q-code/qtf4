@@ -267,12 +267,12 @@ function getUsers(string $q='A', string $name='', int $max=100)
     case 'U': $where = "role='U'"; break;
     case 'N':
       if ( empty($name) ) die('getUsers: invadid name value');
-      $name = QTdb(trim($name));
+      $name = qtDb(trim($name));
       $where = "name='$name'";
       break;
     case 'N*':
       if ( empty($name) ) die('getUsers: invadid name value');
-      $name = QTdb(trim($name));
+      $name = qtDb(trim($name));
       $like = $oDB->type==='pg' ? 'ILIKE' : 'LIKE';
       $where = "name $like '$name%'";
       break;
@@ -345,7 +345,7 @@ function validateFile(&$arrFile=[], $extensions='', $mimes='', int $size=0, int 
   }
 
   if ( $strictName ) {
-    $arrFile['name'] = strtolower(QTdropaccent($arrFile['name']));
+    $arrFile['name'] = strtolower(qtDropDiacritics($arrFile['name']));
     $arrFile['name'] = preg_replace('/[^a-z0-9_\-\.]/i', '_', $arrFile['name']);
   }
 

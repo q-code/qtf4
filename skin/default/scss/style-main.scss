@@ -88,7 +88,7 @@ section.quote{margin:1px 1px 6px 1px;width:600px;padding:3px 5px;background-colo
 section.code{margin:1px 1px 6px 1px;max-width:550px;padding:3px;font-family:Courier,sans-serif;overflow:auto;white-space:pre;background-color:#E4FFCC;border-left:solid 5px #d0d0d0}
 /* message content compact */
 #site.compact .post-img{display:none}
-#site.compact p.quotetitle,#site.compact section.quote, #site.compact div.g-p-msg p:not(p.code){display:inline}
+#site.compact p.quotetitle, #site.compact section.quote, #site.compact div.g-p-msg p:not(p.code){display:inline}
 
 /* special */
 p.caption{margin:2px 0}

@@ -43,9 +43,9 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
       echo '<td class="legendcolor"><div style="display:inline-block;width:12px;height:12px;border-radius:50%;background-color:rgb('.$arrC[$y][$k].')"></div></td>'.PHP_EOL;
       for ($intBt=1;$intBt<=MAXBT;$intBt++)
       {
-      echo '<td>'.(isset($arrD[$y][$k][$intBt]) ? qtIntK($arrD[$y][$k][$intBt]) : '&middot;').'</td>'.PHP_EOL;
+      echo '<td>'.(isset($arrD[$y][$k][$intBt]) ? intK($arrD[$y][$k][$intBt]) : '&middot;').'</td>'.PHP_EOL;
       }
-      echo '<td class="bold">'.qtIntK($arrS[$y][$k]).'</td>'.PHP_EOL;
+      echo '<td class="bold">'.intK($arrS[$y][$k]).'</td>'.PHP_EOL;
       echo '</tr>';
       echo '<tr>'.PHP_EOL;
     }
@@ -166,8 +166,8 @@ $m = new CMenu($arrM, '');
 echo '<div class=pan-tabs>'.$m->build('pan-'.$pan).'</div>';
 echo '<div class="pan">
 <p class="pan-title">'.$m->get('pan-'.$pan,'title');
-if ( $s!=='*' ) echo '<br>'.L('section').' '.QTquoted(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : $s, "&'");
-if ( !empty($tag) & $tag!=='*' ) echo '<br> '.L('tag').' '.QTquoted($tag, "&'");
+if ( $s!=='*' ) echo '<br>'.L('section').' '.qtQuoted(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : $s, "&'");
+if ( !empty($tag) & $tag!=='*' ) echo '<br> '.L('tag').' '.qtQuoted($tag, "&'");
 echo '</p>
 ';
 

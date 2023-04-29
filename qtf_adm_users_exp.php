@@ -48,7 +48,7 @@ if ( isset($_POST['ok']) ) try {
   $oDB->query( "SELECT role,name,pwd,mail FROM TABUSER WHERE id>0 ".$sqlWhere );
   while($row=$oDB->getRow())
   {
-    $row = QTquoted($row);
+    $row = qtQuoted($row);
     $csv .= implode($strSep,$row).PHP_EOL;
   }
 

@@ -46,7 +46,7 @@ public function setFrom($ref=null)
       switch((string)$k)
       {
         case 'preview':
-        case 'textmsg':      $this->preview      = $_SESSION[QT]['item_firstline']>0 ? QTinline(QTdb($value),QT_FIRSTLINE_SIZE) : ''; break;
+        case 'textmsg':      $this->preview      = $_SESSION[QT]['item_firstline']>0 ? qtInline(qtDb($value),QT_FIRSTLINE_SIZE) : ''; break;
         case 'id':           $this->id           = (int)$value; break;
         case 'numid':        $this->numid        = (int)$value; break;
         case 'pid':
@@ -55,13 +55,13 @@ public function setFrom($ref=null)
         case 'status':       $this->status       = (string)$value; break;
         case 'statusdate':   $this->statusdate   = (string)$value; break;
         case 'tags':
-        case 'descr':        $this->descr        = QTdb((string)$value); break;
+        case 'descr':        $this->descr        = qtDb((string)$value); break;
         case 'firstpostid':  $this->firstpostid  = (int)$value; break;
         case 'lastpostid':   $this->lastpostid   = (int)$value; break;
         case 'firstpostuser':$this->firstpostuser= (int)$value; break;
         case 'lastpostuser': $this->lastpostuser = (int)$value; break;
-        case 'firstpostname':$this->firstpostname= QTdb((string)$value); break;
-        case 'lastpostname': $this->lastpostname = QTdb((string)$value); break;
+        case 'firstpostname':$this->firstpostname= qtDb((string)$value); break;
+        case 'lastpostname': $this->lastpostname = qtDb((string)$value); break;
         case 'firstpostdate':$this->firstpostdate= (string)$value; break;
         case 'lastpostdate': $this->lastpostdate = (string)$value; break;
         case 'replies':
@@ -69,7 +69,7 @@ public function setFrom($ref=null)
         case 'views':        $this->views        = (int)$value; break;
         case 'youreply':     $this->youreply     = (string)$value; break;
         case 'icon':         $this->smile        = (string)$value; break;
-        case 'title':        $this->title        = QTdb((string)$value); break;
+        case 'title':        $this->title        = qtDb((string)$value); break;
         case 'attach':       $this->attachinfo   = (string)$value; break;
       } // Unit test: $k must be [string] otherwhise key 0 can change the first case (0=='id')
     }
@@ -181,7 +181,7 @@ public static function tagsClear($str, bool $dropDuplicate=true)
   $str = qtAttr($str); // trim and no doublequote
   if ( $str==='*' ) return '*'; // used in case of delete all tags
   if ( empty($str) ) return '';
-  $str = QTdropaccent($str);
+  $str = qtDropDiacritics($str);
   $str = str_replace(',',';',$str);
   $arr = explode(';',$str);
   $arrClear = array();
@@ -324,8 +324,8 @@ public function insertTopic(bool $userStat=true)
   $this->lastpostid,
   $this->firstpostuser,
   $this->lastpostuser,
-  QTdb($this->firstpostname),
-  QTdb($this->lastpostname),
+  qtDb($this->firstpostname),
+  qtDb($this->lastpostname),
   date('Ymd His'),
   date('Ymd His')
   ]

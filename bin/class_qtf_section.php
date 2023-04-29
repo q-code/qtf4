@@ -88,10 +88,10 @@ public static function create(string $title='untitled', int $pid=-1, bool $uniqu
   if ( empty($title) || $pid<0 ) die(__METHOD__.' Invalid argument' );
   global $oDB;
   // unique title
-  if ( $uniquetitle && $oDB->count( TABSECTION." WHERE domainid=$pid AND title=?", [QTdb($title)] )>0 ) throw new Exception( L('Name').' '.L('already_used') );
+  if ( $uniquetitle && $oDB->count( TABSECTION." WHERE domainid=$pid AND title=?", [qtDb($title)] )>0 ) throw new Exception( L('Name').' '.L('already_used') );
   // create
   $id = $oDB->nextId(TABSECTION);
-  $oDB->exec( "INSERT INTO TABSECTION (id,domainid,title,options,prefix) VALUES ($id,$pid,?,'coord=0;order=0;last=0;logo=0','a')", [QTdb($title)] );
+  $oDB->exec( "INSERT INTO TABSECTION (id,domainid,title,options,prefix) VALUES ($id,$pid,?,'coord=0;order=0;last=0;logo=0','a')", [qtDb($title)] );
   SMem::clear('_Sections'); // clear cache
   return $id;
 }
@@ -110,7 +110,7 @@ public static function rename(int $id=-1, string $title='untitled')
   if ( $id<0 ) die(__METHOD__.'  Argument #1 must be an integer' );
 	if ( empty($title) ) die(__METHOD__.' Argument #2 must be a string' );
   global $oDB;
-  $oDB->exec( 'UPDATE TABSECTION SET title=? WHERE id='.$id, [QTdb($title)] );
+  $oDB->exec( 'UPDATE TABSECTION SET title=? WHERE id='.$id, [qtDb($title)] );
   SMem::clear('_Sections'); // clear cache
 }
 public static function getOwner(int $id)

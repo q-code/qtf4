@@ -58,15 +58,15 @@ if ( useModule('gmap') )
 if ( isset($_POST['ok']) ) try {
 
     // check form
-  $strLoca = QTdb(trim($_POST['location']));
+  $strLoca = qtDb(trim($_POST['location']));
   $strMail = str_replace([' ',';'],',',$_POST['mail']);
   $strMail = implode(',',asCleanArray($strMail));
-  if ( !empty($strMail) && !QTismail($strMail) ) throw new Exception( L('Email').' '.$strMail.' '.L('invalid') );
+  if ( !empty($strMail) && !qtIsMail($strMail) ) throw new Exception( L('Email').' '.$strMail.' '.L('invalid') );
   if ( empty($_POST['birth_y']) || empty($_POST['birth_d']) || empty($_POST['birth_d']) ) {
     $strBirth = '0';
   } else {
     $i = intval($_POST['birth_y'])*10000+intval($_POST['birth_m'])*100+intval($_POST['birth_d']);
-    if ( !QTisvaliddate($i,true,false,false) ) throw new Exception( L('Birthday').' ('.$_POST['birth_y'].'-'.$_POST['birth_m'].'-'.$_POST['birth_d'].') '.L('invalid') );
+    if ( !qtIsValiddate($i,true,false,false) ) throw new Exception( L('Birthday').' ('.$_POST['birth_y'].'-'.$_POST['birth_m'].'-'.$_POST['birth_d'].') '.L('invalid') );
     $strBirth = $i;
   }
 
@@ -75,7 +75,7 @@ if ( isset($_POST['ok']) ) try {
   if ( $id==0 && $strChild!='0' ) throw new Exception( 'user id[0] is visitor and child status cannot be changed...' );
 
   if ( isset($_POST['parentmail']) ) { $strParentmail = trim($_POST['parentmail']); } else { $strParentmail=''; }
-  if ( !empty($strParentmail) && !QTismail($strParentmail) ) throw new Exception( L('Parent_mail').' '.L('invalid') );
+  if ( !empty($strParentmail) && !qtIsMail($strParentmail) ) throw new Exception( L('Parent_mail').' '.L('invalid') );
 
   $strWww = qtAttr($_POST['www']);
   if ( !empty($strWww) && substr($strWww,0,4)!=='http' ) throw new Exception( L('Website').' '.L('invalid') );

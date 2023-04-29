@@ -23,17 +23,17 @@ $oH->exitname = $oH->selfname;
 
 if ( isset($_POST['ok']) ) try {
 
-  $_SESSION[QT]['show_time_zone'] = QTdb($_POST['show_time_zone']); // 0=no, 1=time, 2=time+gmt
+  $_SESSION[QT]['show_time_zone'] = qtDb($_POST['show_time_zone']); // 0=no, 1=time, 2=time+gmt
   $oDB->updSetting('show_time_zone');
 
-  $_SESSION[QT]['time_zone'] = QTdb(substr($_POST['time_zone'],3)); // drop gmt in gmt+i
+  $_SESSION[QT]['time_zone'] = qtDb(substr($_POST['time_zone'],3)); // drop gmt in gmt+i
   $oDB->updSetting('time_zone');
 
-  $_SESSION[QT]['userlang'] = QTdb($_POST['userlang']);
+  $_SESSION[QT]['userlang'] = qtDb($_POST['userlang']);
   $oDB->updSetting('userlang');
 
   if ( !array_key_exists($_POST['language'],LANGUAGES) ) $_POST['language']='en';
-  $_SESSION[QT]['language'] = QTdb($_POST['language']);
+  $_SESSION[QT]['language'] = qtDb($_POST['language']);
   $oDB->updSetting('language',$_SESSION[QT]['language']);
 
   // change language
@@ -44,12 +44,12 @@ if ( isset($_POST['ok']) ) try {
   $oH->exitname = $oH->selfname;
 
   // formatdate
-  $str = QTdb(trim($_POST['formatdate'])); if ( empty($str) ) throw new Exception( L('Date_format').' '.L('invalid') );
+  $str = qtDb(trim($_POST['formatdate'])); if ( empty($str) ) throw new Exception( L('Date_format').' '.L('invalid') );
   $_SESSION[QT]['formatdate'] = $str;
   $oDB->updSetting('formatdate');
 
   // formattime
-  $str = QTdb(trim($_POST['formattime'])); if ( empty($str) ) throw new Exception( L('Time_format').' '.L('invalid') );
+  $str = qtDb(trim($_POST['formattime'])); if ( empty($str) ) throw new Exception( L('Time_format').' '.L('invalid') );
   $_SESSION[QT]['formattime'] = $str;
   $oDB->updSetting('formattime');
 

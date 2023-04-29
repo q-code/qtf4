@@ -226,15 +226,15 @@ function QTstr2yx($str)
       $str = str_replace(array('DEG','D','?',':'),'/',$str);
       if ( substr($str,-1,1)==='/' ) $str = substr($str,0,-1);
       $arrValues = explode('/',$str);
-      $intD = intval($arrValues[0]); if ( !QTisbetween($intD,($intKey==0 ? -90 : -180),($intKey==0 ? 90 : 180)) ) return false;
+      $intD = intval($arrValues[0]); if ( !qtIsBetween($intD,($intKey==0 ? -90 : -180),($intKey==0 ? 90 : 180)) ) return false;
       $intM = 0;
       $intS = 0;
-      if ( isset($arrValues[1]) ) { $intM = intval($arrValues[1]); if ( !QTisbetween($intM,0,59) ) return false; }
-      if ( isset($arrValues[2]) ) { $intS = intval($arrValues[2]); if ( !QTisbetween($intS,0,59) ) return false; }
+      if ( isset($arrValues[1]) ) { $intM = intval($arrValues[1]); if ( !qtIsBetween($intM,0,59) ) return false; }
+      if ( isset($arrValues[2]) ) { $intS = intval($arrValues[2]); if ( !qtIsBetween($intS,0,59) ) return false; }
       $str = $intD+($intM/60)+($intS/3600);
     }
 
-    if ( !QTisbetween(intval($str),($intKey==0 ? -90 : -180),($intKey==0 ? 90 : 180)) ) return false;
+    if ( !qtIsBetween(intval($str),($intKey==0 ? -90 : -180),($intKey==0 ? 90 : 180)) ) return false;
     $arr[$intKey]=$str;
   }
 

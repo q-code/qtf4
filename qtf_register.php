@@ -62,7 +62,7 @@ if ( !empty($_POST['d']) ) $intD = (int)trim($_POST['d']);
 
 if ( isset($_POST['ok']) ) {
   if ( !isset($_POST['agreed']) ) $oH->pageMessage($oH->selfname, L('Rules_not_agreed')); //...
-  if ( $_SESSION[QT]['register_coppa'] && !QTisvaliddate($intY*10000+$intM*100+$intD,true,false) ) $oH->error = L('Birthday').' '.L('invalid');
+  if ( $_SESSION[QT]['register_coppa'] && !qtIsValiddate($intY*10000+$intM*100+$intD,true,false) ) $oH->error = L('Birthday').' '.L('invalid');
   if ( empty($oH->error) ) $oH->redirect(APP.'_register.php?a=in'.($_SESSION[QT]['register_coppa'] ? '&y='.$intY.'&m='.$intM.'&d='.$intD : '')); //... registration form
   $_SESSION[QT.'splash'] = 'E|'.$oH->error;
 }
@@ -119,10 +119,10 @@ if ( isset($_POST['ok']) ) try {
   if ( $is = SUser::isUsedName($oDB,$_POST['username']) ) throw new Exception($is); // use = (not compare)
   // check mail
   $_POST['mail'] = trim($_POST['mail']);
-  if ( !QTismail($_POST['mail'])) throw new Exception( L('Email').' '.L('invalid') );
+  if ( !qtIsMail($_POST['mail'])) throw new Exception( L('Email').' '.L('invalid') );
   // check password
   if ( $_SESSION[QT]['register_mode']=='direct' ) {
-    if ( !QTispwd($_POST['pwd']) || !QTispwd($_POST['conpwd']) || $_POST['conpwd']!=$_POST['pwd'] ) throw new Exception( L('Password').' '.L('invalid') );
+    if ( !qtIsPwd($_POST['pwd']) || !qtIsPwd($_POST['conpwd']) || $_POST['conpwd']!=$_POST['pwd'] ) throw new Exception( L('Password').' '.L('invalid') );
   }
   // check role
   if ( isset($_POST['role']) ) { $_POST['role']=substr(strtoupper($_POST['role']),0,1); } else { $_POST['role']='U'; }
@@ -160,7 +160,7 @@ if ( isset($_POST['ok']) ) try {
   // check parentmail
   if ( $_SESSION[QT]['register_coppa']=='1' && $strChild!='0' ) {
     $_POST['parentmail'] = trim($_POST['parentmail']);
-    if ( !QTismail($_POST['parentmail']) ) throw new Exception( L('Parent_mail').' '.L('Invalid') );
+    if ( !qtIsMail($_POST['parentmail']) ) throw new Exception( L('Parent_mail').' '.L('Invalid') );
   }
   if ( !isset($_POST['parentmail']) ) $_POST['parentmail'] = '';
 
@@ -373,9 +373,9 @@ $oH->exitname = L('Profile');
 if ( isset($_POST['ok']) ) try {
 
   if ( empty($_POST['oldpwd']) || empty($_POST['newpwd']) || empty($_POST['conpwd']) )  die('Missing data');
-  if ( !QTispwd($_POST['oldpwd']) ) throw new Exception( L('Old_password').' '.L('invalid') );
-  if ( !QTispwd($_POST['newpwd']) ) throw new Exception( L('New_password').' '.L('invalid') );
-  if ( !QTispwd($_POST['conpwd']) ) throw new Exception( L('Confirm_password').' '.L('invalid') );
+  if ( !qtIsPwd($_POST['oldpwd']) ) throw new Exception( L('Old_password').' '.L('invalid') );
+  if ( !qtIsPwd($_POST['newpwd']) ) throw new Exception( L('New_password').' '.L('invalid') );
+  if ( !qtIsPwd($_POST['conpwd']) ) throw new Exception( L('Confirm_password').' '.L('invalid') );
   if ( $_POST['oldpwd']===$_POST['newpwd'] ) throw new Exception( L('New_password').' '.L('invalid') );
   if ( $_POST['conpwd']!==$_POST['newpwd'] ) throw new Exception( L('Confirm_password').' '.L('invalid') );
   // CHECK OLD PWD
@@ -443,8 +443,8 @@ $oH->selfname = L('Forgotten_pwd');
 if ( isset($_POST['ok']) ) try {
 
   $_POST['username'] = trim($_POST['username']);
-  if ( !QTispwd($_POST['username']) ) throw new Exception( L('Username').' '.L('invalid') );
-  $oDB->query( "SELECT id FROM TABUSER WHERE name=?", [QTdb($_POST['username'])] );
+  if ( !qtIsPwd($_POST['username']) ) throw new Exception( L('Username').' '.L('invalid') );
+  $oDB->query( "SELECT id FROM TABUSER WHERE name=?", [qtDb($_POST['username'])] );
   if ( $row=$oDB->getRow() ) $oH->redirect( $oH->selfurl.'?a=reset&id='.$row['id'] ); //... reset pwd
   throw new Exception( L('Username').' '.L('invalid') );
 
@@ -843,7 +843,7 @@ if ( SUser::id()!==$id && $row['role']==='A' && SUser::role()==='M' ) {
 }
 
 if ( empty($row['signature']) ) $row['signature']='';
-$strSign = QTbbc($row['signature']); if ( empty($strSign) ) $strSign='&nbsp;';
+$strSign = qtBbc($row['signature']); if ( empty($strSign) ) $strSign='&nbsp;';
 if ( QT_BBC ) $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_bbc.js"></script>';
 
 $frm_hd = '<div class="user-dlg msg-sign"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';

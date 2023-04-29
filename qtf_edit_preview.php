@@ -53,12 +53,12 @@ try {
 
   // Read submitted form values
   if ( isset($_POST['icon']) )   $oP->icon = substr($_POST['icon'],0,2);
-  if ( isset($_POST['title']) )  $oP->title = QTinline(trim($_POST['title']),64);
+  if ( isset($_POST['title']) )  $oP->title = qtInline(trim($_POST['title']),64);
   if ( isset($_POST['attach']) ) $oP->attach = $_POST['attach'];
   if ( isset($_POST['tag-edit']) ) $oT->descr = trim($_POST['tag-edit']);
   if ( strlen($oP->text)>$_SESSION[QT]['chars_per_post'] ) { $oP->text = substr($oP->text,0,255).' [...]'; throw new Exception( L('E_too_long').' '.sprintf(L('E_char_max'), $_SESSION[QT]['chars_per_post']) ); }
   if ( substr_count($oP->text,"\n")>$_SESSION[QT]['lines_per_post'] ) { $oP->text = substr($oP->text,0,255).' [...]'; throw new Exception( L('E_too_long').' '.sprintf(L('E_line_max'), $_SESSION[QT]['lines_per_post']) ); }
-  $oT->preview = QTinline($oP->text);
+  $oT->preview = qtInline($oP->text);
 
   // Detect basic errors
   if ( $oP->text=='' ) throw new Exception( L('Message').' '.L('invalid') ); //...

@@ -40,13 +40,13 @@ if ( isset($_POST['ok']) ) try {
   // check certificate
   if ( $_POST['ok']!==$certificate ) die('Unable to check certificate');
   // check values
-  $strName = trim($_POST['usr']); // Trim required. QTdb encode is performed while sql query
-  if ( !QTispwd($strName) ) throw new Exception( L('Username').' '.L('invalid') );
+  $strName = trim($_POST['usr']); // Trim required. qtDb encode is performed while sql query
+  if ( !qtIsPwd($strName) ) throw new Exception( L('Username').' '.L('invalid') );
   $strPwd = $_POST['pwd']; // Trim required. Sha is performed while sql query
-  if ( !QTispwd($strPwd) ) throw new Exception( L('Password').' '.L('invalid') );
+  if ( !qtIsPwd($strPwd) ) throw new Exception( L('Password').' '.L('invalid') );
 
   // LOGIN
-  SUser::logIn($strName,$strPwd,isset($_POST['remember'])); //name and pwd QTdb-encode is performed while sql query
+  SUser::logIn($strName,$strPwd,isset($_POST['remember'])); //name and pwd qtDb-encode is performed while sql query
   if ( !SUser::auth() ) throw new Exception( L('E_login') );
 
   // check registered if children and coppa active (0=Adult, 1=Kid aggreed, 2=Kid not aggreed)

@@ -78,9 +78,9 @@ if ( isset($_POST['dosend']) ) try {
 
   // Current editor/creator (modifuser), can be the onbehalf
   $oP->modifuser = (int)$_POST['userid'];
-  $oP->modifname = QTdb(trim($_POST['username']));
-  if ( !empty(trim($_POST['behalf'])) ){
-    $strBehalf = QTdb(trim($_POST['behalf']));
+  $oP->modifname = qtDb(trim($_POST['username']));
+  if ( !empty($_POST['behalf']) ){
+    $strBehalf = qtDb(trim($_POST['behalf']));
     $intBehalf = (int)$_POST['behalfid']; if ( $intBehalf<0 ) $intBehalf = SUser::getUserId($oDB,$strBehalf,-1);
     if ( $intBehalf<0 ) throw new Exception( L('Send_on_behalf').' '.L('invalid') );
     $oP->modifuser = $intBehalf;
@@ -94,12 +94,12 @@ if ( isset($_POST['dosend']) ) try {
 
   // Read submitted form values
   if ( isset($_POST['icon']) )   $oP->icon = substr($_POST['icon'],0,2);
-  if ( isset($_POST['title']) )  $oP->title = QTinline(trim($_POST['title']),64);
+  if ( isset($_POST['title']) )  $oP->title = qtInline(trim($_POST['title']),64);
   if ( isset($_POST['attach']) ) $oP->attach = $_POST['attach']; // old attachment
   if ( isset($_POST['tag-edit']) ) $oT->descr = trim($_POST['tag-edit']);
   if ( strlen($oP->text)>$_SESSION[QT]['chars_per_post'] ) throw new Exception( L('E_too_long').' '.sprintf(L('E_char_max'), $_SESSION[QT]['chars_per_post']) );
   if ( substr_count($oP->text,"\n")>$_SESSION[QT]['lines_per_post'] ) throw new Exception( L('E_too_long').' '.sprintf(L('E_line_max'), $_SESSION[QT]['lines_per_post']) );
-  $oT->preview = QTinline($oP->text);
+  $oT->preview = qtInline($oP->text);
 
   // Detect basic errors
   if ( $oP->text=='' ) throw new Exception( L('Message').' '.L('invalid') ); //...
@@ -217,7 +217,7 @@ if ( isset($_POST['dosend']) ) try {
     // Drop attach
     if ( isset($_POST['dropattach']) ) { $oP->attach=''; CPost::dropAttachs($oP->id,false); }
     // save edits
-    $oDB->exec( "UPDATE TABPOST SET title='".QTdb($oP->title)."', icon='".$oP->icon."',textmsg='".QTdb($oP->text)."',attach='".$oP->attach."' ".$strModif." WHERE id=".$oP->id );
+    $oDB->exec( "UPDATE TABPOST SET title='".qtDb($oP->title)."', icon='".$oP->icon."',textmsg='".qtDb($oP->text)."',attach='".$oP->attach."' ".$strModif." WHERE id=".$oP->id );
     // topic type (from staff)
     if ( isset($_POST['topictype']) ) $oT->setType($_POST['topictype']);
     // topic status (from staff)
@@ -235,7 +235,7 @@ if ( isset($_POST['dosend']) ) try {
   // EXIT
   $str = ''; if ( $oS->numfield!='N' ) $str=sprintf($oS->numfield,$oT->numid);
   $str .= (empty($oH->warning) ? '' : ' '.$oH->warning).' ';
-  $_SESSION[QT.'splash'] =$str.L('S_message_saved');
+  $_SESSION[QT.'splash'] = $str.L('S_message_saved');
   $oH->redirect('qtf_item.php?t='.$oP->topic.'#'.$oP->id);
 
 } catch (Exception $e) {

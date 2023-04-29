@@ -37,7 +37,7 @@ public static function logIn(string $username='', string $password='', bool $rem
   if ( empty($username) || empty($password) ) return false;
 
   // Format data
-  $username = QTdb($username);
+  $username = qtDb($username);
   $hpassword = sha1($password);
   if ( !defined('QT_LOGIN_WITH_EMAIL') ) define('QT_LOGIN_WITH_EMAIL',false);
 
@@ -168,6 +168,8 @@ public static function loginPostProc(CDatabase $oDB)
   // check ban
 
   $ban = (int)self::getInfo('closed',0);
+  $name = self::name();
+
   if ( $ban>0 )
   {
     $items = (int)self::getInfo('numpost',0);
@@ -175,7 +177,7 @@ public static function loginPostProc(CDatabase $oDB)
     if ( self::id()<2 || self::isStaff() || $items==0 )
     {
       $oDB->exec( "UPDATE TABUSER SET closed='0' WHERE id=".self::id() );
-      $oH->exiturl = 'qtf_login.php?dfltname='.self::name();
+      $oH->exiturl = APP.'_login.php?dfltname='.$name;
       $oH->exitname = L('Login');
       self::unsetSession();
       $oH->pageMessage('', '<p>'.L('Is_banned_nomore').'</p><p><a href="'.Href($oH->exiturl).'">'.$oH->exitname.'</a></p>');
@@ -194,15 +196,15 @@ public static function loginPostProc(CDatabase $oDB)
     if ( date('Ymd')>$endban )
     {
       $oDB->exec( "UPDATE TABUSER SET closed='0' WHERE id=".self::id() );
-      $oH->exiturl = 'qtf_login.php?dfltname='.self::name();
+      $oH->exiturl = APP.'_login.php?dfltname='.$name;
       $oH->exitname = L('Login');
       self::unsetSession();
-      $oH->pageMessage('', '<p>'.L('Is_banned_nomore').'</p><p><a href="'.Href($oH->exiturl).'">'.$oH->exitname.'</a></p>');
+      $oH->pageMessage('', '<p>'.L('Is_banned_nomore').'</p>');
     }
     else
     {
       self::unsetSession();
-      $oH->pageMessage('', '<h2>'.self::name().' '.strtolower(L('Is_banned')).'</h2><p>'.L('E_10').'</p><p>'.L('Retry_tomorrow').'</p><p><a href="'.Href($oH->exiturl).'">'.$oH->exitname.'</a></p>');
+      $oH->pageMessage('', '<p>'.L('E_10').'<br>'.$name.' '.strtolower(L('Is_banned')).'<br>'.L('Retry_tomorrow').'</p>');
     }
   }
 
@@ -211,9 +213,9 @@ public static function loginPostProc(CDatabase $oDB)
   $row = $oDB->getRow();
   if ( empty($row['secret_a']) )
   {
-    $oH->exiturl = 'qtf_register.php?a=qa&id='.self::id();
+    $oH->exiturl = APP.'_register.php?a=qa&id='.self::id();
     $oH->exitname = L('Secret_question').'...';
-    $oH->pageMessage('', '<h2>'.L('Welcome').' '.self::name().'</h2><br><p/>'.L('Update_secret_question').'</p>');
+    $oH->pageMessage('', '<h2>'.L('Welcome').' '.$name.'</h2><br><p/>'.L('Update_secret_question').'</p>');
   }
 }
 
@@ -287,15 +289,15 @@ public static function deletePicture($ids)
   }
 }
 public static function isUsedName(CDatabase $oDB, string $name){
-  if ( !QTispwd($name) ) return L('Username').' '.L('invalid');
-  if ( $oDB->count( TABUSER." WHERE name=?", [QTdb($name)] )!==0 ) return L('Username').' '.L('already_used');
+  if ( !qtIsPwd($name) ) return L('Username').' '.L('invalid');
+  if ( $oDB->count( TABUSER." WHERE name=?", [qtDb($name)] )!==0 ) return L('Username').' '.L('already_used');
   return false;
 }
 public static function rename(CDatabase $oDB, int $id=0, string $name='visitor')
 {
   // Tips: Check isUsedName() before
   if ( empty($name) || $id<1 ) die('self::rename invalid argument');
-  $name = QTdb($name);
+  $name = qtDb($name);
   $oDB->beginTransac();
   $oDB->exec( 'UPDATE TABUSER SET name=? WHERE id='.$id, [$name] );
   $oDB->exec( 'UPDATE TABPOST SET username=? WHERE userid='.$id, [$name] );
@@ -332,15 +334,15 @@ public static function addUser(string $username='', string $password='', string 
   $oDB->exec( "INSERT INTO TABUSER (id,name,pwd,closed,role,mail,privacy,firstdate,lastdate,numpost,children,parentmail,secret_q,secret_a,birthday)
   VALUES ($id,:name,:pwd,'0',:role,:mail,'1',:firstdate,:firstdate,0,:children,:parentmail,:secret_q,:secret_a,:birthday)",
     [
-   ':name'=>QTdb($username),
+   ':name'=>qtDb($username),
    ':pwd'=>sha1($password),
    ':role'=>$role,
    ':mail'=>$mail,
    ':firstdate'=>date('Ymd His'),
    ':children'=>$child,
    ':parentmail'=>$parentmail,
-   ':secret_q'=>QTdb($secret_q),
-   ':secret_a'=>QTdb($secret_a),
+   ':secret_q'=>qtDb($secret_q),
+   ':secret_a'=>qtDb($secret_a),
    ':birthday'=>$birthday
     ]
     );
@@ -354,7 +356,7 @@ public static function getUserId(CDatabase $oDB, string $name, $failed=false)
   // Returns FALSE when user does not exist OR when argument is wrong
   // Caution when testing returned value: userid 0 is visitor!
   if ( empty($name) ) return false;
-  $oDB->query( "SELECT id FROM TABUSER WHERE name=?", [QTdb($name)] );
+  $oDB->query( "SELECT id FROM TABUSER WHERE name=?", [qtDb($name)] );
   if ( $row=$oDB->getRow() ) return (int)$row['id'];
   return $failed;
 }

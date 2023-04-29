@@ -28,7 +28,7 @@ public function __construct($ref=null, int $intNum=-1, bool $text255=false)
   $this->setFrom($ref);
   if ( $this->type==='D' ) $this->title = '&nbsp;';
   if ( $intNum>=0 ) $this->num = $intNum;
-  if ( $_SESSION[QT]['viewmode']=='C' ) $this->text = QTinline($this->text,510,'...',false);
+  if ( $_SESSION[QT]['viewmode']=='C' ) $this->text = qtInline($this->text,510,'...',false);
   if ( $text255 && isset($this->text[255]) ) $this->text = substr($this->text,0,255);
 }
 public function setFrom($ref=null)
@@ -83,13 +83,13 @@ function insertPost(bool $userstat=true)
   $oDB->query(
     "INSERT INTO TABPOST (id,forum,topic,title,type,icon,userid,username,issuedate,textmsg,attach) VALUES ($this->id,$this->section,$this->topic,?,?,?,?,?,?,?,?)",
     [
-    QTdb($this->title),
+    qtDb($this->title),
     $this->type,
     $this->icon,
     $this->userid,
-    QTdb($this->username),
+    qtDb($this->username),
     date("Ymd His"),
-    QTdb($this->text),
+    qtDb($this->text),
     empty($this->attach) ? '' : $this->attach
     ]
   );
@@ -187,7 +187,7 @@ public function render(CSection $oS, CTopic $oT, bool $avatar=true, bool $cmd=tr
   $msg = '<p>';
   if ( !empty($oS->prefix) && $this->icon!='00' ) $msg .=  icoPrefix($oS->prefix,(int)$this->icon).'&nbsp; ';
   // format the text
-  $str = QTbbc($this->text, $_SESSION[QT]['viewmode']=='N' ? '<br>' : ' ', L('Bbc.*'));
+  $str = qtBbc($this->text, $_SESSION[QT]['viewmode']=='N' ? '<br>' : ' ', L('Bbc.*'));
   // show the image (if any)
   if ( !empty($this->attach) && strpos($str, 'src="@"') && in_array(substr($this->attach,-4,4),array('.gif','.jpg','jpeg','.png')) ) $str = str_replace('src="@"','src="'.QT_DIR_DOC.$this->attach.'"',$str);
   // if message shortened
@@ -198,7 +198,7 @@ public function render(CSection $oS, CTopic $oT, bool $avatar=true, bool $cmd=tr
   // signature
   if ( $_SESSION[QT]['viewmode']!='C' && $this->type!='F' && !empty($this->usersign) )
   {
-    $msg .= '<p class="post-sign">'.QTbbc($this->usersign).'</p>'.PHP_EOL;
+    $msg .= '<p class="post-sign">'.qtBbc($this->usersign).'</p>'.PHP_EOL;
   }
   // user picture
   $picUser = $_SESSION[QT]['viewmode']!='C' && $avatar ? SUser::getPicture($this->userid,'class=post-user','') : '';
@@ -256,7 +256,7 @@ public static function makeTitle(CPost &$oP, string $default='untitled', int $ma
   if ( $max<1 ) die('makeTitle: arg #3 must be a integer (minimum 1)');
   $str = empty($oP->text) ? $default : $oP->text;
   $i=strpos($str,"\r\n"); if ( $i>10 ) $str=substr($str,0,$i); // first line if at least 10 characters
-  $oP->title = QTinline($str,$max,$end);
+  $oP->title = qtInline($str,$max,$end);
   return $oP->title;
 }
 

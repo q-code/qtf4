@@ -14,10 +14,10 @@ $oH->selfurl = APP.'_adm_smtp.php';
 $oH->selfname = 'SMTP test';
 $oH->selfparent = L('Board_info');
 
-if ( isset($_GET['h']) ) $_SESSION[QT]['smtp_host'] = QTdb($_GET['h']);
-if ( isset($_GET['p']) ) $_SESSION[QT]['smtp_port'] = QTdb($_GET['p']);
-if ( isset($_GET['u']) ) $_SESSION[QT]['smtp_username'] = QTdb($_GET['u']);
-if ( isset($_GET['w']) ) $_SESSION[QT]['smtp_password'] = QTdb($_GET['w']);
+if ( isset($_GET['h']) ) $_SESSION[QT]['smtp_host'] = qtDb($_GET['h']);
+if ( isset($_GET['p']) ) $_SESSION[QT]['smtp_port'] = qtDb($_GET['p']);
+if ( isset($_GET['u']) ) $_SESSION[QT]['smtp_username'] = qtDb($_GET['u']);
+if ( isset($_GET['w']) ) $_SESSION[QT]['smtp_password'] = qtDb($_GET['w']);
 
 // --------
 // SUBMITTED
@@ -26,11 +26,11 @@ if ( isset($_GET['w']) ) $_SESSION[QT]['smtp_password'] = QTdb($_GET['w']);
 if ( isset($_POST['ok']) )
 {
   // register value used
-  $_SESSION[QT]['smtp_host'] = QTdb($_POST['smtphost']);
-  $_SESSION[QT]['smtp_port'] = QTdb($_POST['smtpport']);
-  $_SESSION[QT]['smtp_username'] = QTdb($_POST['smtpusr']);
-  $_SESSION[QT]['smtp_password'] = QTdb($_POST['smtppwd']);
-  if ( !QTismail($_POST['mailto']) ) die(L('Email').' '.L('invalid'));
+  $_SESSION[QT]['smtp_host'] = qtDb($_POST['smtphost']);
+  $_SESSION[QT]['smtp_port'] = qtDb($_POST['smtpport']);
+  $_SESSION[QT]['smtp_username'] = qtDb($_POST['smtpusr']);
+  $_SESSION[QT]['smtp_password'] = qtDb($_POST['smtppwd']);
+  if ( !qtIsMail($_POST['mailto']) ) die(L('Email').' '.L('invalid'));
 
   // send mail
   qtMail($_POST['mailto'],$_POST['subject'],$_POST['message'],'iso-8859-1','1');

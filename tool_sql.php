@@ -68,7 +68,7 @@ if ( isset($_POST['ok']) )
         printf( '<tr><td>%s</td></tr>',implode('</td><td>',array_keys($row)) );
         if ( isset($row['textmsg']) ) $bText=true;
       }
-      if ( $bText && isset($row['textmsg'][200]) ) $row['textmsg'] = QTinline($row['textmsg'],199,'■');
+      if ( $bText && isset($row['textmsg'][200]) ) $row['textmsg'] = qtInline($row['textmsg'],199,'■');
       printf( '<tr><td>%s</td></tr>',implode('</td><td>',$row) );
       if ( $i>250 ) break;
       $i++;

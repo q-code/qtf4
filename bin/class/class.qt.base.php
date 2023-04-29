@@ -130,12 +130,12 @@ class SLang
     $lang = strtolower($lang);
     // Process
     global $oDB;
-    $oDB->exec( "INSERT INTO TABLANG (objtype,objlang,objid,objname) VALUES (?,?,?,?)", [$type, $lang, $id, QTdb($name)] );
+    $oDB->exec( "INSERT INTO TABLANG (objtype,objlang,objid,objname) VALUES (?,?,?,?)", [$type, $lang, $id, qtDb($name)] );
   }
   public static function delete(string $type='', string $id='')
   {
     if ( empty($type) || empty($id) ) die(__FUNCTION__.' invalid argument');
-    $type = implode(',', QTquoted(explode(',',$type), "'"));
+    $type = implode(',', qtQuoted(explode(',',$type), "'"));
     global $oDB;
     $oDB->exec( "DELETE FROM TABLANG WHERE objid='$id' AND objtype IN ($type)" );
   }
@@ -204,7 +204,7 @@ class SLang
     if ( !defined('QT_CONVERT_AMP') ) define('QT_CONVERT_AMP',false);
     // Process
     global $oDB;
-    foreach($lang as $iso) $oDB->exec( "INSERT INTO TABLANG (objtype,objlang,objid,objname) VALUES (?,?,?,?)", [$type, $iso, $id, QTdb($name)] );
+    foreach($lang as $iso) $oDB->exec( "INSERT INTO TABLANG (objtype,objlang,objid,objname) VALUES (?,?,?,?)", [$type, $iso, $id, qtDb($name)] );
   }
   public static function deleteTranslations(array $type=[], string $id='', array $lang=[])
   {
