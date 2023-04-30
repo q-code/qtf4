@@ -152,7 +152,6 @@ class TabTable extends TabItem
     $this->eolo = true;
   }
 
-
   /**
    * Starts the table and add the caption if defined
    * {@inheritDoc}
@@ -243,6 +242,22 @@ class TabTable extends TabItem
   //          then with an ARRAY indicating some specific columns where attributes must be changed or added.
   public function setTHcompactAttr($values='', bool $namedCol=true) { $this->set('arrTh','[attr]',$values,false,$namedCol); }
   public function setTDcompactAttr($values='', bool $namedCol=true) { $this->set('arrTd','[attr]',$values,false,$namedCol); }
+
+  // tools
+  public function cloneThTd(bool $withContent=false, string $withAttr='class')
+  {
+    // Clone each th to create new td {$this->arrTd}
+    // use option $withAttr={'*'|''|'class'} to copy all attributes, none, or one attribute
+    foreach(array_keys($this->arrTh) as $k) {
+      $attr = [];
+      if ( $withAttr==='*' ) {
+        $attr = $this->arrTh[$k]->attr;
+      } elseif ( isset($this->arrTh[$k]->attr[$withAttr]) ) {
+        $attr[$withAttr] = $this->arrTh[$k]->attr[$withAttr]; // key is required
+      }
+      $this->arrTd[$k] = new TabData($withContent ? $this->arrTh[$k]->content : '', $attr);
+    }
+  }
 
   private function setRow($attr=[]) { $this->row = new TabItem('tr',$attr); $this->row->eolc = true; }
   private function getRow(array $arrObjTab=[], $attr=[], string $dfltTag='td')

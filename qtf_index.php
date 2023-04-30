@@ -37,19 +37,18 @@ if ( $_SESSION[QT]['visitor_right']<1 && SUser::role()==='V' ) exitPage(11,'user
 
 include 'qtf_inc_hd.php';
 
+// Table definition
 $t = new TabTable('class=t-sec');
 $t->thead();
 $t->tbody();
+// TH
 $t->arrTh[0] = new TabHead('&nbsp;', 'class=c-icon');
 $t->arrTh[1] = new TabHead('&nbsp;', 'class=c-section ellipsis');
 $t->arrTh[2] = new TabHead(L('Last_message'), 'class=c-issue ellipsis');
 $t->arrTh[3] = new TabHead(L('Item+'), 'class=c-items ellipsis');
 $t->arrTh[4] = new TabHead(L('Reply+'), 'class=c-replies secondary ellipsis');
-// for each th, create td column with the same class
-foreach(array_keys($t->arrTh) as $k) {
-  $class = isset($t->arrTh[$k]->attr['class']) ? $t->arrTh[$k]->attr['class'] : 'c-'.$k;
-  $t->arrTd[$k] = new TabData('', 'class='.$class);
-}
+// TD
+$t->cloneThTd();
 
 $intSec = 0;
 foreach(array_keys($_Domains) as $idDom) {

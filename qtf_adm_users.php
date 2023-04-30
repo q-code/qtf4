@@ -203,104 +203,90 @@ if ( $intCount<$intUsers ) $strPaging = '<span class="small">'.L('user',$intCoun
 // Memberlist
 // --------
 
+$rowCommands = L('selection').': <a class="datasetcontrol" href="javascript:void(0)" data-action="usersrole">'.L('role').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersdel">'.L('delete').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersban">'.strtolower(L('Ban')).'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="userspic">'.L('picture').'</a>';
+echo PHP_EOL.'<form id="form-users" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-users-action" name="a" />'.PHP_EOL;
+echo '<div id="tabletop" class="table-ui top">';
+echo '<div id="t1-edits-top" class="left checkboxcmds">'.getSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
+echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
+
+// Table definition
 $t = new TabTable('id=t1|class=t-item|data-content=users',$intCount);
-
-if ( $intCount===0 )
-{
-  $t->arrTh[] = new TabHead('&nbsp;');
-  echo $t->getEmptyTable('<p style="margin-left:10px;margin-right:10px">'.L('None').'...</p>',true,'','r1');
+$t->activecol = $strOrder;
+$t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order='.$strOrder.'&dir='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.getSVG('caret-'.($strDirec==='asc' ? 'up' : 'down')).'';
+// TH
+$t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" name="t1-cb-all" id="t1-cb-all"/>', 'class=c-checkbox');
+$t->arrTh['name'] = new TabHead(L('User'), 'class=c-name', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=name&dir=asc">%s</a>');
+$t->arrTh['pic'] = new TabHead(getSVG('camera'), 'class=c-pic|title='.L('Picture'));
+$t->arrTh['role'] = new TabHead(L('Role'), 'class=c-role ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=role&dir=asc">%s</a>');
+$t->arrTh['numpost'] = new TabHead(getSVG('comments'), 'class=c-numpost|title='.L('Messages'), '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=numpost&dir=desc">%s</a>');
+if ( $strCateg=='FM' || $strCateg=='SC' ) {
+$t->arrTh['firstdate'] = new TabHead(L('Joined'), 'class=c-joined ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=firstdate&dir=desc">%s</a>');
+} else {
+$t->arrTh['lastdate'] = new TabHead(L('Last_message').' (ip)', 'class=c-lastdate ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=lastdate&dir=desc">%s</a>');
 }
-else
+$t->arrTh['closed'] = new TabHead(getSVG('ban'), 'class=c-ban', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=closed&dir=desc" title="'.L('Banned').'">%s</a>');
+$t->arrTh['id'] = new TabHead('Id', 'class=c-id', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=id&dir=asc">%s</a>');
+// TD
+$t->cloneThTd();
+
+// === TABLE START DISPLAY ===
+
+echo PHP_EOL;
+echo $t->start().PHP_EOL;
+echo '<thead>'.PHP_EOL;
+echo $t->getTHrow().PHP_EOL;
+echo '</thead>'.PHP_EOL;
+echo '<tbody>'.PHP_EOL;
+
+//-- LIMIT QUERY --
+$strState = 'id,name,closed,role,numpost,firstdate,lastdate,ip,picture FROM TABUSER WHERE id>0'.$sqlWhere;
+$oDB->query( sqlLimit($strState,$strOrder.' '.strtoupper($strDirec).($strOrder==='name' ? '' : $strOrder2),$intLimit,$ipp) );
+// --------
+
+$arrRow=array(); // rendered row. To remove duplicate in seach result
+$intRow=0; // count row displayed
+$days = BAN_DAYS;
+while($row=$oDB->getRow())
 {
-  $rowCommands = L('selection').': <a class="datasetcontrol" href="javascript:void(0)" data-action="usersrole">'.L('role').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersdel">'.L('delete').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersban">'.strtolower(L('Ban')).'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="userspic">'.L('picture').'</a>';
-  echo PHP_EOL.'<form id="form-users" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-users-action" name="a" />'.PHP_EOL;
-  echo '<div id="tabletop" class="table-ui top">';
-  echo '<div id="t1-edits-top" class="left checkboxcmds">'.getSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
-  echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
+  if ( in_array((int)$row['id'], $arrRow) ) continue; // this remove duplicate users in case of search result
 
-  // === TABLE DEFINITION ===
-  $t->activecol = $strOrder;
-  $t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order='.$strOrder.'&dir='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.getSVG('caret-'.($strDirec==='asc' ? 'up' : 'down')).'';
-  $t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" name="t1-cb-all" id="t1-cb-all"/>', 'class=c-checkbox');
-  $t->arrTh['name'] = new TabHead(L('User'), 'class=c-name', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=name&dir=asc">%s</a>');
-  $t->arrTh['pic'] = new TabHead(getSVG('camera'), 'class=c-pic|title='.L('Picture'));
-  $t->arrTh['role'] = new TabHead(L('Role'), 'class=c-role ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=role&dir=asc">%s</a>');
-  $t->arrTh['numpost'] = new TabHead(getSVG('comments'), 'class=c-numpost|title='.L('Messages'), '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=numpost&dir=desc">%s</a>');
-  if ( $strCateg=='FM' || $strCateg=='SC' ) {
-  $t->arrTh['firstdate'] = new TabHead(L('Joined'), 'class=c-joined ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=firstdate&dir=desc">%s</a>');
-  } else {
-  $t->arrTh['lastdate'] = new TabHead(L('Last_message').' (ip)', 'class=c-lastdate ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=lastdate&dir=desc">%s</a>');
-  }
-  $t->arrTh['closed'] = new TabHead(getSVG('ban'), 'class=c-ban', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=closed&dir=desc" title="'.L('Banned').'">%s</a>');
-  $t->arrTh['id'] = new TabHead('Id', 'class=c-id', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=id&dir=asc">%s</a>');
+  $arrRow[] = (int)$row['id'];
+  if ( empty($row['name']) ) $row['name']='('.L('unknown').')';
+  $bChecked = $row['id']==$intChecked;
 
-  // For each th, create td column and add the same class
-  foreach(array_keys($t->arrTh) as $key)
+  $intLock = (int)$row['closed']; if ( !array_key_exists($intLock,BAN_DAYS) ) $intLock=0;
+  $strLock = $intLock ? '<span class="ban" title="'.L('Banned').' '.L('day',$days[$intLock]).'">'.$days[$intLock].'<span>' : L('n');
+
+  // prepare row
+  $t->arrTd['checkbox']->content = '<input type="checkbox" name="t1-cb[]" id="t1-cb-'.$row['id'].'" value="'.$row['id'].'"'.($bChecked ? ' checked' : '').' data-row="'.$intRow.'"/>'; if ( $row['id']<2) $t->arrTd['checkbox']->content = '&nbsp;';
+  $t->arrTd['name']->content = '<a href="'.Href('qtf_user.php').'?id='.$row['id'].'" title="'.qtAttr($row['name'],24).'">'.qtTrunc($row['name'],24).'</a>';
+  $t->arrTd['pic']->content = '<div class="magnifier center">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', '').'</div>';
+  $t->arrTd['role']->content = L('Role_'.strtoupper($row['role']));
+  $t->arrTd['numpost']->content = intK((int)$row['numpost']);
+  if ( $strCateg=='FM' || $strCateg=='SC' )
   {
-    $class = isset($t->arrTh[$key]->attr['class']) ? $t->arrTh[$key]->attr['class'] : 'c-'.$key;
-    $t->arrTd[$key] = new TabData('', 'class='.$class);
+  $t->arrTd['firstdate']->content = empty($row['firstdate']) ? '' : QTdatestr($row['firstdate'],'$','',true);
   }
-
-  // === TABLE START DISPLAY ===
-
-  echo PHP_EOL;
-  echo $t->start().PHP_EOL;
-  echo '<thead>'.PHP_EOL;
-  echo $t->getTHrow().PHP_EOL;
-  echo '</thead>'.PHP_EOL;
-  echo '<tbody>'.PHP_EOL;
-
-  //-- LIMIT QUERY --
-  $strState = 'id,name,closed,role,numpost,firstdate,lastdate,ip,picture FROM TABUSER WHERE id>0'.$sqlWhere;
-  $oDB->query( sqlLimit($strState,$strOrder.' '.strtoupper($strDirec).($strOrder==='name' ? '' : $strOrder2),$intLimit,$ipp) );
-  // --------
-
-  $arrRow=array(); // rendered row. To remove duplicate in seach result
-  $intRow=0; // count row displayed
-  $days = BAN_DAYS;
-  while($row=$oDB->getRow())
+  else
   {
-    if ( in_array((int)$row['id'], $arrRow) ) continue; // this remove duplicate users in case of search result
-
-    $arrRow[] = (int)$row['id'];
-    if ( empty($row['name']) ) $row['name']='('.L('unknown').')';
-    $bChecked = $row['id']==$intChecked;
-
-    $intLock = (int)$row['closed']; if ( !array_key_exists($intLock,BAN_DAYS) ) $intLock=0;
-    $strLock = $intLock ? '<span class="ban" title="'.L('Banned').' '.L('day',$days[$intLock]).'">'.$days[$intLock].'<span>' : L('n');
-
-    // prepare row
-    $t->arrTd['checkbox']->content = '<input type="checkbox" name="t1-cb[]" id="t1-cb-'.$row['id'].'" value="'.$row['id'].'"'.($bChecked ? ' checked' : '').' data-row="'.$intRow.'"/>'; if ( $row['id']<2) $t->arrTd['checkbox']->content = '&nbsp;';
-    $t->arrTd['name']->content = '<a href="'.Href('qtf_user.php').'?id='.$row['id'].'" title="'.qtAttr($row['name'],24).'">'.qtTrunc($row['name'],24).'</a>';
-    $t->arrTd['pic']->content = '<div class="magnifier center">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', '').'</div>';
-    $t->arrTd['role']->content = L('Role_'.strtoupper($row['role']));
-    $t->arrTd['numpost']->content = intK((int)$row['numpost']);
-    if ( $strCateg=='FM' || $strCateg=='SC' )
-    {
-    $t->arrTd['firstdate']->content = empty($row['firstdate']) ? '' : QTdatestr($row['firstdate'],'$','',true);
-    }
-    else
-    {
-    $t->arrTd['lastdate']->content = (empty($row['lastdate']) ? '' : QTdatestr($row['lastdate'],'$','',true)) . (empty($row['ip']) ? '' : '<br><span class="small">('.$row['ip'].')</span>');
-    }
-    $t->arrTd['closed']->content = $strLock;
-    $t->arrTd['id']->content = $row['id'];
-
-    echo $t->getTDrow('id=t1-tr-'.$row['id'].'|class=t-item hover rowlight');
-    ++$intRow; if ( $intRow>=$ipp ) break;
-
+  $t->arrTd['lastdate']->content = (empty($row['lastdate']) ? '' : QTdatestr($row['lastdate'],'$','',true)) . (empty($row['ip']) ? '' : '<br><span class="small">('.$row['ip'].')</span>');
   }
+  $t->arrTd['closed']->content = $strLock;
+  $t->arrTd['id']->content = $row['id'];
 
-  // === TABLE END DISPLAY ===
-
-  echo '</tbody>'.PHP_EOL;
-  echo '</table>'.PHP_EOL;
-  echo '<div id="tablebot" class="table-ui bot">';
-  echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.getSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
-  echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
-  echo '</form>'.PHP_EOL;
+  echo $t->getTDrow('id=t1-tr-'.$row['id'].'|class=t-item hover rowlight');
+  ++$intRow; if ( $intRow>=$ipp ) break;
 
 }
+
+// === TABLE END DISPLAY ===
+
+echo '</tbody>'.PHP_EOL;
+echo '</table>'.PHP_EOL;
+echo '<div id="tablebot" class="table-ui bot">';
+echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.getSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
+echo '</form>'.PHP_EOL;
 
 // Extra command
 if ( $strCateg!=='all' ) {

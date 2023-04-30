@@ -133,33 +133,25 @@ if ( $intCount==0) {
 $bCompact = FALSE;
 if ( empty(qtExplodeGet($_SESSION[QT]['formatpicture'],'mime')) ||  $_SESSION[QT]['viewmode']=='C' ) $bCompact = true;
 
-// === TABLE DEFINITION ===
-
+// Table definition
 $t = new TabTable('id=t1|class=t-user',$intCount);
-  $t->thead();
-  $t->tbody();
-  $t->activecol = 'user'.$pageOrder;
-  $t->activelink = '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order='.$pageOrder.'&dir='.($pageDirec=='asc' ? 'desc' : 'asc').'&page=1">%s</a> '.getSVG('caret-'.($pageDirec==='asc' ? 'down' : 'up'));
-
-// Define column headers
+$t->thead();
+$t->tbody();
+$t->activecol = 'user'.$pageOrder;
+$t->activelink = '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order='.$pageOrder.'&dir='.($pageDirec=='asc' ? 'desc' : 'asc').'&page=1">%s</a> '.getSVG('caret-'.($pageDirec==='asc' ? 'down' : 'up'));
+// TH
 if ( !$bCompact )
-  $t->arrTh['userphoto'] = new TabHead(getSVG('camera'), 'title='.L('Picture'));
+$t->arrTh['userphoto'] = new TabHead(getSVG('camera'), 'title='.L('Picture'));
 $t->arrTh['username'] = new TabHead(L('Username'), '', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=name&dir=asc&page=1">%s</a>');
 $t->arrTh['userrole'] = new TabHead(L('Role'), '', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=role&dir=asc&page=1">%s</a>');
 $t->arrTh['usercontact'] = new TabHead(L('Contact'));
 $t->arrTh['userlocation'] = new TabHead(L('Location'), '', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=location&dir=asc&page=1">%s</a>');
 $t->arrTh['usernumpost'] = new TabHead(getSVG('comments'), 'title="'.L('Messages').'"', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=numpost&dir=desc&page=1">%s</a>');
 if ( SUser::isStaff() )
-  $t->arrTh['userpriv'] = new TabHead(getSVG('info'), 'title="'.L('Privacy').'"');
-
-foreach(array_keys($t->arrTh) as $key)
-  $t->arrTh[$key]->append('class','c-'.$key);
-
-// For each th, create td column with the same class
-foreach(array_keys($t->arrTh) as $key) {
-  $class = isset($t->arrTh[$key]->attr['class']) ? $t->arrTh[$key]->attr['class'] : 'c-'.$key;
-  $t->arrTd[$key] = new TabData('', 'class='.$class);
-}
+$t->arrTh['userpriv'] = new TabHead(getSVG('info'), 'title="'.L('Privacy').'"');
+foreach(array_keys($t->arrTh) as $key) $t->arrTh[$key]->append('class','c-'.$key);
+// TD
+$t->cloneThTd();
 
 // === TABLE START DISPLAY ===
 

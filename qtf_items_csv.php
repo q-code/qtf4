@@ -142,12 +142,14 @@ $t = new TabTable();
 $t->arrTh['type'] = new TabHead(L('Type'));
 $t->arrTh['numid'] = new TabHead(L('Ref'));
 $t->arrTh['title'] = new TabHead(L('Item'));
-if ( !empty($q) && $s<0 ) $t->arrTh['sectiontitle'] = new TabHead(L('Section'));
+if ( !empty($q) && $s<0 )
+$t->arrTh['sectiontitle'] = new TabHead(L('Section'));
 $t->arrTh['firstpostname'] = new TabHead(L('Author'));
 $t->arrTh['firstpostdate'] = new TabHead(L('First_message'));
 $t->arrTh['lastpostdate'] = new TabHead(L('Last_message'));
 $t->arrTh['replies'] = new TabHead(L('Reply+'));
-if ( !empty($strLastcol) ) $t->arrTh[$strLastcol] = new TabHead(L(ucfirst($strLastcol)));
+if ( !empty($strLastcol) )
+$t->arrTh[$strLastcol] = new TabHead(L(ucfirst($strLastcol)));
 
 $csv = toCsv($t->getTHnames()).PHP_EOL;
 
