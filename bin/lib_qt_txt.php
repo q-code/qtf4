@@ -2,7 +2,7 @@
 /*
 lib_qt_txt.php
 ------------
-version: 5.5 build:20230205
+version: 5.5 build:20230430
 This is a library of public functions
 -------------
 QTdateclean - v5.4: can truncate the cleaned datetime

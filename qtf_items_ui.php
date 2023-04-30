@@ -8,7 +8,7 @@
 $ui = '<button id="optionsbar-ctrl" class="nostyle square42'.($_SESSION['EditByRows'] ? ' expanded' : '').'" onclick="qtToggle(`optionsbar`,`flex`,this.id);qtFocusOut(this.id);qtFocus(`pref`);" title="'.L('My_preferences').'">'.getSVG('cog').'</button> '.PHP_EOL;
 $ui .= '<div id="optionsbar"'.($_SESSION['EditByRows'] ? '' : ' style="display:none"').'><form method="post" action="'.Href($oH->selfurl).'?'.getURI('page').'" id="formPref">'.PHP_EOL;
 
-$ui .= '<select id="pref" name="pref" onchange="doSubmit(\'formPref\');">'.PHP_EOL;
+$ui .= '<select id="pref" name="pref" onchange="doSubmit(`formPref`);">'.PHP_EOL;
 $ui .= '<option value="-" selected disabled hidden>'.L('Show').'</option>';
 $ui .= '<optgroup label="'.L('Item+').'">';
 foreach(array('10','25','50','100') as $i) $ui .= '<option value="n'.$i.'"'.($_SESSION[QT]['items_per_page']===$i ? 'disabled' : '').'>'.$i.' / '.L('page').($_SESSION[QT]['items_per_page']===$i ? ' &#10004;' : '').'</option>';
@@ -24,7 +24,7 @@ d = document.getElementById(idhide+"-ctrl"); if ( d ) d.style.visibility="hidden
 d = document.getElementById(idform); if ( d ) d.submit();}';
 if ( SUser::isStaff() ) {
   $ui .= '<form id="modaction" method="post" action="'.Href($oH->selfurl).'?'.$oH->selfuri.'">'.PHP_EOL;
-  $ui .= '<select name="modaction" onchange="doSubmit(\'modaction\');">';
+  $ui .= '<select name="modaction" onchange="doSubmit(`modaction`);">';
   $ui .= '<option disabled selected hidden>'.L('Add').'</option>';
   $ui .= '<optgroup label="'.L('Staff').' '.L('action').'">';
   if ( is_a($oS,'CSection') && $oS->id>=0 ) $ui .= '<option value="nt">'.L('New_item').'...</option>';

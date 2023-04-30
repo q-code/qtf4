@@ -1,5 +1,5 @@
 <?php
-// QT 4.0 build:20230205
+// QT 4.0 build:20230430
 // Actions GET['a'] are Ddelete,Sdelete,Sprune,Scntdelete
 
 session_start();
@@ -71,7 +71,7 @@ case 'Ddelete':
   $frm[] = '<p class="row-confirm">'.L('Confirm').':</p>';
   $frm[] = '<p class="indent"><span class="cblabel">
   <input required type="checkbox" id="itemDelete" name="itemDelete"/> <label for="itemDelete">'.L('Domain_del').($intSections==0 ? '' : ' '.L('and').' '.L('move').' '.L('section',$intSections)).'</label></span></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
   $frm[] = '<input type="hidden" name="s" value="'.$s.'"/>';
   $frm[] = '<input type="hidden" name="a" value="'.$a.'"/>';
   $frm[] = '</form>';
@@ -105,7 +105,7 @@ case 'Sdelete':
   }
   $frm[] = '<p class="row-confirm">'.L('Confirm').':</p>';
   $frm[] = '<p class="indent"><span class="cblabel"><input required type="checkbox" id="itemDelete" name="itemDelete"/> <label for="itemDelete">'.L('Section_del').($countT ? ' '.L('and').' '.L('item',$countT) : '').'</label></span></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
   $frm[] = '<input type="hidden" name="s" value="'.$s.'"/>';
   $frm[] = '<input type="hidden" name="a" value="'.$a.'"/>';
   $frm[] = '</form>';
@@ -179,7 +179,7 @@ case 'Scntdelete':
   $frm[] = '<p class="indent cblabel"><input type="checkbox" id="deleteT" name="deleteT"/> <label for="deleteT">'.L('Delete').' '.L('item+').'</label></p>';
   $frm[] = '<p class="indent cblabel"><input type="checkbox" id="deleteR" name="deleteR"/> <label for="deleteR">'.L('Delete').' '.L('reply+').'</label></p>';
   $frm[] = '<p class="indent cblabel"><input type="checkbox" id="deleteA" name="dropattach" /> <label for="deleteA">'.L('Drop_attachments').'<span class="small" id="attachoption"></span></label></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' (<span id="submit-sum">...</span>)</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' (<span id="submit-sum">...</span>)</button></p>';
   $frm[] = '<input type="hidden" name="s" value="'.$s.'"/>';
   $frm[] = '<input type="hidden" name="a" value="'.$a.'"/>';
   $frm[] = '</form>';
@@ -291,7 +291,7 @@ case 'Sprune':
   </select></p><br>';
   $frm[] = '<p class="row-confirm">'.L('Confirm').':</p>';
   $frm[] = '<p class="indent cblabel"><input required type="checkbox" id="inPrune" name="PruneT"/> <label for="inPrune">'.L('Delete').'</label></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Cancel').'</button> <button type="btnSubmit" name="ok" value="ok">'.L('Delete').' (<span id="submit-sum">...</span>)</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="btnSubmit" name="ok" value="ok">'.L('Delete').' (<span id="submit-sum">...</span>)</button></p>';
   $frm[] = '<input type="hidden" name="s" value="'.$s.'"/>';
   $frm[] = '<input type="hidden" name="a" value="'.$a.'"/>';
   $frm[] = '<input type="hidden" id="inDay" name="d" value="'.$days.'"/>';
@@ -385,7 +385,7 @@ case 'Scntmove':
   </select></p><br>';
   $frm[] = '<p class="row-confirm">'.L('Confirm').':</p>';
   $frm[] = '<p class="indent cblabel"><input type="checkbox" id="inMove" name="MoveT" required/> <label for="inMove">'.L('Move').' '.L('item+').'</label></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Move').' (<span id="submit-sum">...</span>)</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Move').' (<span id="submit-sum">...</span>)</button></p>';
   $frm[] = '<input type="hidden" name="s" value="'.$s.'"/>';
   $frm[] = '<input type="hidden" name="a" value="'.$a.'"/>';
   $frm[] = '</form>';

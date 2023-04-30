@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230205
+<?php // v4.0 build:20230430
 
 // Actions GET['a'] are
 // role:     change users role (access admin only)
@@ -87,7 +87,7 @@ case 'usersrole':
   <option value="M">'.L('Role_M').'</option>
   <option value="A"'.(SUser::role()!=='A' ? 'disabled' :'').'>'.L('Role_A').'</option>
   </select></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Ok').' ('.count($ids).')</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Ok').' ('.count($ids).')</button></p>';
   $frm[] = '<input type="hidden" name="ids" value="'.implode(',',$ids).'"/>';
   $frm[] = '</form>';
   break; // =====
@@ -112,7 +112,7 @@ case 'usersdel':
   $frm[] = '<p>'.L('Users').':</p>';
   $frm[] = renderUsers($ids).'<br>';
   $frm[] = '<p class="row-confirm"><input required type="checkbox" id="confirm" name="confirm"/> <label for="confirm">'.L('Confirm').': '.L('Delete').' '.L('member',count($ids)).'<label></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' ('.count($ids).')</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' ('.count($ids).')</button></p>';
   $frm[] = '<input type="hidden" name="ids" value="'.implode(',',$ids).'"/>';
   $frm[] = '</form>';
   break; // =====
@@ -159,7 +159,7 @@ case 'catdel':
   $str = isset($_GET['n']) ? $_GET['n'] : '!';
   $frm[] = '<form method="post" action="'.$oH->selfuri.'">';
   $frm[] = '<p><input required type="checkbox" id="confirm" name="confirm"/> <label for="confirm">'.L('Confirm').': '.L('Delete').' '.$str.' '.L('members_'.$cat).'<label></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Cancel').'</button> &nbsp; <button type="submit" name="ok" value="delete">'.L('Delete').' ('.$str.')</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> &nbsp; <button type="submit" name="ok" value="delete">'.L('Delete').' ('.$str.')</button></p>';
   $frm[] = '<input type="hidden" name="cat" value="'.$cat.'"/>';
   $frm[] = '</form>';
   break; // =====
@@ -197,7 +197,7 @@ case 'usersban':
   $frm[] = '<p><select required name="ban" size="1"><option value="" disabled selected hidden></option>';
   foreach(BAN_DAYS as $k=>$days) $frm[] = '<option value="'.$k.'">'.L('day',$days).'</option>';
   $frm[] = '</select></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Ok').' ('.count($ids).')</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Ok').' ('.count($ids).')</button></p>';
   $frm[] = '<input type="hidden" name="ids" value="'.implode(',',$ids).'"/>';
   $frm[] = '</form>';
   break; // =====
@@ -229,7 +229,7 @@ case 'userspic':
   $frm[] = '<form method="post" action="'.$oH->selfuri.'">';
   $frm[] = '<p>'.L('Users').':</p>';
   $frm[] = renderUsers($ids).'<br>';
-  $frm[] = '<p class="row-confirm"><input required type="checkbox" id="confirm" name="confirm"/> <label for="confirm">'.L('Confirm').': '.L('Delete').' '.L('picture',count($ids)).'<label></p>';  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' ('.count($ids).')</button></p>';
+  $frm[] = '<p class="row-confirm"><input required type="checkbox" id="confirm" name="confirm"/> <label for="confirm">'.L('Confirm').': '.L('Delete').' '.L('picture',count($ids)).'<label></p>';  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' ('.count($ids).')</button></p>';
   $frm[] = '<input type="hidden" name="ids" value="'.implode(',',$ids).'"/>';
   $frm[] = '</form>';
   break; // =====

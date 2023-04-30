@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230205
+<?php // v4.0 build:20230430
 
 session_start();
 /**
@@ -177,7 +177,7 @@ echo '<div class="g-qr-icon"><p class="i-container" title="'.L('Reply').'">'.get
 <div class="g-qr-bbc">'.(QT_BBC ? '<div class="bbc-bar">'.bbcButtons(1).'</div>' : '').'</div>
 <div class="g-qr-text">
 <textarea required id="text" name="text" rows="5"></textarea>
-<p id="quickreply-footer"><a href="javascript:void(0)" onclick="document.getElementById(\'form-edit\').submit();">'.L('More').'...</a></p>
+<p id="quickreply-footer"><a href="javascript:void(0)" onclick="document.getElementById(`form-edit`).submit();">'.L('More').'...</a></p>
 </div>
 ';
 echo '<div class="g-qr-btn">

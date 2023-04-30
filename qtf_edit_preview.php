@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230205
+<?php // v4.0 build:20230430
 
 // This generates a preview message where all href are DISABLED
 // Data come from qtf_edit.php by a ajax POST request. The preview is included in the form

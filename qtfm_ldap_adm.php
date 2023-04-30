@@ -1,10 +1,10 @@
-<?php // v4.0 build:20230205 can be app impersonated {qt f|e|i}
+<?php // v4.0 build:20230430 can be app impersonated {qt f|e|i}
 
 /**
  * @package    QuickTalk
  * @author     Philippe Vandenberghe <info@qt-cute.org>
  * @copyright  2012 The PHP Group
- * @version    4.0 build:20230205
+ * @version    4.0 build:20230430
  */
 
 session_start();

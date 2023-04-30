@@ -1,4 +1,4 @@
-<?php  // v4.0 build:20230205
+<?php  // v4.0 build:20230430
 
 session_start();
 /**
@@ -186,7 +186,7 @@ $arrM['bt-d'] = L('Per_d').'|id=bt-d|href='.$href.'d';
 // add comparaison year selector
 if ( $pan=='gt' || $pan=='dt' ) {
   $href = $oH->selfurl.'?'.qtImplode(qtArradd(qtExplodeUri(),'y0',''));   // existing bt is reset as last argument '&y0='
-  $arrM[] = '!<span>'.L('Compare_year').'&nbsp;<select id="y0" name="y0" value="'.$y0.'" onchange="window.location=\''.$href.'\'+this.value;">'.asTags(array($y-4=>$y-4,$y-3=>$y-3,$y-2=>$y-2,$y-1=>$y-1),$y0).'</select></span>';
+  $arrM[] = '!<span>'.L('Compare_year').'&nbsp;<select id="y0" name="y0" value="'.$y0.'" onchange="window.location=`'.$href.'`+this.value;">'.asTags(array($y-4=>$y-4,$y-3=>$y-3,$y-2=>$y-2,$y-1=>$y-1),$y0).'</select></span>';
 }
 $m = new CMenu($arrM, ' &middot; ');
 echo '<div id="nav-blocktime">'.$m->build('bt-'.$bt, 'tag=span|addclass=actif').'</div>';
@@ -385,10 +385,10 @@ if ( !file_exists('bin/js/chart.css') || !file_exists('bin/js/chart.js') ) { ech
 $arrA = array_values(getAbscissa($bt,MAXBT,$strTendaysago)); // abscisse (not indexed)
 
 echo '<div id="nav-charts">
-'.L('Charts_options').'&nbsp; <select id="chartsType" onchange="resetCharts([1,2],[\'stack0\',\'stack0\']);resetCharts([3,4]);storeChartsOptions();">
+'.L('Charts_options').'&nbsp; <select id="chartsType" onchange="resetCharts([1,2],[`stack0`,`stack0`]);resetCharts([3,4]);storeChartsOptions();">
 <option value="b">'.L('Bar').'</option>
 <option value="l">'.L('Line').'</option>
-</select> &nbsp; <span class="cblabel"><input type="checkbox" id="chartsPercent" onclick="chartY([1,2],[\'stack0\',\'stack0\']);chartY([3,4]);storeChartsOptions();" > <label for="chartsPercent">'.L('Percent').'</label></span>
+</select> &nbsp; <span class="cblabel"><input type="checkbox" id="chartsPercent" onclick="chartY([1,2],[`stack0`,`stack0`]);chartY([3,4]);storeChartsOptions();" > <label for="chartsPercent">'.L('Percent').'</label></span>
 </div>
 ';
 // Tips: canvas needs a div block to limit chart size (otherwise it would be 100% width, because parent "charts" is displayed as grid)
@@ -480,10 +480,10 @@ $arrA = array_values(getAbscissa($bt,MAXBT,$strTendaysago)); // abscisse (not in
 $titles['CT'] = L('Cumul').' '.L('item+');
 
 echo '<div id="nav-charts">
-'.L('Charts_options').'&nbsp; <select id="chartsType" onchange="resetCharts([1,2],[\'stack0\',\'stack0\',\'stack1\',\'stack1\']);resetCharts([3,4]);storeChartsOptions();">
+'.L('Charts_options').'&nbsp; <select id="chartsType" onchange="resetCharts([1,2],[`stack0`,`stack0`,`stack1`,`stack1`]);resetCharts([3,4]);storeChartsOptions();">
 <option value="b">'.L('Bar').'</option>
 <option value="l">'.L('Line').'</option>
-</select> &nbsp; <span class="cblabel"><input type="checkbox" id="chartsPercent" onclick="chartY([1,2],[\'stack0\',\'stack0\',\'stack1\',\'stack1\']);chartY([3,4]);storeChartsOptions();"> <label for="chartsPercent">'.L('Percent').'</label></span>
+</select> &nbsp; <span class="cblabel"><input type="checkbox" id="chartsPercent" onclick="chartY([1,2],[`stack0`,`stack0`,`stack1`,`stack1`]);chartY([3,4]);storeChartsOptions();"> <label for="chartsPercent">'.L('Percent').'</label></span>
 </div>
 ';
 // Tips: canvas needs a div block to limit chart size (otherwise it would be 100% width, because parent "charts" is displayed as grid)

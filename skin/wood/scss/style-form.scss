@@ -60,10 +60,14 @@ div.formHelp p{margin:0 0 0.8rem 0}
 @media screen and (max-width:1023px){div.formHelp{padding:0.5rem;border:1px solid #ddd} }
 
 /* TAGS and tags edit */
-.tag-box{position:relative;margin:20px auto 0 auto;width:450px;text-align:center;padding:8px;border:2px solid #EEE;border-radius:8px}
-  @media print{.tag-box{width:auto}}
-.tag-box .svg-search{display:block;position:absolute;right:0;top:0;padding:6px 3px 6px 6px;background-color:#EEE;font-size:2rem;color:#d0d0d0;border-radius:0 0 0 8px}
-.tag-box p{margin:0 0 5px 0}
+.tag-box{position:relative;margin:1rem auto 0 auto;padding:0.5rem;width:60%;text-align:center;border:2px solid #EEE;border-radius:8px}
+.tag-box .svg-search{display:block;position:absolute;right:0;top:0;padding:0.4rem;background-color:#EEE;font-size:2rem;color:#d0d0d0;border-radius:0 0 0 8px;z-index:1}
+.tag-box p{position:relative;margin-bottom:0.2rem;z-index:2}
+.tag-box a{position:relative;z-index:2}
+.tag-box .svg-symbol{color:#888}
+@media print{.tag-box{width:auto}}
+@media screen and (max-width:959px){.tag-box{width:auto}}
+
 .tag-btn{margin:0 0 0 3px;padding:2px 4px}
 div.tags > div#tag-container{padding:5px 0 0 0}
 span.tags{color:#888}

@@ -1,4 +1,4 @@
- <?php // v4.0 build:20230205
+ <?php // v4.0 build:20230430
 
 session_start();
 /**
@@ -391,7 +391,7 @@ if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P')
 }
 
 echo '<p class="submit">
-<button type="button" tabindex="5" onclick="window.location=\''.Href($oH->exiturl).'\'">'.L('Cancel').'</button>&nbsp;
+<button type="button" tabindex="5" onclick="window.location=`'.Href($oH->exiturl).'`">'.L('Cancel').'</button>&nbsp;
 <button type="submit" tabindex="6" id="dopreview" value="'.$certificate.'" onclick="this.form.dataset.state=0">'.L('Preview').'...</button>&nbsp;
 <button type="submit" tabindex="7" name="dosend" value="'.$certificate.'" onclick="this.form.dataset.state=1">'.($a=='ed' ? L('Save') : L('Send')).'</button>
 </p>

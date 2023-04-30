@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230205
+<?php // v4.0 build:20230430
 
 /**
  * @var string $strDetailLegend
@@ -126,7 +126,7 @@ $oH->scripts[] = 'function toggleAside(){
   qtToggle("aside__status");
   qtToggle("aside__legend");
   qtToggle("aside__detail");
-  qtToggle("aside__info",null,"aside-ctrl");
+  qtToggle("aside__info","block","aside-ctrl");
   qtAttrStorage("aside-ctrl","qt-aside");
   d.blur();
 }

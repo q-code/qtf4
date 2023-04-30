@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230205 allows app impersonation [qt f|i|e ]
+<?php // v4.0 build:20230430 allows app impersonation [qt f|i|e ]
 
 session_start();
 /**
@@ -143,7 +143,7 @@ if ( file_exists($file) )
   if ( !empty($help) ) echo '<input type="hidden" name="help" value="'.$help.'"/>'.PHP_EOL;
   echo '<textarea name="content" class="content-'.$ext.'" rows="'.$rows.'"'.($readonly ? ' readonly' : '').'>'.$str.'</textarea>'.PHP_EOL;
   echo '<p class="filename">'.$file.'</p>'.PHP_EOL;
-  echo '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=\''.$oH->exiturl.'\';">'.L('Exit').'</button>'.($readonly ? '' : ' &nbsp; <button type="submit" name="ok" value="save">'.L('Save').'</button>').'</p>'.PHP_EOL;
+  echo '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Exit').'</button>'.($readonly ? '' : ' &nbsp; <button type="submit" name="ok" value="save">'.L('Save').'</button>').'</p>'.PHP_EOL;
   echo '</form>'.PHP_EOL;
 }
 else

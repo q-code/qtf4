@@ -3,7 +3,7 @@
 /* ============
  * map_lib.php
  * ------------
- * version: 4.0 build:20230205
+ * version: 4.0 build:20230430
  * This is a module library
  * ------------
  * Class CMapPoint
@@ -126,7 +126,7 @@ function gmapMarker($centerLatLng='',$draggable=false,$gsymbol=false,$title='',$
 		' . $draggable . gmapMarkerIcon($gsymbol) . '
 		title: "'.$title.'"
 		});
-		markers.push(marker); '.PHP_EOL.(empty($info) ? '' : '	gmapInfo(marker,\''.$info.'\');');
+		markers.push(marker); '.PHP_EOL.(empty($info) ? '' : '	gmapInfo(marker,`'.$info.'`);');
 }
 function gmapMarkerIcon($gsymbol=false)
 {

@@ -20,5 +20,5 @@ $L['Gmap']['H_pntmove']='Vous pouvez continuer à déplacer le point<br>avant de
 $L['Gmap']['zoomtoall']='Zoomer sur tous les points';
 $L['Gmap']['items']='Cette page contient %s ayant des coordonnées (total %s)';
 $L['Gmap']['E_noposition']='Pas de localisation cartographique...';
-$L['Gmap']['E_noaddr']='Désolé, il n\'a pas ét� possible de géocoder cette adresse';
+$L['Gmap']['E_noaddr']='Désolé, il n\'a pas été possible de géocoder cette adresse';
 $L['Gmap']['In_google']='Ouvrir dans Google map';

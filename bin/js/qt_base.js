@@ -20,20 +20,8 @@ function qtFocusAfter(id){
   const value = el.value;
   el.value = ''; el.focus(); el.value = value;
 }
-function qtCtrlToggle(idctrl='tgl-ctrl', id='tgl-container', display='block', attr='expanded'){
-  const cnt = document.getElementById(id); if ( !cnt ) return;
-  // change targetted container display
-  cnt.style.display = cnt.style.display==='none' ? display : 'none';
-  // if attr and idctrl are not empty, adds/removes the class [attr] to the controller (i.e. container is visible/hidden)
-  if ( attr!=='' ) {
-    const ctrl = document.getElementById(idctrl);
-    if ( ctrl ) ctrl.classList.toggle(attr);
-  }
-}
-/*!!!*/
 function qtToggle(id='tgl-container', display='block', idctrl='tgl-ctrl', attr='expanded'){
   const cnt = document.getElementById(id); if ( !cnt ) return;
-  // change targetted container display
   cnt.style.display = cnt.style.display==='none' ? display : 'none';
   // if attr and idctrl are not empty, adds/removes the class [attr] to the controller (i.e. container is visible/hidden)
   if ( attr!=='' ) {

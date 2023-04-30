@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230205 allows app impersonation [qt f|i|e]
+<?php // v4.0 build:20230430 allows app impersonation [qt f|i|e]
 
 session_start();
 /**
@@ -155,7 +155,7 @@ echo '<div id="ct-title" class="flex-sp">';
 echo '<h1>'.$oH->selfname.': '.$L['dateMMM'][date('n',$dCurrentDate)].' '.date('Y',$dCurrentDate).'</h1>';
 echo '<form method="get" action="'.Href($oH->selfurl).'" id="cal_month">';
 echo '<input type="hidden" name="y" id="y" value="'.$intYear.'"/> '.PHP_EOL;
-echo L('Month').' <select name="m" onchange="document.getElementById(\'cal_month\').submit();">';
+echo L('Month').' <select name="m" onchange="document.getElementById(`cal_month`).submit();">';
 for ($i=1;$i<13;$i++) echo '<option'.($i==date('n') ? ' class="bold"' : '').' value="'.$i.'"'.($i==$intMonth ? ' selected' : '').'>'.$L['dateMMM'][$i].'</option>'.PHP_EOL;
 echo '</select>&nbsp;';
 if ( date('n',$dCurrentDate)>1 )

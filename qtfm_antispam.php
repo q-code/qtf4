@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230205
+<?php // v4.0 build:20230430
 // This is included in qtx_edit.php in a try{}catch{}
 /**
  * Convert $ip string into IPv6 or IPv4 canonincal format (IPv4-over-IPv6 becomes IPv4)<br>A range selector * is possible on the last byte.
@@ -60,7 +60,7 @@ if ( $_SESSION[QT]['m_antispam']>0 ) // this parametre can be >1
     antispamThrow($oH, 'E1');
   }
   // minimum size
-  if ( $checkSize && strlen($oP->text)<=$minSize ) antispamThrow($oH, 'E2'); //!!!throw new Exception( L('Antispam.E2') );
+  if ( $checkSize && strlen($oP->text)<=$minSize ) antispamThrow($oH, 'E2');
   // sampling text
   $strM = mb_strtolower(qtDropDiacritics(substr($oP->text,0,500)));
   // simple characters exists

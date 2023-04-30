@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230205 allows app impersonation [qt f|i ]
+<?php // v4.0 build:20230430 allows app impersonation [qt f|i ]
 
 session_start();
 /**
@@ -113,7 +113,7 @@ Port <span style="color:#4444ff">587</span><br>
 Username <span style="color:#4444ff">yourusername@gmail.com</span><br>
 Password <span style="color:#4444ff">your google account password</span><br>
 <br>
-<span class="small">Note: using ssl or tls requires that your webhost opens these transport sockets in the php configuration. When this is not possible or if the test failed, you can use standard mail function (in the administration page Site & contact, don\'t use external smtp server).</span>
+<span class="small">Note: using ssl or tls requires that your webhost opens these transport sockets in the php configuration. When this is not possible or if the test failed, you can use standard mail function (in the administration page Site & contact, don`t use external smtp server).</span>
 </p>
 ';
 echo '<p class="bold">Example for pop3 instead of smtp</p>

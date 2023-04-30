@@ -1,5 +1,5 @@
 <?php
-// v4.0 build:20230205
+// v4.0 build:20230430
 // WARNING: requires config/config_db.php
 // WARNING: requires php 5.6.x or next (uses scalar expression const)
 
@@ -10,7 +10,7 @@ const APP = 'qtf'; // application file prefix
 const APPNAME = 'QuickTalk forum';
 define('QT', APP.(defined('QDB_INSTALL') ? substr(QDB_INSTALL,-1) : '')); // memory namespace "qtf{n}"
 const VERSION = '4.0';
-const BUILD = 'build:20230205';
+const BUILD = 'build:20230430';
 const TABDOMAIN = QDB_PREFIX.'qtadomain';
 const TABSECTION = QDB_PREFIX.'qtaforum';
 const TABUSER = QDB_PREFIX.'qtauser';

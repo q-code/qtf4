@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230205
+<?php // v4.0 build:20230430
 
 /**
  * Returns a sql date condition selecting a timeframe
