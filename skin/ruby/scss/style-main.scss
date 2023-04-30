@@ -93,13 +93,6 @@ section.code{padding:3px;margin:1px 1px 6px 1px;font-family:Courier,sans-serif;m
 #site.compact .post-img{display:none}
 #site.compact p.quotetitle,#site.compact section.quote, #site.compact div.g-p-msg p:not(p.code){display:inline}
 
-/* special */
-p.caption{margin:2px 0}
-.pg-privacy .msgbox{width:550px;margin:10px auto}
-@media screen and (min-width:1024px){.pg-privacy .msgbox{width:750px}}
-@media screen and (min-width:501px) and (max-width:640px){.pg-privacy .msgbox{width:450px}}
-@media screen and (max-width:500px){.pg-privacy .msgbox{width:100%}}
-
 /* Image magnifier */
 .magnifier{position:relative}
 [data-magnify="0"]{display:inline;height:40px;border:1px solid #FFF;border-radius:10px;cursor:pointer}

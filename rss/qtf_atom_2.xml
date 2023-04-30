@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?><feed xmlns="http://www.w3.org/2005/Atom">
 <title>QT-cute - User Section</title><link href="http://localhost/qtcute/soft/qtf4/qtf_items.php?s=2"/><link href="http://localhost/qtcute/soft/qtf4/rss/qtf_atom_2.xml" rel="self"/><id>http://localhost/qtcute/soft/qtf4/qtf_items.php?s=2</id>
-<updated>2023-04-29T14:47:15+02:00</updated>
+<updated>2023-04-29T18:21:10+02:00</updated>
 <author><name>Webmaster</name><email>phvandenberghe@gmail.com</email></author>
 <category term="Troubleticket"/><generator>QuickTalk 4.0</generator>
 <icon>http://localhost/qtcute/soft/qtf4/rss/qtf_icon.gif</icon>
 <logo>http://localhost/qtcute/soft/qtf4/rss/qtf_logo.gif</logo>
 <entry>
 <id>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=73&p=99</id>
-<title>test</title>
-<updated>2023-04-29T14:47:15+02:00</updated>
-<author><name>John</name></author>
-<content>a</content>
+<title>t</title>
+<updated>2023-04-29T18:21:10+02:00</updated>
+<author><name>Admin</name></author>
+<content>Test of</content>
 <link href="http://localhost/qtcute/soft/qtf4/qtf_item.php?t=73&p=99"/></entry>
 <entry>
 <id>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=71&p=97</id>

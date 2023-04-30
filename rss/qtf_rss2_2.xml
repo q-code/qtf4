@@ -6,9 +6,9 @@
 <image><url>http://localhost/qtcute/soft/qtf4/rss/qtf_logo.gif</url><title>QT-cute - User Section</title><link>http://localhost/qtcute/soft/qtf4/qtf_items.php?s=2</link><width>110</width><height>50</height></image>
 <atom:link href="http://localhost/qtcute/soft/qtf4/rss/qtf_rss2_2.xml" rel="self" type="application/rss+xml"/>
 <item>
-<title>test</title>
+<title>t</title>
 <link>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=73&p=99</link>
-<description>a</description>
+<description>Test of</description>
 <pubDate>Today</pubDate>
 <guid>http://localhost/qtcute/soft/qtf4/qtf_item.php?t=73&p=99</guid>
 </item>

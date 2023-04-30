@@ -40,7 +40,7 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 .msgbox.short{width:350px}
 @media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:500px} .msgbox.short{width:380px}}
 @media screen and (min-width:1280px){.msgbox{width:525px}  .msgbox.short{width:400px}}
-.msgboxtitle{padding:0.75rem 1.5rem;background-color:#e8e8e8}
+.msgboxtitle{padding:0.75rem 1.5rem;background-color:#e8e8e8;font-size:1.6rem}
 .msgboxbody{padding:1.5rem}
 .msgboxbody p.list small{color:#888}
 
