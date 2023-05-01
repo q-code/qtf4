@@ -488,10 +488,10 @@ if ( isset($_POST['ok']) ) {
 
 // FORM
 
-$oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
+$oDB->query( "SELECT * FROM TABUSER WHERE id=".$id );
 if ( $row=$oDB->getRow() ) $name = $row['name'];
 
-$frm_hd = '<div class="user-dlg msg-role">
+$frm_hd = '<div class="user-dlg">
 <div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>
 ';
 $frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
@@ -537,7 +537,8 @@ if ( $row=$oDB->getRow() ) {
   if ( !empty($row['closed']) && array_key_exists((int)$row['closed'],BAN_DAYS) ) $currentban = (int)$row['closed'];
 }
 
-$frm_hd = '<div class="user-dlg msg-ban"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$frm_hd = '<div class="user-dlg">
+<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
 $frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
 $frm[] = '<p>'.$name.$role.'</p>';
 $frm[] = '<p>'.L('H_ban').'</p>';
@@ -576,7 +577,7 @@ if ( $row=$oDB->getRow() ) {
   $name = $row['name'];
   $role = ' <small>('.L('Role_'.$row['role']).')</small>';
 }
-$frm_hd = '<div class="user-dlg msg-delete"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
 $frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
 $frm[] = '<p><input required type="checkbox" name="confirm"/> '.$name.$role.'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="delete">'.L('Delete').'</button></p>';
@@ -629,7 +630,7 @@ $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 if ( $row=$oDB->getRow() ) {
   $name = $row['name'];
 }
-$frm_hd = '<div class="user-dlg msg-adm-reset"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
 $frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
 $frm[] = '<p>'.L('Reset_pwd').' - '.$name.'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
@@ -737,7 +738,7 @@ $row=$oDB->getRow();
 $name = $row['name'];
 $secret_q = empty($row['secret_q']) ? '' : $row['secret_q'];
 
-$frm_hd = '<div class="user-dlg msg-qa"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
 $frm_attr = 'class=msgbox formQa';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
@@ -785,7 +786,7 @@ if ( isset($_POST['ok']) ) try {
 // FORM
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 if ( $row=$oDB->getRow() ) $name = $row['name'];
-$frm_hd = '<div class="user-dlg msg-name"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
 $frm_attr = 'class=msgbox formName';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
@@ -846,7 +847,7 @@ if ( empty($row['signature']) ) $row['signature']='';
 $strSign = qtBbc($row['signature']); if ( empty($strSign) ) $strSign='&nbsp;';
 if ( QT_BBC ) $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_bbc.js"></script>';
 
-$frm_hd = '<div class="user-dlg msg-sign"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
 $frm_attr = 'class=msgbox formSign';
 if ( SUser::id()!==$id ) $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<p>'.L('H_no_signature').'</p>';

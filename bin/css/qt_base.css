@@ -20,10 +20,10 @@ input:focus, select:focus, textarea:focus{outline:none; border:1px solid #000}
 @keyframes cblabel{from{outline-color:#000} to{outline-color:#FFF}}
 
 /* LAYOUT */
-#infomessage{text-align:center}
 @media screen and (max-width:840px){.secondary{display:none !important}}
 /* grid gap and padding */
-:root{--gap:6px} @media screen and (max-width:1023px) {:root{--gap:4px}}
+:root{--gap:6px}
+@media screen and (max-width:1023px) {:root{--gap:4px}}
 /* Responsive design flex (left-right)*/
 .flex-sp{display:flex;flex-direction:row;justify-content:space-between;align-items:center}
 .flex-sp.top{align-items:flex-start}

@@ -5,8 +5,8 @@ lib_qt_txt.php
 version: 5.5 build:20230430
 This is a library of public functions
 -------------
-QTdateclean - v5.4: can truncate the cleaned datetime
-QTdatestr - v5.3: arguments order changed (for the 2 last arguments)
+qtDateClean - v5.4: can truncate the cleaned datetime
+qtDatestr - v5.3: arguments order changed (for the 2 last arguments)
 */
 
 /**
@@ -17,11 +17,14 @@ QTdatestr - v5.3: arguments order changed (for the 2 last arguments)
  * @param bool $keepnumeric int/float are returned as int/float (not quoted)
  * @return string|array (with array, index and non-string element remain unchanged)
  */
-function qtQuoted($txt, string $q1='"', string $q2='', bool $keepnumeric=false)
+function qtQuoted($txt, string $q1='"', string $q2='', bool $keepNum=false)
 {
-  if ( is_array($txt) ) { foreach($txt as $k=>$item) $txt[$k] = qtQuoted($item,$q1,$q2,$keepnumeric); return $txt; }
-  // Returns a quoted string, except if you use the option $keepnumeric=true
+  // Works recursively on array
+  if ( is_array($txt) ) { foreach($txt as $k=>$item) $txt[$k] = qtQuoted($item,$q1,$q2,$keepNum); return $txt; }
+  // Returns a quoted string (except int/float with $keepNum=true)
+  if ( $keepNum && (is_int($txt) || is_float($txt)) ) return $txt;
   if ( empty($q2) ) {
+    // use well known open/closing symbols
     switch(strtolower($q1)) {
       case "&'":
       case '&#8216;':
@@ -39,7 +42,6 @@ function qtQuoted($txt, string $q1='"', string $q2='', bool $keepnumeric=false)
     }
   }
   if ( empty($q1) && empty($q2) ) throw new Exception( __FUNCTION__.' invalid argument q' );
-  if ( $keepnumeric && (is_int($txt) || is_float($txt)) ) return $txt;
   if ( is_string($txt) || is_int($txt) || is_float($txt) ) return $q1.$txt.$q2;
   throw new Exception( __FUNCTION__.' invalid argument' );
 }
@@ -75,15 +77,14 @@ function qtDbDecode(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bo
 }
 
 /**
- * Drop diacritics (works recursively in case of array)
+ * Drop diacritics
  * @param string|array $str
  * @return string|array (with array, indexes remain unchanged)
  */
 function qtDropDiacritics($str) {
-  if ( is_array($str) ) {
-    foreach($str as $k=>$item) $str[$k] = qtDropDiacritics($item);
-    return $str;
-  }
+  // Works recursively on array
+  if ( is_array($str) ) { foreach($str as $k=>$item) $str[$k] = qtDropDiacritics($item); return $str; }
+  // String only
   if ( !is_string($str) ) throw new Exception(__FUNCTION__.' invalid argument');
   $tl = Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', Transliterator::FORWARD);
   $res = $tl->transliterate($str);
@@ -110,7 +111,6 @@ function qtTrunc($txt, int $max=255, string $end='...')
   }
   throw new Exception( 'invalid argument txt' );
 }
-
 /**
  * Convert multiline text into one line (truncate and unbbc)
  * @param string $str
@@ -134,26 +134,23 @@ function qtInline(string $str, int $max=255, string $end='...', bool $unbbc=true
   // truncate
   return $max>0 ? qtTrunc($str,$max,$end) : $str;
 }
-
-function QTdateclean($s='now', int $size=14)
+function qtDateClean($d='now', int $size=14, string $failed='')
 {
-  // Returns datetime [string] 'YYYYMMDD[HHMM[SS]]' of a [int|string] numerical of 8-14 digits (or 'now').
-  // Returns '' when empty source or wrong source type
-  // $s can be: QTdatabase format, 'now', integer or a string like 'YYYY-MM-DD HH:MM:SS' (with trailing 0!)
-  // $size to truncate (minium 4 to get YYYY), default is 14 (returned string can be less if source length is less)
-
-  if ( is_int($s) ) $s = (string)$s; // support int
-  if ( $s==='now' ) $s = date('YmdHis'); // support now
-  // check
-  if ( !is_string($s) || empty($s) ) return '';
-  if ( $size<4 || $size>14) die('QTdateclean: arg #2 must be bewteen 4-14');
-  // format
-  if ( is_numeric($s) ) return substr($s,0,$size);
-  $s = substr(str_replace(array(' ','-','.','/',':'),'',$s),0,$size);
-  if ( is_numeric($s) ) return substr($s,0,$size);
-  return '';
+  // Works recursively on array
+  if ( is_array($d) ) { foreach($d as $k=>$item) $d[$k] = qtDateClean($item,$size); return $d; }
+  // Returns datetime [string] 'YYYYMMDD[HHMM[SS]]' from 'now', integer or a string like 'YYYY-MM-DD HH:MM:SS'
+  if ( is_int($d) ) $d = (string)$d; // support int
+  if ( !is_string($d) ) die(__FUNCTION__.' invalid arg #1');
+  if ( $size<4 || $size>14) die(__FUNCTION__.' invalid arg #2');
+  if ( empty($d) ) return $failed;
+  // Sanitize
+  if ( $d==='now' ) return substr(date('YmdHis'),0,$size);
+  if ( $d===(string)abs((int)$d) ) return substr($d,0,$size); // unsignedint [string] is sanitized
+  $d = str_replace([' ','-','.','/',':'], '', $d);
+  if ( $d===(string)(int)$d ) return substr($d,0,$size);
+  return $failed;
 }
-function QTdatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', bool $friendly=true, bool $dropOldTime=true, $title=false, $titleid=false, $e='?')
+function qtDatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', bool $friendly=true, bool $dropOldTime=true, $title=false, $titleid=false, $e='?')
 {
   // Converts a date [string|int|'now'] to a formatted date [string] and translate it.
   // $sDate - The date string, can be 'YYYYMMDD[HH][MM][SS]' or 'now'. It can include [.][/][-][ ]
@@ -164,27 +161,23 @@ function QTdatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
   // $e - When $sDate is '0' or empty, or when the input date format is unsupported the function returns $e ('?')
   // The translation uses $L['dateSQL']. If not existing, the php words remains (english).
 
-  $sDate = QTdateclean($sDate); if ( empty($sDate) ) return $e; // Clean $sDate to a [string] YYYYMMDD[HHMMSS] (max 14 char, supports 'now')
+  $sDate = qtDateClean($sDate); if ( empty($sDate) ) return $e; // Clean $sDate to a [string] YYYYMMDD[HHMMSS] (max 14 char, supports 'now')
   if ( strlen($sDate)===4 ) return $sDate; // Stop if input is a year
 
   // Analyse date time: returns $e when input is a invalid date otherwhise detect if recent date
-
   $intDate = false;
-  switch(strlen($sDate))
-  {
-  case 6:  $intDate = mktime(0,0,0,substr($sDate,4,2),1,substr($sDate,0,4)); break;
-  case 8:  $intDate = mktime(0,0,0,substr($sDate,4,2),substr($sDate,6,2),substr($sDate,0,4)); break;
-  case 10: $intDate = mktime(substr($sDate,-2,2),0,0,substr($sDate,4,2),substr($sDate,6,2),substr($sDate,0,4)); break;
-  case 12: $intDate = mktime(substr($sDate,-4,2),substr($sDate,-2,2),0,substr($sDate,4,2),substr($sDate,6,2),substr($sDate,0,4)); break;
-  case 14: $intDate = mktime(substr($sDate,-6,2),substr($sDate,-4,2),substr($sDate,-2,2),substr($sDate,4,2),substr($sDate,6,2),substr($sDate,0,4)); break;
-  default: return $e;
+  switch(strlen($sDate)) {
+    case 6:  $intDate = mktime(0,0,0,substr($sDate,4,2),1,substr($sDate,0,4)); break;
+    case 8:  $intDate = mktime(0,0,0,substr($sDate,4,2),substr($sDate,6,2),substr($sDate,0,4)); break;
+    case 10: $intDate = mktime(substr($sDate,-2,2),0,0,substr($sDate,4,2),substr($sDate,6,2),substr($sDate,0,4)); break;
+    case 12: $intDate = mktime(substr($sDate,-4,2),substr($sDate,-2,2),0,substr($sDate,4,2),substr($sDate,6,2),substr($sDate,0,4)); break;
+    case 14: $intDate = mktime(substr($sDate,-6,2),substr($sDate,-4,2),substr($sDate,-2,2),substr($sDate,4,2),substr($sDate,6,2),substr($sDate,0,4)); break;
+    default: return $e;
   }
   if ( $intDate===FALSE ) return $e;
 
   // Exceptions (used by rss xml)
-
-  if ( $sOutDate==='RFC-3339' )
-  {
+  if ( $sOutDate==='RFC-3339' ) {
     $sDate = date('Y-m-d\TH:i:s',$intDate);
     $sGMT = date('O',$intDate);
     $sGMT = substr($sGMT,0,3).':'.substr($sGMT,-2,2);
@@ -198,12 +191,10 @@ function QTdatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
   if ( !$bRecent && $dropOldTime ) $sOutTime='';
 
   // Apply output format. In case of friendly date, Today/Yesterday will replace the date (and time can be added)
-
   $stamp = '';
-  if ( $bRecent && $friendly )
-  {
-  if ( date('Y-m-d')==date('Y-m-d',$intDate) )       { $stamp = 'Today '; $sOutDate=''; }
-  if ( date('Y-m-d')==date('Y-m-d',$intDate+86400) ) { $stamp = 'Yesterday '; $sOutDate=''; }
+  if ( $bRecent && $friendly ) {
+    if ( date('Y-m-d')==date('Y-m-d',$intDate) )       { $stamp = 'Today '; $sOutDate=''; }
+    if ( date('Y-m-d')==date('Y-m-d',$intDate+86400) ) { $stamp = 'Yesterday '; $sOutDate=''; }
   }
   $format = trim($sOutDate.' '.$sOutTime);
   $sDate = trim($stamp.(empty($format) ?  '' : date($format,$intDate)));
@@ -211,16 +202,13 @@ function QTdatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
   $sDateFull = date('j F Y, '.(empty($sOutTime) ? 'G:i' : $sOutTime),$intDate);
 
   // Translating
-
   global $L;
-  if ( isset($L['dateSQL']) && is_array($L['dateSQL']) )
-  {
+  if ( isset($L['dateSQL']) && is_array($L['dateSQL']) ) {
     $sDate = qtDateTranslate($sDate, $L['dateSQL']);
     $sDateFull = qtDateTranslate($sDateFull, $L['dateSQL']);
   }
 
   // Exit
-
   if ( $title===false ) return $sDate;
   return '<span'.(empty($titleid) ? '' : ' id="'.$titleid.'" ').' title="'.qtAttr($sDateFull).'">'.$sDate.'</span>';
 }
@@ -335,35 +323,43 @@ function qtIsMail(string $str, bool $multiple=true)
   foreach ($arr as $str) if ( !preg_match("/^[A-Z0-9._%-]+@[A-Z0-9][A-Z0-9.-]{0,61}[A-Z0-9]\.[A-Z]{2,6}$/i",$str) ) return false;
   return true;
 }
-function qtIsBetween($value,$min=0,$max=99999)
+function qtIsBetween($n, $min=0, $max=99999)
 {
-  if ( !is_numeric($value) || !is_numeric($min) || !is_numeric($max) ) die('qtIsBetween: arguments must be a numeric (or a number as string)');
-  if ( $min>=$max ) die('qtIsBetween: invalid min or max');
-  if ( $value<$min ) return false;
-  if ( $value>$max ) return false;
+  // Works recursively on array
+  if ( is_array($n) ) { foreach($n as $k=>$item) if ( !qtIsBetween($item,$min,$max) ) return false; return true; }
+  // Only numeric
+  if ( !is_numeric($n) || !is_numeric($min) || !is_numeric($max) ) die(__FUNCTION__.' arguments must be a numeric');
+  if ( $min>=$max ) die(__FUNCTION__.' invalid min > max');
+  if ( $n<$min ) return false;
+  if ( $n>$max ) return false;
   return true;
 }
-function qtIsValiddate($d, bool $past=true, bool $futur=false) // allow past year, disallow futur year
+function qtIsValiddate($d, bool $pastYear=true, bool $futurYear=false)
 {
-  if ( !is_numeric($d) ) return false;
-  $d = (string)$d; if ( strlen($d)!=8 ) return false; // only YYYYMMDD
-  $intY = (int)substr($d,0,4);
-  $intM = (int)substr($d,4,2);
-  $intD = (int)substr($d,-2,2);
-  if ( $intY<1900 || $intY>2200 ) return false;
-  if ( $intM<1 || $intM>12 ) return false;
-  if ( $intD<1 || $intD>31 ) return false;
-  if ( !$past ) { if ( $intY<date('Y') ) return false; }
-  if ( !$futur ) { if ( $intY>date('Y') ) return false; }
-  if ( !checkdate($intM,$intD,$intY) ) return false;
+  // Works recursively on array
+  if ( is_array($d) ) { foreach($d as $k=>$item) if ( !qtIsValiddate($item,$pastYear,$futurYear) ) return false; return true; }
+  // Only YYYYMMDD
+  // Valid within [1900-2200] and (default) allow past year, disallow futur year
+  $d = (string)$d;
+  if ( strlen($d)!=8 ) return false;
+  if ( $d!==(string)abs((int)$d) ) return false; // only unsignedint [string]
+  $y = (int)substr($d,0,4); if ( $y<1900 || $y>2200 ) return false;
+  $m = (int)substr($d,4,2); if ( $m<1 || $m>12 ) return false;
+  $d = (int)substr($d,-2,2); if ( $d<1 || $d>31 ) return false;
+  if ( !$pastYear && $y<date('Y') ) return false;
+  if ( !$futurYear && $y>date('Y') ) return false;
   return true;
 }
 function qtIsValidtime($d)
 {
-  if ( !is_numeric($d) ) return false;
-  $d = (string)$d; if ( strlen($d)!==4 && strlen($d)!==6 ) return false; // only HHMM or HHMMSS
-  if ( !qtIsBetween(substr($d,0,2),0,23) ) return false;
-  if ( !qtIsBetween(substr($d,2,2),0,59) ) return false;
-  if ( strlen($d)==6 && !qtIsBetween(substr($d,4,2),0,59) ) return false;
+  // Works recursively on array
+  if ( is_array($d) ) { foreach($d as $k=>$item) if ( !qtIsValidtime($item) ) return false; return true; }
+  // Only HHMM or HHMMSS
+  $d = (string)$d;
+  if ( strlen($d)!==4 && strlen($d)!==6 ) return false;
+  if ( !preg_match('/^[0-9]*$/', $d) ) return false;
+  $i = (int)substr($d,0,2); if ( $i<0 || $i>23 ) return false;
+  $i = (int)substr($d,2,2); if ( $i<0 || $i>59 ) return false;
+  $i = (int)substr($d,4,2); if ( $i<0 || $i>59 ) return false;
   return true;
 }

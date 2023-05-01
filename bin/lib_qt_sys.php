@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230430
+<?php // v4.0 build:20230205
 
 /**
  * Convert qt-php-like url into html-like url when urlrewrite is active<br>Works only on the path-part (and next parts) of the url<br>Ex: 'qtx_login.php' becomes 'login.html'
@@ -33,14 +33,15 @@ function getSVG(string $id='info', string $attr='', string $wrapper='', bool $ad
  * @param string $str
  * @return string
  */
-function getLangDir(string $str='')
+function getLangDir(string $iso='')
 {
-  if ( empty($str) ) {
-    if ( defined('QT_LANG') ) return 'language/'.QT_LANG.'/'; //...
-    if ( !empty($_SESSION[QT]['language']) )  return 'language/'.$_SESSION[QT]['language'].'/'; //...
-    global $oDB; $str = $oDB->getSetting('language','en'); // fallback
+  $dir = 'language/';
+  if ( empty($iso) ) {
+    if ( defined('QT_LANG') ) return $dir.QT_LANG.'/';
+    if ( !empty($_SESSION[QT]['language']) ) return $dir.$_SESSION[QT]['language'].'/';
+    global $oDB; $iso = $oDB->getSetting('language','en'); // fallback
   }
-  return 'language/'.$str.'/';
+  return $dir.$iso.'/';
 }
 function getRepository(string $root='', int $id=0, bool $check=false)
 {
@@ -64,7 +65,7 @@ function useModule(string $name)
 }
 function attrDecode(string $str, string $sep='|', string $required='')
 {
-  // Explode a compacted-string 'x1=y1|x2=y2|x3' into an array of attribute value [x1=>y1,...]
+  // Explode a compacted-string 'x1=y1|x2=y2|x3' into an array [x1=>y1,...]
   // Values are un-quoted. Attributes are lowercase. An attribute without value is allowed (value is null)
   // Note: For an unformatted $str, the array [0=>$str] is returned
   // $required allow adding some default attributes if not declared in $str
@@ -355,12 +356,11 @@ function qtArrget(array $arr, $subkey='title')
  */
 function qtExplode(string $str, string $sep=';', string $fx='')
 {
-  if ( empty($str) ) return array();
+  if ( empty($str) ) return [];
   if ( !empty($fx) && !function_exists($fx) ) die('qtExplode: '.$fx.' is unknown function');
   $arr = explode($sep,$str);
-  $arrArgs = array();
-  foreach($arr as $str)
-  {
+  $arrArgs = [];
+  foreach($arr as $str) {
     if ( empty($str) || strpos($str,'=')===false ) continue; // skip parts without =
     $arrPart = explode('=',$str); $arrPart[0] = trim($arrPart[0]); // trim the keys
     if ( $arrPart[0]==='' ) continue; // skip when no-key

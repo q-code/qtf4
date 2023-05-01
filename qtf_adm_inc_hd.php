@@ -98,5 +98,5 @@ CHtml::getPage();
 // Title (and error)
 echo '<h1 class="title"'.(isset($oH->selfparent) ? ' data-parent="'.$oH->selfparent.'"' : '').'>'.$oH->selfname.'</h1>';
 if ( !empty($oH->selfversion) ) echo '<p class="pageversion">'.$oH->selfversion.'</p>';
-if ( !empty($oH->error) ) echo '<p id="infomessage" class="error">'.$oH->error.'</p>';
-if ( !empty($oH->warning) ) echo '<p id="infomessage" class="warning">'.$oH->warning.'</p>';
+if ( !empty($oH->error) ) echo '<p class="error center">'.$oH->error.'</p>';
+if ( !empty($oH->warning) ) echo '<p class="warning center">'.$oH->warning.'</p>';

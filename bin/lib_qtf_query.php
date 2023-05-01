@@ -95,8 +95,8 @@ function validateQueryArguments($query,$trimV=true)
       break;
     case 'btw':
       if ( empty($args['v']) || empty($args['v2']) || $args['v']<'19000101' || $args['v2']>'21000101' ) die(__FUNCTION__.' Invalid argument dates');
-      $args['v'] = QTdateclean($args['v'],8); // Returns YYYYMMDD (no time) while browser should provide YYYY-MM-DD. Returns '' if format not supported. If $v='now', returns today
-      $args['v2'] = QTdateclean($args['v2'],8);
+      $args['v'] = qtDateClean($args['v'],8); // Returns YYYYMMDD (no time) while browser should provide YYYY-MM-DD. Returns '' if format not supported. If $v='now', returns today
+      $args['v2'] = qtDateClean($args['v2'],8);
       if ( $args['v']>$args['v2'] ) die(__FUNCTION__.' Invalid date (date1 > date2)');
       break;
     case 'adv':

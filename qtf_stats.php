@@ -32,7 +32,7 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
     {
     case 'q': for ($i=1;$i<=MAXBT;++$i) { echo '<th>Q'.$i.'</td>'; } break;
     case 'm': for ($i=1;$i<=MAXBT;++$i) { echo '<th>'.$L['dateMM'][$i].'</td>'; } break;
-    case 'd': for ($i=1;$i<=MAXBT;++$i) { echo '<th>'.str_replace(' ','<br>',QTdatestr(addDate($strTendaysago,$i,'day'),'d M','')).'</td>'; } break;
+    case 'd': for ($i=1;$i<=MAXBT;++$i) { echo '<th>'.str_replace(' ','<br>',qtDatestr(addDate($strTendaysago,$i,'day'),'d M','')).'</td>'; } break;
     }
     echo '<th><b>'.($bt==='d' ? '10 '.strtolower(L('Days')) : L('Total')).'</b></td>
     </tr>';

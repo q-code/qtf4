@@ -55,7 +55,7 @@ function renderItems(array $ids, bool $tags=false, bool $replies=false, bool $at
     if ( $replies && $oT->items ) $str .= ' '.getSVG('comments', 'title='.L('reply',$oT->items));
     if ( $attach && !empty($oT->attachinfo) ) $str .= ' '.getSVG('paperclip', 'title='.L('Attachment'));
     if ( $tags ) $str .= ' '.$oT->getTagIcon();
-    $str .= ' <span class="minor">'.L('by').' '.qtTrunc($oT->firstpostname,20).' ('.QTdatestr($oT->firstpostdate,'j M').')</span>';
+    $str .= ' <span class="minor">'.L('by').' '.qtTrunc($oT->firstpostname,20).' ('.qtDatestr($oT->firstpostdate,'j M').')</span>';
     $str .= '</p>';
   }
   return $str.(count($ids)>5 ? '<p>...</p>' : '');
@@ -67,7 +67,7 @@ function renderReply(int $id, string $parentType='T', string $parentStatus='1')
   while( $row=$oDB->getRow() ) {
     $str = '<p class="indent" class="list ellipsis">'.CPost::getIconType($row['type'],$parentType,$parentStatus,QT_SKIN);
     $str .= ' "'.qtTrunc($row['textmsg'],100).'"';
-    $str .= ' <span class="minor">'.L('by').' '.qtTrunc($row['username'],20).' ('.strtolower(QTdatestr($row['issuedate'],'j M')).')</span></p>';
+    $str .= ' <span class="minor">'.L('by').' '.qtTrunc($row['username'],20).' ('.strtolower(qtDatestr($row['issuedate'],'j M')).')</span></p>';
   }
   return $str;
 }

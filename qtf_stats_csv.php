@@ -32,7 +32,7 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
     {
     case 'q': for ($i=1;$i<=MAXBT;++$i) { $csv .= qtQuoted('Q'.$i).';'; } break;
     case 'm': for ($i=1;$i<=MAXBT;++$i) { $csv .= qtQuoted($L['dateMM'][$i]).';'; } break;
-    case 'd': for ($i=1;$i<=MAXBT;++$i) { $csv .= qtQuoted(QTdatestr(addDate($strTendaysago,$i,'day'),'d M','')).';'; } break;
+    case 'd': for ($i=1;$i<=MAXBT;++$i) { $csv .= qtQuoted(qtDatestr(addDate($strTendaysago,$i,'day'),'d M','')).';'; } break;
     }
     $csv .= qtQuoted(($bt==='d' ? '10 '.strtolower(L('Days')) : L('Total'))).'<br>';
     // data series
