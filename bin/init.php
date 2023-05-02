@@ -11,8 +11,7 @@ require 'config/config_cst.php';
 // -----------------
 // Class and function definition
 // -----------------
-require 'bin/lib_qt_sys.php';
-require 'bin/lib_qt_txt.php';
+require 'bin/lib_qt_core.php';
 require 'bin/class/class.qt.db.php';
 require 'bin/class/class.qt.base.php';
 require 'bin/class/class.qt.html.php';
@@ -31,7 +30,7 @@ require 'bin/lib_qtf_html.php';
 // ----------------
 $oH = new CHtml(); // $oH must be created before $oDB to allow using debug log
 $oDB = new CDatabase();
-SMem::create($oH->warning); // create memcache object (or null), namespace is QT by default (can also issue a $oH->warning message if connection failed)
+SMem::create($oH->warning); // create memcache object [or do nothing] with namespace QT by default (can also issue a $oH->warning message if connection failed)
 
 // Check settings AGE against session age
 if ( !isset($_SESSION[QT.'settingsage']) ) $_SESSION[QT.'settingsage'] = time()-1;

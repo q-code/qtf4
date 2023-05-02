@@ -62,10 +62,10 @@ $oH->error = '';
 
   if ( !file_exists($root.'config/config_db.php') ) $oH->error .= 'File <b>config_db.php</b> is not in the <b>config</b> directory. Communication with database is impossible.<br>';
   if ( !file_exists($root.'bin/init.php') ) $oH->error .= 'File <b>init.php</b> is not in the <b>bin</b> directory. Application cannot start.<br>';
+  if ( !file_exists($root.'bin/lib_qt_core.php') ) $oH->error .= 'File <b>lib_qt_core.php</b> is not in the <b>bin</b> directory. Application cannot start.<br>';
   if ( !file_exists($root.'bin/lib_qtf_base.php') ) $oH->error .= 'File <b>lib_qtf_base.php</b> is not in the <b>bin</b> directory. Application cannot start.<br>';
   if ( !file_exists($root.'bin/class/class.qt.db.php') ) $oH->error .= 'File <b>class/class.qt.db.php</b> is not in the <b>bin/class</b> directory. Application cannot start.<br>';
   if ( !file_exists($root.'bin/class/class.qt.base.php') ) $oH->error .= 'File <b>class_qt_base.php</b> is not in the <b>bin/class</b> directory. Application cannot start.<br>';
-  if ( !file_exists($root.'bin/lib_qt_txt.php') ) $oH->error .= 'File <b>lib_qt_txt.php</b> is not in the <b>bin</b> directory. Application cannot start.<br>';
   if ( !file_exists($root.'bin/class_qtf_section.php') ) $oH->error .= 'File <b>class_qtf_section.php</b> is not in the <b>bin/class</b> directory. Application cannot start.<br>';
   if ( !file_exists($root.'bin/class_qtf_topic.php') ) $oH->error .= 'File <b>class_qtf_topic.php</b> is not in the <b>bin/class</b> directory. Application cannot start.<br>';
   if ( !file_exists($root.'bin/class_qtf_post.php') ) $oH->error .= 'File <b>class_qtf_post.php</b> is not in the <b>bin/class</b> directory. Application cannot start.<br>';

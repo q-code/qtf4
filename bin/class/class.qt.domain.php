@@ -114,11 +114,10 @@ class CDomain extends AContainer implements IContainer
   public static function getPropertiesAll(string $order='titleorder')
   {
     // Returns an array of all [CDomain] object-properties
-    $arr = array();
+    $arr = [];
     $oDB = new CDatabase();
     $oDB->query( "SELECT * FROM TABDOMAIN ORDER BY ".$order );
-    while($row=$oDB->getRow())
-    {
+    while($row=$oDB->getRow()) {
       $oDom = new CDomain($row); // titles are not translated
       $arr[$oDom->id] = (array)$oDom; // object-properties as ARRAY
     }
