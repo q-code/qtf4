@@ -8,7 +8,7 @@ th a:hover{color:#666;text-decoration:underline}
 .t-sec td, .t-item td, .t-user td{border-top:solid 1px #e0e0e0}
 
 /* Special domain/section */
-.t-sec.domain:not(:first-child){margin-top:2rem}
+.t-sec:not(:first-child){margin-top:1.5rem}
 a.section{font-size:1.4rem;text-decoration:none} a.section:hover{text-decoration:underline}
 .t-sec .sectiondesc{font-style:italic}
 

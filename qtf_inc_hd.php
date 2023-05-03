@@ -157,13 +157,11 @@ echo '
 echo '
 <div id="main-hd">
 <p id="crumbtrail"><a href="',Href('qtf_index.php'),'"',($oH->selfurl==='qtf_index.php' ? ' onclick="return false;"' : ''),'>',SLang::translate(),'</a>';
-if ( isset($s) && is_int($s) && $s>=0 ) {
-  if ( isset($oS) ) {
-    if ( QT_SHOW_DOMAIN ) echo QT_CRUMBTRAIL.CDomain::translate($oS->pid);
-    echo QT_CRUMBTRAIL.'<a href="'.Href('qtf_items.php').'?s='.$s.'">'.CSection::translate($s).'</a>';
-    if ( $oS->type==='2' && !SUser::isStaff() ) echo QT_CRUMBTRAIL.'<span class="small">'.L('all_my_items').'</span>';
-    if ( $oH->selfurl===APP.'_item.php' && $oS->numfield!=='N' && $oS->numfield!=='' ) echo QT_CRUMBTRAIL.'<span class="small">'.sprintf($oS->numfield,$oT->numid).'</span>';
-  }
+if ( isset($oS) && $oS->id>=0 ) { // $oS->id=-1 in case of 'void'-section
+  if ( QT_SHOW_DOMAIN ) echo QT_CRUMBTRAIL.CDomain::translate($oS->pid);
+  echo QT_CRUMBTRAIL.'<a href="'.Href('qtf_items.php').'?s='.$s.'">'.CSection::translate($s).'</a>';
+  if ( $oS->type==='2' && !SUser::isStaff() ) echo QT_CRUMBTRAIL.'<span class="small">'.L('all_my_items').'</span>';
+  if ( $oH->selfurl===APP.'_item.php' && $oS->numfield!=='N' && $oS->numfield!=='' ) echo QT_CRUMBTRAIL.'<span class="small">'.sprintf($oS->numfield,$oT->numid).'</span>';
 }
 if ( $oH->selfurl===APP.'_user.php' ) echo QT_CRUMBTRAIL.L('Profile');
 if ( $oH->selfurl===APP.'_stats.php' ) echo QT_CRUMBTRAIL.L('Statistics');
@@ -208,7 +206,8 @@ echo '</p>
 </div>
 ';
 
-// MAIN CONTENT
-echo '<div id="main-ct" class="pg-'.baseFile($oH->selfurl).'">
+// MAIN CONTENT / $oS->id=-1 in case of 'void'-section
+$str =  isset($oS) && $oS->id>=0 ? ' data-section-type="'.$oS->type.'" data-section-status="'.$oS->status.'"' : '';
+echo '<div id="main-ct" class="pg-'.baseFile($oH->selfurl).'"'.$str.'>
 ';
 if ( !empty($oH->error) ) echo '<p id="infomessage" class="error">'.$oH->error.'</p>';

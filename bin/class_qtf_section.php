@@ -49,7 +49,7 @@ function __construct($ref=null, bool $translate=false)
 public function setFrom($ref=null)
 {
   // $ref can be [null|int|array|obj-class], otherwhise die
-  if ( $ref===null ) return; //... exit with void-instance (default properties)
+  if ( $ref===null ) return; //... exit with void-instance (default properties, id=-1)
   if ( is_int($ref) ) {
     if ( $ref<0 ) die(__METHOD__.' Argument must be positive');
     $oDB = new CDatabase();

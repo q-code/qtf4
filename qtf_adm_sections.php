@@ -22,10 +22,10 @@ function arrShift(array $arr, $item, int $step=1)
 }
 
 // INITIALISE
-$a='';
-$d=-1;
-$s=-1;
-$showAddForm = false;
+$a = '';
+$d = -1;
+$s = -1;
+$add = false; // shows Add-Form
 qtHttp('a int:d int:s bool:add');
 
 $oH->selfurl = APP.'_adm_sections.php';
@@ -127,10 +127,10 @@ include APP.'_adm_inc_hd.php';
 echo '
 <div style="position:relative">
 <p class="right">
-<a id="tgl-ctrl" class="tgl-ctrl'.($showAddForm ? ' expanded' : '' ).'" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Add').' '.L('domain').'/'.L('section').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a>
+<a id="tgl-ctrl" class="tgl-ctrl'.($add ? ' expanded' : '' ).'" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Add').' '.L('domain').'/'.L('section').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a>
 </p>
 ';
-echo '<div id="tgl-container" class="add-dom-sec" style="display:'.($showAddForm ? 'block' : 'none' ).'">
+echo '<div id="tgl-container" class="add-dom-sec" style="display:'.($add ? 'block' : 'none' ).'">
 <form method="post" action="'.$oH->selfurl.'">
 <div class="add-dom">
 <div class="flex-sp">

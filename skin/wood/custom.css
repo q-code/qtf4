@@ -19,3 +19,6 @@ footer a:hover{color:#fff;}
 #banner[data-layout="1"] nav,
 #banner[data-layout="2"] nav{text-align:center}
 nav a{padding:0.1rem 0.5rem}
+
+/*items*/
+[data-section-status="1"] .btn-cmd{display:none}
