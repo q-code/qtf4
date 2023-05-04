@@ -68,7 +68,7 @@ $s   = '*';
 $y   = (int)date('Y'); if ( (int)date('n')<2 ) --$y;
 $y0  = $y-1;
 $tag = '';
-qtHttp('pan bt s int:y int:y0 tag');
+qtArgs('pan bt s int:y int:y0 tag');
 
 $sqlSection='';
 $sqlTags = '';
@@ -156,7 +156,7 @@ echo '<div class="flex-sp top">
 echo '<h1>'.L('Statistics').'</h1>'.PHP_EOL;
 
 // DISPLAY TABS
-$href = $oH->selfurl.'?'.qtImplode(qtArradd(qtExplodeUri(),'pan',''));
+$href = $oH->selfurl.'?'.qtImplode(qtArrAdd(qtExplodeUri(),'pan',''));
 $arrM = array();
 $arrM['pan-g']  = L('Global')        .'|href='.$href.'g |id=pan-g |class=pan-tab|title='.L('H_Global').' '.$y;
 $arrM['pan-gt'] = L('Global_trends') .'|href='.$href.'gt|id=pan-gt|class=pan-tab|title='.L('H_Global_trends').' '.$y0.'-'.$y;
@@ -178,14 +178,14 @@ include 'qtf_stats_inc.php';
 //----------------------
 
 // DISPLAY title & option
-$href = $oH->selfurl.'?'.qtImplode(qtArradd(qtExplodeUri(),'bt','')); // existing bt is reset as last argument '&bt='
+$href = $oH->selfurl.'?'.qtImplode(qtArrAdd(qtExplodeUri(),'bt','')); // existing bt is reset as last argument '&bt='
 $arrM = array();
 $arrM['bt-q'] = L('Per_q').'|id=bt-q|href='.$href.'q';
 $arrM['bt-m'] = L('Per_m').'|id=bt-m|href='.$href.'m';
 $arrM['bt-d'] = L('Per_d').'|id=bt-d|href='.$href.'d';
 // add comparaison year selector
 if ( $pan=='gt' || $pan=='dt' ) {
-  $href = $oH->selfurl.'?'.qtImplode(qtArradd(qtExplodeUri(),'y0',''));   // existing bt is reset as last argument '&y0='
+  $href = $oH->selfurl.'?'.qtImplode(qtArrAdd(qtExplodeUri(),'y0',''));   // existing bt is reset as last argument '&y0='
   $arrM[] = '!<span>'.L('Compare_year').'&nbsp;<select id="y0" name="y0" value="'.$y0.'" onchange="window.location=`'.$href.'`+this.value;">'.asTags(array($y-4=>$y-4,$y-3=>$y-3,$y-2=>$y-2,$y-1=>$y-1),$y0).'</select></span>';
 }
 $m = new CMenu($arrM, ' &middot; ');

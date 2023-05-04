@@ -83,7 +83,7 @@ $L['Pal'][3]='3) Voir les sujets et réponses';
 $L['Pal'][4]='4) Chercher les messages';
 $L['Pal'][5]='5) Poster des réponses';
 $L['Pal'][6]='6) Créer des sujets';
-$L['H_Visitors_can']='4 est le niveau par défaut. (Niveau 5 et 6 sont recommandés uniquement en Intranet).';
+$L['H_Visitors_can']='4 est le niveau par défaut. (Niveau 5 et 6 sont recommendés uniquement en Intranet).';
 $L['View_memberlist']='Voir la liste des membres';
 
 // Layout and skin

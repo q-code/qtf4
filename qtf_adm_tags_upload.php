@@ -31,7 +31,7 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 $pan='en';
 $v = '';
-qtHttp('pan v');
+qtArgs('pan v');
 if ( empty($v) ) $oH->error = 'Missing file name';
 
 $intSize = 100;

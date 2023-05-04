@@ -19,7 +19,7 @@ if ( !SUser::canView('V5') ) exitPage(11,'user-lock.svg'); //...
 $a='';
 $s = -1;
 $t = -1;
-qtHttp('int:s! a! int:t!',false,true); // in POST only
+qtArgs('int:s! a! int:t!',false,true); // in POST only
 if ( $s<0 ) die('Missing parameters: section id');
 if ( !in_array($a,['nt','re','ed','qu','de']) ) die('Invalid parameter a');
 

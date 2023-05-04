@@ -62,7 +62,7 @@ $s   = '*';
 $y   = (int)date('Y'); if ( (int)date('n')<2 ) --$y;
 $y0  = $y-1;
 $tag = '';
-qtHttp('pan bt s int:y int:y0 tag');
+qtArgs('pan bt s int:y int:y0 tag');
 
 $sqlSection='';
 $sqlTags = '';

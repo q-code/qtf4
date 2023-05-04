@@ -21,7 +21,7 @@ $s = ''; // section $s can be '*' or [int] (after argument checking only [int] i
 $st = ''; // status $st can be '*' or [string]
 $v = ''; // searched text [string] >> array of strings
 $v2 = ''; // timeframe [string] or userid
-qtHttp('q s st v v2'); // as [string]
+qtArgs('q s st v v2'); // as [string]
 if ( empty($q) ) $q = 's';
 if ( $s==='*' || $s==='' || !is_numeric($s) ) $s = '-1';
 if ( $st==='' ) $st = '*';

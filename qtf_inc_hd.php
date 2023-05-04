@@ -172,10 +172,10 @@ echo '</p>
 switch($oH->selfurl)
 {
 case 'qtf_stats.php':
-  $strURI = qtImplode(qtArradd(qtExplodeUri(),'view',null)); // drop the 'view'-part. Arguments remain urlencoded
+  $strURI = qtImplode(qtArrAdd(qtExplodeUri(),'view',null)); // drop the 'view'-part. Arguments remain urlencoded
   break;
 case 'qtf_item.php':
-  $strURI = qtImplode(qtArradd(qtExplodeUri(),'view',null)); // drop the 'view'-part. Arguments remain urlencoded
+  $strURI = qtImplode(qtArrAdd(qtExplodeUri(),'view',null)); // drop the 'view'-part. Arguments remain urlencoded
   if ( $_SESSION[QT]['viewmode']=='C' ) {
     echo '<a id="viewmode" href="'.Href($oH->selfurl).'?'.$strURI.'&view=N" title="'.L('View_n').'">'.getSVG('window-maximize').' '.getSVG('long-arrow-alt-down').'</a>';
   } else {

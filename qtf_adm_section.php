@@ -13,7 +13,7 @@ include translate('lg_adm.php');
 
 $s = -1; // Section id
 $pan = 1; // TAB 1:definition, 2:display or 3:translation
-qtHttp('int:s! int:pan'); if ( $s<0 ) die('Missing parameters');
+qtArgs('int:s! int:pan'); if ( $s<0 ) die('Missing parameters');
 if ( $pan<1 || $pan>3) $pan=1;
 
 $oH->selfurl = 'qtf_adm_section.php';

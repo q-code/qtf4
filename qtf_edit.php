@@ -27,7 +27,7 @@ $a = '';
 $s = -1;
 $t = -1;
 $p = -1;
-qtHttp('a! int:s int:t int:p'); // a,s,t,p can be send by GET or POST, others only by POST from the form. Only a is required
+qtArgs('a! int:s int:t int:p'); // a,s,t,p can be send by GET or POST, others only by POST from the form. Only a is required
 
 // Initialise containers and check $s
 $oT = new CTopic($t>=0 ? $t : null); // can be -1 (new topic)

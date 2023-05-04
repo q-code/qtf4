@@ -8,7 +8,7 @@ session_start();
  */
 require 'bin/init.php';
 if ( SUser::role()!=='A' ) die('Access denied');
-$id = -1; qtHttp('int:id!'); if ( $id<0 ) die('Missing argument id');
+$id = -1; qtArgs('int:id!'); if ( $id<0 ) die('Missing argument id');
 
 include translate('lg_adm.php');
 

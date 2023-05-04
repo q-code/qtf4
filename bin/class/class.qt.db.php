@@ -48,7 +48,7 @@ private $pwd;  // NOT USED with sqlite
 private $con;  // Connection as PDO object (or connection id for legacy driver)
 private $qry;  // PDOstatement object (or query id for legacy driver)
 private $transac = false; // is transaction started
-private $singlequote = true; // String-literal delimiter: singlequote is recommanded because db-server may have ansi_quote enabled (i.e. use doublequote as identifier)
+private $singlequote = true; // String-literal delimiter: singlequote is recommended because db-server may have ansi_quote enabled (i.e. use doublequote as identifier)
 private $userisstaff = false; // true when construct() detect that current user (session) is a staff member. Used to be independant from SUser class
 private $throwexception = true; // Halt() will throw exception in case of sql error. With FALSE, the script continues. In case of database connection error it die()
 

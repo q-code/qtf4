@@ -41,7 +41,7 @@ $help = '';
 $rows = 15;
 $title = '';
 $ro = ''; // [optional] use "1" to force readonly
-qtHttp('exit! file! a help int:rows title ro');
+qtArgs('exit! file! a help int:rows title ro');
 $ext = pathinfo($file, PATHINFO_EXTENSION);
 if ( !in_array($ext, ['txt','csv','text','css','info']) ) die('Unsupported file extension' );
 $readonly = substr($file,0,9)==='language/' || substr($file,0,7)==='upload/' || substr($file,0,5)==='skin/' ? false : true ; // edit only works within languge|skin|upload

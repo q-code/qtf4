@@ -15,7 +15,7 @@ include translate('lg_adm.php');
 
 $a = '';
 $s = -1;
-qtHttp('a int:s'); if ( empty($a) || $s<0 ) die('Missing arg a or s'); // mandatory $a,$s from get or post
+qtArgs('a int:s'); if ( empty($a) || $s<0 ) die('Missing arg a or s'); // mandatory $a,$s from get or post
 
 $oH->selfparent = L('Board_content');
 $oH->selfname = L('Section');
@@ -51,11 +51,10 @@ case 'Ddelete':
   }
 
   // FORM
-  $arrSections = qtArrget(getSections(SUser::role(),$s));
-  $intSections = count($arrSections);
+  $arrSections = CSection::getTranslatedTitles(CSection::getIdsInContainer($s));
   $strSections = '('.L('none').')';
-  if ( $intSections>4 ) { $arrSections = array_slice($arrSections,0,4); $arrSections[]='...'; }
-  if ( $intSections>0 ) { $strSections = implode('<br>',$arrSections); }
+  if ( count($arrSections)>4 ) { $arrSections = array_slice($arrSections,0,4); $arrSections[]='...'; }
+  if ( count($arrSections)>0 ) { $strSections = implode('<br>',$arrSections); }
   $frm_title = L('Domain_del');
   $frm[] = '<form method="post" action="'.$oH->selfuri.'">';
   $frm[] = '<p>'.L('Domain').':</p>';
@@ -63,14 +62,13 @@ case 'Ddelete':
   $frm[] = '<span class="minor">#'.$s.' &middot; '.(isset($_Domains[$s]['title']) ? $_Domains[$s]['title'] : 'Domain '.$s).'</span></p><br>';
   $frm[] = '<p>'.L('Containing_sections').':</p>';
   $frm[] = '<p class="indent">'.$strSections.'</p><br>';
-  if ( $intSections>0 )
-  {
+  if ( count($arrSections)>0 ) {
   $frm[] = '<p>'.L('Move_sections_to').':</p>';
-  $frm[] = '<p class="indent"><select name="dest" size="1">'.asTags(CDomain::getTitleS($s),0).'</select></p><br>';
+  $frm[] = '<p class="indent"><select name="dest" size="1">'.asTags(CDomain::getTitles($s),0).'</select></p><br>';
   }
   $frm[] = '<p class="row-confirm">'.L('Confirm').':</p>';
   $frm[] = '<p class="indent"><span class="cblabel">
-  <input required type="checkbox" id="itemDelete" name="itemDelete"/> <label for="itemDelete">'.L('Domain_del').($intSections==0 ? '' : ' '.L('and').' '.L('move').' '.L('section',$intSections)).'</label></span></p>';
+  <input required type="checkbox" id="itemDelete" name="itemDelete"/> <label for="itemDelete">'.L('Domain_del').(count($arrSections)===0 ? '' : ' '.L('and').' '.L('move').' '.L('section',count($arrSections))).'</label></span></p>';
   $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
   $frm[] = '<input type="hidden" name="s" value="'.$s.'"/>';
   $frm[] = '<input type="hidden" name="a" value="'.$a.'"/>';

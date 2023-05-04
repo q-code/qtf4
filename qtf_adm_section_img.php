@@ -20,7 +20,7 @@ session_start();
 require 'bin/init.php';
 if ( SUser::role()!=='A' ) die('Access denied');
 $id = -1;
-qtHttp('int:id!'); if ( $id<0 ) die('Missing parameter id...');
+qtArgs('int:id!'); if ( $id<0 ) die('Missing parameter id...');
 
 // --------
 // INITIALISE

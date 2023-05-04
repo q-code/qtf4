@@ -98,7 +98,7 @@ function emptyFloat($i)
 function asEmails($emails, string $render='txt', bool $first=false, string $none='')
 {
   if ( empty($emails) ) return $none;
-  if ( is_string($emails) && strpos($emails,';')!==false ) $emails = str_replace(';', ',', $emails); //comma is recommanded as email separator
+  if ( is_string($emails) && strpos($emails,';')!==false ) $emails = str_replace(';', ',', $emails); //comma is recommended as email separator
   if ( is_string($emails) ) $emails = asCleanArray($emails,',');
   if ( !is_array($emails) || empty($emails) ) return $none;
   if ( $first ) $emails = array($emails[0]);
@@ -176,27 +176,22 @@ function getSections(string $role='V', int $domain=-1, array $reject=[], string 
   // Attention: using $domain -2, when a domains does NOT contains sections, this key is NOT existing in the returned list !
 
   global $oDB;
-
   $sqlWhere = $domain>=0 ? "s.domainid=$domain" : "s.domainid>=0";
-  if ( $role=='V' || $role=='U' ) $sqlWhere .= " AND s.type<>'1'";
+  if ( $role==='V' || $role==='U' ) $sqlWhere .= " AND s.type<>'1'";
   if ( !empty($filter) ) $sqlWhere .= " AND $filter";
 
   $arrSections = array();
   $oDB->query( "SELECT s.* FROM TABSECTION s INNER JOIN TABDOMAIN d ON s.domainid=d.id WHERE $sqlWhere ORDER BY $order" );
-  while($row=$oDB->getRow())
-  {
+  while($row=$oDB->getRow()) {
     $id = (int)$row['id'];
     // if reject
     if ( in_array($id,$reject,true) ) continue;
     // search translation
     $row['title'] = SLang::translate('sec', 's'.$id, $row['title']);
     // compile sections
-    if ( $domain==-2 )
-    {
+    if ( $domain==-2 ) {
     $arrSections[(int)$row['domainid']][$id] = $row;
-    }
-    else
-    {
+    } else {
     $arrSections[$id] = $row;
     }
   }
@@ -368,7 +363,7 @@ function makePager(string $uri, int $count, int $intPagesize=50, int $currentpag
   if ( $currentpage<1 ) $currentpage=1;
   if ( $intPagesize<5 ) $intPagesize=50;
   if ( $count<2 || $count<=$intPagesize ) return ''; //...
-  $arg = qtImplode(qtArradd(qtExplodeUri($uri),'page',null)); // extract query part and drop the 'page'-part (arguments remain urlencoded)
+  $arg = qtImplode(qtArrAdd(qtExplodeUri($uri),'page',null)); // extract query part and drop the 'page'-part (arguments remain urlencoded)
   $uri = parse_url($uri, PHP_URL_PATH); // redifine $uri as the path-part only
   $strPages='';
   $firstpage='';

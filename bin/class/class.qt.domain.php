@@ -62,7 +62,7 @@ class CDomain extends AContainer implements IContainer
   public static function translate(int $id)
   {
     // returns translated title (from session memory), uses config name if no translation
-    return SLang::translate('domain', 'd'.$id, empty($GLOBALS['_Domains'][$id]['title']) ? '' : $GLOBALS['_Domains'][$id]['title']);
+    return SLang::translate('domain', 'd'.$id, empty($GLOBALS['_Domains'][$id]['title']) ? '' : $GLOBALS['_Domains'][$id]['title']); //
   }
   public static function delete(int $id)
   {

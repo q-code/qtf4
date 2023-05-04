@@ -120,6 +120,7 @@ public static function getOwner(int $id)
   $row=$oDB->getRow();
   return (int)$row['moderator'];
 }
+
 // --------
 // Other methods
 // --------
@@ -130,10 +131,13 @@ public function logo(string $alt='')
 public static function translate(int $id, string $type='sec')
 {
   // returns translated title (from session memory), uses config name if no translation
-  switch($type){
-    case 'sec': return SLang::translate('sec', 's'.$id, empty($GLOBALS['_Sections'][$id]['title']) ? '' : $GLOBALS['_Sections'][$id]['title']);
-    case 'secdesc': return SLang::translate('secdesc', 's'.$id, empty($GLOBALS['_Sections'][$id]['descr']) ? '' : $GLOBALS['_Sections'][$id]['descr']);
-    default: die(__FUNCTION__.' invalid argument #2');
+  switch($type) {
+    case 'sec':
+      return SLang::translate('sec', 's'.$id, empty($GLOBALS['_Sections'][$id]['title']) ? '(section-'.$id.')' : $GLOBALS['_Sections'][$id]['title']);
+    case 'secdesc':
+      return SLang::translate('secdesc', 's'.$id, empty($GLOBALS['_Sections'][$id]['descr']) ? '' : $GLOBALS['_Sections'][$id]['descr']);
+    default:
+      die(__FUNCTION__.' invalid argument [type]');
   }
 }
 /**
@@ -166,6 +170,14 @@ public static function deleteImage($ids)
 }
 public static function makeLogo(string $src='', string $type='0', string $status='0'){
   return !empty($src) && file_exists(QT_DIR_DOC.'section/'.$src) ? QT_DIR_DOC.'section/'.$src : QT_SKIN.'img/section_'.$type.'_'.$status.'.gif';
+}
+public static function getIdsInContainer(int $pid)
+{
+  global $oDB;
+  $oDB->query( "SELECT id FROM TABSECTION WHERE domainid=$pid" );
+  $ids = [];
+  while( $row=$oDB->getRow() ) $ids[] = (int)$row['id'];
+  return $ids;
 }
 public static function getSectionsStats(bool $closed=true, bool $lastpost=true)
 {
@@ -206,6 +218,15 @@ public static function getSectionsStats(bool $closed=true, bool $lastpost=true)
       if ( $arr[$id]['lastpostid']>$arr['all']['lastpostid'] )
         foreach(['lastpostid','lastpostpid','lastpostdate','lastpostuser','lastpostname'] as $k) $arr['all'][$k] = $arr[$id][$k];
     }
+  }
+  return $arr;
+}
+public static function getTranslatedTitles(array $ids=[])
+{
+  if ( count($ids)===0 ) $ids = array_keys($GLOBALS['_Sections']); // empty list means all sections
+  $arr = [];
+  foreach($ids as $id) {
+    $arr[$id] = SLang::translate('sec', 's'.$id, empty($GLOBALS['_Sections'][$id]['title']) ? '' : $GLOBALS['_Sections'][$id]['title']);
   }
   return $arr;
 }
@@ -482,7 +503,7 @@ public function setMF(string $prop, string $key, $value, bool $save=true)
 {
   if ( empty($key) ) die('CSection::setMF invalid key');
   $arr = $this->readMF($prop); // read $this->$prop without properties assignement
-  $this->$prop = qtImplode(qtArradd($arr,$key,$value),';'); // add/change the key=value (value NULL removes the key)
+  $this->$prop = qtImplode(qtArrAdd($arr,$key,$value),';'); // add/change the key=value (value NULL removes the key)
   if ( $save ) $this->updateMF($prop);
 }
 public function updateMF(string $prop)

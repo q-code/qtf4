@@ -22,7 +22,7 @@ $st = ''; // status $st can be '*' or [string]
 $v = ''; // searched text [string] >> array of strings
 $v2 = ''; // timeframe [string]
 $ids = '';
-qtHttp('q s st v v2 ids',true,false); // $_GET only
+qtArgs('q s st v v2 ids',true,false); // $_GET only
 if ( empty($ids) ) die('Missing ids');
 if ( empty($q)) $q = 's';
 if ( $s==='*' || $s==='' || !is_numeric($s) ) $s = '-1';

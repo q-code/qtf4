@@ -46,7 +46,7 @@ class SMem
   // - constants QT, MEMCACHE_TIMEOUT, MEMCACHE_HOST, MEMCACHE_PORT and MEMCACHE_FAILOVER
   // Public methods use a 'simple' key to store the data. Private methos use QT (namespace) as key prefix
   // Note #1: php issues a fatal error if memInit is not defined or constants are missing
-  // Note #2: Storing FALSE is not recommanded (key-not-found or server-failed can also returns false, causing a re-set of the key)
+  // Note #2: Storing FALSE is not recommended (key-not-found or server-failed can also returns false, causing a re-set of the key)
   // Note #3: Flush memory is not in this class: define your specific memFlush function (with the keys you need to flush)
 
   private static $library = 'memcached';
@@ -166,32 +166,29 @@ class SLang
       return empty($row['objname']) ? '' : $row['objname'];
     }
   }
-  public static function translate(string $type='index', string $id='i', string $alt='')
+  public static function translate(string $object='index', string $id='i', string $alt='')
   {
     // Returns the translation - if defined! - (must be in session[QT]['L'])
     // Otherwhise returns $alt (or a default objectname is $alt is empty)
-    if ( empty($type) || empty($id) ) die(__FUNCTION__.' invalid argument');
+    if ( empty($object) || empty($id) ) die(__FUNCTION__.' invalid argument');
     // Look in translations
-    $str = empty($GLOBALS['_L'][$type][$id]) ? '' : $GLOBALS['_L'][$type][$id];
-    if ( empty($str) )
-    {
-      // Use alternate (except for index and descriptions)
-      switch($type)
-      {
-      case 'index':  $str = empty($_SESSION[QT]['index_name']) ? '(index)' : $_SESSION[QT]['index_name']; break;
-      case 'sec':    $str = empty($alt) ? '(section '.$id.')' : $alt; break;
-      case 'domain': $str = empty($alt) ? '(domain '.$id.')' : $alt; break;
+    if ( !empty($GLOBALS['_L'][$object][$id]) ) return $GLOBALS['_L'][$object][$id];
+    // Use alternate
+    switch($object) {
+      case 'index':
+        if ( empty($alt) && !empty($_SESSION[QT]['index_name']) ) $alt = $_SESSION[QT]['index_name'];
+        return empty($alt) ? '(index)' : $alt;
+      case 'sec': return empty($alt) ? '(section-'.$id.')' : $alt;
+      case 'domain': return empty($alt) ? '(domain-'.$id.')' : $alt;
       case 'field':
       case 'status':
-      case 'tab':    $str = empty($alt) ? ucfirst(str_replace('_',' ',$id)) : $alt; break;
+      case 'tab': return empty($alt) ? ucfirst(str_replace('_',' ',$id)) : $alt;
       case 'secdesc':
       case 'statusdesc':
       case 'tabdesc':
-      case 'ffield': return $alt; break;
-      default: return '(unknown object '.$type.')';
-      }
+      case 'ffield': return $alt;
     }
-    return $str;
+    return '(unknown object '.$object.')';
   }
   // functions added for qt v4.0
   public static function addTranslations(string $type='', string $id='', string $name='', array $lang=[])

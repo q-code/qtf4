@@ -13,7 +13,7 @@ include translate('lg_adm.php');
 
 if ( empty($_SESSION[QT]['unreplied_days']) ) $_SESSION[QT]['unreplied_days'] = '10';
 $d = (int)$_SESSION[QT]['unreplied_days']; // days
-qtHttp('int:d');
+qtArgs('int:d');
 
 $oH->selfurl = APP.'_adm_items.php';
 $oH->selfname = L('Item+');
@@ -70,12 +70,10 @@ echo '
 <tbody>
 ';
 
-foreach($arrDomains as $idDom=>$strDomtitle)
-{
+foreach($arrDomains as $idDom=>$strDomtitle) {
   echo '<tr><td class="c-section group" colspan="6">'.$strDomtitle.'</td></tr>'.PHP_EOL;
-  $arrSections = qtArrget(getSections('A',$idDom)); // GET SECTIONS (with hidden)
-  foreach(array_keys($arrSections) as $s)
-  {
+  // all section-id in domain (includes hidden)
+  foreach(CSection::getIdsInContainer($idDom) as $s) {
     $oS = new CSection($s, true); // no stat (already computed), titles translated
     $intU = $oDB->count( CSection::sqlCountItems($s,'unreplied','','','',$d) );
     echo '<tr class="hover">';

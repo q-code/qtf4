@@ -26,7 +26,7 @@ $a = '';
 $d = -1;
 $s = -1;
 $add = false; // shows Add-Form
-qtHttp('a int:d int:s bool:add');
+qtArgs('a int:d int:s bool:add');
 
 $oH->selfurl = APP.'_adm_sections.php';
 $oH->selfname = L('Section+');

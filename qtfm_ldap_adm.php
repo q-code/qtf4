@@ -26,7 +26,7 @@ $oH->selfname = 'LDAP/AD stettings';
 $oH->selfparent = L('Module');
 $oH->exiturl = APP.'_adm_secu.php';
 
-qtHttp('int:pan');
+qtArgs('int:pan');
 if ( $pan<0 || $pan>2) $pan=0;
 
 if ( !isset($_SESSION[QT]['m_ldap']) ) $_SESSION[QT]['m_ldap']='0';
