@@ -71,7 +71,7 @@ if ( isset($_POST['ok']) ) {
 
 $frm_hd = file_get_contents(getLangDir().'app_rules.txt'); if ( $frm_hd===false ) $frm_hd = 'Unable to read file app_rules.txt';
 $frm_hd = '<div id="rules">'.$frm_hd.'</div>';
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p class="bold"><span class="cblabel"><input required type="checkbox" id="agreed" name="agreed"'.(isset($_POST['agreed']) ? 'checked' : '').'/><label for="agreed">&nbsp;'.L('Agree').'</label><span></p>';
 if ( $_SESSION[QT]['register_coppa'] )
 {
@@ -174,7 +174,7 @@ if ( isset($_POST['ok']) ) try {
     if ( file_exists($strFile) ) include $strFile;
     $strMessage = sprintf($strMessage,$_POST['username'],$_POST['mail']);
     qtMail($_SESSION[QT]['admin_email'],$strSubject,$strMessage,QT_HTML_CHAR);
-    $oH->pageMessage('', '<h2>'.L('Request_completed').'</h2><p>'.L('Reg_mail').'</p><p><a href="'.Href($oH->exiturl).'">'.$oH->exitname.'</a></p>');
+    $oH->pageMessage('', '<h2>'.L('Request_completed').'</h2><p>'.L('Reg_mail').'</p><p><a href="'.url($oH->exiturl).'">'.$oH->exitname.'</a></p>');
   } else {
     // email code
     if ( $_SESSION[QT]['register_mode']==='email' ) $_POST['pwd'] = 'QT'.rand(0,9).rand(0,9).rand(0,9).rand(0,9);
@@ -258,7 +258,7 @@ if ( $_SESSION[QT]['register_coppa']=='1' &&  $strChild!='0' ) {
   $frm_hd = '<div id="rules">'.$frm_hd.'</div>';
 }
 
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<div class="flex-sp top">';
 $frm[] = '<div style="min-width:65%;padding:0 20px 0 0">';
 $frm[] = '<fieldset class="register"><legend>'.L('Username').' '.L('and').' '.L('password').'</legend>';
@@ -299,7 +299,7 @@ $frm[] = '<div class="formHelp article">';
 $frm[] = L('Reg_help');
 $frm[] = '</div>';
 $frm[] = '</div>';
-$frm[] = '<p class="submit right"><input type="hidden" name="birthday" value="'.$birthday.'"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button id="newname-submit" type="submit" name="ok" value="'.$certificate.'">'.L('Register').'</button></p>';
+$frm[] = '<p class="submit right"><input type="hidden" name="birthday" value="'.$birthday.'"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button id="newname-submit" type="submit" name="ok" value="'.$certificate.'">'.L('Register').'</button></p>';
 $frm[] = '</form>';
 
 break;
@@ -343,13 +343,13 @@ $frm_hd = '<div class="user-dlg">
 ';
 if ( $row['role']!='U' ) {
 $frm[] = '<p>'.$name.L('Unregister_staff').'</p>';
-$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button></p>';
+$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button></p>';
 } else {
 if ( SUser::id()!==$id ) $frm[] = '<p class="right">'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<p>'.L('H_Unregister').'</p>';
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p>'.getSVG('lock','class=svg-label').'&nbsp;<input required type="password" name="pwd" size="20" minlength="4" maxlength="50" placeholder="'.L('Password').'" /></p>';
-$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Unregister').'</button></p>';
+$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Unregister').'</button></p>';
 $frm[] = '</form>';
 }
 $frm_ft = '</div>';
@@ -414,11 +414,11 @@ $frm_hd = '<div class="user-dlg">
 ';
 $frm_attr = 'class=msgbox formPwd';
 if ( SUser::id()!==$id ) $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p class="right input-pwd">'.L('Old_password').'&nbsp;<input required id="pwd-1" type="password" name="oldpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.getSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
 $frm[] = '<p class="right input-pwd">'.L('New_password').'&nbsp;<input required id="pwd-2" type="password" name="newpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.getSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
 $frm[] = '<p class="right input-pwd">'.L('Confirm_password').'&nbsp;<input required id="pwd-3" type="password" name="conpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.getSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(3)|title='.L('Show')).'</p>';
-$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
+$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '<input type="hidden" name="name" value="'.$row['name'].'"/>';
 $frm[] = '<input type="hidden" name="mail" value="'.$row['mail'].'"/>';
 $frm[] = '<input type="hidden" name="child" value="'.$row['children'].'"/>';
@@ -457,10 +457,10 @@ if ( isset($_POST['ok']) ) try {
 
 // FORM username
 
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p>'.L('Reg_pass').'</p>';
 $frm[] = '<p>'.getSVG('user','class=svg-label').'&nbsp;<input required type="text" name="username" pattern="^.{2}.*" size="24" maxlength="24" placeholder="'.L('Username').'" /></p>';
-$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok">'.L('Ok').'</button></p>';
+$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
 
 break;
@@ -494,13 +494,13 @@ if ( $row=$oDB->getRow() ) $name = $row['name'];
 $frm_hd = '<div class="user-dlg">
 <div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>
 ';
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p>'.$name.' <select name="role" size="1">
 <option value="A"'.($row['role']=='A' ? ' selected' : '').(SUser::role()!=='A' ? ' disabled' : '').'>'.L('Role_A').'</option>
 <option value="M"'.($row['role']=='M' ? ' selected' : '').'>'.L('Role_M').'</option>
 <option value="U"'.($row['role']=='U' ? ' selected' : '').'>'.L('Role_U').'</option>
 </select></p>';
-$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
+$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '
 </div>';
@@ -539,14 +539,14 @@ if ( $row=$oDB->getRow() ) {
 
 $frm_hd = '<div class="user-dlg">
 <div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p>'.$name.$role.'</p>';
 $frm[] = '<p>'.L('H_ban').'</p>';
 $frm[] = '<p><select name="t" size="1">';
 foreach(array_keys(BAN_DAYS) as $k)
 $frm[] = '<option value="'.$k.'"'.($k==$currentban ? ' selected' : '').'>'.L('day',BAN_DAYS[$k]).'</option>';
 $frm[] = '</select></p>';
-$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
+$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
 
@@ -578,9 +578,9 @@ if ( $row=$oDB->getRow() ) {
   $role = ' <small>('.L('Role_'.$row['role']).')</small>';
 }
 $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p><input required type="checkbox" name="confirm"/> '.$name.$role.'</p>';
-$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="delete">'.L('Delete').'</button></p>';
+$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="delete">'.L('Delete').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
 
@@ -631,9 +631,9 @@ if ( $row=$oDB->getRow() ) {
   $name = $row['name'];
 }
 $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p>'.L('Reset_pwd').' - '.$name.'</p>';
-$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
+$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
 
@@ -697,11 +697,11 @@ if ( isset($_POST['ok']) && !empty($_POST['s']) ) {
 
 // FORM secret
 
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p>'.L('Reg_pass_reset').'</p>';
 $frm[] = '<p>'.$row['secret_q'].'</p>';
 $frm[] = '<p><input required type="text" id="secret_a" name="s" size="24" maxlength="255" /></p>';
-$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
+$frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
 $oH->scripts[] = 'document.getElementById("secret_a").focus();';
 
@@ -743,10 +743,10 @@ $frm_attr = 'class=msgbox formQa';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
 $frm[] = '<p class="center">'.L('H_Secret_question').'</p>';
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'" autocomplete="off">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'" autocomplete="off">';
 $frm[] = '<p class="center"><select name="secret_q">'.asTags($L['Secret_q'],$secret_q).'</select></p>';
 $frm[] = '<p class="center"><input required type="text" name="secret_a" size="32" maxlength="255" placeholder="'.(empty($row['secret_a']) ? '' : '*********').'"/></p>';
-$frm[] = '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
+$frm[] = '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
 
@@ -790,9 +790,9 @@ $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=
 $frm_attr = 'class=msgbox formName';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p class="center">'.getSVG('user','class=svg-label').'&nbsp;<input required type="text" id="newname" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
-$frm[] = '<p id="newname-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="newname-submit" name="ok" value="ok">'.L('Save').'</button></p>';
+$frm[] = '<p id="newname-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="newname-submit" name="ok" value="ok">'.L('Save').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
 
@@ -854,11 +854,11 @@ $frm[] = '<p>'.L('H_no_signature').'</p>';
 $frm[] = '<h2>'.L('Signature').'</h2>';
 $frm[] = '<div id="signature-preview">'.$strSign.'</div>';
 $frm[] = '<h2>'.$oH->selfname.'</h2>'.( !empty($oH->error) ? '<p class="error">'.$oH->error.'</p>' : '');
-$frm[] = '<form method="post" action="'.Href($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<div id="signature">';
 $frm[] = '<div class="bbc-bar">'.bbcButtons(3).'</div>';
 $frm[] = '<textarea id="text" name="text" rows="5">'.$row['signature'].'</textarea>';
-$frm[] = '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
+$frm[] = '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '</div>';
 $frm[] = '</form>';
 $frm_ft = '</div>';

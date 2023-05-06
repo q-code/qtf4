@@ -180,7 +180,7 @@ public static function loginPostProc(CDatabase $oDB)
       $oH->exiturl = APP.'_login.php?dfltname='.$name;
       $oH->exitname = L('Login');
       self::unsetSession();
-      $oH->pageMessage('', '<p>'.L('Is_banned_nomore').'</p><p><a href="'.Href($oH->exiturl).'">'.$oH->exitname.'</a></p>');
+      $oH->pageMessage('', '<p>'.L('Is_banned_nomore').'</p><p><a href="'.url($oH->exiturl).'">'.$oH->exitname.'</a></p>');
     }
 
     // end ban control

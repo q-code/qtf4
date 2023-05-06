@@ -129,11 +129,11 @@ public static function getRef(int $numid=0, $format='', string $none='&nbsp;')
   if ( $format==='N' ) return $none;
   return empty($format) ? (string)$numid : sprintf($format,$numid);
 }
-function getIcon(string $skin='skin/default/', string $strHref='', string $strTitleFormat='%s')
+function getIcon(string $skin='skin/default/', string $strurl='', string $strTitleFormat='%s')
 {
   $type = strtolower($this->type);
   $status = strtolower($this->status);
-  return asImg( $skin.'img/topic_'.$type.'_'.$status.'.gif', 'class=i-item|data-type='.$type.'|data-status='.$status.'|alt='.strtoupper($type).'|title='.sprintf($strTitleFormat,$this->getIconName()), $strHref);
+  return asImg( $skin.'img/topic_'.$type.'_'.$status.'.gif', 'class=i-item|data-type='.$type.'|data-status='.$status.'|alt='.strtoupper($type).'|title='.sprintf($strTitleFormat,$this->getIconName()), $strurl);
 }
 function getIconName()
 {

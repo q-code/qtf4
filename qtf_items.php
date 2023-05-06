@@ -50,7 +50,7 @@ if ( $q==='s' || $s>=0 ) {
 }
 
 // initialise others
-$oH->selfuri = getURI('order,dir');
+$oH->selfuri = qtURI('page|order|dir');
 $strOrder = 'lastpostdate';
 $strDirec = 'desc';
 $strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)==='none' ) $strLastcol='0';
@@ -123,15 +123,15 @@ $intCount = $oH->items - $oH->itemsHidden;
 
 // BUTTON LINE AND PAGER
 if ( $q==='s' ) {
-  $def = 'href="'.Href('qtf_edit.php').'?s='.$oS->id.'&a=nt|class=button btn-cmd';
+  $def = 'href="'.url('qtf_edit.php').'?s='.$oS->id.'&a=nt|class=button btn-cmd';
   if ( $oS->status==='1' || (SUser::role()==='V' && $_SESSION[QT]['visitor_right']<7) ) {
     $def .= ' disabled|href=javascript:void(0)|tabindex=-1|title='.($oS->status==='1' ? L('E_section_closed') : L('R_member')); // class=button btn-cmd disabled
   }
   $navCommands .= '<a'.attrRender($def).'>'.L('New_item').'</a>';
 }
-$navCommands .= '<a class="button btn-search" href="'.Href('qtf_search.php').'?'.$oH->selfuri.'" title="'.L('Search').'">'.getSVG('search').'</a>';
+$navCommands .= '<a class="button btn-search" href="'.url('qtf_search.php').'?'.$oH->selfuri.'" title="'.L('Search').'">'.getSVG('search').'</a>';
 
-$strPaging = makePager( Href($oH->selfurl).'?'.$oH->selfuri, $intCount, (int)$_SESSION[QT]['items_per_page'], $intPage);
+$strPaging = makePager( url($oH->selfurl).'?'.$oH->selfuri, $intCount, (int)$_SESSION[QT]['items_per_page'], $intPage);
 if ( $strPaging!='' ) $strPaging = L('Page').$strPaging;
 
 // MAP
@@ -157,11 +157,11 @@ switch($q) {
     break;
   case 'user':
     $pageTitle .= sprintf(L('Search_results_user'), implode(' '.L('or').' ',$v));
-    $navCommandsRefine = '<a class="button" href="'.Href('qtf_items.php').'?q=userm&'.getUri('q').'"><small>'.L('Search').': '.L('item+').' '.L('and').' '.L('reply+').'</small></a>';
+    $navCommandsRefine = '<a class="button" href="'.url('qtf_items.php').'?q=userm&'.qtUri('q').'"><small>'.L('Search').': '.L('item+').' '.L('and').' '.L('reply+').'</small></a>';
    break;
   case 'userm':
     $pageTitle .= sprintf(L('Search_results_user_m'), implode(' '.L('or').' ',$v));
-    $navCommandsRefine = '<a class="button" href="'.Href('qtf_items.php').'?q=user&'.getUri('q').'"><small>'.L('Search').': '.L('item+').' '.L('only').'</small></a>';
+    $navCommandsRefine = '<a class="button" href="'.url('qtf_items.php').'?q=user&'.qtUri('q').'"><small>'.L('Search').': '.L('item+').' '.L('only').'</small></a>';
      break;
   case 'actor': $pageTitle .= sprintf(L('Search_results_actor'), implode(' '.L('or').' ',$v) ); break;
   case 'last': $pageTitle .= L('Search_results_last'); break;
@@ -225,7 +225,7 @@ if ( $intCount===0 ) {
   // alternate query
   $arg = 'q='.$q;
   if ( $q==='user' || $q==='kw' || $q==='adv' ) $arg .= '&v='.implode(';',$v).'&v2='.urlencode($v2);
-  echo '<p class="center"><a href="'.Href('qtf_items.php').'?'.$arg.'">'.L('Try_without_options').'</a></p>';
+  echo '<p class="center"><a href="'.url('qtf_items.php').'?'.$arg.'">'.L('Try_without_options').'</a></p>';
   include 'qtf_inc_ft.php';
   exit;
 
@@ -304,7 +304,7 @@ echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // TABLE START DISPLAY
 if ( $_SESSION['EditByRows']) {
-  echo '<form id="form-items" method="post" action="'.Href('qtf_dlg.php').'">
+  echo '<form id="form-items" method="post" action="'.url('qtf_dlg.php').'">
 <input type="hidden" id="form-items-action" name="a"/>
 <input type="hidden" name="uri" value="'.$oH->selfuri.'"/>
 ';
@@ -375,7 +375,7 @@ if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) echo '</form>'.PHP_EO
 // BUTTON LINE AND PAGER
 $strCsv = '';
 if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) $strCsv .= '<a id="cmd-export-selected" class="csv" href="javascript:void(0)" title="'.L('H_Csv').' ('.L('selected').')">'.L('Export').getSVG('check-square').'</a> &middot; ';
-$strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(Href('qtf_items_csv.php').'?'.$oH->selfuri, $intCount, $intPage);
+$strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(url('qtf_items_csv.php').'?'.$oH->selfuri, $intCount, $intPage);
 echo '<div id="tablebot" class="table-ui bot">';
 echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.getSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
@@ -387,7 +387,7 @@ if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && count($arrTags)>0 ) {
   sort($arrTags);
   echo '<div class="tag-box"><p><svg class="svg-symbol svg-125"><use href="#symbol-tags" xlink:href="#symbol-tags"></use></svg> '.L('Show_only_tag').'</p>';
   foreach($arrTags as $strTag)
-    echo '<a class="tag" href="'.Href('qtf_items.php').'?s='.$s.'&q=adv&v2=*&v='.urlencode($strTag).'" title="..." data-tagdesc="'.$strTag.'">'.$strTag.'</a>';
+    echo '<a class="tag" href="'.url('qtf_items.php').'?s='.$s.'&q=adv&v2=*&v='.urlencode($strTag).'" title="..." data-tagdesc="'.$strTag.'">'.$strTag.'</a>';
   echo getSVG('search','','',true).'</div>';
   $oH->scripts['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" id="tagdesc" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
 }

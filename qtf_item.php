@@ -23,12 +23,12 @@ if ( isset($_POST['Maction']) )
 {
   $oH->exiturl  = 'qtf_items.php?s='.$s;
   $oH->exitname = L('Section');
-  if ( empty($_POST['Maction']) ) $oH->redirect(Href('qtf_item.php').'?t='.$t);
+  if ( empty($_POST['Maction']) ) $oH->redirect(url('qtf_item.php').'?t='.$t);
   if ( substr($_POST['Maction'],0,7)==='status_' ) $oT->setStatus(substr($_POST['Maction'],-1,1));
   if ( substr($_POST['Maction'],0,5)==='type_' ) $oT->setType(substr($_POST['Maction'],-1,1));
-  if ( $_POST['Maction']==='reply' ) $oH->redirect( Href('qtf_edit.php').'?a=re&t='.$t, L('Reply') );
-  if ( $_POST['Maction']==='move' ) $oH->redirect( Href('qtf_dlg.php').'?a=itemsMove&s='.$s.'&ids='.$t, L('Move') );
-  if ( $_POST['Maction']==='delete' ) $oH->redirect( Href('qtf_dlg.php').'?a=itemsDelete&s='.$s.'&ids='.$t, L('Delete') );
+  if ( $_POST['Maction']==='reply' ) $oH->redirect( url('qtf_edit.php').'?a=re&t='.$t, L('Reply') );
+  if ( $_POST['Maction']==='move' ) $oH->redirect( url('qtf_dlg.php').'?a=itemsMove&s='.$s.'&ids='.$t, L('Move') );
+  if ( $_POST['Maction']==='delete' ) $oH->redirect( url('qtf_dlg.php').'?a=itemsDelete&s='.$s.'&ids='.$t, L('Delete') );
 }
 
 // ---------
@@ -92,7 +92,7 @@ echo '</div>
 // CONTENT
 
 // Navigation buttons
-$def = 'href='.Href('qtf_edit.php').'?t='.$oT->id.'&a=re|class=button';
+$def = 'href='.url('qtf_edit.php').'?t='.$oT->id.'&a=re|class=button';
 if ( $oS->status==='1' || $oT->status==='1' || (SUser::role()==='V' && $_SESSION[QT]['visitor_right']<6) ) {
   $def .= ' disabled|href=javascript:void(0)|tabindex=-1'; // class=button disabled
   if ( $oS->status==='1' )     { $def .= '|title='.L('E_section_closed'); }
@@ -116,7 +116,7 @@ if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) )
     foreach($arrTags as $k=>$item) $tags .= empty($item) ? '' : '<span class="tag clickable" onclick="tagClick(this.innerHTML)" title="" data-tagdesc="'.$item.'">'.$item.'</span>';
     echo '<div id="tag-shown" style="display:inline-block">'.$tags.'</div>';
     echo ' &nbsp; <a href="javascript:void(0)" id="tag-ctrl" class="tgl-ctrl" onclick="qtToggle(`tag-container`,null,`tag-ctrl`)" title="'.L('Edit').'">'.getSVG('pen').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a>'.PHP_EOL;
-    echo '<div id="tag-container" style="display:none"><form method="post" action="'.Href($oH->selfurl).'?s='.$s.'&t='.$t.'" onreset="qtFocus(`tag-edit`)">';
+    echo '<div id="tag-container" style="display:none"><form method="post" action="'.url($oH->selfurl).'?s='.$s.'&t='.$t.'" onreset="qtFocus(`tag-edit`)">';
     echo '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/><input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
     echo '<input type="hidden" id="tag-saved" value="'.qtAttr($oT->descr).'"/>';
     echo '<input type="hidden" id="tag-new" name="tag-new" maxlength="255" value="'.qtAttr($oT->descr).'"/>';
@@ -134,7 +134,7 @@ if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) )
 // REPLIES
 if ( $oT->items>0 ) {
   // Pager
-  $paging = makePager( Href('qtf_item.php?t='.$oT->id), $oT->items, (int)$_SESSION[QT]['replies_per_page'], $currentPage);
+  $paging = makePager( url('qtf_item.php?t='.$oT->id), $oT->items, (int)$_SESSION[QT]['replies_per_page'], $currentPage);
   if ( !empty($paging) ) echo '<p class="paging">'.L('Page').$paging.'</p>'.PHP_EOL;
 
   // ========
@@ -169,7 +169,7 @@ if ( SUser::role()==='V' && $_SESSION[QT]['visitor_right']<7 ) {} else {
 $certificate = makeFormCertificate('ec8a0d9ab2cae03d0c7314491eb60d0b');
 echo '
 <div id="message-preview"></div>
-<form id="form-edit" method="post" action="'.Href('qtf_edit.php').'?s='.$s.'&t='.$oT->id.'&a=re">
+<form id="form-edit" method="post" action="'.url('qtf_edit.php').'?s='.$s.'&t='.$oT->id.'&a=re">
 <div class="quickreply">
 ';
 echo '<div class="g-qr-icon"><p class="i-container" title="'.L('Reply').'">'.getSVG('comment-dots').'</p></div>

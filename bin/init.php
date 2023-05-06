@@ -126,7 +126,7 @@ if ( isset($_GET['memflush']) && MEMCACHE_HOST ) {
 if ( QT_REMEMBER_ME && SUser::confirmCookie($oDB) ) {
   include APP.'_inc_hd.php';
   CHtml::msgBox(L('Login'), 'class=msgbox login');
-  echo '<h2>'.L('Welcome').' '.SUser::name().'</h2><p><a href="'.Href($oH->exiturl).'">'.L('Continue').'</a> &middot; <a href="'.Href(APP.'_login.php?a=out&r=in').'">'.sprintf(L('Welcome_not'),SUser::name()).'...</a></p>';
+  echo '<h2>'.L('Welcome').' '.SUser::name().'</h2><p><a href="'.url($oH->exiturl).'">'.L('Continue').'</a> &middot; <a href="'.url(APP.'_login.php?a=out&r=in').'">'.sprintf(L('Welcome_not'),SUser::name()).'...</a></p>';
   CHtml::msgBox('/');
   include APP.'_inc_ft.php';
   exit;

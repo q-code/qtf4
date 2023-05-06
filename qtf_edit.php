@@ -260,7 +260,7 @@ echo '<div id="message-preview"></div>
 
 // FORM START
 
-echo '<form id="form-edit" method="post" action="'.Href($oH->selfurl).'" enctype="multipart/form-data">
+echo '<form id="form-edit" method="post" action="'.url($oH->selfurl).'" enctype="multipart/form-data">
 <div class="flex-sp">
 <h2>'.$oH->selfname.'</h2>
 ';
@@ -391,7 +391,7 @@ if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P')
 }
 
 echo '<p class="submit">
-<button type="button" tabindex="5" onclick="window.location=`'.Href($oH->exiturl).'`">'.L('Cancel').'</button>&nbsp;
+<button type="button" tabindex="5" onclick="window.location=`'.url($oH->exiturl).'`">'.L('Cancel').'</button>&nbsp;
 <button type="submit" tabindex="6" id="dopreview" value="'.$certificate.'" onclick="this.form.dataset.state=0">'.L('Preview').'...</button>&nbsp;
 <button type="submit" tabindex="7" name="dosend" value="'.$certificate.'" onclick="this.form.dataset.state=1">'.($a=='ed' ? L('Save') : L('Send')).'</button>
 </p>

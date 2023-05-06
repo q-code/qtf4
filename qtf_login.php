@@ -83,8 +83,8 @@ include 'qtf_inc_hd.php';
 CHtml::msgBox($oH->selfname, 'class=msgbox formLogin');
 
 $str = L('Username').(QT_LOGIN_WITH_EMAIL ? ' '.L('or').' '.L('email') : '');
-echo '<form method="post" action="'.Href($oH->selfurl).'">'.PHP_EOL;
-echo '<p><a href="'.Href('qtf_register.php?a=id').'">'.L('Forgotten_pwd').'</a></p>';
+echo '<form method="post" action="'.url($oH->selfurl).'">'.PHP_EOL;
+echo '<p><a href="'.url('qtf_register.php?a=id').'">'.L('Forgotten_pwd').'</a></p>';
 echo '<p title="'.$str.'">'.getSVG('user','class=svg-label').' <input required type="text" id="usr" name="usr" size="24" minlength="4" maxlength="50" value="'.qtAttr($strName).'" placeholder="'.$str.'"/></p>';
 echo '<p class="input-pwd" title="'.L('Password').'">'.getSVG('lock','class=svg-label').' <input required type="password" id="pwd-1" name="pwd" size="24" minlength="4" maxlength="50" placeholder="'.L('Password').'" />'.getSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
 echo '<p class="submit">';

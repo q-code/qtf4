@@ -4,7 +4,7 @@
 */
 echo '<div id="optionsbar">
 '.getSVG('user-M').'
-<form method="post" action="'.Href('qtf_item.php').'" id="modaction">
+<form method="post" action="'.url('qtf_item.php').'" id="modaction">
 <select name="Maction" onchange="document.getElementById(`modaction`).submit()">
 <option hidden disabled selected>'.L('Staff').' '.L('commands').'...</option>
 <optgroup label="'.L('Item').'">

@@ -179,16 +179,16 @@ echo SUser::getPicture($id, 'id=userimg').PHP_EOL;
 
 if ( $canEdit ) {
   if ( !empty(qtExplodeGet($_SESSION[QT]['formatpicture'],'mime')) ) {
-  echo '<p><a href="'.Href('qtf_user_img.php').'?id='.$id.'">'.L('Change_picture').'</a></p>';
+  echo '<p><a href="'.url('qtf_user_img.php').'?id='.$id.'">'.L('Change_picture').'</a></p>';
   }
-  echo '<p><a href="'.Href('qtf_register.php').'?a=sign&id='.$id.'">'.L('Change_signature').'</a></p>';
-  if ( SUser::role()==='A' || SUser::id()==$id ) echo '<p><a href="'.Href('qtf_register.php').'?a=pwd&id='.$id.'">'.L('Change_password').'</a></p>';
-  if ( SUser::role()==='A' || SUser::id()==$id ) echo '<p><a href="'.Href('qtf_register.php').'?a=qa&id='.$id.'">'.L('Secret_question').'</a></p>';
-  if ( SUser::role()==='A' || (SUser::id()==$id && QT_CHANGE_USERNAME) ) echo '<p><a href="'.Href('qtf_register.php').'?a=name&id='.$id.'">'.L('Change_name').'</a></p>';
-  if ( SUser::id()===$id || SUser::role()==='A' ) echo '<p><a href="'.Href('qtf_register.php').'?a=out&id='.$id.'">'.L('Unregister').'</a></p>';
+  echo '<p><a href="'.url('qtf_register.php').'?a=sign&id='.$id.'">'.L('Change_signature').'</a></p>';
+  if ( SUser::role()==='A' || SUser::id()==$id ) echo '<p><a href="'.url('qtf_register.php').'?a=pwd&id='.$id.'">'.L('Change_password').'</a></p>';
+  if ( SUser::role()==='A' || SUser::id()==$id ) echo '<p><a href="'.url('qtf_register.php').'?a=qa&id='.$id.'">'.L('Secret_question').'</a></p>';
+  if ( SUser::role()==='A' || (SUser::id()==$id && QT_CHANGE_USERNAME) ) echo '<p><a href="'.url('qtf_register.php').'?a=name&id='.$id.'">'.L('Change_name').'</a></p>';
+  if ( SUser::id()===$id || SUser::role()==='A' ) echo '<p><a href="'.url('qtf_register.php').'?a=out&id='.$id.'">'.L('Unregister').'</a></p>';
 }
 if ( SUser::canAccess('show_calendar') ) {
-echo '<p><a href="'.Href('qtf_calendar.php').(empty($row['birthday']) ? '' : '?m='.substr($row['birthday'],4,2)).'">'.L('Birthdays_calendar').'</a></p>';
+echo '<p><a href="'.url('qtf_calendar.php').(empty($row['birthday']) ? '' : '?m='.substr($row['birthday'],4,2)).'">'.L('Birthdays_calendar').'</a></p>';
 }
 
 echo '</div>
@@ -202,7 +202,7 @@ if ( $_SESSION[QT]['editing'] ) {
 if ( SUser::id()!==$id ) echo '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 if ( !isset($oH->scripts['e0']) ) $oH->scripts['e0'] = 'var e0 = '.(empty(L('E_editing')) ? 'Data not yet saved. Quit without saving?' : '"'.L('E_editing').'"').';';
 
-echo '<form method="post" action="'.Href('qtf_user.php').'?id='.$id.'">
+echo '<form method="post" action="'.url('qtf_user.php').'?id='.$id.'">
 <table class="t-profile">
 <tr><th>'.L('Username').'</th><td clss="c-name">'.$row['name'].'</td></tr>
 <tr><th>'.L('Role').'</th><td>'.L('Role_'.$row['role']).($row['role']==='A' ? ' <small>'.getSVG('user-A', 'title='.L('Role_A')).'</small>' : '').'</td></tr>
@@ -305,14 +305,14 @@ echo '
 
 $strParticip = '';
 if ( $items>0 ) {
-  $strParticip .= '<a href="'.Href('qtf_items.php').'?q=user&v2='.$id.'&v='.urlencode($row['name']).'">'.L('Item',$items).'</a>, ';
+  $strParticip .= '<a href="'.url('qtf_items.php').'?q=user&v2='.$id.'&v='.urlencode($row['name']).'">'.L('Item',$items).'</a>, ';
 }
 if ( $countmessages>0 ) {
-  $strParticip .= '<a href="'.Href('qtf_items.php').'?q=userm&v2='.$id.'&v='.urlencode($row['name']).'">'.L('Message',$countmessages).'</a>';
+  $strParticip .= '<a href="'.url('qtf_items.php').'?q=userm&v2='.$id.'&v='.urlencode($row['name']).'">'.L('Message',$countmessages).'</a>';
   $strParticip .= ', '.strtolower($L['Last_message']).' '.qtDatestr($row['lastdate'],'$','$',true);
   $oDB->query( "SELECT p.id,p.topic,p.forum FROM TABPOST p WHERE p.userid=$id ORDER BY p.issuedate DESC" );
   $row2 = $oDB->getRow();
-  $strParticip .= ' <a href="'.Href('qtf_item.php').'?t='.$row2['topic'].'#p'.$row2['id'].'" title="'.L('Goto_message').'">'.getSVG('caret-square-right').'</a>';
+  $strParticip .= ' <a href="'.url('qtf_item.php').'?t='.$row2['topic'].'#p'.$row2['id'].'" title="'.L('Goto_message').'">'.getSVG('caret-square-right').'</a>';
 }
 echo '
 <table class="t-profile">

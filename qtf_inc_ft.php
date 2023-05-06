@@ -27,7 +27,7 @@ if ( !empty($_SESSION[QT]['show_time_zone']) ) {
 }
 // no moderator in case of index page and search results page (where $s=-1)
 if ( QT_SHOW_MODERATOR && isset($oS) && is_a($oS,'CSection') && $oS->id>=0 ) {
-  if ( !empty($oS->ownerid) && !empty($oS->ownername) ) $arr[1] = L('Role_C').': <a href="'.Href('qtf_user.php?id='.$oS->ownerid).'">'.$oS->ownername.'</a>';
+  if ( !empty($oS->ownerid) && !empty($oS->ownername) ) $arr[1] = L('Role_C').': <a href="'.url('qtf_user.php?id='.$oS->ownerid).'">'.$oS->ownername.'</a>';
 }
 echo '<div id="main-ft">
 <p>'.implode(' &middot; ',$arr).'</p>
@@ -35,9 +35,9 @@ echo '<div id="main-ft">
 if ( QT_SHOW_JUMPTO ) {
   echo '<select id="jumpto" size="1" onchange="window.location=this.value;" accesskey="j">';
   echo '<option disabled selected hidden>'.L('Goto').'...</option>';
-  if ( $oH->selfurl=='qtf_search.php' ) echo '<option value="'.Href('qtf_index.php').'">'.SLang::translate().'</option>';
-  if ( $oH->selfurl!='qtf_search.php' && SUser::canView('V4') ) echo '<option value="'.Href('qtf_search.php').'">'.L('Advanced_search').'</option>';
-  echo sectionsAsOption('',[],[],'',32,100,Href('qtf_items.php').'?s='); // current section is not rejected (allow returning to page 1 or top page)
+  if ( $oH->selfurl=='qtf_search.php' ) echo '<option value="'.url('qtf_index.php').'">'.SLang::translate().'</option>';
+  if ( $oH->selfurl!='qtf_search.php' && SUser::canView('V4') ) echo '<option value="'.url('qtf_search.php').'">'.L('Advanced_search').'</option>';
+  echo sectionsAsOption('',[],[],'',32,100,url('qtf_items.php').'?s='); // current section is not rejected (allow returning to page 1 or top page)
   echo '</select>';
 }
 echo '</p>
@@ -89,7 +89,7 @@ echo '<div id="aside__info" class="article" style="display:none">'.PHP_EOL;
   $newuser = SMem::get('_NewUser');
   if ( $newuser!==false && !empty($newuser['id']) && !empty($newuser['firstdate']) && !empty($newuser['name']) ) {
     if ( addDate($newuser['firstdate'],30,'day')>Date('Ymd') ) {
-      echo '<p>'.L('Welcome_to').'<a href="'.Href('qtf_user.php?id='.$newuser['id']).'">'.$newuser['name'].'</a></p>';
+      echo '<p>'.L('Welcome_to').'<a href="'.url('qtf_user.php?id='.$newuser['id']).'">'.$newuser['name'].'</a></p>';
     }
   }
 echo '</div>'.PHP_EOL;

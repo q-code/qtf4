@@ -118,7 +118,7 @@ echo '<h2 class="config">'.L('File').'</h2>
 ';
 echo '
 <p class="submit">
-<button type="button" name="cancel" value="cancel" onclick="window.location=`'.Href($oH->exiturl).'`;">'.L('Cancel').'</button>
+<button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>
 <button type="submit" name="ok" value="ok">'.L('Ok').'</button>
 </p>
 </form>

@@ -469,10 +469,8 @@ public function readMF(string $prop, bool $assign=false, string $prefix='')
 {
   if ( empty($prop) || !property_exists('CSection', $prop) )  die('CSection::readMF invalid property');
   $arr = qtExplode($this->$prop); // can be [] when property is empty
-  if ( $assign )
-  {
-    foreach($arr as $key=>$value)
-    {
+  if ( $assign ) {
+    foreach($arr as $key=>$value) {
       $key = $prefix.$key; if ( $key===$prop ) continue; // prevent reassigning $this->$prop (only other property name can be red)
       if ( property_exists('CSection', $key) ) $this->$key=$value;
     }
@@ -503,7 +501,8 @@ public function setMF(string $prop, string $key, $value, bool $save=true)
 {
   if ( empty($key) ) die('CSection::setMF invalid key');
   $arr = $this->readMF($prop); // read $this->$prop without properties assignement
-  $this->$prop = qtImplode(qtArrAdd($arr,$key,$value),';'); // add/change the key=value (value NULL removes the key)
+  $arr[$key] = $value; // add/change the key=value (value NULL removes the key)
+  $this->$prop = qtImplode($arr,';');
   if ( $save ) $this->updateMF($prop);
 }
 public function updateMF(string $prop)

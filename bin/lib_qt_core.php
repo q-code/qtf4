@@ -7,21 +7,25 @@
  * @param boolean|string $prefix file prefix (true for the default)
  * @return string the converted url, or the original url when urlrewrite is not active
  */
-function Href(string $url='', string $ext='.html', bool $prefix=true)
+function url(string $url='', string $ext='.html', bool $hidePrefix=true)
 {
   if ( !QT_URLREWRITE ) return $url;
-  if ( $prefix ) $prefix = APP.'_';
-  if ( empty($url) ) die('Href: empty argument');
+  if ( empty($url) ) die(__FUNCTION__.' url empty');
   // Ex: 'qtx_login.php?a=1' becomes 'login.html?a=1'
-  $i = strlen($prefix);
-  if ( $i && substr($url,0,$i)===$prefix ) $url = substr($url,$i); // $i>0
-  if ( strpos($url,'.php') ) $url = str_replace('.php',$ext,$url);
-  return $url;
+  if ( $hidePrefix )
+  {
+    $i = strlen(APP.'_');
+    if ( substr($url,0,$i)===APP.'_' ) $url = substr($url,$i);
+    // @version str_starts_with requires php8
+  }
+  $i = strrpos($url,'.php'); // only last .php is changed
+  if ( $i===false ) return $url;
+  return substr($url,0,$i).$ext.substr($url,$i+4);
 }
 function getSVG(string $id='info', string $attr='', string $wrapper='', bool $addSvgClass=false)
 {
-  if ( !file_exists('bin/css/svg/'.$id.'.svg') ) return '#';
-  $svg = file_get_contents('bin/css/svg/'.$id.'.svg');
+  if ( !file_exists('bin/svg/'.$id.'.svg') ) return '#';
+  $svg = file_get_contents('bin/svg/'.$id.'.svg');
   if ( $addSvgClass) $svg = '<svg class="svg-'.$id.'" '.substr($svg,4);
   if ( !empty($attr) && empty($wrapper) ) $wrapper = 'span'; // force span when attribute exists
   if ( !empty($wrapper) ) $svg = '<'.$wrapper.attrRender($attr).'>'. $svg.'</'.$wrapper.'>';
@@ -106,7 +110,6 @@ function attrAddClass(array &$arr, string $value='')
   if ( empty($arr['class']) ) { $arr['class'] = $value; return; }
   if ( strpos($arr['class'],$value)===false ) $arr['class'] .= ' '.$value;
 }
-
 /**
  * Returns the translated word, or the lowercase or plural version, from the language dictionnary
  * @param string $k key to be searched in the dictonnary (dot in the key allows accessing sub-dictionnary)
@@ -187,19 +190,13 @@ Fallback - If the requested key (or subkey) is not defined in the language file 
 Debug - If you define a session variable 'QTdebuglang' set to '1', the function shows in red the key not defined in the language file. A session variable can be set with url 'index.php?debuglang=1'
 */
 }
-
-/**
- * Same as ctype_digit (in case of ctype library is disabled on the server)
- * @param string $str
- * @return boolean
- */
 function qtCtype_digit(string $str)
 {
+  // Same as ctype_digit (in case of ctype library is disabled on the server)
   if ( function_exists('ctype_digit') ) return ctype_digit($str);
   if ( $str!=='' && preg_match('/^[0-9]+$/',$str) ) return true;
   return false;
 }
-
 /**
  * Assign GET/POST values into typed-variables listed in $def with prefix str: int: boo: or flo: defining the type. Suffix ! means a GET/POST is required
  * @param string $def list of type:variable, space separated. Ex. "a! b int:c boo:d"
@@ -261,7 +258,6 @@ function qtArgs(string $def, bool $inGet=true, bool $inPost=true, bool $trim=tru
     if ( $required ) die(__FUNCTION__.'Required argument ['.$var.'] is missing');
   }
 }
-
 function asTags(array $arr, $current='', string $attr='', string $attrCurrent='', array $arrDisabled=[], string $fx='', array $reject=[], string $eol='')
 {
   if ( !empty($fx) && !function_exists($fx) ) die(__FUNCTION__.' requested function ['.$fx.'] is unknown' );
@@ -276,8 +272,7 @@ function asTags(array $arr, $current='', string $attr='', string $attrCurrent=''
   unset($attr['tag']);
 
   $str = '';
-  foreach($arr as $k=>$value)
-  {
+  foreach($arr as $k=>$value) {
     if ( in_array($k,$reject) ) continue; // works when mixing [int|string]
     // format the value: $k and $value are converted to [string]
     $k = qtAttr($k); // $k is alway used as [string] attribute hereafter
@@ -287,21 +282,19 @@ function asTags(array $arr, $current='', string $attr='', string $attrCurrent=''
     $itemAttr = $attr;
     if  ( !empty($attrCurrent) && strlen($current)>0 && $current==$k ) $itemAttr = attrDecode($attrCurrent);
 
-    switch($tag)
-    {
-    // Attributes must use qtAttr(). $k is already converted with qtAttr()
-    // Attention for checkbox value is used as id. $attrCurrentnt can mark one as checked
-    case 'option'  : $str .= '<option value="'.$k.'"'.attrRender($itemAttr).($current===$k ? ' selected' : '').(in_array($k,$arrDisabled,true) ? ' disabled' : '').'>'.$value.'</option>'; break;
-    case 'checkbox': $str .= '<input type="checkbox" id="'.$k.'" value="'.$k.'"'.attrRender($itemAttr).($current===$k || $current==='*' ? ' checked' : '').(in_array($k,$arrDisabled,true) ? ' disabled ' : '').'/><label for="'.$k.'">'.$value.'</label>'; break;
-    case 'hidden'  : $str .= '<input type="hidden" name="'.$k.'" value="'.qtAttr($value).'"'.attrRender($itemAttr).'/>'; break;
-    case 'span'    : $str .= '<span'.attrRender($itemAttr).'>'.$value.'</span>'; break;
-    default: die(__FUNCTION__.' Invalid tag' );
+    switch($tag) {
+      // Attributes must use qtAttr(). $k is already converted with qtAttr()
+      // Attention for checkbox value is used as id. $attrCurrentnt can mark one as checked
+      case 'option'  : $str .= '<option value="'.$k.'"'.attrRender($itemAttr).($current===$k ? ' selected' : '').(in_array($k,$arrDisabled,true) ? ' disabled' : '').'>'.$value.'</option>'; break;
+      case 'checkbox': $str .= '<input type="checkbox" id="'.$k.'" value="'.$k.'"'.attrRender($itemAttr).($current===$k || $current==='*' ? ' checked' : '').(in_array($k,$arrDisabled,true) ? ' disabled ' : '').'/><label for="'.$k.'">'.$value.'</label>'; break;
+      case 'hidden'  : $str .= '<input type="hidden" name="'.$k.'" value="'.qtAttr($value).'"'.attrRender($itemAttr).'/>'; break;
+      case 'span'    : $str .= '<span'.attrRender($itemAttr).'>'.$value.'</span>'; break;
+      default: die(__FUNCTION__.' Invalid tag' );
     }
     if ( !empty($eol) ) $str .= $eol;
   }
   return $str;
 }
-
 /**
  * Convert string to compliant Html-attribute/sql-value (trim and drop doublequote)
  * @param string $str
@@ -315,48 +308,31 @@ function qtAttr(string $str, int $size=0, string $unquote='')
   $str = trim($str);
   return $size && isset($str[$size]) ? substr($str,0,$size) : $str;
 }
-
-/**
- * Add or change (or remove) a key-value in array. When value is NULL the key is removed
- * @param array $arr
- * @param integer|string $key
- * @param mixed $val
- * @return array
- */
-function qtArrAdd(array $arr, $key, $val)
-{
-  if ( !is_string($key) && !is_int($key) ) die('qtArrAdd: invalid argument(s)');
-  unset($arr[$key]); // remove the key
-  if ( is_null($val) ) return $arr;
-  $arr[$key] = $val; // add the key
-  return $arr;
-}
-
 /**
  * Returns an array (key=>value) from a multfield string 'key1=value1;key2=value2'
  * @param string $str
  * @param string $sep separator
+ * @param array $skip list of keys [string] to be removed
  * @param string $fx a function to apply to each value ex. 'trim', 'strtolower', 'urldecode'...
  * @return array (of string), keys are trimmed, unformated parts are skipped
  * <p>Returns an empty array when $str is empty (or no "=" or no keys)<br>
  * When duplicate keys exist, the last value overwrites previous values<br>
- * Values without keys are skipped, but a key without a value is valid i.e. 'key1=;key2=value2' returns ['key1'=>'','key2'=>'value2']</p>
+ * Key without a value is valid i.e. 'key1=;key2=value2' returns ['key1'=>'','key2'=>'value2']</p>
  */
-function qtExplode(string $str, string $sep=';', string $fx='')
+function qtExplode(string $str, string $sep=';', array $skip=[], string $fx='')
 {
   if ( empty($str) ) return [];
   if ( !empty($fx) && !function_exists($fx) ) die('qtExplode: '.$fx.' is unknown function');
-  $arr = explode($sep,$str);
-  $arrArgs = [];
-  foreach($arr as $str) {
+  $arr = [];
+  foreach(explode($sep,$str) as $str) {
     if ( empty($str) || strpos($str,'=')===false ) continue; // skip parts without =
-    $arrPart = explode('=',$str); $arrPart[0] = trim($arrPart[0]); // trim the keys
-    if ( $arrPart[0]==='' ) continue; // skip when no-key
-    $arrArgs[$arrPart[0]] = empty($fx) ? $arrPart[1] : $fx($arrPart[1]);
+    $parts = explode('=',$str,2); $parts[0] = trim($parts[0]); // trim the keys
+    if ( $parts[0]==='' || ($skip && in_array($parts[0], $skip, true)) ) continue;
+    $arr[$parts[0]] = empty($fx) ? $parts[1] : $fx($parts[1]);
   }
-  return $arrArgs;
+  return $arr;
+  // array keys and $skips must be [string] (nevertheless php converts integer-like-keys to integers)
 }
-
 /**
  * Explode, trim, remove empty values (also 0) and return unique values
  * @param string $str
@@ -372,22 +348,30 @@ function asCleanArray(string $str, string $sep=';', array $append=[])
   return array_unique(array_filter(array_map('trim',$arr)));
   // NOTE: if $append contains sub-array, they are skipped and php generates a warning
 }
-
 /**
  * Explode the uri $str (or the current uri) to return an array of the query parts (not urldecoded by default)
  * @param string $str an uri like 'page.html?a=1&b=2#1' (if $str is empty, use the current URI)
  * @param string $fx ex: 'urldecode' each value (key remains unchanged)
  * @return array (empty array when the uri does not contains query parts)
  */
-function qtExplodeUri(string $str='', string $fx='')
+function qtExplodeUri(string $str='', array $skip=[], string $fx='')
 {
   if ( empty($str) ) $str = $_SERVER['REQUEST_URI'];
   $str = parse_url($str,PHP_URL_QUERY); // null if no url query part
-  if ( empty($str) ) return array();
+  if ( empty($str) ) return [];
   if ( strpos($str,'&amp;')!==false ) $str = str_replace('&amp;','&',$str);
-  return qtExplode($str,'&',$fx);
+  return qtExplode($str, '&', $skip, $fx);
 }
-
+/**
+ * Return the URI-part of the current REQUEST_URI
+ * @param string $skip arguments to be removed
+ * @param string $skipsep arguments delimiter
+ * @return string uri-arguments
+ */
+function qtURI(string $skip='', string $skipsep='|')
+{
+  return qtImplode(qtExplodeUri('', explode($skipsep,$skip)), '&');
+}
 /**
  * Search a specific key-value in a multifield string 'a=1;b=2;c=3'
  * @param string $str
@@ -397,12 +381,12 @@ function qtExplodeUri(string $str='', string $fx='')
  * @param string $fx
  * @return string can be also $alt [mixed]
  */
-function qtExplodeGet(string $str, string $key, $alt='', string $sep=';', string $fx='')
+function qtExplodeGet(string $str, string $key, $alt='', string $sep=';', array $skip=[], string $fx='')
 {
   // qtExplodeGet('a=1;b=2', 'a') returns '1'
   if ( empty($str) ) die(__FUNCTION__.' Invalid multifield string');
   if ( empty($key) ) die(__FUNCTION__.' Invalid key');
-  $arr = qtExplode($str,$sep,$fx); // can be [] when str is empty
+  $arr = qtExplode($str, $sep, $skip, $fx); // can be [] when str is empty
   return isset($arr[$key]) ? $arr[$key] : $alt;
   // Note on alt:
   // for wrong format, $alt is returned. Ex: in 'a;b=2', a is not a declaration string, thus $alt is returned

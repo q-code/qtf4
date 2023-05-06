@@ -78,7 +78,7 @@ include 'qtf_inc_hd.php';
 echo '<div id="ct-title" class="fix-sp top">
 <div><h2>'.$oH->selfname.'</h2>
 <p>'.( $pageGroup=='all' ? $intTotal.' '.L('Members') : $intCount.' / '.$intTotal.' '.L('Members') );
-if ( SUser::canAccess('show_calendar') )echo ' &middot; <a href="'.Href('qtf_calendar.php').'" style="white-space:nowrap">'.L('Birthdays_calendar').'</a>';
+if ( SUser::canAccess('show_calendar') )echo ' &middot; <a href="'.url('qtf_calendar.php').'" style="white-space:nowrap">'.L('Birthdays_calendar').'</a>';
 if ( !empty($formAddUser) ) echo ' &middot; <span style="white-space:nowrap">'.SUser::getStamp(SUser::role(), 'class=stamp08').' <a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle(`participants`,`block`,``);qtToggle();">'.L('User_add').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a></span>';
 echo '</p>
 </div>
@@ -94,7 +94,7 @@ $oDB->query( sqlLimit($strState,'numpost DESC',0,5) );
 for ($i=0;$i<($_SESSION[QT]['viewmode']=='C' ? 2 : 5);++$i) {
   $row = $oDB->getRow();
   if ( !$row ) break;
-  echo '<tr><td><a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.intK((int)$row['numpost']).'</td></tr>';
+  echo '<tr><td><a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.intK((int)$row['numpost']).'</td></tr>';
 }
 echo '</table>
 </div>';
@@ -110,12 +110,12 @@ echo '</div>
 // --------
 
 // -- build paging --
-$strPaging = makePager( Href('qtf_users.php?group='.$pageGroup.'&order='.$pageOrder.'&dir='.$pageDirec), $intCount, (int)$_SESSION[QT]['items_per_page'], $intPage );
+$strPaging = makePager( url('qtf_users.php?group='.$pageGroup.'&order='.$pageOrder.'&dir='.$pageDirec), $intCount, (int)$_SESSION[QT]['items_per_page'], $intPage );
 if ( !empty($strPaging) ) $strPaging = L('Page').$strPaging;
 if ( $intCount<$intTotal ) $strPaging = L('user',$intCount).' '.L('from').' '.$intTotal.(empty($strPaging) ? '' : ' | '.$strPaging);
 
 // -- Display button line (if more that tpp users) and paging --
-if ( $intCount>$_SESSION[QT]['items_per_page'] || $pageGroup!=='all' ) echo htmlLettres(Href($oH->selfurl),$pageGroup,L('All'),'lettres',L('Username_starting').' ', $intTotal>300 ? 1 : ($intTotal>2*$_SESSION[QT]['items_per_page'] ? 2 : 3)).PHP_EOL;
+if ( $intCount>$_SESSION[QT]['items_per_page'] || $pageGroup!=='all' ) echo htmlLettres(url($oH->selfurl),$pageGroup,L('All'),'lettres',L('Username_starting').' ', $intTotal>300 ? 1 : ($intTotal>2*$_SESSION[QT]['items_per_page'] ? 2 : 3)).PHP_EOL;
 
 if ( !empty($strPaging) ) echo '<p id="tabletop" class="paging">'.$strPaging.'</p>'.PHP_EOL;
 
@@ -172,7 +172,7 @@ while($row=$oDB->getRow()) {
 	// prepare row
   if ( !$bCompact )
   $t->arrTd['userphoto']->content = '<div class="magnifier center">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', '').'</div>';
-  $t->arrTd['username']->content = '<a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.qtTrunc($row['name'],24).'</a>';
+  $t->arrTd['username']->content = '<a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.qtTrunc($row['name'],24).'</a>';
   $t->arrTd['userrole']->content = L('Role_'.strtoupper($row['role']));
   $t->arrTd['usercontact']->content = renderUserMailSymbol($row).' '.renderUserWwwSymbol($row);
   $t->arrTd['userlocation']->content = empty($row['location']) ? '' : $row['location'];
@@ -184,7 +184,7 @@ while($row=$oDB->getRow()) {
 	if ( $bMap && !QTgempty($row['x']) && !QTgempty($row['y']) ) {
 	  $y = (float)$row['y']; $x = (float)$row['x'];
 		$strPname = $row['name'];
-		$strPinfo = $row['name'].'<br><a class="gmap" href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.L('Profile').'</a>';
+		$strPinfo = $row['name'].'<br><a class="gmap" href="'.url('qtf_user.php').'?id='.$row['id'].'">'.L('Profile').'</a>';
 		$strPinfo = SUser::getPicture((int)$row['id'], 'class=markerprofileimage', '').$strPinfo;
 		$oMapPoint = new CMapPoint($y,$x,$strPname,$strPinfo);
 		if ( !empty($arrSymbolByRole[$row['role']]) ) $oMapPoint->icon = $arrSymbolByRole[$row['role']];
@@ -240,9 +240,9 @@ if ( $bMap ) {
 
     // Show/Hide
     if ( $_SESSION[QT]['m_gmap_hidelist'] ) {
-    echo '<div class="canvashandler"><a class="canvashandler" href="'.Href($oH->selfurl).'?showmap">'.getSVG('chevron-down').' '.$L['Gmap']['Show_map'].'</a></div>'.PHP_EOL;
+    echo '<div class="canvashandler"><a class="canvashandler" href="'.url($oH->selfurl).'?showmap">'.getSVG('chevron-down').' '.$L['Gmap']['Show_map'].'</a></div>'.PHP_EOL;
     } else {
-    echo '<div class="canvashandler"><a class="canvashandler" href="'.Href($oH->selfurl).'?hidemap">'.getSVG('chevron-up').' '.$L['Gmap']['Hide_map'].'</a></div>'.PHP_EOL;
+    echo '<div class="canvashandler"><a class="canvashandler" href="'.url($oH->selfurl).'?hidemap">'.getSVG('chevron-up').' '.$L['Gmap']['Hide_map'].'</a></div>'.PHP_EOL;
     }
   }
 }

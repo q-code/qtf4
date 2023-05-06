@@ -25,7 +25,7 @@ function broadcastOption(option,value) {
   });
   iconSpin();
 }
-function addHrefDataset(d, reject=[]) {
+function addurlDataset(d, reject=[]) {
   if ( !d ) return;
   for(data in d.dataset) {
     if ( d.dataset[data]==="*" || d.dataset[data]==="" || reject.includes(data) ) continue;

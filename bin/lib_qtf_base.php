@@ -118,29 +118,27 @@ function asEmails($emails, string $render='txt', bool $first=false, string $none
       $return .= '<a href="mailto:'.implode(',',$emails).'" title="'.$emails[0].'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"></use></svg></a>';
       break;
     case 'txtjava':
-      $return .= '<script type="text/javascript">const m = "'.$hmails.'"; document.write(`<a href="javascript:void(0)" onmouseover="qtHrefShow(this);" onmouseout="qtHrefHide(this);" data-emails="${m}">${qtDecodeEmails(m)}</a>`);</script>';
+      $return .= '<script type="text/javascript">const m = "'.$hmails.'"; document.write(`<a href="javascript:void(0)" onmouseover="qturlShow(this);" onmouseout="qturlHide(this);" data-emails="${m}">${qtDecodeEmails(m)}</a>`);</script>';
       break;
     case 'icojava':
     case 'imgjava':
-      $return .= '<a href="javascript:void(0)" onmouseover="qtHrefShow(this);" onmouseout="qtHrefHide(this);" data-emails="'.$hmails.'">'.getSVG('envelope').'</a>';
+      $return .= '<a href="javascript:void(0)" onmouseover="qturlShow(this);" onmouseout="qturlHide(this);" data-emails="'.$hmails.'">'.getSVG('envelope').'</a>';
       break;
     case 'symboljava':
-      $return .= '<a href="javascript:void(0)" onmouseover="qtHrefShow(this);" onmouseout="qtHrefHide(this);" data-emails="'.$hmails.'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"></use></svg></a>';
+      $return .= '<a href="javascript:void(0)" onmouseover="qturlShow(this);" onmouseout="qturlHide(this);" data-emails="'.$hmails.'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"></use></svg></a>';
       break;
     default: die('invalid render');
   }
   return $return;
 }
-
-function asImg(string $src='', string $attr='', string $href='', string $attrHref='', string $imgDflt='alt=S|class=i-sec')
+function asImg(string $src='', string $attr='', string $href='', string $attrurl='', string $imgDflt='alt=S|class=i-sec')
 {
   $attr = attrDecode($attr, '|', $imgDflt);
   // no href
   if ( empty($href) ) return '<img src="'.$src.'"'.attrRender($attr).'/>';
   // with href
-  return '<a href="'.$href.'"'.attrRender($attrHref).'><img src="'.$src.'"'.attrRender($attr).'/></a>';
+  return '<a href="'.$href.'"'.attrRender($attrurl).'><img src="'.$src.'"'.attrRender($attr).'/></a>';
 }
-
 /**
  * @param string $d
  * @param int $i
@@ -167,7 +165,6 @@ function addDate(string $d='', int $i=-1, string $str='year')
   if ( $intM==2 && $intD>28 ) { $intM++; $intD -= 28; }
   return (string)($intY*10000+$intM*100+$intD).(strlen($d)>8 ? substr($d,8) : '');
 }
-
 function getSections(string $role='V', int $domain=-1, array $reject=[], string $filter='', string $order='d.titleorder,s.titleorder')
 {
   // Returns an array of [key] section id, array of [values] section
@@ -197,16 +194,8 @@ function getSections(string $role='V', int $domain=-1, array $reject=[], string 
   }
   return $arrSections;
 }
-
-function getURI(string $reject='')
+function getItemsInfo(CDatabase $oDB)
 {
-  $reject = explode(',',$reject);
-  $arr = qtExplodeUri();
-  foreach($reject as $key) unset($arr[trim($key)]);
-  return qtImplode($arr);
-}
-
-function getItemsInfo(CDatabase $oDB) {
   $arr = array();
   $arr['post'] = $oDB->count( TABPOST );
   $arr['startdate'] = $arr['post']==0 ? '' : qtDatestr( $oDB->count( "SELECT min(firstpostdate) as countid FROM ".TABTOPIC ),'$', '' );
@@ -215,7 +204,6 @@ function getItemsInfo(CDatabase $oDB) {
   $arr['content'] = L('Message',$arr['post']).' <span  class="small">('.L('Item',$arr['topic']).', '.L('Reply',$arr['reply']).')</span>';
   return $arr;
 }
-
 function getUserInfo($ids, string $fields='name', bool $excludezero=true)
 {
   return array_shift(getUsersInfo($ids, $fields, $excludezero)); // can return null (if ids not found)
@@ -245,7 +233,6 @@ function getUsersInfo($ids, string $fields='name', bool $excludezero=true)
   while( $row=$oDB->getRow() ) $res[(int)$row['id']] = $row;
   return $res;
 }
-
 function getUsers(string $q='A', string $name='', int $max=100)
 {
   // $q={A|S|M|U|N|N*} role admin, admin or moderator, moderator, user or name $name or name starting by $name
@@ -343,7 +330,6 @@ function validateFile(&$arrFile=[], $extensions='', $mimes='', int $size=0, int 
 
   return '';
 }
-
 function validateFileExt($file, $extensions='')
 {
   if ( is_array($extensions) ) $extensions = implode(',', $extensions);
@@ -356,14 +342,13 @@ function validateFileExt($file, $extensions='')
   if ( strpos($extensions,$ext)===false ) return 'Format ['.$ext.'] not supported... Use '.$extensions;
   return '';
 }
-
 function makePager(string $uri, int $count, int $intPagesize=50, int $currentpage=1, string $sep='', string $currentclass='current')
 {
   // $sep (space) is inserted before each page-number
   if ( $currentpage<1 ) $currentpage=1;
   if ( $intPagesize<5 ) $intPagesize=50;
   if ( $count<2 || $count<=$intPagesize ) return ''; //...
-  $arg = qtImplode(qtArrAdd(qtExplodeUri($uri),'page',null)); // extract query part and drop the 'page'-part (arguments remain urlencoded)
+  $arg = qtImplode(qtExplodeUri($uri,['page'])); // extract query part and drop the 'page'-part (arguments remain urlencoded)
   $uri = parse_url($uri, PHP_URL_PATH); // redifine $uri as the path-part only
   $strPages='';
   $firstpage='';
@@ -389,7 +374,6 @@ function makePager(string $uri, int $count, int $intPagesize=50, int $currentpag
   }
   return $firstpage.$strPages.$lastpage;
 }
-
 function toCsv($val, string $quote='"',string $quoteAlt="'", string $sep=';', string $null='""')
 {
   // Works recursively with an array
@@ -413,7 +397,6 @@ function toCsv($val, string $quote='"',string $quoteAlt="'", string $sep=';', st
   $val = str_replace($quote,$quoteAlt,$val);
   return $quote.$val.$quote;
 }
-
 function sqlLimit(string $state, string $order='id', int $start=0, int $length=50)
 {
   if ( empty($order) ) die('sqlLimit: invalid argument'); // order is required with limit
@@ -436,7 +419,6 @@ function sqlLimit(string $state, string $order='id', int $start=0, int $length=5
   default: return "SELECT $state ORDER BY $order LIMIT $start,$length"; break;
   }
 }
-
 function sqlFirstChar(string $field, string $case='u', int $len=1)
 {
   // returns the whereclause of the $field's first-character(s) being:
@@ -480,7 +462,6 @@ function sqlFirstChar(string $field, string $case='u', int $len=1)
       break;
   }
 }
-
 /**
  * @param string $date (or 'old')
  * @param string $field
@@ -504,7 +485,6 @@ function sqlDateCondition(string $date='', string $field='firstpostdate', int $l
   default: return 'LEFT('.$field.','.$length.')'.$oper.$quote.$date.$quote;
   }
 }
-
 function postsTodayAcceptable(int $intMax=100)
 {
   if ( SUser::isStaff() || SUser::getInfo('numpost',0)<$intMax ) return true;

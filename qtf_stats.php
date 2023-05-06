@@ -133,7 +133,7 @@ for ($i=$intStartyear;$i<=$intEndyear;$i++) $arrY[$i]=$i;
 echo '<div class="flex-sp top">
 <h1>'.L('Options').'</h1>
 <div class="search-box options">
-<form method="get" action="'.Href($oH->selfurl).'">
+<form method="get" action="'.url($oH->selfurl).'">
 <table>
 <tr>
 <td>'.L('Year').'</td>
@@ -156,12 +156,12 @@ echo '<div class="flex-sp top">
 echo '<h1>'.L('Statistics').'</h1>'.PHP_EOL;
 
 // DISPLAY TABS
-$href = $oH->selfurl.'?'.qtImplode(qtArrAdd(qtExplodeUri(),'pan',''));
+$href = $oH->selfurl.'?'.qtURI('pan');
 $arrM = array();
-$arrM['pan-g']  = L('Global')        .'|href='.$href.'g |id=pan-g |class=pan-tab|title='.L('H_Global').' '.$y;
-$arrM['pan-gt'] = L('Global_trends') .'|href='.$href.'gt|id=pan-gt|class=pan-tab|title='.L('H_Global_trends').' '.$y0.'-'.$y;
-$arrM['pan-d']  = L('Details')       .'|href='.$href.'d |id=pan-d |class=pan-tab|title='.L('H_Details').' '.$y;
-$arrM['pan-dt'] = L('Details_trends').'|href='.$href.'dt|id=pan-dt|class=pan-tab|title='.L('H_Details_trends').' '.$y0.'-'.$y;
+$arrM['pan-g']  = L('Global')        .'|href='.$href.'&pan=g |id=pan-g |class=pan-tab|title='.L('H_Global').' '.$y;
+$arrM['pan-gt'] = L('Global_trends') .'|href='.$href.'&pan=gt|id=pan-gt|class=pan-tab|title='.L('H_Global_trends').' '.$y0.'-'.$y;
+$arrM['pan-d']  = L('Details')       .'|href='.$href.'&pan=d |id=pan-d |class=pan-tab|title='.L('H_Details').' '.$y;
+$arrM['pan-dt'] = L('Details_trends').'|href='.$href.'&pan=dt|id=pan-dt|class=pan-tab|title='.L('H_Details_trends').' '.$y0.'-'.$y;
 $m = new CMenu($arrM, '');
 echo '<div class=pan-tabs>'.$m->build('pan-'.$pan).'</div>';
 echo '<div class="pan">
@@ -173,19 +173,19 @@ echo '</p>
 
 // Statistic computation
 //----------------------
-$arrSeries = $pan=='d' || $pan=='dt' ? array('T','N','C','Z','ATT') : array('T','R','U');
+$arrSeries = $pan==='d' || $pan==='dt' ? array('T','N','C','Z','ATT') : array('T','R','U');
 include 'qtf_stats_inc.php';
 //----------------------
 
 // DISPLAY title & option
-$href = $oH->selfurl.'?'.qtImplode(qtArrAdd(qtExplodeUri(),'bt','')); // existing bt is reset as last argument '&bt='
+$href = $oH->selfurl.'?'.qtURI('bt'); // remove argument &bt=
 $arrM = array();
-$arrM['bt-q'] = L('Per_q').'|id=bt-q|href='.$href.'q';
-$arrM['bt-m'] = L('Per_m').'|id=bt-m|href='.$href.'m';
-$arrM['bt-d'] = L('Per_d').'|id=bt-d|href='.$href.'d';
+$arrM['bt-q'] = L('Per_q').'|id=bt-q|href='.$href.'&bt=q';
+$arrM['bt-m'] = L('Per_m').'|id=bt-m|href='.$href.'&bt=m';
+$arrM['bt-d'] = L('Per_d').'|id=bt-d|href='.$href.'&bt=d';
 // add comparaison year selector
 if ( $pan=='gt' || $pan=='dt' ) {
-  $href = $oH->selfurl.'?'.qtImplode(qtArrAdd(qtExplodeUri(),'y0',''));   // existing bt is reset as last argument '&y0='
+  $href = $oH->selfurl.'?'.qtURI('y0'); // remove argument '&y0='
   $arrM[] = '!<span>'.L('Compare_year').'&nbsp;<select id="y0" name="y0" value="'.$y0.'" onchange="window.location=`'.$href.'`+this.value;">'.asTags(array($y-4=>$y-4,$y-3=>$y-3,$y-2=>$y-2,$y-1=>$y-1),$y0).'</select></span>';
 }
 $m = new CMenu($arrM, ' &middot; ');

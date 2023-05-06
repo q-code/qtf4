@@ -78,7 +78,7 @@ if ( $q==='s' || $s>=0 ) {
 }
 
 // initialise others
-$oH->selfuri = getURI('order,dir');
+$oH->selfuri = qtURI('page|order|dir');
 $strOrder = 'lastpostdate';
 $strDirec = 'desc';
 $strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)==='none' ) $strLastcol='0';
@@ -93,7 +93,6 @@ if ( !isset($_SESSION['EditByRows']) || !SUser::isStaff() ) $_SESSION['EditByRow
 if ( !isset($_SESSION[QT]['lastcolumn']) || $_SESSION[QT]['lastcolumn']==='none' ) $_SESSION[QT]['lastcolumn'] = 'default';
 $intChecked = -1; // allows checking an id when EditByRows (-1 means no check)
 $csv = '';
-
 
 // change lastcolumn if a preference exists
 if ( $_SESSION[QT]['lastcolumn']!=='default' ) $strLastcol = $_SESSION[QT]['lastcolumn']; // advanced query can override preference

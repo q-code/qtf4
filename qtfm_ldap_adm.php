@@ -208,7 +208,7 @@ if ( $_SESSION[QT]['login_addon']==='0')
 {
 echo '<p>Current authority is <span class="bold italic">Internal authority (default)</span>.<br>When module is on-line, change the authority in the page <a href="qtf_adm_secu.php" onclick="return qtFormSafe.exit(e0);">'.L('Board_security').'</a>.</p><br>';
 }
-echo '<form method="post" action="'.Href($oH->selfurl).'">
+echo '<form method="post" action="'.url($oH->selfurl).'">
 <h2 class="subconfig">Module status</h2>
 
 <table class="t-conf ldap">
@@ -250,7 +250,7 @@ echo '<tr>
 
 if ( $pan==1 || $pan==2 )
 {
-echo '<form method="post" action="'.Href($oH->selfurl).'">
+echo '<form method="post" action="'.url($oH->selfurl).'">
 <h2 class="subconfig">Connection and authentication</h2>
 <table class="t-conf ldap">
 <tr>

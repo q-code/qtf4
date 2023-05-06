@@ -45,7 +45,7 @@ function htmlCsvLink($strUrl,$intCount=20,$intPage=1)
   if ( $intCount<=$_SESSION[QT]['items_per_page'] ) {
     return '<a href="'.$strUrl.'&size=all&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').'</a>';
   } else {
-    $strCsv = '<a href="'.$strUrl.'&size=p'.$intPage.'&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' ('.strtolower(L('Page')).')</a>';
+    $strCsv = '<a href="'.$strUrl.'&page='.$intPage.'&size=p'.$intPage.'&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' ('.strtolower(L('Page')).')</a>';
     if ( $intCount<=1000 ) $strCsv .= ' &middot; <a href="'.$strUrl.'&size=all&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' ('.strtolower(L('All')).')</a>';
     if ( $intCount>1000 && $intCount<=2000 ) $strCsv .= ' &middot; <a href="'.$strUrl.'&size=m1&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' (1-1000)</a> &middot; <a href="'.$strUrl.'&size=m2&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' (1000-'.$intCount.')</a>';
     if ( $intCount>2000 && $intCount<=5000 ) $strCsv .= ' &middot; <a href="'.$strUrl.'&size=m5&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' (1-5000)</a>';
@@ -284,14 +284,14 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
 
     switch((string)$k) {
     case 'icon':
-      $arr[$k] = '<a href="'.Href('qtf_item.php').'?t='.$row['id'].'">'.$strTicon.'</a>';
+      $arr[$k] = '<a href="'.url('qtf_item.php').'?t='.$row['id'].'">'.$strTicon.'</a>';
       break;
     case 'numid':
       $arr[$k] = $formatRef=='N' ? '' : sprintf($formatRef,$row['numid']);
       break;
     case 'title':
       // smile merged in title
-      $arr[$k] = '<a class="item" href="'.Href('qtf_item.php').'?t='.$row['id'].'"'.(!empty($row['preview']) ? ' title="'.$row['preview'].'"' : '').'>'.$row['title'].'</a>';
+      $arr[$k] = '<a class="item" href="'.url('qtf_item.php').'?t='.$row['id'].'"'.(!empty($row['preview']) ? ' title="'.$row['preview'].'"' : '').'>'.$row['title'].'</a>';
       if ( !empty($strPrefixSerie) && !empty($row['icon']) && $row['icon']!=='00' ) {
         $arr[$k] .= ' '.icoPrefix($strPrefixSerie,(int)$row['icon']);
       }
@@ -318,18 +318,18 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
       break;
     case 'section':
       $i = (int)$row['forum'];
-      $arr[$k] = '<a href="'.Href('qtf_items.php').'?s='.$i.'">'.(isset($GLOBALS['_Sections'][$i]['title']) ? $GLOBALS['_Sections'][$i]['title'] : 'Section '.$i).'</a>';
+      $arr[$k] = '<a href="'.url('qtf_items.php').'?s='.$i.'">'.(isset($GLOBALS['_Sections'][$i]['title']) ? $GLOBALS['_Sections'][$i]['title'] : 'Section '.$i).'</a>';
       break;
     case 'firstpostname':
-      $arr[$k] = '<a href="'.Href('qtf_user.php').'?id='.$row['firstpostuser'].'">'.$row['firstpostname'].'</a>';
+      $arr[$k] = '<a href="'.url('qtf_user.php').'?id='.$row['firstpostuser'].'">'.$row['firstpostname'].'</a>';
       $arr[$k] .= '<br><small>'.qtDatestr($row['firstpostdate'],'$','$').'</small>';
       break;
     case 'lastpostdate':
       if ( empty($row['lastpostdate']) ) {
         $arr[$k] = '&nbsp;';
       } else {
-        $arr[$k] = qtDatestr($row['lastpostdate'],'$','$').'<a class="lastitem" href="'.Href('qtf_item.php').'?t='.$row['id'].'#p'.$row['lastpostid'].'" title="'.L('Goto_message').'"><svg class="svg-symbol symbol-caret-square-right"><use href="#symbol-caret-square-right" xlink:href="#symbol-caret-square-right"></use></svg></a>';
-        $arr[$k] .= '<br><small>'.L('by').' <a href="'.Href('qtf_user.php').'?id='.$row['lastpostuser'].'" title="'.qtAttr($row['lastpostname']).'">'.$row['lastpostname'].'</a></small>';
+        $arr[$k] = qtDatestr($row['lastpostdate'],'$','$').'<a class="lastitem" href="'.url('qtf_item.php').'?t='.$row['id'].'#p'.$row['lastpostid'].'" title="'.L('Goto_message').'"><svg class="svg-symbol symbol-caret-square-right"><use href="#symbol-caret-square-right" xlink:href="#symbol-caret-square-right"></use></svg></a>';
+        $arr[$k] .= '<br><small>'.L('by').' <a href="'.url('qtf_user.php').'?id='.$row['lastpostuser'].'" title="'.qtAttr($row['lastpostname']).'">'.$row['lastpostname'].'</a></small>';
       }
       break;
     case 'status':
@@ -345,7 +345,7 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
       $arr[$k] = '<div class="magnifier center">'.SUser::getPicture( (int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', '' ).'</div>';
       break;
     case 'username':
-      $arr[$k] = '<a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a>';
+      $arr[$k] = '<a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a>';
       break;
     case 'usermarker':
       $arr[$k] = empty($strCoord) ? '&nbsp;' : $strCoord;

@@ -92,7 +92,7 @@ function previewMarker(src) { document.getElementById("previewmarker").src = src
 include 'qtf_adm_inc_hd.php';
 
 echo '
-<form method="post" action="'.Href($oH->selfurl).'" onsubmit="return ValidateForm(this,enterkeyPressed);">
+<form method="post" action="'.url($oH->selfurl).'" onsubmit="return ValidateForm(this,enterkeyPressed);">
 <h2 class="config">'.L('Gmap.Mapping_settings').'</h2>
 <table class="t-conf">
 <tr>

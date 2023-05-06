@@ -42,7 +42,7 @@ if ( !defined('HIDE_MENU_LANG') || !HIDE_MENU_LANG )
       foreach (LANGUAGES as $iso=>$lang) {
         $lang = explode(' ',$lang);
         $lang = empty($lang[1]) ? strtoupper($iso) : $lang[1]; // uppercase iso code if no description
-        $langMenu->add('lang-'.$iso, strtoupper($iso).'|href='.$oH->selfurl.'?'.getURI('lang').'&lang='.$iso.'||title='.$lang.'|onclick=return qtFormSafe.exit(e0);');
+        $langMenu->add('lang-'.$iso, strtoupper($iso).'|href='.$oH->selfurl.'?'.qtURI('lang').'&lang='.$iso.'||title='.$lang.'|onclick=return qtFormSafe.exit(e0);');
       }
     } else {
       $langMenu->add('!missing file:config/config_lang.php');

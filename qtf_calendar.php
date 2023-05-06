@@ -153,7 +153,7 @@ if ( date('l',$dFirstDay)!=='Monday' )
 // DISPLAY MAIN CALENDAR MENU
 echo '<div id="ct-title" class="flex-sp">';
 echo '<h1>'.$oH->selfname.': '.$L['dateMMM'][date('n',$dCurrentDate)].' '.date('Y',$dCurrentDate).'</h1>';
-echo '<form method="get" action="'.Href($oH->selfurl).'" id="cal_month">';
+echo '<form method="get" action="'.url($oH->selfurl).'" id="cal_month">';
 echo '<input type="hidden" name="y" id="y" value="'.$intYear.'"/> '.PHP_EOL;
 echo L('Month').' <select name="m" onchange="document.getElementById(`cal_month`).submit();">';
 for ($i=1;$i<13;$i++) echo '<option'.($i==date('n') ? ' class="bold"' : '').' value="'.$i.'"'.($i==$intMonth ? ' selected' : '').'>'.$L['dateMMM'][$i].'</option>'.PHP_EOL;
@@ -209,11 +209,11 @@ echo '</tr>'.PHP_EOL;
             $intAge = $intShiftYear - intval(substr($arrValues[$v],0,4));
             if ( $intDayEvents<4 )
             {
-              echo '<a class="ajaxmouseover" id="u'.$arrValues['id'].'" href="'.Href(APP.'_user.php').'?id='.$arrValues['id'].'">'.$arrValues['name'].'</a> ('.$intAge.')<br>';
+              echo '<a class="ajaxmouseover" id="u'.$arrValues['id'].'" href="'.url(APP.'_user.php').'?id='.$arrValues['id'].'">'.$arrValues['name'].'</a> ('.$intAge.')<br>';
             }
             else
             {
-              echo '<a class="ajaxmouseover" id="u'.$arrValues['id'].'" href="'.Href(APP.'_user.php').'?id='.$arrValues['id'].'" title="'.$arrValues['name'].' ('.$intAge.')">'.getSVG('user').'</a> ';
+              echo '<a class="ajaxmouseover" id="u'.$arrValues['id'].'" href="'.url(APP.'_user.php').'?id='.$arrValues['id'].'" title="'.$arrValues['name'].' ('.$intAge.')">'.getSVG('user').'</a> ';
             }
             if ( $intDayEvents>7 ) break;
           }
@@ -285,7 +285,7 @@ echo '<div class="cal_info left">'.PHP_EOL;
         if ( date('n',$dCurrentDate)==date('n',$d) )
         {
           echo '<td class="date_next '.$arrWeekCss[$intDay].'"'.(date('z',$dToday)==date('z',$d) ? ' id="todaynext"' : '').'>';
-          echo isset($arrEventsN[$idxEvent]) ? '<a class="date_next" href="'.Href($oH->selfurl).'?m='.$intMonthN.'">'.$intShiftDay.'</a>' : $intShiftDay;
+          echo isset($arrEventsN[$idxEvent]) ? '<a class="date_next" href="'.url($oH->selfurl).'?m='.$intMonthN.'">'.$intShiftDay.'</a>' : $intShiftDay;
         }
         else
         {

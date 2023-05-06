@@ -98,7 +98,7 @@ echo '<h2>'.L('Search_criteria').'</h2>'.PHP_EOL;
 if ( !empty($criteriaError) ) echo '<p class="error">'.$criteriaError.'</p>';
 
 // SEARCH BY KEY
-echo '<form method="post" action="'.Href($oH->selfurl).'" autocomplete="off">
+echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
 '.getSVG('search', 'class=filigrane').'
 <div>'.L('Keywords').' <div id="ac-wrapper-kw" class="ac-wrapper"><input required type="text" id="kw" name="v" size="40" maxlength="64" value="'.($q=='kw' ? qtAttr($v,0,'&quot;') : '').'" data-multi="1"/></div>*</div>
@@ -122,7 +122,7 @@ foreach($_Sections as $mSec)
 }
 if ( $refExists )
 {
-echo '<form method="post" action="'.Href($oH->selfurl).'" autocomplete="off">
+echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
 '.getSVG('search', 'class=filigrane').'
 <div>'.L('Ref').' <div id="ac-wrapper-ref" class="ac-wrapper"><input required type="text" id="ref" name="v" size="5" minlength="1" maxlength="10" value="'.($q=='ref' ? qtAttr($v,0,'&quot;') : '').'"/>&nbsp;'.L('H_Reference').'</div></div>
@@ -138,7 +138,7 @@ echo '<form method="post" action="'.Href($oH->selfurl).'" autocomplete="off">
 }
 
 // SEARCH BY DATE & TAGS
-echo '<form method="post" action="'.Href($oH->selfurl).'" autocomplete="off">
+echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
 '.getSVG('search', 'class=filigrane').'
 <div>'.L('Date').' <select id="tf" name="v2" size="1">
@@ -161,7 +161,7 @@ echo '<div style="flex-grow:1;text-align:right">
 ';
 
 // SEARCH NAME
-echo '<form method="post" action="'.Href($oH->selfurl).'" autocomplete="off">
+echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
 '.getSVG('search', 'class=filigrane').'
 <div><select name="q" size="1">'.asTags( ['user'=>L('Item').' '.L('author'),'userm'=>L('Item').'/'.L('reply').' '.L('author')], $q ).'

@@ -79,7 +79,7 @@ class CHtml
   public function redirect(string $u, string $s='Continue')
   {
     if ( empty($u) ) die(__METHOD__.' arg must be string');
-    $u = Href($u);
+    $u = url($u);
     if ( headers_sent() ) {
       echo '<a href="'.$u.'">',$s,'</a><meta http-equiv="REFRESH" content="0;url='.$u.'">';
     } else {
@@ -89,9 +89,9 @@ class CHtml
   }
   public function backButton(string $class='button btn-back', string $symbol='chevron-left.svg')
   {
-    if ( substr($symbol,-4)==='.svg' ) $symbol = file_get_contents('bin/css/svg/'.$symbol); // on failed returns false
+    if ( substr($symbol,-4)==='.svg' ) $symbol = file_get_contents('bin/svg/'.$symbol); // on failed returns false
     if ( empty($symbol) ) $symbol = '&lt;';
-    return '<a class="'.$class.'" href="'.Href($this->exiturl).'">'.$symbol.'</a>';
+    return '<a class="'.$class.'" href="'.url($this->exiturl).'">'.$symbol.'</a>';
   }
   public static function msgBox(string $title='', string $attr='class=msgbox', string $attrTitle='class=msgboxtitle', string $attrBody='class=msgboxbody')
   {
@@ -108,7 +108,7 @@ class CHtml
     if ( empty($skin) && defined(QT_SKIN) ) $skin = QT_SKIN.APP.'_styles.css';
     if ( empty($skin) || $skin==='admin' ) $skin = $root.'bin/css/'.APP.'_styles.css';
     $this->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$skin.'"/>';
-    $this->links['prev'] = '<link rel="prev" id="exiturl" href="'.Href($this->exiturl).'"/>';
+    $this->links['prev'] = '<link rel="prev" id="exiturl" href="'.url($this->exiturl).'"/>';
     $this->head();
     $this->body($attr);
     self::getPage('id=site|class=pagemsg');
@@ -126,7 +126,7 @@ class CHtml
     self::msgBox($title);
     echo $message;
     if ( !empty($this->exiturl) ) {
-      echo '<p><a id="exiturl" href="'.Href($this->exiturl).'">'.$this->exitname.'</a></p>';
+      echo '<p><a id="exiturl" href="'.url($this->exiturl).'">'.$this->exitname.'</a></p>';
       if ( $second>0 ) echo '<script type="text/javascript">const d = document.getElementById("exiturl"); if ( d ) setTimeout(()=>{window.location=d.href;}, '.($second*1000).');</script>';
     }
     self::msgBox('/');

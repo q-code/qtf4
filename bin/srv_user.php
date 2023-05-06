@@ -29,9 +29,9 @@ function getUserImg(string $root='', int $id=0, string $altSrc='bin/css/user.gif
   return '<img id="userimg" src="'.str_replace('../', '', $src).'" alt="user"/>';
 }
 function getSimpleSVG(string $id='info', bool $addClass=true) {
-  if ( !file_exists('css/svg/'.$id.'.svg') ) return '#';
+  if ( !file_exists('svg/'.$id.'.svg') ) return '#';
   // svg is inserted directly, or inside a span when attributes are added. This allows svg inherit style (fontsize/color...)
-  $svg = file_get_contents('css/svg/'.$id.'.svg');
+  $svg = file_get_contents('svg/'.$id.'.svg');
   if ( $addClass) $svg = '<svg class="svg-'.$id.'" '.substr($svg,4);
   return $svg;
 }

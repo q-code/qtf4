@@ -133,7 +133,7 @@ echo '</div>
   {
     $row = $oDB->getRow();
     if ( !$row ) break;
-    echo '<tr><td><a href="'.Href('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.intK((int)$row['numpost']).'</td></tr>';
+    echo '<tr><td><a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.intK((int)$row['numpost']).'</td></tr>';
   }
 echo '</table>';
 
@@ -184,7 +184,7 @@ if ( $strCateg=='SC' ) $sqlWhere .= ' AND children="2"'; //sleeping children
 $intCount = $oDB->count( TABUSER.' WHERE id>0 '.$sqlWhere );
 
 // Lettres bar
-if ( $intCount>$ipp || $pageGroup!=='all' ) echo htmlLettres(Href($oH->selfurl).'?'.getURI('group,page'), $pageGroup, L('All'), 'lettres', L('Username_starting').' ', $intCount>300 ? 1 : ($intCount>$ipp*2 ? 2 : 3));
+if ( $intCount>$ipp || $pageGroup!=='all' ) echo htmlLettres(url($oH->selfurl).'?'.qtURI('group|page'), $pageGroup, L('All'), 'lettres', L('Username_starting').' ', $intCount>300 ? 1 : ($intCount>$ipp*2 ? 2 : 3));
 
 // End if no result
 if ( $intCount==0 )
@@ -259,7 +259,7 @@ while($row=$oDB->getRow())
 
   // prepare row
   $t->arrTd['checkbox']->content = '<input type="checkbox" name="t1-cb[]" id="t1-cb-'.$row['id'].'" value="'.$row['id'].'"'.($bChecked ? ' checked' : '').' data-row="'.$intRow.'"/>'; if ( $row['id']<2) $t->arrTd['checkbox']->content = '&nbsp;';
-  $t->arrTd['name']->content = '<a href="'.Href('qtf_user.php').'?id='.$row['id'].'" title="'.qtAttr($row['name'],24).'">'.qtTrunc($row['name'],24).'</a>';
+  $t->arrTd['name']->content = '<a href="'.url('qtf_user.php').'?id='.$row['id'].'" title="'.qtAttr($row['name'],24).'">'.qtTrunc($row['name'],24).'</a>';
   $t->arrTd['pic']->content = '<div class="magnifier center">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', '').'</div>';
   $t->arrTd['role']->content = L('Role_'.strtoupper($row['role']));
   $t->arrTd['numpost']->content = intK((int)$row['numpost']);
