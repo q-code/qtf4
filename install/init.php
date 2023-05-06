@@ -1,68 +1,64 @@
 <?php
 
-function qtAttr($str,$size=0,$unquote='')
+function qtAttr(string $str, int $size=0, string $unquote='')
 {
-  if ( !is_string($str) && !is_int($str) ) die('qtAttr argument must be a string (or integer)');
+  if ( strpos($str,'"')!==false ) $str = str_replace('"',$unquote,$str);
   $str = trim($str);
-  if ( $str==='' ) return '';
-  if ( $size && isset($str[$size]) ) $str = substr($str,0,$size); // negatif will drop final $size characters
-  return strpos($str,'"')!==false ? str_replace('"',$unquote,$str) : $str;
+  return $size && isset($str[$size]) ? substr($str,0,$size) : $str;
 }
-function L(string $k, int $n=null, string $format='n w', array $A=[], string $pk='')
+function L(string $k, int $n=null, string $format='n w', array $A=[], string $pk='', bool $dropDoublequote=true)
 {
   // Initialise
-  if ( empty($A) ) { global $L; $A = $L; } // if no dictionnary, uses global dictionnary $L
-  $str = substr($k,-2)==='.*' ? [] : $pk.$k; // default result is the key (if dico entry not found) or an empty array (if dico array not found)
-  // Format (formula shortcut)
-  // Note: php format can also be used, but pay attention that $format is only used when a $n exists (not null) and that the word will be the 2nd input in the formula
-  if ( $format==='n w') $format = '%1$d %2$s';
-  if ( $format==='' || $format==='w' ) $format = '%2$s';
-  // Check subarray request (use recursive call)
+  if ( !$A ) { global $L; $A = $L; } // if no dictionnary, uses global dictionnary $L
+  $res = substr($k,-2)==='.*' ? [] : $pk.$k; // failed returns the key (or an empty array)
+  // On key with '.' works recursively (sub-dictionnary $A[...])
   if ( strpos($k, '.')>0 ) {
     $part = explode('.', $k, 2);
-    if ( empty($A[$part[0]]) || !is_array($A[$part[0]]) ) return $str;
-    if ( $part[1]==='*' ) return $A[$part[0]];
-    return L($part[1], $n, $format, $A[$part[0]], $part[0].'.');
+    $pk = $part[0];
+    if ( empty($A[$pk]) || !is_array($A[$pk]) || $part[1]==='' ) return $res; // check sub-dictionnary exists (and a sub-key was in $k)
+    return $part[1]==='*' ? $A[$pk] : L($part[1], $n, $format, $A[$pk], $pk.'.');
   }
-  // Check if plural can be used
-  $s = $n===null || $n<2 ? '' : '+';
+  // Format (formula shortcut)
+  // Note: php format can also be used, but pay attention that $format is only used when a $n exists (not null) and that the word will be the 2nd input in the formula
+  switch($format){
+    case 'n w': $f = '%1$d %2$s'; break;
+    case 'k w': $f = '%1$s %2$s'; break;
+    case 'w':
+    case '': $f = '%2$s'; break;
+    default: $f = $format;
+  }
+  // Check if plural form must be searched (i.e. search for key with '+')
+  $p = $n===null || $n<2 ? '' : '+';
   // Resolve word
-  if ( !empty($A[$k.$s]) ) {
-    $str = $A[$k.$s];
-  } elseif ( !empty($A[ucfirst($k.$s)]) ) {
-    $str = mb_strtolower($A[ucfirst($k.$s)]);
+  if ( !empty($A[$k.$p]) ) {
+    $res = $A[$k.$p];
+  } elseif ( !empty($A[ucfirst($k.$p)]) ) {
+    $res = mb_strtolower($A[ucfirst($k.$p)]);
   } elseif ( !empty($A[$k]) ) {
-    $str = $A[$k];
+    $res = $A[$k];
   } elseif ( !empty($A[ucfirst($k)]) ) {
-    $str = mb_strtolower($A[ucfirst($k)]);
-  } elseif ( trim($k)==='' ) {
-    throw new Exception('Invalid argument');
+    $res = mb_strtolower($A[ucfirst($k)]);
   } else {
-    if ( substr($str,0,2)==='E_' ) $str = 'error: '.substr($str,2); // key is an (un-translated) error code, returns the error code
-    if ( strpos($str,'_')!==false ) $str = str_replace('_',' ',$str); // When word is missing, returns the key code without _ (with the parentkey if used)
-    if ( isset($_SESSION['QTdebuglang']) && $_SESSION['QTdebuglang'] ) $str = '<span style="color:red">'.$str.'</span>';
+    if ( substr($res,0,2)==='E_' ) $res = 'error: '.substr($res,2); // key is an (un-translated) error code, returns the error code
+    if ( strpos($res,'_')!==false ) $res = str_replace('_',' ',$res); // When word is missing, returns the key code without _ (with the parentkey if used)
+    if ( isset($_SESSION['QTdebuglang']) && $_SESSION['QTdebuglang'] ) $res = '<span style="color:red;text-shadow:0 0 2px black">'.$res.'</span>';
   }
   // Return the word (with $n if not null)
-  return $n===null ? $str : sprintf($format,$n,$str);
+  if ( $dropDoublequote && strpos($res,'"')!==false ) $res = str_replace('"','',$res);
+  return $n===null ? $res : sprintf($f, $format==='k w' ? intK($n) : $n, $res);
 }
-function saveToFile($file,$str='',$create=true)
+function saveToFile(string $file, string $str='', bool $create=true)
 {
-  if ( empty($file) || !is_string($file) )  die('saveToFile:#1 must be a string');
-  if ( !is_string($str) )  die('saveToFile:#2 must be a string');
-  if ( !is_bool($create) )  die('saveToFile:#3 must be a boolean');
+  if ( empty($file) )  die(__FUNCTION__.'arg #1 must be a string');
   $error = '';
   // Stop of no file and creation not allowed
   if ( !file_exists($file) && !$create ) return 'Impossible to open the file ['.$file.'].';
   // Update file (or create file)
-  if ( !$handle=fopen($file, 'w') ) $error='Impossible to open the file ['.$file.'].';
-  if ( empty($error) )
-  {
-    if ( fwrite($handle,$str)===FALSE )
-    {
+  if ( !$handle=fopen($file, 'w') ) $error = 'Impossible to open the file ['.$file.'].';
+  if ( empty($error) ) {
+    if ( fwrite($handle,$str)===FALSE ) {
       $error = 'Impossible to write into the file ['.$file.'].';
-    }
-    else
-    {
+    } else {
      fclose($handle);
     }
   }

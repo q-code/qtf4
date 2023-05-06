@@ -110,7 +110,7 @@ $oH->scripts_top[] = 'const acOnClicks = [];'; /* const required before autocomp
 if ( PHP_VERSION_ID>=50200 && isset($_SESSION[QT]['defaulttimezone']) && $_SESSION[QT]['defaulttimezone']!=='' ) date_default_timezone_set($_SESSION[QT]['defaulttimezone']);
 
 // Admin system command
-define('QT_HASHKEY', QDB_PWD.QDB_INSTALL);
+define('SECURE_QT_HASHKEY', QDB_PWD.QDB_INSTALL);
 if ( isset($_GET['memflush']) && MEMCACHE_HOST ) {
   $deep = $_GET['memflush']==='**';
   unset($_GET['memflush']);
