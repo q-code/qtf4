@@ -58,6 +58,7 @@ select{max-width:260px}
 /* INLINE (p has margin in article and msgbox) */
 article p, .article p, p.article, .msgboxbody p{margin-bottom:0.5rem}
 p.submit, .msgboxbody p.submit{margin:0.8rem 0 0 0;text-align:center}
+p.error{margin:0.3rem}
 p.debug{font-family:Arial;font-size:8pt}
 p.list{margin-bottom:2px}
 .indent{margin-left:1rem} .indent2{margin-left:2rem}
@@ -116,7 +117,7 @@ div.pan{margin: 0 0 10px 0;padding:10px 15px 15px 15px;border:1px solid #AAA;bac
 #splash{
 display:flex;align-items:center;opacity:0;z-index:12;position:fixed;top:20px;left:50%;
 margin-left:-150px;width:300px;padding:20px;
-font-weight:bold;white-space:pre-line;vertical-align:middle;
+color:black;font-weight:bold;white-space:pre-line;vertical-align:middle;
 background:#ffc;border:1px solid #666;border-radius:8px;box-shadow:0 0 5px 5px #AAA;
 }
 @keyframes splashFade{0%{opacity:0}100%{opacity:1}}/*javascript triggers animation: splashFade 2s ease 1s 2 alternate;*/

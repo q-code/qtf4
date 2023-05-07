@@ -13,7 +13,7 @@ require 'config/config_cst.php';
 // -----------------
 require 'bin/lib_qt_core.php';
 require 'bin/class/class.qt.db.php';
-require 'bin/class/class.qt.base.php';
+require 'bin/class/class.qt.core.php';
 require 'bin/class/class.qt.html.php';
 require 'bin/class/class.qt.table.php';
 require 'bin/class/class.qt.menu.php';
@@ -98,10 +98,10 @@ $oH->metas[] = '<meta charset="'.QT_HTML_CHAR.'"/>
 <meta name="keywords" content="QTF,Forum,qt-cute,OpenSource"/>
 <meta name="author" content="qt-cute.org"/>';
 $oH->links['ico'] = '<link rel="shortcut icon" href="'.QT_SKIN.'img/qtf_icon.ico"/>';
-$oH->links['cssBase'] = '<link rel="stylesheet" type="text/css" href="bin/css/qt_base.css"/>';
+$oH->links['cssBase'] = '<link rel="stylesheet" type="text/css" href="bin/css/qt_core.css"/>';
 $oH->links['css'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.'qtf_styles.css"/>';
 if ( file_exists(QT_SKIN.'custom.css') ) $oH->links['cssCustom'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.'custom.css"/>';
-$oH->scripts_top['base'] = '<script type="text/javascript" src="bin/js/qt_base.js"></script>';
+$oH->scripts_top['base'] = '<script type="text/javascript" src="bin/js/qt_core.js"></script>';
 $oH->scripts_top[] = 'const acOnClicks = [];'; /* const required before autocomplete api configuration */
 
 // -----------------

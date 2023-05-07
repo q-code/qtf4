@@ -41,14 +41,14 @@ $frm_attr = 'class=msgbox';
 $frm_hd = '';
 $frm = array();
 $frm_ft = '';
-$name = (string)$id;
 
 //=======
 switch($a) {
 //=======
 
-//=======
+//-------
 case 'rules':
+//-------
 
 $oH->selfname = L('Register');
 $intY = empty($_GET['y']) ? 1970 : (int)$_GET['y'];
@@ -59,7 +59,6 @@ if ( !empty($_POST['m']) ) $intM = (int)trim($_POST['m']);
 if ( !empty($_POST['d']) ) $intD = (int)trim($_POST['d']);
 
 // SUBMIT
-
 if ( isset($_POST['ok']) ) {
   if ( !isset($_POST['agreed']) ) $oH->pageMessage($oH->selfname, L('Rules_not_agreed')); //...
   if ( $_SESSION[QT]['register_coppa'] && !qtIsValiddate($intY*10000+$intM*100+$intD,true,false) ) $oH->error = L('Birthday').' '.L('invalid');
@@ -68,13 +67,11 @@ if ( isset($_POST['ok']) ) {
 }
 
 // FORM
-
 $frm_hd = file_get_contents(getLangDir().'app_rules.txt'); if ( $frm_hd===false ) $frm_hd = 'Unable to read file app_rules.txt';
 $frm_hd = '<div id="rules">'.$frm_hd.'</div>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p class="bold"><span class="cblabel"><input required type="checkbox" id="agreed" name="agreed"'.(isset($_POST['agreed']) ? 'checked' : '').'/><label for="agreed">&nbsp;'.L('Agree').'</label><span></p>';
-if ( $_SESSION[QT]['register_coppa'] )
-{
+if ( $_SESSION[QT]['register_coppa'] ){
 $frm[] = '<p>'.L('Birthday').'</p>';
 $frm[] = '<p><select name="d" size="1">'.asTags(array_combine(range(1,31),range(1,31)),$intD).'</select>';
 $frm[] = '<select name="m" size="1">'.asTags(L('dateMMM.*'),$intM).'</select>';
@@ -85,8 +82,9 @@ $frm[] = '</form>';
 
 break;
 
-//=======
+//-------
 case 'in':
+//-------
 
 $oH->selfname = L('Register').($_SESSION[QT]['register_mode']=='backoffice' ? ' ('.L('request').')' : '');
 $birthday = '';
@@ -105,14 +103,12 @@ $certificate = makeFormCertificate('2b174f48ab4d9704934dda56c6997b3a');
 if ( isset($_POST['ok']) && $_POST['ok']!==$certificate ) die('Unable to check certificate');
 
 // SUBMITTED
-
 if ( isset($_POST['ok']) ) try {
 
   // pre-checks
   if ( empty($_POST['mail']) ) throw new Exception( L('Email').' '.L('invalid') );
   if ( empty($_POST['username']) ) throw new Exception( L('Username').' '.L('invalid') );
-  if ( $_SESSION[QT]['register_safe']==='text' || $_SESSION[QT]['register_safe']==='image' )
-  {
+  if ( $_SESSION[QT]['register_safe']==='text' || $_SESSION[QT]['register_safe']==='image' ) {
     if ( trim($_POST['code'])==='' || strlen($_POST['code'])!=6 ) throw new Exception( L('Type_code') );
   }
   // check name & unique
@@ -221,7 +217,6 @@ if ( isset($_POST['ok']) ) try {
 }
 
 // FORM
-
 $frm_attr = 'class=msgbox formRegister';
 if ( !isset($_POST['username']) ) $_POST['username']='';
 if ( !isset($_POST['pwd']) ) $_POST['pwd']='';
@@ -304,8 +299,9 @@ $frm[] = '</form>';
 
 break;
 
-//=======
+//-------
 case 'out':
+//-------
 
 if ( $id<2 ) die('Admin and Visitor cannot be removed');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
@@ -314,7 +310,6 @@ $oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
-
 if ( isset($_POST['ok']) ) try {
 
   // check password
@@ -334,15 +329,13 @@ if ( isset($_POST['ok']) ) try {
 }
 
 // FORM
-
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
-if ( $row=$oDB->getRow() ) $name = $row['name'];
-
+$row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $frm_hd = '<div class="user-dlg">
-<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>
+<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>
 ';
 if ( $row['role']!='U' ) {
-$frm[] = '<p>'.$name.L('Unregister_staff').'</p>';
+$frm[] = '<p>'.$row['name'].L('Unregister_staff').'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button></p>';
 } else {
 if ( SUser::id()!==$id ) $frm[] = '<p class="right">'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
@@ -356,12 +349,12 @@ $frm_ft = '</div>';
 
 break;
 
-//=======
+//-------
 case 'pwd':
+//-------
 
 if ( $id<1 ) die('Invalid id');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
-
 include 'bin/class/class.phpmailer.php';
 $oH->selfname = L('Change_password');
 $oH->selfuri .= '&id='.$id;
@@ -369,7 +362,6 @@ $oH->exiturl = APP.'_user.php?id='.$id;
 $oH->exitname = L('Profile');
 
 // SUBMITTED
-
 if ( isset($_POST['ok']) ) try {
 
   if ( empty($_POST['oldpwd']) || empty($_POST['newpwd']) || empty($_POST['conpwd']) )  die('Missing data');
@@ -404,13 +396,10 @@ if ( isset($_POST['ok']) ) try {
 }
 
 // FORM
-
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
-if ( $row=$oDB->getRow() ) {
-  $name = $row['name'];
-}
+$row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $frm_hd = '<div class="user-dlg">
-<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>
+<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>
 ';
 $frm_attr = 'class=msgbox formPwd';
 if ( SUser::id()!==$id ) $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
@@ -433,9 +422,9 @@ $frm_ft = '
 
 break;
 
-//=======
+//-------
 case 'id':
-
+//-------
 $oH->selfname = L('Forgotten_pwd');
 
 // SUBMITTED
@@ -465,9 +454,9 @@ $frm[] = '</form>';
 
 break;
 
-//=======
+//-------
 case 'role':
-
+//-------
 if ( $id<2 ) die('Guest and first administrator are protected');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('Change_role');
@@ -475,7 +464,6 @@ $oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
-
 if ( isset($_POST['ok']) ) {
   //update role
   if ( SUser::role()!=='A' && $_POST['role']=='A' ) die('Access is restricted to administrators only');
@@ -487,15 +475,14 @@ if ( isset($_POST['ok']) ) {
 }
 
 // FORM
-
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id );
-if ( $row=$oDB->getRow() ) $name = $row['name'];
+$row = $oDB->getRow(); if ( !$row ) die('invalid id');
 
 $frm_hd = '<div class="user-dlg">
-<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>
+<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>
 ';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
-$frm[] = '<p>'.$name.' <select name="role" size="1">
+$frm[] = '<p>'. $row['name'].' <select name="role" size="1">
 <option value="A"'.($row['role']=='A' ? ' selected' : '').(SUser::role()!=='A' ? ' disabled' : '').'>'.L('Role_A').'</option>
 <option value="M"'.($row['role']=='M' ? ' selected' : '').'>'.L('Role_M').'</option>
 <option value="U"'.($row['role']=='U' ? ' selected' : '').'>'.L('Role_U').'</option>
@@ -507,18 +494,16 @@ $frm_ft = '
 
 break;
 
-//=======
+//-------
 case 'ban':
-
+//-------
 if ( $id<2 ) die('Guest and first administrator are protected');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('Ban');
 $oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
-$currentban=0;
 
 // SUBMITTED
-
 if ( isset($_POST['ok']) && isset($_POST['t']) ) {
   // ban user
   if ( (int)$_POST['t']<0 ) die('Wrong parameters: delay');
@@ -529,18 +514,14 @@ if ( isset($_POST['ok']) && isset($_POST['t']) ) {
 }
 
 // FORM
-
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
-if ( $row=$oDB->getRow() ) {
-  $name = $row['name'];
-  $role = ' <small>('.L('Role_'.$row['role']).')</small>';
-  if ( !empty($row['closed']) && array_key_exists((int)$row['closed'],BAN_DAYS) ) $currentban = (int)$row['closed'];
-}
+$row = $oDB->getRow(); if ( !$row ) die('invalid id');
+$currentban = !empty($row['closed']) && array_key_exists((int)$row['closed'],BAN_DAYS) ? (int)$row['closed'] : 0;
 
 $frm_hd = '<div class="user-dlg">
-<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
-$frm[] = '<p>'.$name.$role.'</p>';
+$frm[] = '<p>'.$row['name'].' <small>('.L('Role_'.$row['role']).')</small></p>';
 $frm[] = '<p>'.L('H_ban').'</p>';
 $frm[] = '<p><select name="t" size="1">';
 foreach(array_keys(BAN_DAYS) as $k)
@@ -552,9 +533,9 @@ $frm_ft = '</div>';
 
 break;
 
-//=======
+//-------
 case 'delete':
-
+//-------
 if ( $id<2 ) die('Wrong argument (guest and first administrator are protected)');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('User_del');
@@ -562,7 +543,6 @@ $oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
-
 if ( isset($_POST['ok']) && isset($_POST['confirm']) ) {
   $b = SUser::delete($oDB,$id);
   // exit
@@ -571,24 +551,20 @@ if ( isset($_POST['ok']) && isset($_POST['confirm']) ) {
 }
 
 // FORM
-
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
-if ( $row=$oDB->getRow() ) {
-  $name = $row['name'];
-  $role = ' <small>('.L('Role_'.$row['role']).')</small>';
-}
-$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$row = $oDB->getRow(); if ( !$row ) die('invalid id');
+$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
-$frm[] = '<p><input required type="checkbox" name="confirm"/> '.$name.$role.'</p>';
+$frm[] = '<p><input required type="checkbox" name="confirm"/> '.$row['name'].' <small>('.L('Role_'.$row['role']).')</small></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="delete">'.L('Delete').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
 
 break;
 
-//=======
+//-------
 case 'adm-reset':
-
+//-------
 if ( $id<1 ) die('Missing argument');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('Reset_pwd');
@@ -596,7 +572,6 @@ $oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
-
 if ( isset($_POST['ok']) ) {
   // set new password
   $newpwd = 'T'.rand(0,9).rand(0,9).'Q'.rand(0,9).rand(0,9); // T..Q.. allows detecting when a pwd was resetted
@@ -627,27 +602,25 @@ if ( isset($_POST['ok']) ) {
 // FORM
 
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
-if ( $row=$oDB->getRow() ) {
-  $name = $row['name'];
-}
-$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$row = $oDB->getRow(); if ( !$row ) die('invalid id');
+$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
-$frm[] = '<p>'.L('Reset_pwd').' - '.$name.'</p>';
+$frm[] = '<p>'.L('Reset_pwd').' - '.$row['name'].'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
 
 break;
 
-//=======
+//-------
 case 'reset':
-
+//-------
 if ( $id<1 ) die('Visitor password can not be reset');
 $oH->selfname = L('Forgotten_pwd');
 $oH->selfuri .= '&id='.$id;
 
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
-$row = $oDB->getRow();
+$row = $oDB->getRow(); if ( !$row ) die('invalid id');
 
 // FORM no secret
 if ( empty($row['secret_q']) || empty($row['secret_a']) ) {
@@ -696,7 +669,6 @@ if ( isset($_POST['ok']) && !empty($_POST['s']) ) {
 }
 
 // FORM secret
-
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p>'.L('Reg_pass_reset').'</p>';
 $frm[] = '<p>'.$row['secret_q'].'</p>';
@@ -707,9 +679,9 @@ $oH->scripts[] = 'document.getElementById("secret_a").focus();';
 
 break;
 
-//=======
+//-------
 case 'qa':
-
+//-------
 if ( $id<1 ) die('Missing argument');
 $oH->selfname = L('Secret_question');
 $oH->selfuri .= '&id='.$id;
@@ -734,11 +706,10 @@ if ( isset($_POST['ok']) ) {
 // FORM
 
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
-$row=$oDB->getRow();
-$name = $row['name'];
+$row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $secret_q = empty($row['secret_q']) ? '' : $row['secret_q'];
 
-$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm_attr = 'class=msgbox formQa';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
@@ -752,9 +723,9 @@ $frm_ft = '</div>';
 
 break;
 
-//=======
+//-------
 case 'name':
-
+//-------
 if ( $id<1 ) die('Missing parameters');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
 
@@ -764,7 +735,6 @@ $oH->exiturl = APP.'_user.php?id='.$id;
 $oH->exitname = L('Profile');
 
 // SUBMITTED
-
 if ( isset($_POST['ok']) ) try {
 
   // pre-checks
@@ -785,8 +755,8 @@ if ( isset($_POST['ok']) ) try {
 
 // FORM
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
-if ( $row=$oDB->getRow() ) $name = $row['name'];
-$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$row = $oDB->getRow(); if ( !$row ) die('invalid id');
+$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm_attr = 'class=msgbox formName';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
@@ -801,9 +771,9 @@ $oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_re
 
 break;
 
-//=======
+//-------
 case 'sign':
-
+//-------
 if ( $id<1 ) die('Visitor cannot be edited');
 if ( SUser::id()!==$id && !SUser::isStaff() ) die('Access denied.');
 
@@ -812,30 +782,21 @@ $oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
-
-if ( isset($_POST['ok']) )
-{
+if ( isset($_POST['ok']) ) {
   // update user
-  if ( empty($oH->error) )
-  {
-    $oDB->exec( "UPDATE TABUSER SET signature=:sign WHERE id=".$id, [':sign'=>qtAttr($_POST['text'],255)] );
+  if ( empty($oH->error) ) {
+    $oDB->exec( "UPDATE TABUSER SET signature=? WHERE id=".$id, [qtAttr($_POST['text'],255)] );
     // exit
     $_SESSION[QT.'splash'] = L('S_update');
     $oH->redirect($oH->exiturl);
-  }
-  else
-  {
+  } else {
     $_SESSION[QT.'splash'] = 'E|'.$oH->error;
   }
 }
 
 // FORM
-
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
-if ( $row=$oDB->getRow() )
-{
-  $name = $row['name'];
-}
+$row = $oDB->getRow(); if ( !$row ) die('invalid id');
 
 // check staff edit grants
 if ( SUser::id()!==$id && $row['role']==='A' && SUser::role()==='M' ) {
@@ -847,7 +808,7 @@ if ( empty($row['signature']) ) $row['signature']='';
 $strSign = qtBbc($row['signature']); if ( empty($strSign) ) $strSign='&nbsp;';
 if ( QT_BBC ) $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_bbc.js"></script>';
 
-$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$name.'</p></div>';
+$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
 $frm_attr = 'class=msgbox formSign';
 if ( SUser::id()!==$id ) $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<p>'.L('H_no_signature').'</p>';
@@ -866,22 +827,24 @@ $oH->scripts[] = 'document.querySelectorAll("#signature-preview a").forEach( anc
 
 break;
 
-//=======
+//-------
 default: die('Unknown command');
+//-------
 
 //=======
 }
 //=======
 
+// --------
+// HTML BEGIN
+// --------
 
 include APP.'_inc_hd.php';
 
 if ( !empty($frm_hd) ) echo $frm_hd.PHP_EOL;
-
 CHtml::msgBox($oH->selfname,$frm_attr);
 echo PHP_EOL.implode(PHP_EOL,$frm).PHP_EOL;
 CHtml::msgBox('/');
-
 if ( !empty($frm_ft) ) echo $frm_ft.PHP_EOL;
 
 include APP.'_inc_ft.php';

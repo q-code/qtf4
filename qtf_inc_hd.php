@@ -210,4 +210,4 @@ echo '</p>
 $str =  isset($oS) && $oS->id>=0 ? ' data-section-type="'.$oS->type.'" data-section-status="'.$oS->status.'"' : '';
 echo '<div id="main-ct" class="pg-'.baseFile($oH->selfurl).'"'.$str.'>
 ';
-if ( !empty($oH->error) ) echo '<p id="infomessage" class="error">'.$oH->error.'</p>';
+if ( !empty($oH->error) ) echo '<p class="error center">'.$oH->error.'</p>';
