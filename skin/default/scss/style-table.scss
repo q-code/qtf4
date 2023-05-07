@@ -41,6 +41,7 @@ td.c-section, td.c-issue, td.c-info, td.c-title, td.c-firstpostname, td.c-lastpo
 }
 
 /* ITEM table */
+tbody[data-dataset="newsontop"] td{border-bottom:solid 5px #e6f0ff}
 .t-item .c-checkbox{width:32px;max-width:32px;padding-left:0;padding-right:0}
   .t-item th.c-checkbox{background-color:#E0E0E0}
   .t-item td.c-checkbox{background-color:#EEE}

@@ -269,10 +269,8 @@ class TabTable extends TabItem
     $str='';
     $strVoid = $dfltTag==='th' ? '<th></th>' : '<td></td>';
     // columns
-    foreach($arrObjTab as $key=>$objTab)
-    {
-      if ( is_a($objTab,'TabHead') )
-      {
+    foreach($arrObjTab as $key=>$objTab)  {
+      if ( is_a($objTab,'TabHead') ) {
         /* @var TabHead $objTab */
         if ( $this->activecol===$key && $this->countDataRows>$this->minimumDataRows && $objTab->link!=='' )
         {
@@ -284,8 +282,7 @@ class TabTable extends TabItem
         $str .= ($this->countDataRows>$this->minimumDataRows && $objTab->link!=='' ? str_replace('%s',$objTab->content,$objTab->link) : $objTab->content);
         $str .= $objTab->end();
       }
-      if ( is_a($objTab,'TabData') )
-      {
+      if ( is_a($objTab,'TabData') ) {
         /* @var TabData $objTab */
         $str .= $objTab->start() . $objTab->content . $objTab->end();
       }
@@ -300,28 +297,24 @@ class TabTable extends TabItem
     if ( $property!=='arrTh' && $property!=='arrTd' ) die('TabTable::set invalid property, must be arrTh or arrTd');
 
     // When $values is 1 value, it will be inserted in each column
-    if ( !is_array($values) )
-    {
+    if ( !is_array($values) ) {
       $value = $values;
       $values = array();
       foreach(array_keys($this->$property) as $key) $values[$key] = $value; // use property $this->arrTh or $this->arrTh
     }
     // Process each column
     $i=0;
-    foreach($values as $key=>$value)
-    {
+    foreach($values as $key=>$value) {
       if ( !$namedCol ) $key=$i;
       // If column is missing, function can create a new column (with $this->arrTh or $this->arrTh)
       if ( !isset($this->$property[$key]) && $createCol ) $this->$property[$key] = $property==='arrTh' ? new TabHead($value) : new TabData($value);
       // If column exists, changes the tag [tag], the inner text [content], or attributes [attr]
-      if ( isset($this->$property[$key]) )
-      {
-        switch($entity)
-        {
-        case '[tag]':     $this->$property[$key]->tag = $value; break;
-        case '[content]': $this->$property[$key]->content = $value; break;
-        case '[attr]':    $this->$property[$key]->setAttributes($value); break;
-        default:          $this->$property[$key]->add($entity,$value);
+      if ( isset($this->$property[$key]) ) {
+        switch($entity) {
+          case '[tag]':     $this->$property[$key]->tag = $value; break;
+          case '[content]': $this->$property[$key]->content = $value; break;
+          case '[attr]':    $this->$property[$key]->setAttributes($value); break;
+          default:          $this->$property[$key]->add($entity,$value);
         }
       }
       ++$i;

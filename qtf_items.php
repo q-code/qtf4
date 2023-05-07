@@ -232,12 +232,13 @@ if ( $intCount===0 ) {
 }
 
 // Table definition
+$useNewsOnTop = $_SESSION[QT]['news_on_top'];
 // selfuri contains arguments WITHOUT order,dir
 $t = new TabTable('id=t1|class=t-item', $intCount);
   $t->activecol = $strOrder;
   $t->activelink = '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order='.$strOrder.'&dir='.($strDirec==='asc' ? 'desc' : 'asc').'">%s</a> '.getSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
   $t->thead();
-  $t->tbody();
+  $t->tbody('data-dataset='.($useNewsOnTop ? 'newsontop' : 'items'));
 // TH (note: class are defined after)
 if ( $_SESSION['EditByRows'])
 $t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" name="t1-cb-all" id="t1-cb-all"/>');
@@ -356,6 +357,13 @@ while($row = $oDB->getRow()) {
   if ( $_SESSION['EditByRows'] ) {
     $bChecked = $row['id']==$intChecked;
     if ( $row['posttype']==='P') $t->arrTd['checkbox']->content = '<input type="checkbox" name="t1-cb[]" id="t1-cb-'.$row['id'].'" value="'.$row['id'].'"'.($bChecked ? 'checked' : '').' data-row="'.$intRow.'"/>';
+  }
+  // check if end of a tbody group
+  if ( $useNewsOnTop && !empty($row['typea']) && $row['typea']==='Z' ) {
+    $useNewsOnTop = false; // end of news on top
+    echo $t->tbody->end();
+    $t->tbody->add('data-dataset', 'items');
+    echo $t->tbody->start();
   }
   // show row content
   echo $t->getTDrow('id=t1-tr-'.$row['id'].'|class=t-item hover rowlight');
