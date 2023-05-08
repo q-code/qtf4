@@ -166,8 +166,8 @@ $m = new CMenu($arrM, '');
 echo '<div class=pan-tabs>'.$m->build('pan-'.$pan).'</div>';
 echo '<div class="pan">
 <p class="pan-title">'.$m->get('pan-'.$pan,'title');
-if ( $s!=='*' ) echo '<br>'.L('section').' '.qtQuoted(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : $s, "&'");
-if ( !empty($tag) & $tag!=='*' ) echo '<br> '.L('tag').' '.qtQuoted($tag, "&'");
+if ( $s!=='*' ) echo '<br>'.L('section').' '.qtQuote(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : $s, "&'");
+if ( !empty($tag) & $tag!=='*' ) echo '<br> '.L('tag').' '.qtQuote($tag, "&'");
 echo '</p>
 ';
 

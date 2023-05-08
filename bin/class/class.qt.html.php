@@ -106,7 +106,7 @@ class CHtml
   {
     if ( empty($title) ) $title = $this->selfname;
     if ( empty($skin) && defined(QT_SKIN) ) $skin = QT_SKIN.APP.'_styles.css';
-    if ( empty($skin) || $skin==='admin' ) $skin = $root.'bin/css/'.APP.'_styles.css';
+    if ( empty($skin) || $skin==='admin' ) $skin = $root.'bin/css/admin.css';
     $this->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$skin.'"/>';
     $this->links['prev'] = '<link rel="prev" id="exiturl" href="'.url($this->exiturl).'"/>';
     $this->head();

@@ -1,7 +1,7 @@
 <?php // v4.0 build:20230205
 
 /**
- * Convert qt-php-like url into html-like url when urlrewrite is active<br>Works only on the path-part (and next parts) of the url<br>Ex: 'qtx_login.php' becomes 'login.html'
+ * Convert qt-php-like url into html-like url when urlrewrite is active. Works only on the path-part of the url. Ex: 'qtx_login.php' becomes 'login.html'
  * @param string $url
  * @param string $ext extension (with dot)
  * @param boolean|string $prefix file prefix (true for the default)
@@ -31,11 +31,8 @@ function getSVG(string $id='info', string $attr='', string $wrapper='', bool $ad
   if ( !empty($wrapper) ) $svg = '<'.$wrapper.attrRender($attr).'>'. $svg.'</'.$wrapper.'>';
   return $svg;
 }
-
 /**
  * Returns the language path (with final /)
- * @param string $str
- * @return string
  */
 function getLangDir(string $iso='')
 {
@@ -47,7 +44,7 @@ function getLangDir(string $iso='')
   }
   return $dir.$iso.'/';
 }
-function getRepository(string $root='', int $id=0, bool $check=false)
+function getDataDir(string $root='', int $id=0, bool $check=false)
 {
   // Get directory/subdirectory for Id (with final /).
   $i1 = $id>0 ? floor($id/1000) : 0;
@@ -478,10 +475,10 @@ function intK(int $n, string $unit='k', string $unit2='M')
  * @param bool $keepnumeric int/float are returned as int/float (not quoted)
  * @return string|array (with array, index and non-string element remain unchanged)
  */
-function qtQuoted($txt, string $q1='"', string $q2='', bool $keepNum=false)
+function qtQuote($txt, string $q1='"', string $q2='', bool $keepNum=false)
 {
   // Works recursively on array
-  if ( is_array($txt) ) { foreach($txt as $k=>$item) $txt[$k] = qtQuoted($item,$q1,$q2,$keepNum); return $txt; }
+  if ( is_array($txt) ) { foreach($txt as $k=>$item) $txt[$k] = qtQuote($item,$q1,$q2,$keepNum); return $txt; }
   // Returns a quoted string (except int/float with $keepNum=true)
   if ( $keepNum && (is_int($txt) || is_float($txt)) ) return $txt;
   if ( empty($q2) ) {
@@ -506,7 +503,6 @@ function qtQuoted($txt, string $q1='"', string $q2='', bool $keepNum=false)
   if ( is_string($txt) || is_int($txt) || is_float($txt) ) return $q1.$txt.$q2;
   throw new Exception( __FUNCTION__.' invalid argument' );
 }
-
 /**
  * Convert apostrophe (and optionally doublequote, &, <, >) to html entity (used for sql statement values insertion)
  * @param string $str
@@ -536,12 +532,6 @@ function qtDbDecode(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bo
   if ( $amp && strpos($str,'&#38;')!==false ) $str = str_replace('&#38;','&',$str);
   return $str;
 }
-
-/**
- * Drop diacritics
- * @param string|array $str
- * @return string|array (with array, indexes remain unchanged)
- */
 function qtDropDiacritics($str) {
   // Works recursively on array
   if ( is_array($str) ) { foreach($str as $k=>$item) $str[$k] = qtDropDiacritics($item); return $str; }
@@ -551,26 +541,15 @@ function qtDropDiacritics($str) {
   $res = $tl->transliterate($str);
   return $res===false ? $str : $res;
 }
-/**
- * Truncate and add the trailing $end (works also on an array)
- * @param string|array $txt
- * @param integer $max maximum size (including trailing characters)
- * @param string $end trailing characters
- * @return string|array (with array, index and non-string element remain unchanged)
- */
 function qtTrunc($txt, int $max=255, string $end='...')
 {
-  if ( $max<1 ) die('qtTrunc arg #2 must be positif');
-  if ( is_string($txt) ) {
-    if ( $max<=strlen($end) ) $txt = $end; // truncate too short
-    if ( isset($txt[$max]) ) $txt = substr($txt,0,$max-strlen($end)).$end;
-    return $txt;
-  }
-  if ( is_array($txt) ) {
-    foreach($txt as $k=>$item) if ( is_string($item) || is_array($item) ) $txt[$k] = qtTrunc($item,$max,$end);
-    return $txt;
-  }
-  throw new Exception( 'invalid argument txt' );
+  // Works recursively on array
+  if ( is_array($txt) ) { foreach($txt as $k=>$item) $txt[$k] = qtTrunc($item,$max,$end); return $txt; }
+  // Truncate and add the trailing $end
+  if ( !is_string($txt) || $max<1 ) throw new Exception(__FUNCTION__.' invalid argument');
+  if ( $max<=strlen($end) ) return $end; // truncate too short
+  if ( isset($txt[$max]) ) $txt = substr($txt,0,$max-strlen($end)).$end;
+  return $txt;
 }
 /**
  * Convert multiline text into one line (truncate and unbbc)
@@ -690,7 +669,6 @@ function qtDateTranslate(string $str, array $translations)
   }
   return str_replace(array_keys($dico),array_values($dico),$str);
 }
-
 function qtBbc(string $str, string $nl='<br>', array $tip=array(), string $bold='<b>$1</b>', string $italic='<i>$1</i>')
 {
   // Converts bbc to html
@@ -768,7 +746,6 @@ function qtUnbbc(string $str, bool $deep=true, array $tip=array())
       array('$1','$1','$1','',($deep ? '' : '$1'),($deep ? '' : '$1'),($deep ? '' : '$1'),'$1','$1','$1','$1',($deep ? '' : $tip['Quotation'].': '),($deep ? '' : $tip['Quotation_from'].' $1: '),'',($deep ? '' : $tip['Code'].': '),''),
       $str );
 }
-
 function qtIsPwd(string $str, int $intMin=4, int $intMax=50, bool $trim=false)
 {
   if ( empty($str) ) return false;

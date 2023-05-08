@@ -67,6 +67,6 @@ if ( isset($_POST['del']) && $_POST['del']=='del' )
 $oH->links = array();
 $oH->links[] = '<link rel="shortcut icon" href="bin/css/'.APP.'_icon.ico"/>';
 $oH->links[] = '<link rel="stylesheet" type="text/css" href="bin/css/qt_core.css"/>';
-$oH->links[] = '<link rel="stylesheet" type="text/css" href="bin/css/'.APP.'_styles.css"/>';
+$oH->links[] = '<link rel="stylesheet" type="text/css" href="bin/css/admin.css"/>';
 
 include APP.'_upload_img.php';

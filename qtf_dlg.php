@@ -51,7 +51,7 @@ function renderItems(array $ids, bool $tags=false, bool $replies=false, bool $at
     $oT = new CTopic($row);
     $str .= '<p class="list ellipsis">';
     if ( $typeIcon ) $str .= $oT->getIcon(QT_SKIN).' ';
-    $str .= qtQuoted(qtTrunc($oT->title,30), '&"');
+    $str .= qtQuote(qtTrunc($oT->title,30), '&"');
     if ( $replies && $oT->items ) $str .= ' '.getSVG('comments', 'title='.L('reply',$oT->items));
     if ( $attach && !empty($oT->attachinfo) ) $str .= ' '.getSVG('paperclip', 'title='.L('Attachment'));
     if ( $tags ) $str .= ' '.$oT->getTagIcon();

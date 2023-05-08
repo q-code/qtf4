@@ -25,7 +25,7 @@ if ( isset($_GET['ids']) ) $ids = array_map( 'intval', explode(',',$_GET['ids'])
 if ( isset($_POST['ids']) ) $ids = array_map( 'intval', explode(',',$_POST['ids']) );
 if ( isset($_POST['t1-cb']) ) $ids = getCheckedIds('t1-cb');
 
-$oH->links['css'] = '<link rel="stylesheet" type="text/css" href="bin/css/'.APP.'_styles.css"/>';
+$oH->links['css'] = '<link rel="stylesheet" type="text/css" href="bin/css/admin.css"/>';
 include translate('lg_adm.php');
 include translate('lg_reg.php');
 $oH->selfname = L('Users');

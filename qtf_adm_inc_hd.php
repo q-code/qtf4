@@ -9,7 +9,7 @@ ob_start();
 // Change default header settings
 $oH->links['ico'] = '<link rel="shortcut icon" href="bin/css/qtf_icon.ico"/>';
 unset($oH->links['cssContrast']);
-$oH->links['css'] = '<link rel="stylesheet" type="text/css" href="bin/css/qtf_styles.css"/>';
+$oH->links['css'] = '<link rel="stylesheet" type="text/css" href="bin/css/admin.css"/>';
 if ( !isset($oH->scripts['e0']) ) $oH->scripts['e0'] = 'var e0 = '.(empty(L('E_editing')) ? 'Data not yet saved. Quit without saving?' : '"'.L('E_editing').'"').';';
 $oH->links['cssCustom'] = null;
 

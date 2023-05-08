@@ -94,42 +94,33 @@ function emptyFloat($i)
   if ( substr((string)$i,0,8)==='0.000000' ) return true;
   return false;
 }
-
-function asEmails($emails, string $render='txt', bool $first=false, string $none='')
+function renderEmail($emails, string $mode='txt', int $size=0, string $failed='')
 {
-  if ( empty($emails) ) return $none;
-  if ( is_string($emails) && strpos($emails,';')!==false ) $emails = str_replace(';', ',', $emails); //comma is recommended as email separator
-  if ( is_string($emails) ) $emails = asCleanArray($emails,',');
-  if ( !is_array($emails) || empty($emails) ) return $none;
-  if ( $first ) $emails = array($emails[0]);
-  // build expression
-  $return = '';
-  $hmails = strrev(str_replace(['@','.'],['-at-','-dot-'],implode(',',$emails)));
-  switch($render)
-  {
-    case 'txt':
-      $return .= '<a href="mailto:'.implode(',',$emails).'">'.implode(', ',$emails).'</a>';
-      break;
+  // Works recursively on array
+  if ( is_array($emails) ) { foreach($emails as $k=>$email) $emails[$k] = renderEmail($email,$mode,$size,$failed); return $emails; }
+  // Check input
+  if ( !is_string($emails) || empty($emails) ) return $failed;
+  if ( strpos($emails,';')!==false ) $emails = str_replace(';', ',', $emails); //comma is recommended as email separator
+  $emails = asCleanArray($emails, ','); // array
+  if ( !$emails ) return $failed;
+  if ( $size && count($emails)>$size ) $emails = array_slice($emails, 0, $size);
+  // Render unprotected mailto
+  $mailto = implode(',', $emails);
+  switch($mode) {
+    case 'txt': return '<a href="mailto:'.$mailto.'">'.implode(', ',$emails).'</a>';
     case 'ico':
-    case 'img':
-      $return .= '<a href="mailto:'.implode(',',$emails).'" title="'.$emails[0].'">'.getSVG('envelope').'</a>';
-      break;
-    case 'symbol':
-      $return .= '<a href="mailto:'.implode(',',$emails).'" title="'.$emails[0].'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"></use></svg></a>';
-      break;
-    case 'txtjava':
-      $return .= '<script type="text/javascript">const m = "'.$hmails.'"; document.write(`<a href="javascript:void(0)" onmouseover="qturlShow(this);" onmouseout="qturlHide(this);" data-emails="${m}">${qtDecodeEmails(m)}</a>`);</script>';
-      break;
-    case 'icojava':
-    case 'imgjava':
-      $return .= '<a href="javascript:void(0)" onmouseover="qturlShow(this);" onmouseout="qturlHide(this);" data-emails="'.$hmails.'">'.getSVG('envelope').'</a>';
-      break;
-    case 'symboljava':
-      $return .= '<a href="javascript:void(0)" onmouseover="qturlShow(this);" onmouseout="qturlHide(this);" data-emails="'.$hmails.'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"></use></svg></a>';
-      break;
-    default: die('invalid render');
+    case 'img': return '<a href="mailto:'.$mailto.'" title="'.$emails[0].(isset($emails[1]) ? ', ...' : '').'">'.getSVG('envelope').'</a>';
+    case 'symbol': return '<a href="mailto:'.$mailto.'" title="'.$emails[0].(isset($emails[1]) ? ', ...' : '').'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"></use></svg></a>';
   }
-  return $return;
+  // Render reverse-human-readable mailto (javascript converts on mouseover)
+  $mailto = strrev(str_replace(['@','.'], ['-at-','-dot-'], $mailto));
+  switch($mode) {
+    case 'txtjava': return '<script type="text/javascript">const m = "'.$mailto.'"; document.write(`<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="${m}">${qtDecodeEmails(m)}</a>`);</script>';
+    case 'icojava':
+    case 'imgjava': return '<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="'.$mailto.'">'.getSVG('envelope').'</a>';
+    case 'symboljava': return '<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="'.$mailto.'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"></use></svg></a>';
+  }
+  die('invalid render mode');
 }
 function asImg(string $src='', string $attr='', string $href='', string $attrurl='', string $imgDflt='alt=S|class=i-sec')
 {

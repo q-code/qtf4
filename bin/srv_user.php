@@ -10,7 +10,7 @@ include '../config/config_db.php'; if ( strpos(QDB_SYSTEM,'sqlite') ) define ('Q
 define( 'QT', 'qtf'.(defined('QDB_INSTALL') ? substr(QDB_INSTALL,-1) : '') );
 include 'class/class.qt.db.php';
 include 'lib_qtf_base.php';
-function getRepository(string $root='', int $id=0, bool $check=false)
+function getDataDir(string $root='', int $id=0, bool $check=false)
 {
   // Get directory/subdirectory for Id (with final /).
   $i1 = $id>0 ? floor($id/1000) : 0;
@@ -22,7 +22,7 @@ function getRepository(string $root='', int $id=0, bool $check=false)
 }
 function getUserImg(string $root='', int $id=0, string $altSrc='bin/css/user.gif'){
   // NOSQL, uses file_exists(). Returns '' when image not found *and* $altSrc=''
-  $path = getRepository($root,$id,true); if ( empty($path) ) return empty($altSrc) ? '' : '<img id="userimg" src="'.$altSrc.'" alt="user0"/>';
+  $path = getDataDir($root,$id,true); if ( empty($path) ) return empty($altSrc) ? '' : '<img id="userimg" src="'.$altSrc.'" alt="user0"/>';
   $src = '';
   foreach(['.jpg','.jpeg','.png','.gif'] as $mime) if ( file_exists($path.$id.$mime) ) { $src = $path.$id.$mime; break; }
   if ( empty($src) ) $src = $altSrc;

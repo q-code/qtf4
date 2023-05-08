@@ -146,7 +146,7 @@ if ( $bMap && !QTgempty($row['x']) && !QTgempty($row['y']) )
 }
 
 // DEFAULT
-$strMail = '';  if ( !empty($row['mail']) && SUser::canSeePrivate($row['privacy'],$id) ) $strMail = asEmails($row['mail'],'txt'.(QT_JAVA_MAIL ? 'java' : ''));
+$strMail = '';  if ( !empty($row['mail']) && SUser::canSeePrivate($row['privacy'],$id) ) $strMail = renderEmail($row['mail'],'txt'.(QT_JAVA_MAIL ? 'java' : ''));
 $strLocation = ''; if ( !empty($row['location']) && SUser::canSeePrivate($row['privacy'],$id) ) $strLocation = $row['location'];
 $strCoord = ''; // coordinates with visual units
 $strYX = ''; // coordinates in map unit [y,x]

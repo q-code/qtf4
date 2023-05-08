@@ -229,7 +229,7 @@ public static function loginPostProc(CDatabase $oDB)
  */
 public static function getPicture(int $id=0, $attr=[], string $altSrc='bin/css/user.gif'){
   // NOSQL, uses file_exists(). Returns '' when image not found *and* $altSrc=''
-  $path = getRepository(QT_DIR_PIC,$id,true); if ( empty($path) ) return empty($altSrc) ? '' : '<img src="'.$altSrc.'"'.attrRender($attr).'/>';
+  $path = getDataDir(QT_DIR_PIC,$id,true); if ( empty($path) ) return empty($altSrc) ? '' : '<img src="'.$altSrc.'"'.attrRender($attr).'/>';
   if ( is_string($attr) ) $attr = attrDecode($attr);
   if ( !is_array($attr) || isset($attr['src']) ) die(__METHOD__.' invalid attr');
   if ( !isset($attr['alt']) ) $attr['alt'] = $id;
@@ -284,7 +284,7 @@ public static function deletePicture($ids)
   if ( !is_array($ids) ) die(__METHOD__.' arg#1 must be an id or array of id');
   foreach($ids as $id) {
     if ( !is_int($id) ) die(__METHOD__.' arg#1 must be an id or array of id');
-    $dir = getRepository(QT_DIR_PIC,$id,true); if ( empty($dir) ) continue;
+    $dir = getDataDir(QT_DIR_PIC,$id,true); if ( empty($dir) ) continue;
     foreach(array('.jpg','.jpeg','.png','.gif') as $ext) if ( file_exists($dir.$id.$ext) ) unlink($dir.$id.$ext);
   }
 }

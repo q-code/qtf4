@@ -132,7 +132,7 @@ class SLang
   public static function delete(string $type='', string $id='')
   {
     if ( empty($type) || empty($id) ) die(__FUNCTION__.' invalid argument');
-    $type = implode(',', qtQuoted(explode(',',$type), "'"));
+    $type = implode(',', qtQuote(explode(',',$type), "'"));
     global $oDB;
     $oDB->exec( "DELETE FROM TABLANG WHERE objid='$id' AND objtype IN ($type)" );
   }
