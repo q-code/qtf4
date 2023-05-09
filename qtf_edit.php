@@ -102,9 +102,9 @@ if ( isset($_POST['dosend']) ) try {
   $oT->preview = qtInline($oP->text);
 
   // Detect basic errors
-  if ( $oP->text=='' ) throw new Exception( L('Message').' '.L('invalid') ); //...
-  if ( $a=='nt' && $oP->title=='' && $oS->titlefield==2 ) throw new Exception( L('E_no_title') ); //...
-  if ( $a=='nt' && $oP->title=='' ) CPost::makeTitle($oP);
+  if ( $oP->text==='' ) throw new Exception( L('Message').' '.L('invalid') ); //...
+  if ( $a==='nt' && $oP->title==='' && $oS->titlefield===2 ) throw new Exception( L('E_no_title') ); //...
+  if ( $a==='nt' && $oP->title==='' ) CPost::makeTitle($oP);
 
   // Check flood limit (_usr_lastpost is set in CPost::insert)
   if ( !empty($_SESSION[QT.'_usr']['lastpost']) && $_SESSION[QT.'_usr']['lastpost']+QT_FLOOD >= time() ) throw new Exception( L('E_wait') ); //...
@@ -175,8 +175,7 @@ if ( isset($_POST['dosend']) ) try {
     $oP->topic = $t;
     $oP->section = $s;
     $oP->issuedate = $now;
-    if ( $withDoc )
-    {
+    if ( $withDoc ) {
       $strDir = getDataDir('',$oP->id);
       $oP->attach = $strDir.$oP->id.'_'.$_FILES['newdoc']['name'];
       copy($_FILES['newdoc']['tmp_name'],QT_DIR_DOC.$oP->attach);
@@ -299,8 +298,7 @@ if ( !empty($oS->prefix) )
   echo '<tr>';
   echo '<th>'.L('Prefix').'</th>';
   echo '<td><span class="cblabel">'.PHP_EOL;
-  for ($i=1;$i<10;$i++)
-  {
+  for ($i=1;$i<10;$i++) {
     $str = icoPrefix($oS->prefix,$i);
     if ( !empty($str) ) echo '<input type="radio" name="icon" id="i0'.$i.'" value="0'.$i.'"'.($oP->icon=='0'.$i ? 'checked' : '').'/><label for="i0'.$i.'">'.$str.'</label> &nbsp;'.PHP_EOL;
   }
@@ -308,11 +306,10 @@ if ( !empty($oS->prefix) )
   echo '</span></tr>'.PHP_EOL;
 }
 // title
-if ( $oS->titlefield!=0 )
-{
+if ( $oS->titlefield!==0 ) {
 echo '<tr>'.PHP_EOL;
 echo '<th>'.L('Title').'</th>'.PHP_EOL;
-echo '<td><input'.($oS->titlefield==2 ? ' required' : '').' id="edit-form-title" tabindex="1" type="text" name="title" maxlength="64" value="'.qtAttr($oP->title).'"/></td>'.PHP_EOL;
+echo '<td><input'.($oS->titlefield===2 ? ' required' : '').' id="edit-form-title" tabindex="1" type="text" name="title" maxlength="64" value="'.qtAttr($oP->title).'"/></td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 }
 // message
@@ -326,29 +323,24 @@ if ( $canUpload ) echo '<p style="margin:0"><a id="tgl-ctrl" class="tgl-ctrl" hr
 
 echo '</td></tr>'.PHP_EOL;
 // attachment
-if ( $canUpload )
-{
+if ( $canUpload ) {
   $intMax = (int)$_SESSION[QT]['upload_size']*1024;
   echo '<tr id="tgl-container" style="display:'.(empty($oP->attach) ? 'none' : 'table-row').'">';
   echo '<th>'.getSVG('paperclip', 'title='.L('Attachment')).'</th>';
   echo '<td>';
-  if ( !empty($oP->attach) )
-  {
+  if ( !empty($oP->attach) ) {
     if ( strpos($oP->attach,'/') ) { $str = substr(strrchr($oP->attach,'/'),1); } else { $str=$oP->attach; }
     if ( substr($str,0,strlen($oP->id.'_'))==($oP->id).'_' ) $str = substr($str,strlen($oP->id.'_'));
     echo $str.'<input type="hidden" id="attach" name="attach" value="'.$oP->attach.'"/>';
     echo ' &middot; <input type="checkbox" id="dropattach" name="dropattach" value="1"/><label for="dropattach">&nbsp;'.L('Drop_attachment').'</label>';
-  }
-  else
-  {
+  } else {
     echo '<input type="hidden" name="MAX_FILE_SIZE" value="'.$intMax.'"/>';
     echo '<input tabindex="3" type="file" id="newdoc" name="newdoc" size="42"/>';
   }
   echo '</td></tr>'.PHP_EOL;
 }
 // topic status (from user)
-if ( $oT->status==='0' && $oT->firstpostuser==SUser::id() )
-{
+if ( $oT->status==='0' && $oT->firstpostuser==SUser::id() ) {
   $bChecked = false;
   if ( isset($_POST['topicstatususer']) ) { if ( $_POST['topicstatususer'][0]=='1' ) $bChecked=true; }
   echo '<tr>'.PHP_EOL;

@@ -100,8 +100,7 @@ function insertPost(bool $userstat=true)
 
   if ( isset($_SESSION['qtf_usr_posts_today']) && ( $this->type=='P' || $this->type=='R' ) ) $_SESSION['qtf_usr_posts_today']++;
 
-  if ( $userstat )
-  {
+  if ( $userstat ) {
     $oDB->exec( "UPDATE TABUSER SET lastdate='".date('Ymd His')."', numpost=numpost+1, ip='".$_SERVER['REMOTE_ADDR']."' WHERE id=".$this->userid);
     $_SESSION[QT.'_usr']['items']++;
   }
@@ -196,29 +195,23 @@ public function render(CSection $oS, CTopic $oT, bool $avatar=true, bool $cmd=tr
   // attachements
   if ( !empty($this->attach) ) $msg .= '<p class="post-attachment">'.getSVG('paperclip', 'title='.L('Attachment')).' <a href="'.QT_DIR_DOC.$this->attach.'" class="attachment" target="_blank">'.$this->getSrcAttach().'</a></p>';
   // signature
-  if ( $_SESSION[QT]['viewmode']!='C' && $this->type!='F' && !empty($this->usersign) )
-  {
+  if ( $_SESSION[QT]['viewmode']!='C' && $this->type!='F' && !empty($this->usersign) ) {
     $msg .= '<p class="post-sign">'.qtBbc($this->usersign).'</p>'.PHP_EOL;
   }
   // user picture
   $picUser = $_SESSION[QT]['viewmode']!='C' && $avatar ? SUser::getPicture($this->userid,'class=post-user','') : '';
   // buttons
   $strEndLine = '';
-  if ( $cmd )
-  {
-    if ( SUser::auth() )
-    {
-      if ( $oT->status==='0' && $oS->status==='0' )
-      {
+  if ( $cmd ) {
+    if ( SUser::auth() ) {
+      if ( $oT->status==='0' && $oS->status==='0' ) {
         $strEndLine .= '<a class="button" href="'.url('qtf_edit.php').'?t='.$oT->id.'&a=qu&p='.$this->id.'">'.L('Quote').'</a>';
       }
-      if ( $this->userid==SUser::id() || SUser::isStaff() )
-      {
+      if ( $this->userid==SUser::id() || SUser::isStaff() ) {
         $strEndLine .= '<a class="button" href="'.url('qtf_edit.php').'?t='.$oT->id.'&p='.$this->id.'&a=ed">'.L('Edit').'</a>';
-        if ( $this->type=='P')
-        {
+        if ( $this->type=='P') {
           $strEndLine .= '<a class="button" href="'.url('qtf_dlg.php').'?s='.$oS->id.'&a=itemDelete&ids='.$oT->id.($this->type=='P' ? '' : '&p='.$this->id).'">'.L('Delete').'</a>';
-        }else{
+        } else {
           $strEndLine .= '<a class="button" href="'.url('qtf_dlg.php').'?s='.$oS->id.'&a=replyDelete&t='.$oT->id.'&p='.$this->id.'">'.L('Delete').'</a>';
         }
         if ( $oT->type==='I' && $this->type==='P' ) $strEndLine .= '<a class="button" href="'.url('qtf_dlg.php').'?a=itemParam&ids='.$oT->id.'">'.L('Parameters').'</a>';

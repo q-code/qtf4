@@ -198,7 +198,7 @@ function qtCtype_digit(string $str)
  * @param boolean $inPost read value from $_POST
  * @param boolean $trim trim value
  * @param boolean $striptags remove tags
- * @return void global variables listed in $args are re-assigned if the value exists in GET/POST
+ * @return void global variables listed in $def are re-assigned if the value exists in GET/POST
  */
 function qtArgs(string $def, bool $inGet=true, bool $inPost=true, bool $trim=true, bool $striptags=true)
 {
@@ -206,7 +206,7 @@ function qtArgs(string $def, bool $inGet=true, bool $inPost=true, bool $trim=tru
   // Initializing the variables before using qtArgs is recommended.
   // When a user try to url-inject other variables, they are skipped (only variables in $def are parsed).
   // Supported types are [integer,float,boolean,string]. Can be noted 'int:', 'flo:', 'boo:', 'str:'
-  // With type 'boo' (boolean), the variable is set to TRUE when GET/POST is '1' or 'true'. For ALL OTHER values, FALSE is assigned.
+  // With type boolean, the variable is set to TRUE when GET/POST is '1' or 'true'. For ALL OTHER values, FALSE is assigned.
   // For required variable (suffix !), script stops if the variable is not in GET/POST (or if get/post as an empty string).
   // When values are not in the Http GET/POST (and not marked as required), the initial variable remains unchanged (can be a new variable with NULL value if the variable was not initialised).
   // When values are red from both GET and POST, the POST values are assigned after. POST-values overwrite GET-values, and POST can include other variables (in addition to those already assigned from GET)
