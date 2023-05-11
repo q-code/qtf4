@@ -40,18 +40,17 @@ $frm_hd = '';
 $frm = array();
 $frm_ft = '';
 
-function renderItems(array $ids, bool $tags=false, bool $replies=false, bool $attach=false, bool $typeIcon=true)
-{
+function renderItems(array $ids, bool $tags=false, bool $replies=false, bool $attach=false, bool $typeIcon=true) {
   $topIds = array_slice($ids,0,5);
   // process ids [array of int]
   $str = '';
   global $oDB;
   $oDB->query( "SELECT p.title,p.attach,t.status,t.type,t.firstpostname,t.firstpostdate,t.tags,t.replies FROM TABTOPIC t INNER JOIN TABPOST p ON t.firstpostid=p.id WHERE t.id IN (".implode(',',$topIds).")" );
-  while( $row=$oDB->getRow() ){
+  while($row = $oDB->getRow()) {
     $oT = new CTopic($row);
     $str .= '<p class="list ellipsis">';
     if ( $typeIcon ) $str .= $oT->getIcon(QT_SKIN).' ';
-    $str .= qtQuote(qtTrunc($oT->title,30), '&"');
+    $str .= qtQuote(qtTrunc($oT->title,32), '&"');
     if ( $replies && $oT->items ) $str .= ' '.qtSVG('comments', 'title='.L('reply',$oT->items));
     if ( $attach && !empty($oT->attachinfo) ) $str .= ' '.qtSVG('paperclip', 'title='.L('Attachment'));
     if ( $tags ) $str .= ' '.$oT->getTagIcon();
@@ -60,23 +59,21 @@ function renderItems(array $ids, bool $tags=false, bool $replies=false, bool $at
   }
   return $str.(count($ids)>5 ? '<p>...</p>' : '');
 }
-function renderReply(int $id, string $parentType='T', string $parentStatus='1')
-{
+function renderReply(int $id, string $parentType='T', string $parentStatus='1') {
   global $oDB;
   $oDB->query( "SELECT * FROM TABPOST WHERE id=$id" );
-  while( $row=$oDB->getRow() ) {
-    $str = '<p class="indent" class="list ellipsis">'.CPost::getIconType($row['type'],$parentType,$parentStatus,QT_SKIN);
-    $str .= ' "'.qtTrunc($row['textmsg'],100).'"';
+  while($row = $oDB->getRow()) {
+    $str = '<p class="indent" class="list ellipsis">'.CPost::getIconType($row['type'],$parentType,$parentStatus,QT_SKIN).' ';
+    $str .= qtQuote(qtInline($row['textmsg'],32), '&"');
     $str .= ' <span class="minor">'.L('by').' '.qtTrunc($row['username'],20).' ('.strtolower(qtDatestr($row['issuedate'],'j M')).')</span></p>';
   }
   return $str;
 }
-function ListTags(array $ids, bool $sort=true, bool $format=true, int $max=32)
-{
+function listTags(array $ids, bool $sort=true, bool $format=true, int $max=32) {
   $arr = array();
   global $oDB;
   $oDB->query( "SELECT tags FROM TABTOPIC WHERE id IN (".implode(',',$ids).")" );
-  while( $row=$oDB->getRow() ) {
+  while($row = $oDB->getRow()) {
     if ( count($arr)>$max ) break;
     if ( !empty($row['tags']) ) foreach(explode(';',$row['tags']) as $tag) if ( !in_array($tag,$arr) ) $arr[]=$tag;
   }
@@ -96,15 +93,17 @@ case 'itemsType':
   if ( !SUser::isStaff() ) die('Access denied');
 
   // SUBMITTED
-  if ( isset($_POST['ok']) )
-  {
+  if ( isset($_POST['ok']) ) {
+
     // update status
     if ( isset($_POST['status']) && $_POST['status']!=='U' ) $oDB->exec( "UPDATE TABTOPIC SET status=?,statusdate=? WHERE id IN ($strIds)", [$_POST['status'],date('Ymd His')] );
     // update type
     if ( isset($_POST['type']) && $_POST['type']!=='U' ) $oDB->exec( "UPDATE TABTOPIC SET type=? WHERE id IN ($strIds)", [$_POST['type']] );
     memFlush(); memFlushStats(); // clear cache
     $_SESSION[QT.'splash'] = L('S_update');
+    // exit
     $oH->redirect($oH->exiturl);
+
   }
 
   // FORM (default type/status is U=unchanged)
@@ -135,7 +134,7 @@ case 'itemsType':
     return true;
   }';
 
-  break; //=======
+  break;
 
 case 'itemsTags':
 
@@ -143,26 +142,26 @@ case 'itemsTags':
   if ( !SUser::isStaff() ) die('Access denied');
 
   // SUBMITTED
-  if ( isset($_POST['tag-ok']) && !empty($_POST['tag-edit']) )
-  {
+  if ( isset($_POST['tag-ok']) && !empty($_POST['tag-edit']) ) {
+
     // update status
     foreach($ids as $id) {
       $oT = new CTopic($id);
       if ( $_POST['tag-ok']==='addtag' ) $oT->tagsAdd($_POST['tag-edit']);
       if ( $_POST['tag-ok']==='deltag' ) $oT->tagsDel($_POST['tag-edit']);
     }
-    // exit
     $_SESSION[QT.'splash'] = L('S_update');
+
   }
 
-  // FORM (default type/status is U=unchanged)
+  // FORM
   $frm_title = L('Change').' '.L('tags');
   $frm[] = '<form method="post" action="'.url($oH->selfuri).'" autocomplete="off">';
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>'.renderItems($ids,true);
   $frm[] = '</article>';
   $frm[] = '<article>';
-  $frm[] = '<p>'.L('Used_tags').':</p><p>'.implode('',ListTags($ids)).'</p>';
+  $frm[] = '<p>'.L('Used_tags').':</p><p>'.implode('',listTags($ids)).'</p>';
   $frm[] = '</article>';
   $frm[] = '<article>';
   $frm[] = '<p class="row-confirm">'.L('Change').' '.L('item',count($ids)).':</p>';
@@ -180,7 +179,7 @@ case 'itemsTags':
   $oH->scripts['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
   $oH->scripts[] = 'qtFocus(`tag-edit`);';
 
-  break; //=======
+  break;
 
 case 'itemsMove':
 
@@ -188,15 +187,16 @@ case 'itemsMove':
   if ( !SUser::isStaff() ) die('Access denied');
 
   // SUBMITTED
-  if ( isset($_POST['ok']) && isset($_POST['destination']) && $_POST['destination']!=='' )
-  {
+  if ( isset($_POST['ok']) && isset($_POST['destination']) && $_POST['destination']!=='' ) {
+
     CSection::moveItems($ids, (int)$_POST['destination'], (int)$_POST['ref'], isset($_POST['dropprefix']) ? true : false);
     // exit
     $_SESSION[QT.'splash'] = L('S_update');
     $oH->redirect($oH->exiturl);
+
   }
 
-  // FORM (default type/status is U=unchanged)
+  // FORM
   $frm_title = L('Move').' '.L('item+');
   $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
   $frm[] = '<article>';
@@ -222,16 +222,13 @@ case 'itemsMove':
   $frm[] = '<input type="hidden" name="ids" value="'.$strIds.'"/><input type="hidden" name="uri" value="'.$parentUri.'"/>';
   $frm[] = '</form>';
 
-  break; //=======
+  break;
 
 case 'itemDelete':
 case 'itemsDelete':
 
   // ACCESS RIGHTS (staff or owner), for multiple edit, only staff
-  if ( !SUser::isStaff() ) {
-    if ( $a==='itemsDelete' ) die('Access denied');
-    if ( SUser::id()!==CTopic::getOwner($ids[0]) ) die('Access denied');
-  }
+  if ( !SUser::isStaff() && ($a==='itemsDelete' || SUser::id()!==CTopic::getOwner($ids[0])) ) die('Access denied');
 
   // SUBMITTED
   if ( isset($_POST['ok']) ) try {
@@ -239,11 +236,11 @@ case 'itemsDelete':
     if ( isset($_POST['deleteT']) ) {
       if ( count($ids)===0 ) throw new Exception( L('Delete').' '.L('item+').': 0 '.L('found') );
       CTopic::delete($ids,true);
-      memFlush();memFlushStats(); // clear cache
+      memFlush(); memFlushStats(); // clear cache
     } elseif ( isset($_POST['deleteR']) ) {
       if ( count($ids)===0 || $oDB->count( "TABPOST WHERE type<>'P' AND topic IN ($strIds)" )===0 ) throw new Exception( L('Delete').' '.L('replies').': 0 '.L('found') );
       CTopic::deleteReplies($ids,true);
-      memFlush();memFlushStats(); // clear cache
+      memFlush(); memFlushStats(); // clear cache
     } elseif ( isset($_POST['dropattach']) ) {
       if ( count($ids)===0 || $oDB->count( "TABPOST WHERE attach<>'' AND topic IN ($strIds)" )===0 ) throw new Exception( L('Drop_attachments').': 0 '.L('found') );
       CPost::dropAttachs($ids,true,true); // use a list of topics
@@ -259,7 +256,7 @@ case 'itemsDelete':
 
   }
 
-  // FORM (default type/status is U=unchanged)
+  // FORM
   $frm_title = L('Delete');
   $frm[] = '<form method="post" action="'.url($oH->selfuri).'" onsubmit="return validateForm()">';
   $frm[] = '<article>';
@@ -333,7 +330,7 @@ function updateCounts(q) {
 }
 function submitSum(n="...") { document.getElementById("submit-sum").innerHTML = n; }';
 
-  break; //=======
+  break;
 
 case 'replyDelete':
 
@@ -346,11 +343,10 @@ case 'replyDelete':
   if ( !SUser::isStaff() && SUser::id()!==CPost::getOwner($p) ) die('Access denied');
 
   // SUBMITTED
-  if ( isset($_POST['ok']) )
-  {
+  if ( isset($_POST['ok']) ) {
+
     // delete only reply posts
-    if ( isset($_POST['deletereply']) )
-    {
+    if ( isset($_POST['deletereply']) ) {
       CPost::delete($p);
       // find the new topic lastpost and count posts
       $voidTopic = new CTopic();
@@ -358,11 +354,13 @@ case 'replyDelete':
       $voidTopic->updMetadata((int)$_SESSION[QT]['posts_per_item']);
     }
     memFlush();memFlushStats(); // clear cache
+    // exit
     $_SESSION[QT.'splash'] = L('S_delete');
     $oH->redirect($oH->exiturl);
+
   }
 
-  // FORM (default type/status is U=unchanged)
+  // FORM
   $frm_title = L('Delete');
   $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
   $frm[] = '<article>';
@@ -377,15 +375,15 @@ case 'replyDelete':
   $frm[] = '<input type="hidden" name="uri" value="'.$parentUri.'"/>';
   $frm[] = '</form>';
 
-  break; //=======
+  break;
 
 default: die('Unknown command '.$a);
 
 }
 
 // DISPLAY PAGE
-const HIDE_MENU_TOC=true;
-const HIDE_MENU_LANG=true;
+const HIDE_MENU_TOC = true;
+const HIDE_MENU_LANG = true;
 include APP.'_inc_hd.php';
 
 if ( !empty($frm_hd) ) echo $frm_hd.PHP_EOL;
