@@ -122,7 +122,7 @@ echo '</td>
 <td class="void"><div class="scroll">'.implode('<br>',$arrTZI).'</div></td>
 </tr>
 </table>
-<p>'.getSVG('angle-left').' <a href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>';
+<p>'.qtSVG('angle-left').' <a href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>';
 
 // HTML END
 

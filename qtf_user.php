@@ -38,7 +38,7 @@ $oH->selfname = L('Profile');
 
 $bMap=false;
 $arrMapData=array();
-if ( useModule('gmap') )
+if ( qtModule('gmap') )
 {
   include translate(APP.'m_gmap.php');
   include 'qtfm_gmap_lib.php';
@@ -60,7 +60,7 @@ if ( isset($_POST['ok']) ) try {
     // check form
   $strLoca = qtDb(trim($_POST['location']));
   $strMail = str_replace([' ',';'],',',$_POST['mail']);
-  $strMail = implode(',',asCleanArray($strMail));
+  $strMail = implode(',',qtCleanArray($strMail));
   if ( !empty($strMail) && !qtIsMail($strMail) ) throw new Exception( L('Email').' '.$strMail.' '.L('invalid') );
   if ( empty($_POST['birth_y']) || empty($_POST['birth_d']) || empty($_POST['birth_d']) ) {
     $strBirth = '0';
@@ -96,7 +96,7 @@ if ( isset($_POST['ok']) ) try {
   if ( $strChild=='1' && $_SESSION[QT]['register_coppa']=='1' ) {
     $strSubject='Profile updated';
     $strMessage="Your children (login: %s) has modified his/her profile on the board {$_SESSION[QT]['site_name']}.";
-    $strFile = getLangDir().'mail_profile_coppa.php';
+    $strFile = qtDirLang().'mail_profile_coppa.php';
     if ( file_exists($strFile) ) include $strFile;
     $strMessage = sprintf($strMessage, $_POST['name']);
     if ( !empty($_POST['parentmail']) ) qtMail($_POST['parentmail'],$strSubject,$strMessage,QT_HTML_CHAR);
@@ -199,13 +199,13 @@ echo '</div>
 if ( $_SESSION[QT]['editing'] ) {
 // -- EDIT PROFILE --
 
-if ( SUser::id()!==$id ) echo '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+if ( SUser::id()!==$id ) echo '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 if ( !isset($oH->scripts['e0']) ) $oH->scripts['e0'] = 'var e0 = '.(empty(L('E_editing')) ? 'Data not yet saved. Quit without saving?' : '"'.L('E_editing').'"').';';
 
 echo '<form method="post" action="'.url('qtf_user.php').'?id='.$id.'">
 <table class="t-profile">
 <tr><th>'.L('Username').'</th><td clss="c-name">'.$row['name'].'</td></tr>
-<tr><th>'.L('Role').'</th><td>'.L('Role_'.$row['role']).($row['role']==='A' ? ' <small>'.getSVG('user-A', 'title='.L('Role_A')).'</small>' : '').'</td></tr>
+<tr><th>'.L('Role').'</th><td>'.L('Role_'.$row['role']).($row['role']==='A' ? ' <small>'.qtSVG('user-A', 'title='.L('Role_A')).'</small>' : '').'</td></tr>
 <tr><th>'.L('Location').'</th><td><input type="text" name="location" size="35" maxlength="24" value="'.$row['location'].'" onchange="qtFormSafe.not()"/></td></tr>
 <tr><th>'.L('Email').'</th><td><input type="email" name="mail" size="35" maxlength="64" value="'.$row['mail'].'" onchange="qtFormSafe.not()" multiple/></td></tr>
 <tr><th>'.L('Website').'</th><td><input type="text" name="www" pattern="^(http://|https://).*" size="35" maxlength="64" value="'.(empty($row['www']) ? '' : $row['www']).'" title="'.L('H_Website').'" onchange="qtFormSafe.not()"/></td></tr>
@@ -214,19 +214,18 @@ echo '<form method="post" action="'.url('qtf_user.php').'?id='.$id.'">
 $strBrith_y = '';
 $strBrith_m = '';
 $strBrith_d = '';
-if ( !empty($row['birthday']) )
-{
+if ( !empty($row['birthday']) ) {
   $strBrith_y = intval(substr(strval($row['birthday']),0,4));
   $strBrith_m = intval(substr(strval($row['birthday']),4,2));
   $strBrith_d = intval(substr(strval($row['birthday']),6,2));
 }
 echo '<td><select name="birth_d" size="1" onchange="qtFormSafe.not()">'.PHP_EOL;
-echo asTags(array(0=>'',1=>1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31),$strBrith_d);
+echo qtTags([0=>'',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],$strBrith_d);
 echo '</select>'.PHP_EOL;
 echo '<select name="birth_m" size="1" onchange="qtFormSafe.not()">'.PHP_EOL;
-echo '<option value="0"></option>',asTags(L('dateMMM.*'),$strBrith_m);
+echo '<option value="0"></option>'.qtTags(L('dateMMM.*'),$strBrith_m);
 echo '</select>'.PHP_EOL;
-echo '<input type="text" id="birth_y" name="birth_y" pattern="(19|20)[0-9]{2}" size="4" maxlength="4" value="',$strBrith_y,'"/>';
+echo '<input type="text" id="birth_y" name="birth_y" pattern="(19|20)[0-9]{2}" size="4" maxlength="4" value="'.$strBrith_y.'"/>';
 echo '</td></tr>'.PHP_EOL;
 if ( SUser::role()==='A' && $id>1 ) {
   if ( $_SESSION[QT]['register_coppa']==='1' ) {
@@ -272,7 +271,7 @@ if ( $bMap )
   if ( substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ) {
     $strPosition .= '< class="small commands" style="margin:4px 0 2px 2px;text-align:right">'.$L['Gmap']['addrlatlng'].' ';
     $strPosition .= '<input type="text" size="24" id="find" name="find" class="small" value="'.$_SESSION[QT]['m_gmap_gfind'].'" title="'.$L['Gmap']['H_addrlatlng'].'" onkeypress="enterkeyPressed=qtKeyEnter(event); if ( enterkeyPressed) showLocation(this.value,null);"/>';
-    $strPosition .= getSVG('search', 'id=btn-geocode|class=clickable|onclick=showLocation(document.getElementById(`find`).value,null)|title='.L('Search') );
+    $strPosition .= qtSVG('search', 'id=btn-geocode|class=clickable|onclick=showLocation(document.getElementById(`find`).value,null)|title='.L('Search') );
     $strPosition .= '</p>'.PHP_EOL;
   }
   echo '<tr>'.PHP_EOL;
@@ -312,7 +311,7 @@ if ( $countmessages>0 ) {
   $strParticip .= ', '.strtolower($L['Last_message']).' '.qtDatestr($row['lastdate'],'$','$',true);
   $oDB->query( "SELECT p.id,p.topic,p.forum FROM TABPOST p WHERE p.userid=$id ORDER BY p.issuedate DESC" );
   $row2 = $oDB->getRow();
-  $strParticip .= ' <a href="'.url('qtf_item.php').'?t='.$row2['topic'].'#p'.$row2['id'].'" title="'.L('Goto_message').'">'.getSVG('caret-square-right').'</a>';
+  $strParticip .= ' <a href="'.url('qtf_item.php').'?t='.$row2['topic'].'#p'.$row2['id'].'" title="'.L('Goto_message').'">'.qtSVG('caret-square-right').'</a>';
 }
 echo '
 <table class="t-profile">
@@ -346,7 +345,7 @@ if ( SUser::id()==$id || SUser::isStaff() ) {
   echo '<p class="right"><small>'.$strPriv.' '.L('Privacy_visible_'.$row['privacy']).'</small></p>';
   $intBan = empty($row['closed']) ? 0 : (int)$row['closed'];
   $days = BAN_DAYS;
-  if ( $intBan && array_key_exists($intBan,$days) ) echo '<p class="right"><small>'.getSVG('ban').' '.$row['name'].' '.strtolower(sprintf(L('Is_banned_since'),L('day',$days[$intBan]))).'</small></p>';
+  if ( $intBan && array_key_exists($intBan,$days) ) echo '<p class="right"><small>'.qtSVG('ban').' '.$row['name'].' '.strtolower(sprintf(L('Is_banned_since'),L('day',$days[$intBan]))).'</small></p>';
 }}
 
 echo '</div>
@@ -446,8 +445,8 @@ if ( $bMap )
 
 // Symbols
 echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL;
-echo getSVG('symbol-key').PHP_EOL;
-echo getSVG('symbol-door-open').PHP_EOL;
+echo qtSVG('symbol-key').PHP_EOL;
+echo qtSVG('symbol-door-open').PHP_EOL;
 echo '</svg>'.PHP_EOL;
 
 include 'qtf_inc_ft.php';

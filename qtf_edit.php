@@ -116,7 +116,7 @@ if ( isset($_POST['dosend']) ) try {
   }
 
   // Module antispam
-  if ( useModule('antispam') ) include 'qtfm_antispam.php';
+  if ( qtModule('antispam') ) include 'qtfm_antispam.php';
 
   // check upload
   if ( $_SESSION[QT]['upload']!=='0' && !empty($_FILES['newdoc']['name']) ) {
@@ -153,7 +153,7 @@ if ( isset($_POST['dosend']) ) try {
     $oP->issuedate = $now;
     if ( $withDoc )
     {
-      $strDir = getDataDir('',$oP->id);
+      $strDir = qtDirData('',$oP->id);
       $oP->attach = $strDir.$oP->id.'_'.$_FILES['newdoc']['name'];
       copy($_FILES['newdoc']['tmp_name'],QT_DIR_DOC.$oP->attach);
       unlink($_FILES['newdoc']['tmp_name']);
@@ -165,7 +165,7 @@ if ( isset($_POST['dosend']) ) try {
     if ( isset($_SESSION[QT.'_usr']['numpost']) ) $_SESSION[QT.'_usr']['numpost']++;
     // ----------
     // module rss
-    if ( useModule('rss') ) { if ( $_SESSION[QT]['m_rss']=='1' ) include 'qtfm_rss_inc.php'; }
+    if ( qtModule('rss') ) { if ( $_SESSION[QT]['m_rss']=='1' ) include 'qtfm_rss_inc.php'; }
     // ----------
     break;
 
@@ -176,7 +176,7 @@ if ( isset($_POST['dosend']) ) try {
     $oP->section = $s;
     $oP->issuedate = $now;
     if ( $withDoc ) {
-      $strDir = getDataDir('',$oP->id);
+      $strDir = qtDirData('',$oP->id);
       $oP->attach = $strDir.$oP->id.'_'.$_FILES['newdoc']['name'];
       copy($_FILES['newdoc']['tmp_name'],QT_DIR_DOC.$oP->attach);
       unlink($_FILES['newdoc']['tmp_name']);
@@ -207,7 +207,7 @@ if ( isset($_POST['dosend']) ) try {
 
     // Add attach
     if ( $withDoc ) {
-      $strDir = getDataDir('',$oP->id);
+      $strDir = qtDirData('',$oP->id);
       $oP->attach = $strDir.$oP->id.'_'.$_FILES['newdoc']['name'];
       copy($_FILES['newdoc']['tmp_name'],QT_DIR_DOC.$oP->attach);
       unlink($_FILES['newdoc']['tmp_name']);
@@ -266,14 +266,14 @@ echo '<form id="form-edit" method="post" action="'.url($oH->selfurl).'" enctype=
 
 if ( SUser::isStaff() )
 {
-  echo '<div id="optionsbar" title="'.L('Staff').' '.L('commands').'">'.getSVG('user-M');
+  echo '<div id="optionsbar" title="'.L('Staff').' '.L('commands').'">'.qtSVG('user-M');
   if ( $oP->type==='P' )
   {
   echo '<span>'.L('Type').' <select name="topictype" size="1" id="newtopictype" onchange="changeIcon()">';
-  echo asTags(CTopic::getTypes(),$oT->type);
+  echo qtTags(CTopic::getTypes(),$oT->type);
   echo '</select></span>';
   echo '<span>'.L('Status').' <select name="topicstatus" size="1" id="newtopicstatus" onchange="changeIcon()">';
-  echo asTags(CTopic::getStatuses(),$oT->status);
+  echo qtTags(CTopic::getStatuses(),$oT->status);
   echo '</select></span>';
   }
   echo '<span id="ac-wrapper-behalf" class="ac-wrapper">'.L('Send_on_behalf').'&nbsp;<input type="text" name="behalf" id="behalf" size="14" maxlength="24" value="'.$oP->username.'" autocomplete="off"/><input type="hidden" id="behalfid" name="behalfid" value="-1"></span></div>';
@@ -319,14 +319,14 @@ echo '<td>';
 if ( QT_BBC ) echo '<div class="bbc-bar">'.bbcButtons($intBbc).'</div>';
 echo '<textarea required tabindex="2" id="text" name="text" '.(strlen($oP->text)>500 ? 'rows="30"' : 'rows="15"' ).' maxlength="'.$_SESSION[QT]['chars_per_post'].'">'.$oP->text.'</textarea>'.PHP_EOL;
 
-if ( $canUpload ) echo '<p style="margin:0"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(`tgl-container`,`table-row`,`tgl-ctrl`); return false;">'.L('Attachment').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a></p>';
+if ( $canUpload ) echo '<p style="margin:0"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(`tgl-container`,`table-row`,`tgl-ctrl`); return false;">'.L('Attachment').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></p>';
 
 echo '</td></tr>'.PHP_EOL;
 // attachment
 if ( $canUpload ) {
   $intMax = (int)$_SESSION[QT]['upload_size']*1024;
   echo '<tr id="tgl-container" style="display:'.(empty($oP->attach) ? 'none' : 'table-row').'">';
-  echo '<th>'.getSVG('paperclip', 'title='.L('Attachment')).'</th>';
+  echo '<th>'.qtSVG('paperclip', 'title='.L('Attachment')).'</th>';
   echo '<td>';
   if ( !empty($oP->attach) ) {
     if ( strpos($oP->attach,'/') ) { $str = substr(strrchr($oP->attach,'/'),1); } else { $str=$oP->attach; }
@@ -369,14 +369,14 @@ if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P')
   {
     $tags = '';
     foreach(explode(';',$oT->descr) as $k=>$item) $tags .= empty($item) ? '' : '<span class="tag" onclick="tagClick(this.innerHTML)">'.$item.'</span>';
-    echo '<div class="tags right" style="padding:4px 0">'.getSVG('tag'.(count($arrTags)>1 ? 's' : ''), 'title='.L('Tags'));
+    echo '<div class="tags right" style="padding:4px 0">'.qtSVG('tag'.(count($arrTags)>1 ? 's' : ''), 'title='.L('Tags'));
     echo ' <div id="tag-container" style="display:inline-block">';
     echo '<span id="tag-shown" style="display:inline-block">'.$tags.'</span>';
     echo '<input type="hidden" id="tag-saved" value="'.qtAttr($oT->descr).'"/>';
     echo '<input type="hidden" id="tag-new" name="tag-new" maxlength="255" value="'.qtAttr($oT->descr).'"/>';
     echo '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/><input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
     echo '<div id="ac-wrapper-tag-edit" class="ac-wrapper">';
-    echo '<input type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" autocomplete="off" data-multi="1"/><button type="reset" class="tag-btn" title="'.L('Reset').'" onclick="document.getElementById(`tag-edit`).value=``;qtFocus(`tag-edit`)">'.getSVG('backspace').'</button>&nbsp;<button type="button" name="tag-btn" class="tag-btn" value="addtag" title="'.L('Add').'" onclick="tagAdd()">'.getSVG('plus').'</button><button type="button" name="tag-btn" class="tag-btn" value="deltag" title="'.L('Delete_tags').'" onclick="tagDel()">'.getSVG('minus').'</button>';
+    echo '<input type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" autocomplete="off" data-multi="1"/><button type="reset" class="tag-btn" title="'.L('Reset').'" onclick="document.getElementById(`tag-edit`).value=``;qtFocus(`tag-edit`)">'.qtSVG('backspace').'</button>&nbsp;<button type="button" name="tag-btn" class="tag-btn" value="addtag" title="'.L('Add').'" onclick="tagAdd()">'.qtSVG('plus').'</button><button type="button" name="tag-btn" class="tag-btn" value="deltag" title="'.L('Delete_tags').'" onclick="tagDel()">'.qtSVG('minus').'</button>';
     echo '</div>';
     echo '</div></div>'.PHP_EOL;
   }

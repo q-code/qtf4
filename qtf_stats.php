@@ -43,9 +43,9 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
       echo '<td class="legendcolor"><div style="display:inline-block;width:12px;height:12px;border-radius:50%;background-color:rgb('.$arrC[$y][$k].')"></div></td>'.PHP_EOL;
       for ($intBt=1;$intBt<=MAXBT;$intBt++)
       {
-      echo '<td>'.(isset($arrD[$y][$k][$intBt]) ? intK($arrD[$y][$k][$intBt]) : '&middot;').'</td>'.PHP_EOL;
+      echo '<td>'.(isset($arrD[$y][$k][$intBt]) ? qtK($arrD[$y][$k][$intBt]) : '&middot;').'</td>'.PHP_EOL;
       }
-      echo '<td class="bold">'.intK($arrS[$y][$k]).'</td>'.PHP_EOL;
+      echo '<td class="bold">'.qtK($arrS[$y][$k]).'</td>'.PHP_EOL;
       echo '</tr>';
       echo '<tr>'.PHP_EOL;
     }
@@ -142,7 +142,7 @@ echo '<div class="flex-sp top">
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td><input type="hidden" name="pan" value="'.$pan.'"/><select name="y" id="y" onchange="checkY0(this.value);">'.asTags($arrY,(int)$y).'</select></td>
+<td><input type="hidden" name="pan" value="'.$pan.'"/><select name="y" id="y" onchange="checkY0(this.value);">'.qtTags($arrY,(int)$y).'</select></td>
 <td>'.(count($_Sections)>0 ? '<select name="s" id="s">'.sectionsAsOption($s,[],[],L('In_all_sections')).'</select>' : '&nbsp;').'</td>
 <td>'.( $_SESSION[QT]['tags']=='0' ? '&nbsp;' : '<div id="ac-wrapper-tag-edit" class="ac-wrapper"><input type="text" id="tag-edit" name="tag" size="18" value="'.$tag.'"/></div>').'</td>
 <td><button type="submit" name="ok" value="ok">'.L('Ok').'</button></td>
@@ -186,7 +186,7 @@ $arrM['bt-d'] = L('Per_d').'|id=bt-d|href='.$href.'&bt=d';
 // add comparaison year selector
 if ( $pan=='gt' || $pan=='dt' ) {
   $href = $oH->selfurl.'?'.qtURI('y0'); // remove argument '&y0='
-  $arrM[] = '!<span>'.L('Compare_year').'&nbsp;<select id="y0" name="y0" value="'.$y0.'" onchange="window.location=`'.$href.'`+this.value;">'.asTags(array($y-4=>$y-4,$y-3=>$y-3,$y-2=>$y-2,$y-1=>$y-1),$y0).'</select></span>';
+  $arrM[] = '!<span>'.L('Compare_year').'&nbsp;<select id="y0" name="y0" value="'.$y0.'" onchange="window.location=`'.$href.'`+this.value;">'.qtTags([$y-4=>$y-4,$y-3=>$y-3,$y-2=>$y-2,$y-1=>$y-1], $y0).'</select></span>';
 }
 $m = new CMenu($arrM, ' &middot; ');
 echo '<div id="nav-blocktime">'.$m->build('bt-'.$bt, 'tag=span|addclass=actif').'</div>';

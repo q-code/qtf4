@@ -67,14 +67,14 @@ if ( isset($_POST['ok']) ) {
 }
 
 // FORM
-$frm_hd = file_get_contents(getLangDir().'app_rules.txt'); if ( $frm_hd===false ) $frm_hd = 'Unable to read file app_rules.txt';
+$frm_hd = file_get_contents(qtDirLang().'app_rules.txt'); if ( $frm_hd===false ) $frm_hd = 'Unable to read file app_rules.txt';
 $frm_hd = '<div id="rules">'.$frm_hd.'</div>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p class="bold"><span class="cblabel"><input required type="checkbox" id="agreed" name="agreed"'.(isset($_POST['agreed']) ? 'checked' : '').'/><label for="agreed">&nbsp;'.L('Agree').'</label><span></p>';
 if ( $_SESSION[QT]['register_coppa'] ){
 $frm[] = '<p>'.L('Birthday').'</p>';
-$frm[] = '<p><select name="d" size="1">'.asTags(array_combine(range(1,31),range(1,31)),$intD).'</select>';
-$frm[] = '<select name="m" size="1">'.asTags(L('dateMMM.*'),$intM).'</select>';
+$frm[] = '<p><select name="d" size="1">'.qtTags(array_combine(range(1,31),range(1,31)), $intD).'</select>';
+$frm[] = '<select name="m" size="1">'.qtTags(L('dateMMM.*'),$intM).'</select>';
 $frm[] = '<input type="text" id="y" name="y" size="4" maxlength="4" pattern="(19|20)[0-9]{2}" value="'.(empty($intY) ? '' : $intY).'" required/></p>';
 }
 $frm[] = '<p class="submit right"><button type="submit" name="ok" value="ok">'.L('Proceed').'...</button></p>';
@@ -166,7 +166,7 @@ if ( isset($_POST['ok']) ) try {
     // Send email
     $strSubject = $_SESSION[QT]['site_name'].' - Registration request';
     $strMessage = "This user request access to the board {$_SESSION[QT]['site_name']}.\nUsername: %s\nEmail: %s";
-    $strFile = getLangDir().'mail_request.php';
+    $strFile = qtDirLang().'mail_request.php';
     if ( file_exists($strFile) ) include $strFile;
     $strMessage = sprintf($strMessage,$_POST['username'],$_POST['mail']);
     qtMail($_SESSION[QT]['admin_email'],$strSubject,$strMessage,QT_HTML_CHAR);
@@ -181,7 +181,7 @@ if ( isset($_POST['ok']) ) try {
     // send email
     $strSubject = $_SESSION[QT]['site_name'].' - Welcome';
     $strMessage = "Please find here after your login and password to access the board {$_SESSION[QT]['site_name']}.\nLogin: %s\nPassword: %s";
-    $strFile = getLangDir().'mail_registred.php';
+    $strFile = qtDirLang().'mail_registred.php';
     if ( file_exists($strFile) ) include $strFile;
     $strMessage = sprintf($strMessage,$_POST['username'],$_POST['pwd']);
     qtMail($_POST['mail'],$strSubject,$strMessage,QT_HTML_CHAR);
@@ -189,7 +189,7 @@ if ( isset($_POST['ok']) ) try {
     // parent mail
     if ( $_SESSION[QT]['register_coppa']=='1' && $strChild!='0' ) {
       $strSubject = $_SESSION[QT]['site_name'].' - Welcome';
-      $strFile = getLangDir().'mail_registred_coppa.php';
+      $strFile = qtDirLang().'mail_registred_coppa.php';
       if ( file_exists($strFile) ) include $strFile;
       if ( empty($strMessage) ) $strMessage = "We inform you that your children has registered on the team {$_SESSION[QT]['site_name']}.\nLogin: %s\nPassword: %s\nYour agreement is required to activte this account.";
       $strMessage = sprintf($strMessage,$_POST['username'],$_POST['pwd']);
@@ -249,7 +249,7 @@ if ( $_SESSION[QT]['register_safe']==='recaptcha3' ) {
 }
 
 if ( $_SESSION[QT]['register_coppa']=='1' &&  $strChild!='0' ) {
-  $frm_hd = file_get_contents(getLangDir().'app_rules_coppa.txt'); if ( $frm_hd===false ) $frm_hd = 'Unable to read file app_rules_coppa.txt';
+  $frm_hd = file_get_contents(qtDirLang().'app_rules_coppa.txt'); if ( $frm_hd===false ) $frm_hd = 'Unable to read file app_rules_coppa.txt';
   $frm_hd = '<div id="rules">'.$frm_hd.'</div>';
 }
 
@@ -257,10 +257,10 @@ $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<div class="flex-sp top">';
 $frm[] = '<div style="min-width:65%;padding:0 20px 0 0">';
 $frm[] = '<fieldset class="register"><legend>'.L('Username').' '.L('and').' '.L('password').'</legend>';
-$frm[] = '<p>'.getSVG('user','class=svg-label|title='.L('Username')).' <input required type="text" id="newname" name="username" size="25" minlength="3" maxlength="64" value="'.$_POST['username'].'" placeholder="'.L('Username').'"/></p><p id="newname-error" class="error"></p>';
+$frm[] = '<p>'.qtSVG('user','class=svg-label|title='.L('Username')).' <input required type="text" id="newname" name="username" size="25" minlength="3" maxlength="64" value="'.$_POST['username'].'" placeholder="'.L('Username').'"/></p><p id="newname-error" class="error"></p>';
 if ( $_SESSION[QT]['register_mode']==='direct' ) {
-  $frm[] = '<p class="input-pwd">'.getSVG('lock','class=svg-label|title='.L('Password')).' <input required type="password" id="pwd-1" name="pwd" size="25" minlength="4" maxlength="50" value="'.$_POST['pwd'].'" placeholder="'.L('Password').'"/>'.getSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
-  $frm[] = '<p class="input-pwd">'.getSVG('lock','class=svg-label|title='.L('Confirm_password')).' <input required type="password" id="pwd-2" name="conpwd" size="25" minlength="4" maxlength="50" value="'.$_POST['conpwd'].'" placeholder="'.L('Confirm_password').'"/>'.getSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
+  $frm[] = '<p class="input-pwd">'.qtSVG('lock','class=svg-label|title='.L('Password')).' <input required type="password" id="pwd-1" name="pwd" size="25" minlength="4" maxlength="50" value="'.$_POST['pwd'].'" placeholder="'.L('Password').'"/>'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
+  $frm[] = '<p class="input-pwd">'.qtSVG('lock','class=svg-label|title='.L('Confirm_password')).' <input required type="password" id="pwd-2" name="conpwd" size="25" minlength="4" maxlength="50" value="'.$_POST['conpwd'].'" placeholder="'.L('Confirm_password').'"/>'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
   $oH->scripts[] = 'function togglePwd(id) {
     var d = document.getElementById("pwd-"+id);
     if ( d.type==="password" ) { d.type="text"; } else { d.type="password"; }
@@ -272,12 +272,12 @@ if ( $_SESSION[QT]['register_mode']==='direct' ) {
 }
 $frm[] = '</fieldset>';
 $frm[] = '<fieldset class="register"><legend>'.L('Email').'</legend>';
-$frm[] = getSVG('envelope','class=svg-label').'&nbsp;<input type="email" name="mail" size="25" maxlength="64" value="'.$_POST['mail'].'" placeholder="'.L('Your_mail').'"/><span id="mail_err" class="error"></span><br>';
+$frm[] = qtSVG('envelope','class=svg-label').'&nbsp;<input type="email" name="mail" size="25" maxlength="64" value="'.$_POST['mail'].'" placeholder="'.L('Your_mail').'"/><span id="mail_err" class="error"></span><br>';
 if ( $_SESSION[QT]['register_coppa']=='1' && $strChild!='0' )
-$frm[] = getSVG('envelope','class=svg-label').'&nbsp;<input type="email" name="parentmail" size="32" maxlength="64" value="'.$_POST['parentmail'].'" placeholder="'.L('Parent_mail').'"/><br>';
+$frm[] = qtSVG('envelope','class=svg-label').'&nbsp;<input type="email" name="parentmail" size="32" maxlength="64" value="'.$_POST['parentmail'].'" placeholder="'.L('Parent_mail').'"/><br>';
 $frm[] = '</fieldset>';
 $frm[] = '<fieldset class="register"><legend>'.L('Secret_question').'</legend>'.L('H_Secret_question').'<br>';
-$frm[] = '<select name="secret_q">'.asTags($L['Secret_q'],$_POST['secret_q']).'</select><br><input required type="text" name="secret_a" size="25" maxlength="255" value="'.qtAttr($_POST['secret_a'],255).'"/>';
+$frm[] = '<select name="secret_q">'.qtTags($L['Secret_q'],$_POST['secret_q']).'</select><br><input required type="text" name="secret_a" size="25" maxlength="255" value="'.qtAttr($_POST['secret_a'],255).'"/>';
 $frm[] = '</fieldset>';
 if ( !empty($_SESSION[QT]['register_safe']) && $_SESSION[QT]['register_safe']!=='none'  ) {
   $frm[] = '<fieldset class="register captcha"><legend>'.L('Security').'</legend>';
@@ -338,10 +338,10 @@ if ( $row['role']!='U' ) {
 $frm[] = '<p>'.$row['name'].L('Unregister_staff').'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button></p>';
 } else {
-if ( SUser::id()!==$id ) $frm[] = '<p class="right">'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+if ( SUser::id()!==$id ) $frm[] = '<p class="right">'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<p>'.L('H_Unregister').'</p>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
-$frm[] = '<p>'.getSVG('lock','class=svg-label').'&nbsp;<input required type="password" name="pwd" size="20" minlength="4" maxlength="50" placeholder="'.L('Password').'" /></p>';
+$frm[] = '<p>'.qtSVG('lock','class=svg-label').'&nbsp;<input required type="password" name="pwd" size="20" minlength="4" maxlength="50" placeholder="'.L('Password').'" /></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Unregister').'</button></p>';
 $frm[] = '</form>';
 }
@@ -379,7 +379,7 @@ if ( isset($_POST['ok']) ) try {
   if ( $_POST['child']!='0' && $_SESSION[QT]['register_coppa']=='1') {
     $strSubject="New password";
     $strMessage="We inform you that your children has changed his/her password on the board {$_SESSION[QT]['site_name']}.\nLogin: %s\nPassword: %s";
-    $strFile = getLangDir().'mail_pwd_coppa.php';
+    $strFile = qtDirLang().'mail_pwd_coppa.php';
     if ( file_exists($strFile) ) include $strFile;
     $strMessage = sprintf($strMessage,$_POST['name'],$_POST['newpwd']);
     qtMail($_POST['parentmail'],$strSubject,$strMessage,QT_HTML_CHAR);
@@ -402,11 +402,11 @@ $frm_hd = '<div class="user-dlg">
 <div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>
 ';
 $frm_attr = 'class=msgbox formPwd';
-if ( SUser::id()!==$id ) $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+if ( SUser::id()!==$id ) $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
-$frm[] = '<p class="right input-pwd">'.L('Old_password').'&nbsp;<input required id="pwd-1" type="password" name="oldpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.getSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
-$frm[] = '<p class="right input-pwd">'.L('New_password').'&nbsp;<input required id="pwd-2" type="password" name="newpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.getSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
-$frm[] = '<p class="right input-pwd">'.L('Confirm_password').'&nbsp;<input required id="pwd-3" type="password" name="conpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.getSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(3)|title='.L('Show')).'</p>';
+$frm[] = '<p class="right input-pwd">'.L('Old_password').'&nbsp;<input required id="pwd-1" type="password" name="oldpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
+$frm[] = '<p class="right input-pwd">'.L('New_password').'&nbsp;<input required id="pwd-2" type="password" name="newpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
+$frm[] = '<p class="right input-pwd">'.L('Confirm_password').'&nbsp;<input required id="pwd-3" type="password" name="conpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(3)|title='.L('Show')).'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '<input type="hidden" name="name" value="'.$row['name'].'"/>';
 $frm[] = '<input type="hidden" name="mail" value="'.$row['mail'].'"/>';
@@ -448,7 +448,7 @@ if ( isset($_POST['ok']) ) try {
 
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p>'.L('Reg_pass').'</p>';
-$frm[] = '<p>'.getSVG('user','class=svg-label').'&nbsp;<input required type="text" name="username" pattern="^.{2}.*" size="24" maxlength="24" placeholder="'.L('Username').'" /></p>';
+$frm[] = '<p>'.qtSVG('user','class=svg-label').'&nbsp;<input required type="text" name="username" pattern="^.{2}.*" size="24" maxlength="24" placeholder="'.L('Username').'" /></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
 
@@ -579,7 +579,7 @@ if ( isset($_POST['ok']) ) {
   // send email
   $strSubject='New password';
   $strMessage="Please find here after a new password to access the board {$_SESSION[QT]['site_name']}.\nLogin: %s\nPassword: %s";
-  $file = getLangDir().'mail_pwd.php';
+  $file = qtDirLang().'mail_pwd.php';
   if ( file_exists($file) ) include $file;
   $strMessage = sprintf($strMessage, SUser::name(), $newpwd);
   $row = getUserInfo($id,'children,mail,parentmail'); // can be NULL if user not found
@@ -588,7 +588,7 @@ if ( isset($_POST['ok']) ) {
   if ( $_SESSION[QT]['register_coppa']=='1' && $row['children']!='0' ) {
     $strSubject='New password';
     $strMessage="Here is then new password of your children.\nLogin: %s\nPassword: %s";
-    $file = getLangDir().'mail_pwd_coppa.php';
+    $file = qtDirLang().'mail_pwd_coppa.php';
     if ( file_exists($file) ) { include $file; }
     $strMessage = sprintf($strMessage, SUser::name(), $newpwd);
     if ( !empty($row['parentmail']) ) qtMail($row['parentmail'],$strSubject,$strMessage,QT_HTML_CHAR);
@@ -644,7 +644,7 @@ if ( isset($_POST['ok']) && !empty($_POST['s']) ) {
     // send email
     $strSubject='New password';
     $strMessage="Please find here after a new password to access the board {$_SESSION[QT]['site_name']}.\nLogin: %s\nPassword: %s";
-    $strFile = getLangDir().'mail_pwd.php';
+    $strFile = qtDirLang().'mail_pwd.php';
     if ( file_exists($strFile) ) include $strFile;
     $strMessage = sprintf($strMessage, SUser::name(), $newpwd);
     if ( !empty($row['mail']) ) qtMail($row['mail'],$strSubject,$strMessage,QT_HTML_CHAR);
@@ -653,7 +653,7 @@ if ( isset($_POST['ok']) && !empty($_POST['s']) ) {
       if ( $_SESSION[QT]['register_coppa']=='1') {
         $strSubject='New password';
         $strMessage="Here is then new password of your children.\nLogin: %s\nPassword: %s";
-        $strFile = getLangDir().'mail_pwd_coppa.php';
+        $strFile = qtDirLang().'mail_pwd_coppa.php';
         if ( file_exists($strFile) ) include $strFile;
         $strMessage = sprintf($strMessage, SUser::name(), $newpwd);
         if ( !empty($row['parentmail']) ) qtMail($row['parentmail'],$strSubject,$strMessage,QT_HTML_CHAR);
@@ -712,10 +712,10 @@ $secret_q = empty($row['secret_q']) ? '' : $row['secret_q'];
 $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm_attr = 'class=msgbox formQa';
 if ( SUser::id()!==$id )
-$frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
+$frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
 $frm[] = '<p class="center">'.L('H_Secret_question').'</p>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'" autocomplete="off">';
-$frm[] = '<p class="center"><select name="secret_q">'.asTags($L['Secret_q'],$secret_q).'</select></p>';
+$frm[] = '<p class="center"><select name="secret_q">'.qtTags($L['Secret_q'],$secret_q).'</select></p>';
 $frm[] = '<p class="center"><input required type="text" name="secret_a" size="32" maxlength="255" placeholder="'.(empty($row['secret_a']) ? '' : '*********').'"/></p>';
 $frm[] = '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '</form>';
@@ -759,9 +759,9 @@ $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm_attr = 'class=msgbox formName';
 if ( SUser::id()!==$id )
-$frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+$frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
-$frm[] = '<p class="center">'.getSVG('user','class=svg-label').'&nbsp;<input required type="text" id="newname" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
+$frm[] = '<p class="center">'.qtSVG('user','class=svg-label').'&nbsp;<input required type="text" id="newname" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
 $frm[] = '<p id="newname-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="newname-submit" name="ok" value="ok">'.L('Save').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
@@ -810,7 +810,7 @@ if ( QT_BBC ) $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_bb
 
 $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
 $frm_attr = 'class=msgbox formSign';
-if ( SUser::id()!==$id ) $frm[] = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+if ( SUser::id()!==$id ) $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<p>'.L('H_no_signature').'</p>';
 $frm[] = '<h2>'.L('Signature').'</h2>';
 $frm[] = '<div id="signature-preview">'.$strSign.'</div>';

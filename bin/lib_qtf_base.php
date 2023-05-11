@@ -101,7 +101,7 @@ function renderEmail($emails, string $mode='txt', int $size=0, string $failed=''
   // Check input
   if ( !is_string($emails) || empty($emails) ) return $failed;
   if ( strpos($emails,';')!==false ) $emails = str_replace(';', ',', $emails); //comma is recommended as email separator
-  $emails = asCleanArray($emails, ','); // array
+  $emails = qtCleanArray($emails, ','); // array
   if ( !$emails ) return $failed;
   if ( $size && count($emails)>$size ) $emails = array_slice($emails, 0, $size);
   // Render unprotected mailto
@@ -109,7 +109,7 @@ function renderEmail($emails, string $mode='txt', int $size=0, string $failed=''
   switch($mode) {
     case 'txt': return '<a href="mailto:'.$mailto.'">'.implode(', ',$emails).'</a>';
     case 'ico':
-    case 'img': return '<a href="mailto:'.$mailto.'" title="'.$emails[0].(isset($emails[1]) ? ', ...' : '').'">'.getSVG('envelope').'</a>';
+    case 'img': return '<a href="mailto:'.$mailto.'" title="'.$emails[0].(isset($emails[1]) ? ', ...' : '').'">'.qtSVG('envelope').'</a>';
     case 'symbol': return '<a href="mailto:'.$mailto.'" title="'.$emails[0].(isset($emails[1]) ? ', ...' : '').'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"></use></svg></a>';
   }
   // Render reverse-human-readable mailto (javascript converts on mouseover)
@@ -117,7 +117,7 @@ function renderEmail($emails, string $mode='txt', int $size=0, string $failed=''
   switch($mode) {
     case 'txtjava': return '<script type="text/javascript">const m = "'.$mailto.'"; document.write(`<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="${m}">${qtDecodeEmails(m)}</a>`);</script>';
     case 'icojava':
-    case 'imgjava': return '<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="'.$mailto.'">'.getSVG('envelope').'</a>';
+    case 'imgjava': return '<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="'.$mailto.'">'.qtSVG('envelope').'</a>';
     case 'symboljava': return '<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="'.$mailto.'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"></use></svg></a>';
   }
   die('invalid render mode');
@@ -339,7 +339,7 @@ function makePager(string $uri, int $count, int $intPagesize=50, int $currentpag
   if ( $currentpage<1 ) $currentpage=1;
   if ( $intPagesize<5 ) $intPagesize=50;
   if ( $count<2 || $count<=$intPagesize ) return ''; //...
-  $arg = qtImplode(qtExplodeUri($uri,['page'])); // extract query part and drop the 'page'-part (arguments remain urlencoded)
+  $arg = qtImplode(qtExplodeUri($uri,'page')); // extract query part and drop the 'page'-part (arguments remain urlencoded)
   $uri = parse_url($uri, PHP_URL_PATH); // redifine $uri as the path-part only
   $strPages='';
   $firstpage='';

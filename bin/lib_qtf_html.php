@@ -53,50 +53,50 @@ function htmlCsvLink($strUrl,$intCount=20,$intPage=1)
   }
   return $strCsv;
 }
-function htmlLettres(string $baseFile, string $current='ALL', string $strAll='All', string $strClass='lettres', string $strTitle='Username starting with ', int $intSize=1, bool $bFilterForm=true)
+function htmlLettres(string $baseFile, string $current='ALL', string $all='All', string $class='lettres', string $title='Username starting with ', int $size=1, bool $filterForm=true)
 {
   // When $baseFile have other arguments, group argument will be appended
-  // $current is the current group, $strAll is the label of the 'ALL' group
+  // $current is the current group, $all is the label of the 'ALL' group
   // Note: $baseFile can be urlrewrited
   $current = strtoupper($current);
   $and = strpos($baseFile,'?') ? '&' : '?';
-  switch($intSize) {
-  case 1: $arr = explode('.','A.B.C.D.E.F.G.H.I.J.K.L.M.N.O.P.Q.R.S.T.U.V.W.X.Y.Z.~'); break;
-  case 2: $arr = explode('.','A|B.C|D.E|F.G|H.I|J.K|L.M|N.O|P.Q|R.S|T.U|V.W|X.Y|Z.~'); break;
-  case 3: $arr = explode('.','A|B|C.D|E|F.G|H|I.J|K|L.M|N|O.P|Q|R.S|T|U.V|W.X|Y|Z.~'); break;
-  case 4: $arr = explode('.','A|B|C|D.E|F|G|H.I|J|K|L.M|N|O|P.Q|R|S|T.U|V|W.X|Y|Z.~'); break;
+  switch($size) {
+    case 1: $arr = explode('.','A.B.C.D.E.F.G.H.I.J.K.L.M.N.O.P.Q.R.S.T.U.V.W.X.Y.Z.~'); break;
+    case 2: $arr = explode('.','A|B.C|D.E|F.G|H.I|J.K|L.M|N.O|P.Q|R.S|T.U|V.W|X.Y|Z.~'); break;
+    case 3: $arr = explode('.','A|B|C.D|E|F.G|H|I.J|K|L.M|N|O.P|Q|R.S|T|U.V|W.X|Y|Z.~'); break;
+    case 4: $arr = explode('.','A|B|C|D.E|F|G|H.I|J|K|L.M|N|O|P.Q|R|S|T.U|V|W.X|Y|Z.~'); break;
   }
-  $str = '<a '.($current==='ALL' ? ' class="active"' : '').' href="'.($current==='ALL' ? 'javascript:void(0)' : $baseFile.$and.'group=all').'">'.$strAll.'</a>';
+  $str = '<a '.($current==='ALL' ? ' class="active"' : '').' href="'.($current==='ALL' ? 'javascript:void(0)' : $baseFile.$and.'group=all').'">'.$all.'</a>';
   foreach($arr as $g) {
-    $title = $strTitle.($g==='~' ? L('other_char') : str_replace('|',' '.L('or').' ',$g));
+    $title = $title.($g==='~' ? L('other_char') : str_replace('|',' '.L('or').' ',$g));
     $str .= '<a'.($current===$g ? ' class="active"' : '').' href="'.($current===$g ? 'javascript:void(0)' : $baseFile.$and.'group='.$g).'"'.(empty($title) ? '' : ' title="'.qtAttr($title).'"').'>'.str_replace('|','',$g).'</a>';
   }
-  $strGroups  = '<div class="'.$strClass.'">';
-  $strGroups .= L('Show').' '.$str;
-  if ( $bFilterForm ) {
-  $strGroups .= ' <form method="get" action="'.$baseFile.'">';
-  $strGroups .= '<input required type="text" value="'.($current==='ALL' || in_array($current,$arr) ? '' : qtAttr($current)).'" name="group" size="3" maxlength="10" title="'.qtAttr($strTitle).'"/>';
-  $strGroups .= '<button type="submit" value="submit">'.getSVG('search').'</button>';
-  $strGroups .=  asTags(qtExplodeUri($baseFile),'','tag=hidden','',[],'urldecode',['page','group']);
-  $strGroups .= '</form>';
+  $group  = '<div class="'.$class.'">';
+  $group .= L('Show').' '.$str;
+  if ( $filterForm ) {
+  $group .= ' <form method="get" action="'.$baseFile.'">';
+  $group .= '<input required type="text" value="'.($current==='ALL' || in_array($current,$arr) ? '' : qtAttr($current)).'" name="group" size="3" maxlength="10" title="'.qtAttr($title).'"/>';
+  $group .= '<button type="submit" value="submit">'.qtSVG('search').'</button>';
+  $group .= qtTags(array_map('urldecode',qtExplodeUri($baseFile,'page|group')), '', 'tag=hidden');
+  $group .= '</form>';
   }
-  $strGroups .= '</div>';
-  return $strGroups;
+  $group .= '</div>';
+  return $group;
 }
 function bbcButtons($size=1)
 {
   if ( !QT_BBC || $size==0 ) return '';
-  $str = '<a class="bbc" onclick="qtCaret(`b`)" title="'.L('Bbc.bold').'">'.getSVG('bold').'</a>';
-  $str .= '<a class="bbc" onclick="qtCaret(`i`)" title="'.L('Bbc.italic').'">'.getSVG('italic').'</a>';
-  $str .= '<a class="bbc" onclick="qtCaret(`u`)" title="'.L('Bbc.under').'">'.getSVG('underline').'</a>';
-  $str .= '<a class="bbc" onclick="qtCaret(`quote`)" title="'.L('Bbc.quote').'">'.getSVG('quote-right').'</a>';
+  $str = '<a class="bbc" onclick="qtCaret(`b`)" title="'.L('Bbc.bold').'">'.qtSVG('bold').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`i`)" title="'.L('Bbc.italic').'">'.qtSVG('italic').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`u`)" title="'.L('Bbc.under').'">'.qtSVG('underline').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`quote`)" title="'.L('Bbc.quote').'">'.qtSVG('quote-right').'</a>';
   if ( $size>1 )
   {
-  $str .= '<a class="bbc" onclick="qtCaret(`code`)" title="'.L('Bbc.code').'">'.getSVG('code').'</a>';
-  $str .= '<a class="bbc" onclick="qtCaret(`url`)" title="'.L('Bbc.url').'">'.getSVG('link').'</a>';
-  $str .= '<a class="bbc" onclick="qtCaret(`mail`)" title="'.L('Bbc.mail').'">'.getSVG('envelope').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`code`)" title="'.L('Bbc.code').'">'.qtSVG('code').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`url`)" title="'.L('Bbc.url').'">'.qtSVG('link').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`mail`)" title="'.L('Bbc.mail').'">'.qtSVG('envelope').'</a>';
   }
-  if ( $size>2 ) $str .= '<a class="bbc" onclick="qtCaret(`img`)" title="'.L('Bbc.image').'">'.getSVG('image').'</a>';
+  if ( $size>2 ) $str .= '<a class="bbc" onclick="qtCaret(`img`)" title="'.L('Bbc.image').'">'.qtSVG('image').'</a>';
   return $str;
 }
 function icoPrefix(string $serie, int $i, string $src='config/prefix/')
@@ -107,7 +107,7 @@ function icoPrefix(string $serie, int $i, string $src='config/prefix/')
       // svg
       if ( substr($prefixIcon[$i],-4)==='.svg' ) {
 
-        return '<span class="prefix_icon" title="'.L('PrefixIcon.'.$serie.'0'.$i).'"'.(isset($prefixStyle[$i]) ? ' style="'.$prefixStyle[$i].'"' : '').'>'.getSVG(substr($prefixIcon[$i],0,-4)).'</span>';
+        return '<span class="prefix_icon" title="'.L('PrefixIcon.'.$serie.'0'.$i).'"'.(isset($prefixStyle[$i]) ? ' style="'.$prefixStyle[$i].'"' : '').'>'.qtSVG(substr($prefixIcon[$i],0,-4)).'</span>';
       }
       // image
       return '<img class="prefix_icon" src="'.$src.$prefixIcon[$i].'" alt="'.$i.'" title="'.L('PrefixIcon.'.$serie.'0'.$i).'"'.(isset($prefixStyle[$i]) ? ' style="'.$prefixStyle[$i].'"' : '').'/>';
@@ -118,7 +118,7 @@ function exitPage($content='Page not defined', string $title='!', bool $hideMenu
 {
   if ( !is_string($content) && !is_int($content) ) die('exitPage: invalid argument');
   // title can be one svg icon (if ends with '.svg')
-  if ( substr($title,-4)==='.svg' ) $title = getSVG(substr($title,0,-4));
+  if ( substr($title,-4)==='.svg' ) $title = qtSVG(substr($title,0,-4));
   global $oH;
   $oH->exiturl = APP.'_index.php';
   include APP.'_inc_hd.php'; // uses $hideMenuLang (true by default for error/exit pages)
@@ -306,15 +306,15 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
         }
       }
       if ( !empty($row['textmsg']) && $_SESSION[QT]['item_firstline']>0 && $showFirstline ) {
-      $arr[$k] .= '&nbsp;<small class="item-msg-preview">'.qtTrunc(qtUnbbc($row['textmsg'],true,L('Bbc.*')),QT_FIRSTLINE_SIZE).(empty($row['attach']) ? '' : ' '.getSVG('paperclip', 'title='.L('Attachment'))).'</small>';
+      $arr[$k] .= '&nbsp;<small class="item-msg-preview">'.qtTrunc(qtUnbbc($row['textmsg'],true,L('Bbc.*')),QT_FIRSTLINE_SIZE).(empty($row['attach']) ? '' : ' '.qtSVG('paperclip', 'title='.L('Attachment'))).'</small>';
       }
       break;
     case 'replies':
       // youreply merged in replies
-      $arr[$k] = $row['replies']==='0' ? '0' : '<span id="'.$strTableId.'re'.$row['id'].'"><svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"></use></svg></span><span>'.intK((int)$row['replies']).'</span>';
+      $arr[$k] = $row['replies']==='0' ? '0' : '<span id="'.$strTableId.'re'.$row['id'].'"><svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"></use></svg></span><span>'.qtK((int)$row['replies']).'</span>';
       break;
     case 'views':
-      $arr[$k] = $row['views']==='0' ? '0' : intK((int)$row['views']);
+      $arr[$k] = $row['views']==='0' ? '0' : qtK((int)$row['views']);
       break;
     case 'section':
       $i = (int)$row['forum'];

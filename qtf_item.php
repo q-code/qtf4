@@ -109,19 +109,19 @@ echo $oP->render($oS,$oT,true,true,QT_SKIN,'r1');
 if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) )
 {
   $arrTags= empty($oT->descr) ? array() : explode(';',$oT->descr);
-  echo '<div class="tags right" style="padding:4px 0">'.getSVG('tag'.(count($arrTags)>1 ? 's' : ''), 'title='.L('Tags')).' ';
+  echo '<div class="tags right" style="padding:4px 0">'.qtSVG('tag'.(count($arrTags)>1 ? 's' : ''), 'title='.L('Tags')).' ';
   if ( $tagEditor )
   {
     $tags = '';
     foreach($arrTags as $k=>$item) $tags .= empty($item) ? '' : '<span class="tag clickable" onclick="tagClick(this.innerHTML)" title="" data-tagdesc="'.$item.'">'.$item.'</span>';
     echo '<div id="tag-shown" style="display:inline-block">'.$tags.'</div>';
-    echo ' &nbsp; <a href="javascript:void(0)" id="tag-ctrl" class="tgl-ctrl" onclick="qtToggle(`tag-container`,null,`tag-ctrl`)" title="'.L('Edit').'">'.getSVG('pen').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a>'.PHP_EOL;
+    echo ' &nbsp; <a href="javascript:void(0)" id="tag-ctrl" class="tgl-ctrl" onclick="qtToggle(`tag-container`,null,`tag-ctrl`)" title="'.L('Edit').'">'.qtSVG('pen').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>'.PHP_EOL;
     echo '<div id="tag-container" style="display:none"><form method="post" action="'.url($oH->selfurl).'?s='.$s.'&t='.$t.'" onreset="qtFocus(`tag-edit`)">';
     echo '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/><input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
     echo '<input type="hidden" id="tag-saved" value="'.qtAttr($oT->descr).'"/>';
     echo '<input type="hidden" id="tag-new" name="tag-new" maxlength="255" value="'.qtAttr($oT->descr).'"/>';
     echo '<div id="ac-wrapper-tag-edit" class="ac-wrapper">';
-    echo '<input required type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/><button type="reset" class="tag-btn" title="'.L('Reset').'">'.getSVG('backspace').'</button>&nbsp;<button type="submit" class="tag-btn" title="'.L('Add').'" onclick="tagAdd(); asyncSaveTag('.$t.'); return false;">'.getSVG('plus').'</button><button type="submit" class="tag-btn"  title="'.L('Delete_tags').'" onclick="tagDel(); asyncSaveTag('.$t.'); return false;">'.getSVG('minus').'</button>';
+    echo '<input required type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/><button type="reset" class="tag-btn" title="'.L('Reset').'">'.qtSVG('backspace').'</button>&nbsp;<button type="submit" class="tag-btn" title="'.L('Add').'" onclick="tagAdd(); asyncSaveTag('.$t.'); return false;">'.qtSVG('plus').'</button><button type="submit" class="tag-btn"  title="'.L('Delete_tags').'" onclick="tagDel(); asyncSaveTag('.$t.'); return false;">'.qtSVG('minus').'</button>';
     echo '</div></form></div>';
   }
   else
@@ -172,7 +172,7 @@ echo '
 <form id="form-edit" method="post" action="'.url('qtf_edit.php').'?s='.$s.'&t='.$oT->id.'&a=re">
 <div class="quickreply">
 ';
-echo '<div class="g-qr-icon"><p class="i-container" title="'.L('Reply').'">'.getSVG('comment-dots').'</p></div>
+echo '<div class="g-qr-icon"><p class="i-container" title="'.L('Reply').'">'.qtSVG('comment-dots').'</p></div>
 <div class="g-qr-title">'.L('Quick_reply').'</div>
 <div class="g-qr-bbc">'.(QT_BBC ? '<div class="bbc-bar">'.bbcButtons(1).'</div>' : '').'</div>
 <div class="g-qr-text">

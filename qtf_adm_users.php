@@ -76,7 +76,7 @@ if ( $_SESSION[QT]['register_coppa']=='1' ) {
   $intSleepchild = $oDB->count( TABUSER." WHERE id>1 AND children='2'" ); // without agreement only
 }
 
-$icon = [' ', getSVG('chevron-circle-right'), getSVG('circle', 'class=disabled')];
+$icon = [' ', qtSVG('chevron-circle-right'), qtSVG('circle', 'class=disabled')];
 echo '<div id="users-metadata">
 <div id="users-filter">
 ';
@@ -133,7 +133,7 @@ echo '</div>
   {
     $row = $oDB->getRow();
     if ( !$row ) break;
-    echo '<tr><td><a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.intK((int)$row['numpost']).'</td></tr>';
+    echo '<tr><td><a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.qtK((int)$row['numpost']).'</td></tr>';
   }
 echo '</table>';
 
@@ -142,8 +142,8 @@ echo '</div>
 ';
 
 // Add user(s) form
-echo '<p style="margin:12px 0">'.($strCateg=='all' ? '' : '<a href="qtf_adm_users.php">'.getSVG('chevron-left').L('Show').' '.L('all').'</a> | ');
-if ( !empty($formAddUser) ) echo '<a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle();">'.L('User_add').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a> | ';
+echo '<p style="margin:12px 0">'.($strCateg=='all' ? '' : '<a href="qtf_adm_users.php">'.qtSVG('chevron-left').L('Show').' '.L('all').'</a> | ');
+if ( !empty($formAddUser) ) echo '<a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle();">'.L('User_add').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a> | ';
 echo '<a href="qtf_adm_users_imp.php">'.L('Users_import_csv').'...</a> | <a href="qtf_adm_users_exp.php">'.L('Users_export_csv').'...</a></p>';
 if ( !empty($formAddUser) ) echo $formAddUser;
 
@@ -206,25 +206,25 @@ if ( $intCount<$intUsers ) $strPaging = '<span class="small">'.L('user',$intCoun
 $rowCommands = L('selection').': <a class="datasetcontrol" href="javascript:void(0)" data-action="usersrole">'.L('role').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersdel">'.L('delete').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersban">'.strtolower(L('Ban')).'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="userspic">'.L('picture').'</a>';
 echo PHP_EOL.'<form id="form-users" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-users-action" name="a" />'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
-echo '<div id="t1-edits-top" class="left checkboxcmds">'.getSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
+echo '<div id="t1-edits-top" class="left checkboxcmds">'.qtSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // Table definition
 $t = new TabTable('id=t1|class=t-item|data-content=users',$intCount);
 $t->activecol = $strOrder;
-$t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order='.$strOrder.'&dir='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.getSVG('caret-'.($strDirec==='asc' ? 'up' : 'down')).'';
+$t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order='.$strOrder.'&dir='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down')).'';
 // TH
 $t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" name="t1-cb-all" id="t1-cb-all"/>', 'class=c-checkbox');
 $t->arrTh['name'] = new TabHead(L('User'), 'class=c-name', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=name&dir=asc">%s</a>');
-$t->arrTh['pic'] = new TabHead(getSVG('camera'), 'class=c-pic|title='.L('Picture'));
+$t->arrTh['pic'] = new TabHead(qtSVG('camera'), 'class=c-pic|title='.L('Picture'));
 $t->arrTh['role'] = new TabHead(L('Role'), 'class=c-role ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=role&dir=asc">%s</a>');
-$t->arrTh['numpost'] = new TabHead(getSVG('comments'), 'class=c-numpost|title='.L('Messages'), '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=numpost&dir=desc">%s</a>');
+$t->arrTh['numpost'] = new TabHead(qtSVG('comments'), 'class=c-numpost|title='.L('Messages'), '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=numpost&dir=desc">%s</a>');
 if ( $strCateg=='FM' || $strCateg=='SC' ) {
 $t->arrTh['firstdate'] = new TabHead(L('Joined'), 'class=c-joined ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=firstdate&dir=desc">%s</a>');
 } else {
 $t->arrTh['lastdate'] = new TabHead(L('Last_message').' (ip)', 'class=c-lastdate ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=lastdate&dir=desc">%s</a>');
 }
-$t->arrTh['closed'] = new TabHead(getSVG('ban'), 'class=c-ban', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=closed&dir=desc" title="'.L('Banned').'">%s</a>');
+$t->arrTh['closed'] = new TabHead(qtSVG('ban'), 'class=c-ban', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=closed&dir=desc" title="'.L('Banned').'">%s</a>');
 $t->arrTh['id'] = new TabHead('Id', 'class=c-id', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=id&dir=asc">%s</a>');
 // TD
 $t->cloneThTd();
@@ -262,7 +262,7 @@ while($row=$oDB->getRow())
   $t->arrTd['name']->content = '<a href="'.url('qtf_user.php').'?id='.$row['id'].'" title="'.qtAttr($row['name'],24).'">'.qtTrunc($row['name'],24).'</a>';
   $t->arrTd['pic']->content = '<div class="magnifier center">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', '').'</div>';
   $t->arrTd['role']->content = L('Role_'.strtoupper($row['role']));
-  $t->arrTd['numpost']->content = intK((int)$row['numpost']);
+  $t->arrTd['numpost']->content = qtK((int)$row['numpost']);
   if ( $strCateg=='FM' || $strCateg=='SC' )
   {
   $t->arrTd['firstdate']->content = empty($row['firstdate']) ? '' : qtDatestr($row['firstdate'],'$','',true);
@@ -284,7 +284,7 @@ while($row=$oDB->getRow())
 echo '</tbody>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
 echo '<div id="tablebot" class="table-ui bot">';
-echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.getSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.qtSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 echo '</form>'.PHP_EOL;
 

@@ -25,7 +25,7 @@ qtArgs('q s st v v2'); // as [string]
 if ( empty($q) ) $q = 's';
 if ( $s==='*' || $s==='' || !is_numeric($s) ) $s = '-1';
 if ( $st==='' ) $st = '*';
-$v = asCleanArray($v);
+$v = qtCleanArray($v);
 
 // initialise section
 $s = (int)$s;
@@ -129,7 +129,7 @@ if ( $q==='s' ) {
   }
   $navCommands .= '<a'.attrRender($def).'>'.L('New_item').'</a>';
 }
-$navCommands .= '<a class="button btn-search" href="'.url('qtf_search.php').'?'.$oH->selfuri.'" title="'.L('Search').'">'.getSVG('search').'</a>';
+$navCommands .= '<a class="button btn-search" href="'.url('qtf_search.php').'?'.$oH->selfuri.'" title="'.L('Search').'">'.qtSVG('search').'</a>';
 
 $strPaging = makePager( url($oH->selfurl).'?'.$oH->selfuri, $intCount, (int)$_SESSION[QT]['items_per_page'], $intPage);
 if ( $strPaging!='' ) $strPaging = L('Page').$strPaging;
@@ -209,7 +209,7 @@ if ( !empty($pageTitle) || !empty($ui) ) {
 }
 
 // Notes
-if  ( !empty($oH->warning) ) echo '<p class="warning">'.getSVG('exclamation-triangle').' '.$oH->warning.'</p>';
+if  ( !empty($oH->warning) ) echo '<p class="warning">'.qtSVG('exclamation-triangle').' '.$oH->warning.'</p>';
 
 $navCommands = $oH->backButton().$navCommands.$navCommandsRefine;
 
@@ -221,7 +221,7 @@ if ( $intCount===0 ) {
   echo '<div class="nav-top">'.$navCommands.'</div>'.PHP_EOL;
   echo '<p class="center" style="margin:1rem 0">'.L('No_result').'...</p>';
   if ( $oS->type==='2' && !SUser::isStaff() ) echo '<p class="center">'.L('Only_your_items').'</p>';
-  if ( $intCount ) echo '<p class="center">'.getSVG('exclamation-triangle').' '.L('Closed_item', $intCount).'. '.L('Closed_hidden_by_pref').' (<a href="javascript:void(0)" onclick="let d=document.getElementById(`pref`); if ( d) {d.value=`toggleclosed`;doSubmit(`formPref`);}">'.L('show').' '.L('closed_items').'</a>).</p>';
+  if ( $intCount ) echo '<p class="center">'.qtSVG('exclamation-triangle').' '.L('Closed_item', $intCount).'. '.L('Closed_hidden_by_pref').' (<a href="javascript:void(0)" onclick="let d=document.getElementById(`pref`); if ( d) {d.value=`toggleclosed`;doSubmit(`formPref`);}">'.L('show').' '.L('closed_items').'</a>).</p>';
   // alternate query
   if ( $s>=0 || $st!=='*' ) {
     $arg = 'q='.$q;
@@ -238,7 +238,7 @@ $useNewsOnTop = $_SESSION[QT]['news_on_top'];
 // selfuri contains arguments WITHOUT order,dir
 $t = new TabTable('id=t1|class=t-item', $intCount);
   $t->activecol = $strOrder;
-  $t->activelink = '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order='.$strOrder.'&dir='.($strDirec==='asc' ? 'desc' : 'asc').'">%s</a> '.getSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
+  $t->activelink = '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order='.$strOrder.'&dir='.($strDirec==='asc' ? 'desc' : 'asc').'">%s</a> '.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
   $t->thead();
   $t->tbody('data-dataset='.($useNewsOnTop ? 'newsontop' : 'items'));
 // TH (note: class are defined after)
@@ -302,7 +302,7 @@ if ( cmdExport ) {
 // Buttons and paging
 echo '<div id="t1-nav-top" class="nav-top">'.$navCommands.'</div>'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
-echo $rowCommands ? '<div id="t1-edits-top" class="left checkboxcmds">'.getSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo $rowCommands ? '<div id="t1-edits-top" class="left checkboxcmds">'.qtSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // TABLE START DISPLAY
@@ -370,7 +370,7 @@ while($row = $oDB->getRow()) {
   // show row content
   echo $t->getTDrow('id=t1-tr-'.$row['id'].'|class=t-item hover rowlight');
   // collects and appends unique tags (32+)
-  if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && !empty($row['tags']) && count($arrTags)<32 ) $arrTags = asCleanArray($row['tags'], ';', $arrTags);
+  if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && !empty($row['tags']) && count($arrTags)<32 ) $arrTags = qtCleanArray($row['tags'], ';', $arrTags);
   // odbcbreak
   ++$intRow; if ( $intRow>=$_SESSION[QT]['items_per_page'] ) break;
 }
@@ -384,10 +384,10 @@ if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) echo '</form>'.PHP_EO
 
 // BUTTON LINE AND PAGER
 $strCsv = '';
-if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) $strCsv .= '<a id="cmd-export-selected" class="csv" href="javascript:void(0)" title="'.L('H_Csv').' ('.L('selected').')">'.L('Export').getSVG('check-square').'</a> &middot; ';
+if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) $strCsv .= '<a id="cmd-export-selected" class="csv" href="javascript:void(0)" title="'.L('H_Csv').' ('.L('selected').')">'.L('Export').qtSVG('check-square').'</a> &middot; ';
 $strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(url('qtf_items_csv.php').'?'.$oH->selfuri, $intCount, $intPage);
 echo '<div id="tablebot" class="table-ui bot">';
-echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.getSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.qtSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 echo '<p class="right table-ui-export">'.$strCsv.'</p>'.PHP_EOL;
 echo '<div id="t1-nav-bot" class="nav-bot">'.$navCommands.'</div>'.PHP_EOL;
@@ -398,7 +398,7 @@ if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && count($arrTags)>0 ) {
   echo '<div class="tag-box"><p><svg class="svg-symbol svg-125"><use href="#symbol-tags" xlink:href="#symbol-tags"></use></svg> '.L('Show_only_tag').'</p>';
   foreach($arrTags as $strTag)
     echo '<a class="tag" href="'.url('qtf_items.php').'?s='.$s.'&q=adv&v2=*&v='.urlencode($strTag).'" title="..." data-tagdesc="'.$strTag.'">'.$strTag.'</a>';
-  echo getSVG('search','','',true).'</div>';
+  echo qtSVG('search','','',true).'</div>';
   $oH->scripts['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" id="tagdesc" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
 }
 
@@ -438,12 +438,12 @@ $oH->scripts[] = 'qtHideAfterTable("t1-nav-bot");qtHideAfterTable("tablebot");';
 
 // Symbols
 echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL;
-echo getSVG('symbol-caret-square-right').PHP_EOL;
-if ( QT_LIST_ME ) echo getSVG('symbol-ireplied').PHP_EOL;
-if ( $_SESSION[QT]['upload']!=='0' ) echo getSVG('symbol-paperclip').PHP_EOL;
+echo qtSVG('symbol-caret-square-right').PHP_EOL;
+if ( QT_LIST_ME ) echo qtSVG('symbol-ireplied').PHP_EOL;
+if ( $_SESSION[QT]['upload']!=='0' ) echo qtSVG('symbol-paperclip').PHP_EOL;
 if ( !empty($_SESSION[QT]['tags']) ) {
-  echo getSVG('symbol-tag').PHP_EOL;
-  echo getSVG('symbol-tags').PHP_EOL;
+  echo qtSVG('symbol-tag').PHP_EOL;
+  echo qtSVG('symbol-tags').PHP_EOL;
 }
 echo '</svg>'.PHP_EOL;
 

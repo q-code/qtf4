@@ -53,7 +53,7 @@ qtArgs('q s st v v2'); // assign as [string] by default
 if ( empty($q)) $q = 's';
 if ( $s==='*' || $s==='' || !is_numeric($s) ) $s = '-1';
 if ( empty($st)) $st = '*';
-$v = asCleanArray($v); // array of (unique) values trimmed (not empty)
+$v = qtCleanArray($v); // array of (unique) values trimmed (not empty)
 
 // initialise section
 $s = (int)$s;

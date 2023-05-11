@@ -57,7 +57,7 @@ if ( isset($_POST['exit']) ) $oH->redirect($oH->exiturl);
 // --------
 $currentImg = SUser::getPicture($id , 'id=userimg'); // img tag (with user.gif if image does not exist)
 $currentExists = strpos($currentImg,'user.gif')===false;
-$upload_path = getDataDir(QT_DIR_PIC,$id); // The path to where the image will be saved (is checked in qtx_upload_img.php)
+$upload_path = qtDirData(QT_DIR_PIC,$id); // The path to where the image will be saved (is checked in qtx_upload_img.php)
 $max_file = 3;       // Maximum file size in MB
 $max_width = 650;    // Max width allowed for the large image
 $thumb_max_width = qtExplodeGet($_SESSION[QT]['formatpicture'],'width',150); // Above this value, the crop tool will start
@@ -83,6 +83,6 @@ if ( isset($_POST['del']) && $_POST['del']=='del' )
 // HTML BEGIN
 // --------
 
-if ( SUser::id()!==$id ) $oH->warning = '<p>'.getSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+if ( SUser::id()!==$id ) $oH->warning = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 
 include APP.'_upload_img.php';

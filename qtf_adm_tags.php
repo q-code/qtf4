@@ -71,7 +71,7 @@ $bFile = file_exists(QT_DIR_DOC.$file);
 
 echo '<tr style="height:35px">';
 echo '<td class="c-section" colspan="2">'.L('Common_all_sections').'</td>';
-echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.getSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.getSVG('download').'</a>' : '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.getSVG('magic').'</a>').'</td>';
+echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
 echo '<td class="c-action">';
 
 echo $bFile ? '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'">'.L('Edit').'</a>' : '<span class="disabled">'.L('Edit').'</span>';
@@ -109,7 +109,7 @@ foreach($arrDomains as $idDom=>$strDomtitle)
     echo ' &middot; '.L('E_no_tag');
     }
     echo '</span></td>';
-    echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&s='.$oS->id.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.getSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.getSVG('download').'</a>' : '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.getSVG('magic').'</a>').'</td>';
+    echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&s='.$oS->id.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
     echo '<td class="c-action">';
 
     echo $bFile ? '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'">'.L('Edit').'</a>' : '<span class="disabled">'.L('Edit').'</span>';
@@ -134,7 +134,7 @@ echo '</div>
 // PREVIEW FILE
 
 $file = isset($_GET['file']) ? $_GET['file'] : '';
-echo '<h2 style="margin:20px 0 10px 0">'.getSVG('search').' '.L('Preview').'</h2>';
+echo '<h2 style="margin:20px 0 10px 0">'.qtSVG('search').' '.L('Preview').'</h2>';
 
 if ( empty($_GET['a']) && empty($file) ) echo '<p class="disabled">'.L('Nothing_selected').'</p>';
 

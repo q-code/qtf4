@@ -48,7 +48,7 @@ function renderUsers(array $ids, array $fields=['name','role','closed'])
   if ( count($arrUsers)===5 ) { array_pop($arrUsers); $last='<p>...</p>'; } else { $last=''; }
   foreach($arrUsers as $row) {
     $str .= '<p class="list"><span class="magnifier center">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', 'bin/css/user.gif').'</span> '.qtTrunc($row['name'],24);
-    $str .= empty($row['closed']) ? '' : ' '.getSVG( 'ban', 'title='.L('Banned').' '.L('day',$days[(int)$row['closed']]) );
+    $str .= empty($row['closed']) ? '' : ' '.qtSVG( 'ban', 'title='.L('Banned').' '.L('day',$days[(int)$row['closed']]) );
     $str .= ' ('.L('Role_'.$row['role']).')</p>';
   }
   return $str.$last;

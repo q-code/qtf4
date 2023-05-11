@@ -158,7 +158,7 @@ echo '<h2 class="config">'.L('Gmap.Mapping_config').'</h2>
 </tr>
 <tr>
 <th style="width:150px;">'.L('Gmap.Background').'</th>
-<td><select id="maptype" name="maptype" size="1" onchange="qtFormSafe.not();">'.asTags(L('Gmap.Back.*'),substr($_SESSION[QT]['m_gmap_gbuttons'],0,1)).'</select></td>
+<td><select id="maptype" name="maptype" size="1" onchange="qtFormSafe.not();">'.qtTags(L('Gmap.Back.*'),substr($_SESSION[QT]['m_gmap_gbuttons'],0,1)).'</select></td>
 <td><span class="small">'.L('Gmap.H_Background').'</span></td>
 </tr>
 <tr>
@@ -187,7 +187,7 @@ if ( !empty($_SESSION[QT]['m_gmap_gkey']) )
   {
   echo '<p class="small commands" style="margin:4px 0 2px 2px;text-align:right">'.L('Gmap.addrlatlng');
   echo ' <input type="text" size="24" id="find" name="find" class="small" value="'.$_SESSION[QT]['m_gmap_gfind'].'" title="'.L('Map.H_addrlatlng').'" onkeypress="enterkeyPressed=qtKeyEnter(event); if ( enterkeyPressed) showLocation(this.value,null);"/>';
-  echo '<span id="btn-geocode" class="clickable" onclick="showLocation(document.getElementById(`find`).value,null);" title="'.L('Search').'">'.getSVG('search').'</span></p>'.PHP_EOL;
+  echo '<span id="btn-geocode" class="clickable" onclick="showLocation(document.getElementById(`find`).value,null);" title="'.L('Search').'">'.qtSVG('search').'</span></p>'.PHP_EOL;
   }
   echo '</div>'.PHP_EOL;
 }

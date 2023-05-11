@@ -163,10 +163,10 @@ public static function getIconType(string $type='P', string $parentType='T', str
       $strIcon = '<img src="'.$skin.'img/topic_'.$parentType.'_'.$parentStatus.$suffix.'.gif" alt="'.$parentType.'" title="'.L('Ico_item_'.$parentType.'_'.$parentStatus.$suffix).'" class="i-item" data-type="'.$parentType.'" data-status="'.$parentStatus.'"/>';
       break;
     case 'R':
-      $strIcon = getSVG('comment-dots', 'class=i-item|title='.L('Ico_post_r').'|data-type='.$parentType.'|data-status='.$parentStatus);
+      $strIcon = qtSVG('comment-dots', 'class=i-item|title='.L('Ico_post_r').'|data-type='.$parentType.'|data-status='.$parentStatus);
       break;
     case 'D':
-      $strIcon = getSVG('trash', 'class=i-item|title='.L('Ico_post_d').'|data-type='.$parentType.'|data-status='.$parentStatus);
+      $strIcon = qtSVG('trash', 'class=i-item|title='.L('Ico_post_d').'|data-type='.$parentType.'|data-status='.$parentStatus);
       break;
     default:
       $strIcon = '<img src="'.$skin.'img/post_'.strtolower($type).'.gif" alt="P" title="'.L('Ico_post_'.strtolower($type)).'" class="i-item" data-type="'.$parentType.'" data-status="'.$parentStatus.'"/>';
@@ -190,10 +190,10 @@ public function render(CSection $oS, CTopic $oT, bool $avatar=true, bool $cmd=tr
   // show the image (if any)
   if ( !empty($this->attach) && strpos($str, 'src="@"') && in_array(substr($this->attach,-4,4),array('.gif','.jpg','jpeg','.png')) ) $str = str_replace('src="@"','src="'.QT_DIR_DOC.$this->attach.'"',$str);
   // if message shortened
-  if ( $_SESSION[QT]['viewmode']=='C' && substr($str,-3)==='...' ) $str .= '<a id="viewmode" href="'.url('qtf_item.php').'?t='.$this->topic.'&view=N" title="'.L('View_n').'">'.getSVG('window-maximize').' '.getSVG('long-arrow-alt-down').'</a>';
+  if ( $_SESSION[QT]['viewmode']=='C' && substr($str,-3)==='...' ) $str .= '<a id="viewmode" href="'.url('qtf_item.php').'?t='.$this->topic.'&view=N" title="'.L('View_n').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-down').'</a>';
   $msg .= $str.'</p>'.PHP_EOL;
   // attachements
-  if ( !empty($this->attach) ) $msg .= '<p class="post-attachment">'.getSVG('paperclip', 'title='.L('Attachment')).' <a href="'.QT_DIR_DOC.$this->attach.'" class="attachment" target="_blank">'.$this->getSrcAttach().'</a></p>';
+  if ( !empty($this->attach) ) $msg .= '<p class="post-attachment">'.qtSVG('paperclip', 'title='.L('Attachment')).' <a href="'.QT_DIR_DOC.$this->attach.'" class="attachment" target="_blank">'.$this->getSrcAttach().'</a></p>';
   // signature
   if ( $_SESSION[QT]['viewmode']!='C' && $this->type!='F' && !empty($this->usersign) ) {
     $msg .= '<p class="post-sign">'.qtBbc($this->usersign).'</p>'.PHP_EOL;

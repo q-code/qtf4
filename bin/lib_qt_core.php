@@ -4,7 +4,7 @@
  * Convert qt-php-like url into html-like url when urlrewrite is active. Works only on the path-part of the url. Ex: 'qtx_login.php' becomes 'login.html'
  * @param string $url
  * @param string $ext extension (with dot)
- * @param boolean|string $prefix file prefix (true for the default)
+ * @param boolean $hidePrefix file prefix (true for the default)
  * @return string the converted url, or the original url when urlrewrite is not active
  */
 function url(string $url='', string $ext='.html', bool $hidePrefix=true)
@@ -12,57 +12,92 @@ function url(string $url='', string $ext='.html', bool $hidePrefix=true)
   if ( !QT_URLREWRITE ) return $url;
   if ( empty($url) ) die(__FUNCTION__.' url empty');
   // Ex: 'qtx_login.php?a=1' becomes 'login.html?a=1'
-  if ( $hidePrefix )
-  {
+  if ( $hidePrefix ) {
     $i = strlen(APP.'_');
     if ( substr($url,0,$i)===APP.'_' ) $url = substr($url,$i);
     // @version str_starts_with requires php8
   }
-  $i = strrpos($url,'.php'); // only last .php is changed
+  $i = strrpos($url,'.php'); // only last .php becomes .html
   if ( $i===false ) return $url;
   return substr($url,0,$i).$ext.substr($url,$i+4);
 }
-function getSVG(string $id='info', string $attr='', string $wrapper='', bool $addSvgClass=false)
-{
-  if ( !file_exists('bin/svg/'.$id.'.svg') ) return '#';
-  $svg = file_get_contents('bin/svg/'.$id.'.svg');
-  if ( $addSvgClass) $svg = '<svg class="svg-'.$id.'" '.substr($svg,4);
-  if ( !empty($attr) && empty($wrapper) ) $wrapper = 'span'; // force span when attribute exists
-  if ( !empty($wrapper) ) $svg = '<'.$wrapper.attrRender($attr).'>'. $svg.'</'.$wrapper.'>';
-  return $svg;
-}
 /**
- * Returns the language path (with final /)
+ * Returns the translated word (lowercase or plural version) from a language dictionnary
+ * @param string $k key to be searched in the dictonnary (dot in the key allows searching sub-dictionnary)
+ * @param int $n number>1 indicates plural. Null skips the plural search (and don't add number)
+ * @param string $format format when $n is used ('n w' shows the number+word, '' hides the number)
+ * @param array $A dictionnary (global $L by default)
+ * @param string $pk parentkey (automatically assigned when accessing sub-dictionnary)
+ * @param bool $dropDoublequote (default true)
+ * @return string|array (can be an array of all sub-items when 'key.*' is requested)
  */
-function getLangDir(string $iso='')
+function L(string $k, int $n=null, string $format='n w', array $A=[], string $pk='', bool $dropDoublequote=true)
 {
-  $dir = 'language/';
-  if ( empty($iso) ) {
-    if ( defined('QT_LANG') ) return $dir.QT_LANG.'/';
-    if ( !empty($_SESSION[QT]['language']) ) return $dir.$_SESSION[QT]['language'].'/';
-    global $oDB; $iso = $oDB->getSetting('language','en'); // fallback
+  // Initialise
+  if ( !$A ) { global $L; $A = $L; } // if no dico, uses global $L
+  $res = substr($k,-2)==='.*' ? [] : $pk.$k; // on failed returns the key (or an empty array)
+  // On key with '.' works recursively (sub-dictionnary $A[...])
+  if ( strpos($k, '.')>0 ) {
+    $part = explode('.', $k, 2);
+    $pk = $part[0];
+    if ( empty($A[$pk]) || !is_array($A[$pk]) || $part[1]==='' ) return $res; // check sub-dictionnary and sub-key exists
+    return $part[1]==='*' ? $A[$pk] : L($part[1], $n, $format, $A[$pk], $pk.'.');
   }
-  return $dir.$iso.'/';
-}
-function getDataDir(string $root='', int $id=0, bool $check=false)
-{
-  // Get directory/subdirectory for Id (with final /).
-  $i1 = $id>0 ? floor($id/1000) : 0;
-  $i2 = $id-($i1*1000);
-  $i2 = $i2>0 ? floor($i2/100) : 0;
-  $path = $root.$i1.'000/'.$i1.$i2.'00';
-  if ( !$check ) return $path.'/';
-  return is_dir($path) ? $path.'/' : ''; // returns '' if directory not existing
+  // Format: php-format can be used, but note that this format applies ONLY when a $n exists (not null) and that the word is the first entry in the format
+  switch($format) {
+    case 'n w': $f = '%2$d %1$s'; break;
+    case 'k w': $f = '%2$s %1$s'; break;
+    case 'w':
+    case '': $f = '$s'; break;
+    default: $f = $format;
+  }
+  // Check if plural form must be searched (i.e. search for key with '+')
+  $p = $n===null || $n<2 ? '' : '+';
+  // Resolve word
+  if ( !empty($A[$k.$p]) ) {
+    $res = $A[$k.$p];
+  } elseif ( !empty($A[ucfirst($k.$p)]) ) {
+    $res = mb_strtolower($A[ucfirst($k.$p)]);
+  } elseif ( !empty($A[$k]) ) {
+    $res = $A[$k];
+  } elseif ( !empty($A[ucfirst($k)]) ) {
+    $res = mb_strtolower($A[ucfirst($k)]);
+  } else {
+    if ( substr($res,0,2)==='E_' ) $res = 'error: '.substr($res,2); // key is an (un-translated) error code, returns the error code
+    if ( strpos($res,'_')!==false ) $res = str_replace('_',' ',$res); // When word is missing, returns the key code without _ (with the parentkey if used)
+    if ( isset($_SESSION['QTdebuglang']) && $_SESSION['QTdebuglang'] ) $res = '<span style="color:red;text-shadow:0 0 2px black">'.$res.'</span>';
+  }
+  // Returns the word
+  if ( $dropDoublequote && strpos($res,'"')!==false ) $res = str_replace('"','',$res); // recommended to secure html attr
+  return $n===null ? $res : sprintf($f, $res, $format==='k w' ? qtK($n) : $n);
+  /*
+  Samples (using a french dictionnary):
+  To access sub-dictionnary, use the '.' as key-separator
+    L('DateMMM.Ja') returns 'Janvier' (the word in the dictionnary $L['DateMMM']['Ja'])
+    L('DateMMM.*) returns an array of all words in the dictionnary $L['DateMMM'] (months)
+  To get the lowercase version of a word, just use a key in lowercase
+    L('domain') returns 'domaine' (because $L['Domain'] exists in the dictionnary)
+    Tips: By convention, a dictionnary does not contain lowercase version of the words
+          The function L() allows creating the lowercase version
+          For sub-dictionnary, use the lowercase key only on the last part: L('DateMMM.ja') returns 'janvier'
+  To get the plural form a word, use a number as second argument
+    L('Domain', 3) returns '3 Domaines'
+    L('domain', 2) returns '2 domaines' (lowercase version)
+    L('Domain', 1) returns '1 Domaine' (for 0 or 1, no plural form)
+    Tips: by default, the number is included in result. To hide the number use format '' as 3d argument.
+  Fallback
+    When a plural form is not defined in the dictionnary, the function use the singular form.
+    If the requested key/subkey is not defined in the dictionnary the function returns the key itself without '_'
+    L('Unknown_key') returns 'Unknown key'
+  Debug
+    If you define a session variable 'QTdebuglang' set to '1', the function shows in red the key not defined.
+    A session variable can be set with url 'index.php?debuglang=1'
+  */
 }
 function translate(string $file)
 {
-  if ( empty($file) ) die(__FUNCTION__.' invalid argument');
-  if ( file_exists(getLangDir().$file) ) return getLangDir().$file;
-  return 'language/en/'.$file;
-}
-function useModule(string $name)
-{
-  return isset($_SESSION[QT]['module_'.$name]);
+  $path = qtDirLang().$file;
+  return file_exists($path) ? $path : 'language/en/'.$file;
 }
 function attrDecode(string $str, string $sep='|', string $required='')
 {
@@ -74,8 +109,7 @@ function attrDecode(string $str, string $sep='|', string $required='')
   $str = $required.$sep.$str;
   if ( substr_count($str,$sep)===0 && substr_count($str,'=')===0 ) return [$str]; // $str not compacted
   $attr = array();
-  foreach(asCleanArray($str,$sep) as $str)
-  {
+  foreach(qtCleanArray($str,$sep) as $str) {
     $a = array_map('trim',explode('=',$str,2)); // cut on first '=' only
     if ( !isset($a[1]) || $a[1]==='' || $a[1]==='"' || $a[1]==='""' ) $a[1] = null; // support for attribute without value
     if ( isset($a[1]) ) {
@@ -107,82 +141,46 @@ function attrAddClass(array &$arr, string $value='')
   if ( empty($arr['class']) ) { $arr['class'] = $value; return; }
   if ( strpos($arr['class'],$value)===false ) $arr['class'] .= ' '.$value;
 }
-/**
- * Returns the translated word, or the lowercase or plural version, from the language dictionnary
- * @param string $k key to be searched in the dictonnary (dot in the key allows accessing sub-dictionnary)
- * @param int $n number >1 indicates plural. Null skips the plural search (and don't add number)
- * @param string $format format when $n is used ('n w' shows the number+word, '' hides the number and shows only the word)
- * @param array $A dictionnary (automatically assigned to the global dictionnary $L by default)
- * @param string $pk parentkey (automatically assigned when accessing sub-dictionnary)
- * @param bool $dropDoublequote (default true) removes " to secure html attr value
- * @return string|array (can be an array of all sub-items when 'key.*' is requested)
- */
-function L(string $k, int $n=null, string $format='n w', array $A=[], string $pk='', bool $dropDoublequote=true)
+function qtK(int $n, string $unit='k', string $unit2='M')
 {
-  // Initialise
-  if ( !$A ) { global $L; $A = $L; } // if no dictionnary, uses global dictionnary $L
-  $res = substr($k,-2)==='.*' ? [] : $pk.$k; // failed returns the key (or an empty array)
-  // On key with '.' works recursively (sub-dictionnary $A[...])
-  if ( strpos($k, '.')>0 ) {
-    $part = explode('.', $k, 2);
-    $pk = $part[0];
-    if ( empty($A[$pk]) || !is_array($A[$pk]) || $part[1]==='' ) return $res; // check sub-dictionnary exists (and a sub-key was in $k)
-    return $part[1]==='*' ? $A[$pk] : L($part[1], $n, $format, $A[$pk], $pk.'.');
-  }
-  // Format (formula shortcut)
-  // Note: php format can also be used, but pay attention that $format is only used when a $n exists (not null) and that the word will be the 2nd input in the formula
-  switch($format){
-    case 'n w': $f = '%1$d %2$s'; break;
-    case 'k w': $f = '%1$s %2$s'; break;
-    case 'w':
-    case '': $f = '%2$s'; break;
-    default: $f = $format;
-  }
-  // Check if plural form must be searched (i.e. search for key with '+')
-  $p = $n===null || $n<2 ? '' : '+';
-  // Resolve word
-  if ( !empty($A[$k.$p]) ) {
-    $res = $A[$k.$p];
-  } elseif ( !empty($A[ucfirst($k.$p)]) ) {
-    $res = mb_strtolower($A[ucfirst($k.$p)]);
-  } elseif ( !empty($A[$k]) ) {
-    $res = $A[$k];
-  } elseif ( !empty($A[ucfirst($k)]) ) {
-    $res = mb_strtolower($A[ucfirst($k)]);
-  } else {
-    if ( substr($res,0,2)==='E_' ) $res = 'error: '.substr($res,2); // key is an (un-translated) error code, returns the error code
-    if ( strpos($res,'_')!==false ) $res = str_replace('_',' ',$res); // When word is missing, returns the key code without _ (with the parentkey if used)
-    if ( isset($_SESSION['QTdebuglang']) && $_SESSION['QTdebuglang'] ) $res = '<span style="color:red;text-shadow:0 0 2px black">'.$res.'</span>';
-  }
-  // Return the word (with $n if not null)
-  if ( $dropDoublequote && strpos($res,'"')!==false ) $res = str_replace('"','',$res);
-  return $n===null ? $res : sprintf($f, $format==='k w' ? intK($n) : $n, $res);
-  /*
-  ABOUT KEYS:
-  A dot in the key indicates a sub-dictionnary entry (when words are stored in array of array)
-  Dictionnary have case-sensitive keys (and first character is uppercase) and can have language specific plural form (key+)
-  Using lowercase-key will lowercase the translation
-  You can add a number $n as second argument to request the plural form of a word. When $n>1 the plural form is returned (if the plural form is not defined in the dictionnary, the singular translation is returned)
-  By default, when a number is defined, it is added before the word. Use $format='' to hide it.
-    Example in french:
-    L('Domain',0) returns '0 Domaine' - here no plural (the number is inserted by default)
-    L('domain',1) returns '1 domaine' - same but lowercase version
-    L('Domain',2) returns '2 Domaines' - returns the plural version
-    L('Domain',2,'') returns 'Domaines' - returns the plural version and hidden number
-  Sub-array level are accessible with the dot-key (and can be returned as array with key.*)
-    Example:
-    L('DateMMM.Ja') returns 'January'
-    L('DateMMM.*') returns ['January',...,'Decembre']
-    Tips: When using sub-array, only the last key can be used to switch to the lowercase version
-    L('DateMMM.ja') returns 'january'
-    L('datemmm.ja') will fail (and the key is returned)
-  Fallback - If the requested key (or subkey) is not defined in the language file (or the sub-array is not defined) the function returns the key itself without '_'
-    Example:
-    L('Unknown_key') returns 'Unknown key'
-    L('Error.404') returns 'Error.404'
-    L('E_101') [key used as error code] returns 'error: 101' when not defined in the language file.
-  Debug - If you define a session variable 'QTdebuglang' set to '1', the function shows in red the key not defined in the language file. A session variable can be set with url 'index.php?debuglang=1'
-  */
+  if ( $n<1000 ) return $n;
+  // Thousands: 1 decimal no round-up (9999 is 9.9k not 10k)
+  if ( $n<1000000 ) return round(floor($n/100)/10, 1).$unit;
+  // Millions: 2 decimals
+  return round($n/1000000,2).$unit2;
+}
+function qtSVG(string $id='info', string $attr='', string $wrapper='', bool $addSvgClass=false)
+{
+  if ( !file_exists('bin/svg/'.$id.'.svg') ) return '#';
+  $svg = file_get_contents('bin/svg/'.$id.'.svg');
+  if ( $addSvgClass) $svg = '<svg class="svg-'.$id.'" '.substr($svg,4);
+  if ( !empty($attr) && empty($wrapper) ) $wrapper = 'span'; // force span when attribute exists
+  if ( !empty($wrapper) ) $svg = '<'.$wrapper.attrRender($attr).'>'. $svg.'</'.$wrapper.'>';
+  return $svg;
+}
+/**
+ * Returns the language path (with final /)
+ */
+function qtDirLang(string $iso='')
+{
+  if ( !empty($iso) ) return 'language/'.$iso.'/';
+  if ( defined('QT_LANG') ) return 'language/'.QT_LANG.'/';
+  if ( !empty($_SESSION[QT]['language']) ) return 'language/'.$_SESSION[QT]['language'].'/';
+  global $oDB; return 'language/'.$oDB->getSetting('language','en').'/';
+}
+function qtDirData(string $root='', int $id=0, bool $check=false)
+{
+  // Get directory/subdirectory for Id (with final /).
+  $i1 = $id>0 ? floor($id/1000) : 0;
+  $i2 = $id-($i1*1000);
+  $i2 = $i2>0 ? floor($i2/100) : 0;
+  $path = $root.$i1.'000/'.$i1.$i2.'00';
+  if ( !$check ) return $path.'/';
+  return is_dir($path) ? $path.'/' : ''; // returns '' if directory not existing
+}
+function qtModule(string $name)
+{
+  return isset($_SESSION[QT]['module_'.$name]);
 }
 function qtCtype_digit(string $str)
 {
@@ -252,40 +250,42 @@ function qtArgs(string $def, bool $inGet=true, bool $inPost=true, bool $trim=tru
     if ( $required ) die(__FUNCTION__.'Required argument ['.$var.'] is missing');
   }
 }
-function asTags(array $arr, $current='', string $attr='', string $attrCurrent='', array $arrDisabled=[], string $fx='', array $reject=[], string $eol='')
+/**
+ * Generates a string of html-tags (option, checkbox, span or input-hidden) based on an array
+ */
+function qtTags(array $arr, $current='', string $attr='', string $attrCurrent='', array $disabled=[])
 {
-  if ( !empty($fx) && !function_exists($fx) ) die(__FUNCTION__.' requested function ['.$fx.'] is unknown' );
-
-  // $current and $arr indexes can be [int] but will be converted to [string]
-  // When $arrDisabled is included, it must be an array of trimmed-strings
-
+  // Validate arguments: $arr keys and $current can be [int|string] (will be converted to [string]). $disabled is list of keys [int|string]
   if ( is_int($current) ) $current = (string)$current;
   if ( !is_string($current) ) die(__FUNCTION__.' arg #2 must be int or string');
-  $attr = attrDecode($attr,'|','tag=option');
+  $attr = attrDecode($attr,'|','tag=option'); // use 'option' if tag is not defined
   $tag = $attr['tag'];
   unset($attr['tag']);
-
+  // Build result
   $str = '';
   foreach($arr as $k=>$value) {
-    if ( in_array($k,$reject) ) continue; // works when mixing [int|string]
     // format the value: $k and $value are converted to [string]
     $k = qtAttr($k); // $k is alway used as [string] attribute hereafter
     if ( is_array($value) ) $value = reset($value);
-    if ( !empty($fx) ) $value = $fx($value);
-
-    $itemAttr = $attr;
-    if  ( !empty($attrCurrent) && strlen($current)>0 && $current==$k ) $itemAttr = attrDecode($attrCurrent);
-
+    if ( !empty($attrCurrent) && strlen($current)>0 && $current==$k ) $attr = attrDecode($attrCurrent);
     switch($tag) {
       // Attributes must use qtAttr(). $k is already converted with qtAttr()
-      // Attention for checkbox value is used as id. $attrCurrentnt can mark one as checked
-      case 'option'  : $str .= '<option value="'.$k.'"'.attrRender($itemAttr).($current===$k ? ' selected' : '').(in_array($k,$arrDisabled,true) ? ' disabled' : '').'>'.$value.'</option>'; break;
-      case 'checkbox': $str .= '<input type="checkbox" id="'.$k.'" value="'.$k.'"'.attrRender($itemAttr).($current===$k || $current==='*' ? ' checked' : '').(in_array($k,$arrDisabled,true) ? ' disabled ' : '').'/><label for="'.$k.'">'.$value.'</label>'; break;
-      case 'hidden'  : $str .= '<input type="hidden" name="'.$k.'" value="'.qtAttr($value).'"'.attrRender($itemAttr).'/>'; break;
-      case 'span'    : $str .= '<span'.attrRender($itemAttr).'>'.$value.'</span>'; break;
-      default: die(__FUNCTION__.' Invalid tag' );
+      // Attention for checkbox value is used as id. $attrCurrent can mark one as checked
+      case 'option':
+        $str .= '<option value="'.$k.'"'.attrRender($attr).($current===$k ? ' selected' : '').(in_array($k,$disabled,true) ? ' disabled' : '').'>'.$value.'</option>';
+        break;
+      case 'checkbox':
+        $str .= '<input type="checkbox" id="'.$k.'" value="'.$k.'"'.attrRender($attr).($current===$k || $current==='*' ? ' checked' : '').(in_array($k,$disabled) ? ' disabled ' : '').'/><label for="'.$k.'">'.$value.'</label>';
+        break;
+      case 'hidden':
+        $str .= '<input type="hidden" name="'.$k.'" value="'.qtAttr($value).'"'.attrRender($attr).'/>';
+        break;
+      case 'span':
+        $str .= '<span'.attrRender($attr).'>'.$value.'</span>';
+        break;
+      default:
+        die(__FUNCTION__.' invalid tag');
     }
-    if ( !empty($eol) ) $str .= $eol;
   }
   return $str;
 }
@@ -306,25 +306,76 @@ function qtAttr(string $str, int $size=0, string $unquote='')
  * Returns an array (key=>value) from a multfield string 'key1=value1;key2=value2'
  * @param string $str
  * @param string $sep separator
- * @param array $skip list of keys [string] to be removed
- * @param string $fx a function to apply to each value ex. 'trim', 'strtolower', 'urldecode'...
- * @return array (of string), keys are trimmed, unformated parts are skipped
- * <p>Returns an empty array when $str is empty (or no "=" or no keys)<br>
- * When duplicate keys exist, the last value overwrites previous values<br>
- * Key without a value is valid i.e. 'key1=;key2=value2' returns ['key1'=>'','key2'=>'value2']</p>
+ * @param string $skip key to remove (can be a list with | separator)
  */
-function qtExplode(string $str, string $sep=';', array $skip=[])
+function qtExplode(string $str, string $sep=';', string $skip='')
 {
   if ( empty($str) ) return [];
   $arr = [];
-  foreach(explode($sep,$str) as $str) {
+  $skip = explode('|', $skip);
+  foreach(explode($sep, $str) as $str) {
     if ( strpos($str,'=')===false ) continue; // skip parts without =
-    $parts = explode('=',$str,2); $parts[0] = trim($parts[0]); // trim the keys
+    $parts = explode('=', $str, 2); $parts[0] = trim($parts[0]); // trim the keys
     if ( $parts[0]==='' || ($skip && in_array($parts[0], $skip, true)) ) continue;
     $arr[$parts[0]] = $parts[1];
   }
   return $arr;
-  // array keys and $skips must be [string] (nevertheless php converts integer-like-keys to integers)
+  // $skip should be [string] key(s), nevertheless php convert integer-like-key to integer
+}
+/**
+ * Explode the uri $str (or the current uri) to return an array of the query parts (not urldecoded)
+ * @param string $str an uri like 'page.html?a=1&b=2#1' (if $str is empty, use the current URI)
+ * @param string $skip key (argument) to exclude (can be a list with | separator)
+ * @return array (empty array when the uri does not contains query parts)
+ */
+function qtExplodeUri(string $str='', string $skip='')
+{
+  if ( empty($str) ) $str = $_SERVER['REQUEST_URI'];
+  $str = parse_url($str, PHP_URL_QUERY); // null if no url query part
+  if ( empty($str) ) return [];
+  if ( strpos($str,'&amp;')!==false ) $str = str_replace('&amp;','&',$str);
+  return qtExplode($str, '&', $skip);
+}
+/**
+ * Return the URI-part of the current REQUEST_URI
+ * @param string $skip argument to be removed  (can be a list with | separator)
+ * @return string uri-arguments
+ */
+function qtURI(string $skip='')
+{
+  return qtImplode(qtExplodeUri('',$skip));
+}
+/**
+ * Search a specific key value in a multifield string 'a=1;b=2;c=3'
+ * @param string $str
+ * @param string $key
+ * @param mixed $alt (value if key not found)
+ * @param string $sep
+ * @return string can be also $alt [mixed]
+ */
+function qtExplodeGet(string $str, string $key, $alt='', string $sep=';')
+{
+  // qtExplodeGet('a=1;b=2', 'a') returns '1'
+  if ( empty($str) ) die(__FUNCTION__.' Invalid multifield string');
+  if ( empty($key) ) die(__FUNCTION__.' Invalid key');
+  $arr = qtExplode($str, $sep);
+  return isset($arr[$key]) ? $arr[$key] : $alt;
+  // Note on alt:
+  // for wrong format, $alt is returned. Ex: in 'a;b=2', a is not a declaration string, thus $alt is returned
+  // a key without value is valid (set to ''). Ex: in 'a=;b=2', a is declared, thus '' is returned
+}
+/**
+ * Implode an array[key=>values] into a multifield string "key1=value1&key2=value2"
+ */
+function qtImplode(array $arr, string $sep='&', bool $skipNull=true)
+{
+  $str = '';
+  foreach($arr as $k=>$value) {
+    if ( $skipNull && is_null($value) ) continue;
+    $str .= (isset($str[0]) ? $sep : '').$k.'='.$value;
+  }
+  return $str;
+  // TIPS: default separator is '&' because this function is MAINLY use to handle uri-arguments
 }
 /**
  * Explode, trim, remove empty values (also 0) and return unique values
@@ -333,77 +384,14 @@ function qtExplode(string $str, string $sep=';', array $skip=[])
  * @param array $append optional array to append (before trimming and filtering)
  * @return array array of string
  */
-function asCleanArray(string $str, string $sep=';', array $append=[])
+function qtCleanArray(string $str, string $sep=';', array $append=[])
 {
-  if ( empty($str) ) return empty($append) ? [] : array_unique(array_filter(array_map('trim',$append)));
+  if ( empty($str) ) return $append ? array_unique(array_filter(array_map('trim',$append))) : [];
   if ( trim($sep)==='' ) die(__FUNCTION__.' invalid separator (use explode with space separator)' );
-  $arr = explode($sep,$str); if ( !empty($append) ) $arr = array_merge($arr,$append);
+  $arr = explode($sep,$str); if ( $append ) $arr = array_merge($arr,$append);
   return array_unique(array_filter(array_map('trim',$arr)));
   // NOTE: if $append contains sub-array, they are skipped and php generates a warning
 }
-/**
- * Explode the uri $str (or the current uri) to return an array of the query parts (not urldecoded by default)
- * @param string $str an uri like 'page.html?a=1&b=2#1' (if $str is empty, use the current URI)
- * @param string $fx ex: 'urldecode' each value (key remains unchanged)
- * @return array (empty array when the uri does not contains query parts)
- */
-function qtExplodeUri(string $str='', array $skip=[])
-{
-  if ( empty($str) ) $str = $_SERVER['REQUEST_URI'];
-  $str = parse_url($str,PHP_URL_QUERY); // null if no url query part
-  if ( empty($str) ) return [];
-  if ( strpos($str,'&amp;')!==false ) $str = str_replace('&amp;','&',$str);
-  return qtExplode($str, '&', $skip);
-}
-/**
- * Return the URI-part of the current REQUEST_URI
- * @param string $skip arguments to be removed
- * @param string $skipsep arguments delimiter
- * @return string uri-arguments
- */
-function qtURI(string $skip='', string $skipsep='|')
-{
-  return qtImplode(qtExplodeUri('', explode($skipsep,$skip)), '&');
-}
-/**
- * Search a specific key-value in a multifield string 'a=1;b=2;c=3'
- * @param string $str
- * @param string $key
- * @param mixed $alt (value if key not found)
- * @param string $sep
- * @param array $skip
- * @return string can be also $alt [mixed]
- */
-function qtExplodeGet(string $str, string $key, $alt='', string $sep=';', array $skip=[])
-{
-  // qtExplodeGet('a=1;b=2', 'a') returns '1'
-  if ( empty($str) ) die(__FUNCTION__.' Invalid multifield string');
-  if ( empty($key) ) die(__FUNCTION__.' Invalid key');
-  $arr = qtExplode($str, $sep, $skip); // can be [] when str is empty
-  return isset($arr[$key]) ? $arr[$key] : $alt;
-  // Note on alt:
-  // for wrong format, $alt is returned. Ex: in 'a;b=2', a is not a declaration string, thus $alt is returned
-  // a key without value is valid (set to ''). Ex: in 'a=;b=2', a is declared, thus '' is returned
-}
-
-/**
- * Implode an array of key-values into a ini-string "key1=value1&key2=value2"
- * @param array $arr
- * @param string $sep separator character
- * @param string $fx function to apply to each value (ex: urlencode or strtolower)
- * @param boolean $skipNull do not include key=value when value is null
- * @return string (or '' if $arr is empty)
- */
-function qtImplode(array $arr, string $sep='&', bool $skipNull=true)
-{
-  $str = '';
-  foreach($arr as $key=>$value) {
-    if ( $skipNull && is_null($value) ) continue;
-    $str .= (isset($str[0]) ? $sep : '').$key.'='.$value;
-  }
-  return $str;
-}
-
 /**
  * Switch between mail() and external-PHPMailer (unsing class.pop3.php and class.smtp.php)
  * @param string $strTo
@@ -452,20 +440,13 @@ function qtMail(string $strTo, string $strSubject, string $strMessage, string $s
     break;
   }
 }
-function baseFile(string $file, bool $minusUnderscore=true)
+function qtBasename(string $file, bool $chgUnderscore=true)
 {
-  // Returns the selfurl basename: filename without prefix or extension and in lowercase.
-  // Option: converts '_' to '-'
+  // Returns the basename: filename in lowercase without prefix or extension
   $str = strtolower(str_replace(APP.'_','',$file));
-  if ( $minusUnderscore ) $str = str_replace('_','-',$str);
-  $i = strrpos($str,'.'); if ( $i===false ) return $str;
-  return substr($str,0,$i);
-}
-function intK(int $n, string $unit='k', string $unit2='M')
-{
-  if ( $n<1000 ) return $n;
-  if ( $n<1000000 ) return round(floor($n/100)/10, 1).$unit;
-  return round($n/1000000,2).$unit2;
+  if ( $chgUnderscore && strpos($str,'_')!==false ) $str = str_replace('_','-',$str);
+  $i = strrpos($str,'.');
+  return  $i===false ? $str : substr($str,0,$i);
 }
 /**
  * Quote a string (works recursively in case of array)
@@ -499,9 +480,9 @@ function qtQuote($txt, string $q1='"', string $q2='', bool $keepNum=false)
       default: $q2 = $q1;
     }
   }
-  if ( empty($q1) && empty($q2) ) throw new Exception( __FUNCTION__.' invalid argument q' );
+  if ( empty($q1) && empty($q2) ) throw new Exception(__FUNCTION__.' invalid argument q');
   if ( is_string($txt) || is_int($txt) || is_float($txt) ) return $q1.$txt.$q2;
-  throw new Exception( __FUNCTION__.' invalid argument' );
+  throw new Exception(__FUNCTION__.' invalid argument');
 }
 /**
  * Convert apostrophe (and optionally doublequote, &, <, >) to html entity (used for sql statement values insertion)
@@ -511,14 +492,16 @@ function qtQuote($txt, string $q1='"', string $q2='', bool $keepNum=false)
  * @param boolean $tag convert < and > (true by default)
  * @return string
  */
-function qtDb(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $tag=true)
+function qtDb(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $symbolTag=true)
 {
   // same as CDatabase::sqlEncode (with $amp using config constant)
   if ( empty($str) ) return $str;
   if ( $amp && strpos($str,'&')!==false ) $str = str_replace('&','&#38;',$str);
   if ( $double && strpos($str,'"')!==false ) $str = str_replace('"','&#34;',$str);
-  if ( $tag && strpos($str,'<')!==false ) $str = str_replace('<','&#60;',$str);
-  if ( $tag && strpos($str,'>')!==false ) $str = str_replace('>','&#62;',$str);
+  if ( $symbolTag ) {
+    if ( strpos($str,'<')!==false ) $str = str_replace('<','&#60;',$str);
+    if ( strpos($str,'>')!==false ) $str = str_replace('>','&#62;',$str);
+  }
   return strpos($str,"'")===false ? $str : str_replace("'",'&#39;',$str);
 }
 function qtDbDecode(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $tag=true)
@@ -532,10 +515,11 @@ function qtDbDecode(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bo
   if ( $amp && strpos($str,'&#38;')!==false ) $str = str_replace('&#38;','&',$str);
   return $str;
 }
-function qtDropDiacritics($str) {
+function qtDropDiacritics($str)
+{
   // Works recursively on array
   if ( is_array($str) ) { foreach($str as $k=>$item) $str[$k] = qtDropDiacritics($item); return $str; }
-  // String only
+  // Process string (returns $str if failed)
   if ( !is_string($str) ) throw new Exception(__FUNCTION__.' invalid argument');
   $tl = Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', Transliterator::FORWARD);
   $res = $tl->transliterate($str);
@@ -561,15 +545,14 @@ function qtTrunc($txt, int $max=255, string $end='...')
  * @param string|array $out text replacement
  * @return string
  */
-function qtInline(string $str, int $max=255, string $end='...', bool $unbbc=true, $in=array("\r\n",'<br>','  '), $out=array(' ',' ',' '))
+function qtInline(string $str, int $max=255, string $end='...', bool $unbbc=true, $in=["\r\n",'<br>','  '], $out=[' ',' ',' '])
 {
   if ( empty($str) ) return $str;
-  if ( !is_string($in) && !is_array($in) ) die('qtInline: arg #5 must be a string or array');
-  if ( !is_string($out) && !is_array($out) ) die('qtInline: arg #6 must be a string or array');
-  // unbbc
-  if ( $max>0 ) $str = substr($str,0,$max+64); // optimize for qtTrunc and qtUnbbc
+  if ( !is_string($in) && !is_array($in) ) die(__FUNCTION__.' arg #5 must be a string or array');
+  if ( !is_string($out) && !is_array($out) ) die(__FUNCTION__.' arg #6 must be a string or array');
+  if ( $max>0 ) $str = substr($str,0,$max+64); // reduce length if truncating
+  // unbbc and inline
   if ( $unbbc ) $str = qtUnbbc($str);
-  // inline
   $str = str_replace($in, $out, $str);
   // truncate
   return $max>0 ? qtTrunc($str,$max,$end) : $str;
@@ -600,10 +583,8 @@ function qtDatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
   // $dropOldTime - Don't show time for date > 2 days.
   // $e - When $sDate is '0' or empty, or when the input date format is unsupported the function returns $e ('?')
   // The translation uses $L['dateSQL']. If not existing, the php words remains (english).
-
   $sDate = qtDateClean($sDate); if ( empty($sDate) ) return $e; // Clean $sDate to a [string] YYYYMMDD[HHMMSS] (max 14 char, supports 'now')
   if ( strlen($sDate)===4 ) return $sDate; // Stop if input is a year
-
   // Analyse date time: returns $e when input is a invalid date otherwhise detect if recent date
   $intDate = false;
   switch(strlen($sDate)) {
@@ -614,8 +595,7 @@ function qtDatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
     case 14: $intDate = mktime(substr($sDate,-6,2),substr($sDate,-4,2),substr($sDate,-2,2),substr($sDate,4,2),substr($sDate,6,2),substr($sDate,0,4)); break;
     default: return $e;
   }
-  if ( $intDate===FALSE ) return $e;
-
+  if ( $intDate===false ) return $e;
   // Exceptions (used by rss xml)
   if ( $sOutDate==='RFC-3339' ) {
     $sDate = date('Y-m-d\TH:i:s',$intDate);
@@ -623,13 +603,11 @@ function qtDatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
     $sGMT = substr($sGMT,0,3).':'.substr($sGMT,-2,2);
     return $sDate.$sGMT;
   }
-
   // Check requested formats (and if recent)
   $bRecent = ( date('Y-m-d')==date('Y-m-d',$intDate) || date('Y-m-d')==date('Y-m-d',$intDate+86400) );
   if ( $sOutDate==='$' ) $sOutDate = defined('FORMATDATE') ? FORMATDATE : 'Y-m-d';
   if ( $sOutTime==='$' ) $sOutTime = defined('FORMATTIME') ? FORMATTIME : ''; // drop hh:mm if format not specified
   if ( !$bRecent && $dropOldTime ) $sOutTime='';
-
   // Apply output format. In case of friendly date, Today/Yesterday will replace the date (and time can be added)
   $stamp = '';
   if ( $bRecent && $friendly ) {
@@ -640,7 +618,6 @@ function qtDatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
   $sDate = trim($stamp.(empty($format) ?  '' : date($format,$intDate)));
   if ( empty($sDate) )  return $e;
   $sDateFull = date('j F Y, '.(empty($sOutTime) ? 'G:i' : $sOutTime),$intDate);
-
   // Translating
   global $L;
   if ( isset($L['dateSQL']) && is_array($L['dateSQL']) ) {
@@ -654,10 +631,10 @@ function qtDatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
 }
 function qtDateTranslate(string $str, array $translations)
 {
-  if ( empty($translations) ) return $str;
+  if ( !$translations ) return $str;
   // to avoid recursive replacement, we build a dictionnary containing only the words used in $str
   $words = array_filter(explode(' ',preg_replace('/[^a-z]+/i', ' ', $str)));
-  $dico = array();
+  $dico = [];
   foreach($words as $word) {
     if ( array_key_exists($word, $translations) ) {
       $dico[$word] = $translations[$word];
@@ -760,7 +737,7 @@ function qtIsMail($mails, bool $multiple=true)
   if ( is_array($mails) ) { foreach($mails as $k=>$item) if ( !qtIsMail($item,$multiple) ) return false; return true; }
   // string (or csv)
   if ( !is_string($mails) || empty($mails) || $mails!==trim($mails) ) return false;
-  $mails = $multiple && strpos($mails,',')!==false ? asCleanArray($mails,',') : [$mails];
+  $mails = $multiple && strpos($mails,',')!==false ? qtCleanArray($mails,',') : [$mails];
   foreach ($mails as $mail) if ( !preg_match("/^[A-Z0-9._%-]+@[A-Z0-9][A-Z0-9.-]{0,61}[A-Z0-9]\.[A-Z]{2,6}$/i",$mail) ) return false;
   return true;
 }

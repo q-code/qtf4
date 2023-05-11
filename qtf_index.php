@@ -81,8 +81,8 @@ foreach(array_keys($_Domains) as $idDom) {
     $t->arrTd[0]->content = asImg( CSection::makeLogo($logofile,$mSec['type'],$mSec['status']), 'title='.L('Ico_section_'.$mSec['type'].'_'.$mSec['status']), url('qtf_items.php?s='.$idSec) );
     $t->arrTd[1]->content = '<p><a class="section" href="'.url('qtf_items.php?s='.$idSec).'">'.$mSec['title'].'</a></p>'.(empty($mSec['descr']) ? '' : '<p class="sectiondesc">'.$mSec['descr'].'</p>');
     $t->arrTd[2]->content = $strLastpost;
-    $t->arrTd[3]->content = intK($mSec['items']);
-    $t->arrTd[4]->content = intK($mSec['replies']);
+    $t->arrTd[3]->content = qtK($mSec['items']);
+    $t->arrTd[4]->content = qtK($mSec['replies']);
     echo $t->getTDrow('class=hover');
 
   }
@@ -105,7 +105,7 @@ if ( isset($_SESSION['QTdebugsse']) && $_SESSION['QTdebugsse'] ) echo '<div id="
 
 // Symbols
 echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL;
-echo getSVG('symbol-caret-square-right').PHP_EOL;
+echo qtSVG('symbol-caret-square-right').PHP_EOL;
 echo '</svg>'.PHP_EOL;
 
 include 'qtf_inc_ft.php';

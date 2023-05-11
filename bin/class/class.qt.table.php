@@ -79,7 +79,7 @@ class TabItem
     if ( empty($str) ) return [];
     if ( substr_count($str,$sep)===0 && substr_count($str,'=')>1 ) return [$str]; // check if $str is compacted
     $attr = array();
-    foreach(asCleanArray($str,$sep)as $str)
+    foreach(qtCleanArray($str,$sep)as $str)
     {
       $a = array_map('trim',explode('=',$str,2)); // cut on first '=' only
       if ( !isset($a[1]) || $a[1]==='' || $a[1]==='"' || $a[1]==='""' ) $a[1] = null; // support for attribute without value

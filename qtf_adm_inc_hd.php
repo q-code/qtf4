@@ -35,7 +35,7 @@ echo '
 if ( !defined('HIDE_MENU_LANG') || !HIDE_MENU_LANG )
 {
   $langMenu = new CMenu();
-  $langMenu->add('text='.getSVG('caret-square-left').'|id=lang-exit|href='.APP.'_index.php|title='.L('Exit').'|onclick=return qtFormSafe.exit(e0);');
+  $langMenu->add('text='.qtSVG('caret-square-left').'|id=lang-exit|href='.APP.'_index.php|title='.L('Exit').'|onclick=return qtFormSafe.exit(e0);');
   // lang
   if ( $_SESSION[QT]['userlang'] ) {
     if ( is_array(LANGUAGES) && count(LANGUAGES)>1 ) {
@@ -89,7 +89,7 @@ if ( !defined('HIDE_MENU_TOC') || !HIDE_MENU_TOC )
   }
   echo '<div class="group">'.$navMenu->build($oH->selfurl).'<p class="item"><a href="qtf_adm_module.php?a=add" onclick="return qtFormSafe.exit(e0);">['.L('Add').']</a> &middot; <a href="qtf_adm_module.php?a=rem" onclick="return qtFormSafe.exit(e0);">['.L('Remove').']</a></p></div>';
   echo '<a style="display:block;margin:8px 0" class="button center" href="'.APP.'_index.php" onclick="return qtFormSafe.exit(e0);">'.L('Exit').'</a>';
-  echo getSVG('user-A', 'class=filigrane');
+  echo qtSVG('user-A', 'class=filigrane');
   echo '</div>'.PHP_EOL;
 }
 

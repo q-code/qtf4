@@ -41,7 +41,7 @@ if ( isset($_POST['ok']) ) try {
     $i = 0;
     $intCountUser = 0;
     $id = $oDB->nextId(TABUSER);
-    $oDB->stoponerror=false;
+    $oDB->stoponerror=false; /*!!!*/
     while( ($row=fgetcsv($handle,500,$strDelimit))!==FALSE )
     {
       $i++;
@@ -50,7 +50,7 @@ if ( isset($_POST['ok']) ) try {
       if ( count($row)==4 )
       {
         $strRole = 'U'; if ( $row[0]=='A' || $row[0]=='M' || $row[0]=='a' || $row[0]=='m') $strRole=strtoupper($row[0]);
-        $strLog = trim($row[1]); if ( !empty($strLog) ) $strLog=utf8_decode($strLog);
+        $strLog = trim($row[1]);
         $strPwd = trim($row[2]);
         if ( substr($strPwd,0,3)==='SHA' || substr($strPwd,0,3)==='sha' ) $strPwd = sha1($strPwd);
         if ( empty($strPwd) ) $strPwd=sha1($strLog);

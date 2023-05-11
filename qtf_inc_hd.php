@@ -56,7 +56,7 @@ if ( defined('HIDE_MENU_LANG') && HIDE_MENU_LANG ) $hideMenuLang = true;
 if ( !$hideMenuLang ) {
   $langMenu = new CMenu();
   // user
-  $langMenu->add( '!'.getSVG('user-'.SUser::role(), 'title='.L('Role_'.SUser::role())) );
+  $langMenu->add( '!'.qtSVG('user-'.SUser::role(), 'title='.L('Role_'.SUser::role())) );
   $langMenu->add( SUser::id()>0 ? 'text='.SUser::name().'|id=logname|href='.url(APP.'_user.php').'?id='.SUser::id() : 'text='.L('Role_V').'|tag=span|id=logname');
   // lang
   if ( $_SESSION[QT]['userlang'] ) {
@@ -72,7 +72,7 @@ if ( !$hideMenuLang ) {
   }
   // contrast
   if ( QT_MENU_CONTRAST ) {
-    $langMenu->add( 'text='.getSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|title=High contrast display|aria-current=false' );
+    $langMenu->add( 'text='.qtSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|title=High contrast display|aria-current=false' );
     $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/contrast.css" disabled/>';
     $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', toggleContrast);
       qtApplyStoredState('contrast');
@@ -123,16 +123,16 @@ if ( QT_SIMPLESEARCH && $oH->selfurl!==APP.'_search.php' ) {
     echo '<a href="'.url(APP.'_search.php').'">'.L('Advanced_search').'...</a>';
     echo asImg( QT_SKIN.'img/topic_t_0.gif', 'alt=T|class=img|title='.L('Recent_items'), url(APP.'_items.php').'?q=last' );
     echo asImg( QT_SKIN.'img/topic_a_0.gif', 'alt=T|class=img|title='.L('All_news'), url(APP.'_items.php').'?q=news' );
-    if ( SUser::role()!=='V' ) echo '<a href="'.url(APP.'_items.php').'?q=user&v2='.SUser::id().'&v='.urlencode(SUser::name()).'" title="'.L('All_my_items').'">'.getSVG('user').'</a>';
+    if ( SUser::role()!=='V' ) echo '<a href="'.url(APP.'_items.php').'?q=user&v2='.SUser::id().'&v='.urlencode(SUser::name()).'" title="'.L('All_my_items').'">'.qtSVG('user').'</a>';
     echo '<form method="post" action="'.url(APP.'_search.php').'" style="display:inline">';
     echo '<button id="searchSubmit" type="submit" style="display:none" name="ok" value="'.makeFormCertificate('a2038e83fd6618a444a5de51bf2313de').'">ok</button>';
     echo '<input type="hidden" name="q" value="qkw">';
-    echo '<div id="ac-wrapper-qkw" class="ac-wrapper"><input required id="qkw" name="v" type="text" size="25" placeholder="'.L('Number_or_keyword').'" autocomplete="off" /></div> <a class="btn-search" href="javascript:void(0)" title="'.L('Search').' '.L('in_all_sections').'" onclick="document.getElementById(`searchSubmit`).click();">'.getSVG('search').'</a>';
+    echo '<div id="ac-wrapper-qkw" class="ac-wrapper"><input required id="qkw" name="v" type="text" size="25" placeholder="'.L('Number_or_keyword').'" autocomplete="off" /></div> <a class="btn-search" href="javascript:void(0)" title="'.L('Search').' '.L('in_all_sections').'" onclick="document.getElementById(`searchSubmit`).click();">'.qtSVG('search').'</a>';
     echo '</form>';
     $oH->scripts['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/'.APP.'_config_ac.js"></script>';
     $oH->scripts[] = 'acOnClicks["qkw"] = function(focusInput,btn){ if ( focusInput.id=="qkw" && focusInput.value.substring(0,1)==="#" ) window.location="'.APP.'_item.php?t="+focusInput.value.substring(1); }';
   }
-  echo '<a class="button button-x" href="javascript:void(0)" onclick="qtToggle(`searchbar`);" title="'.L('Close').'">'.getSVG('times').'</a>'.PHP_EOL;
+  echo '<a class="button button-x" href="javascript:void(0)" onclick="qtToggle(`searchbar`);" title="'.L('Close').'">'.qtSVG('times').'</a>'.PHP_EOL;
   echo '</div>'.PHP_EOL;
 }
 
@@ -177,26 +177,27 @@ case 'qtf_stats.php':
 case 'qtf_item.php':
   $strURI = qtURI('view'); // drop the 'view'-part. Arguments remain urlencoded
   if ( $_SESSION[QT]['viewmode']=='C' ) {
-    echo '<a id="viewmode" href="'.url($oH->selfurl).'?'.$strURI.'&view=N" title="'.L('View_n').'">'.getSVG('window-maximize').' '.getSVG('long-arrow-alt-down').'</a>';
+    echo '<a id="viewmode" href="'.url($oH->selfurl).'?'.$strURI.'&view=N" title="'.L('View_n').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-down').'</a>';
   } else {
-    echo '<a id="viewmode" href="'.url($oH->selfurl).'?'.$strURI.'&view=C" title="'.L('View_c').'">'.getSVG('window-maximize').' '.getSVG('long-arrow-alt-up').'</a>';
+    echo '<a id="viewmode" href="'.url($oH->selfurl).'?'.$strURI.'&view=C" title="'.L('View_c').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-up').'</a>';
   }
   break;
 case 'qtf_items.php':
   if ( !empty($oH->items) ) {
     if ( !isset($q) ) $q = 's';
-    $strCrumbtrail = $q!=='s' ? getSVG('search').' ' : '';
+    $strCrumbtrail = $q!=='s' ? qtSVG('search').' ' : '';
     $strCrumbtrail .= L( in_array($q,['qkw','kw','userm']) ? 'message' : 'item', $oH->items);
     if ( !empty($oH->itemsHidden) ) $strCrumbtrail .= ' ('.L('hidden',$oH->itemsHidden).')';
     echo '<span id="crumbtrail-info">'.$strCrumbtrail.'</span>';
   }
   break;
 case 'qtf_users.php':
+  if ( empty($_SESSION[QT]['formatpicture']) ) $_SESSION[QT]['formatpicture']='mime=0;width=100;height=100';
   if ( !empty(qtExplodeGet($_SESSION[QT]['formatpicture'], 'mime')) ) {
     if ( $_SESSION[QT]['viewmode']==='C' ) {
-      echo '<a id="viewmode" href="'.url($oH->selfurl).'?view=N" title="'.L('View_n').'">'.getSVG('window-maximize').' '.getSVG('long-arrow-alt-down').'</a>';
+      echo '<a id="viewmode" href="'.url($oH->selfurl).'?view=N" title="'.L('View_n').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-down').'</a>';
     } else {
-      echo '<a id="viewmode" href="'.url($oH->selfurl).'?view=C" title="'.L('View_c').'">'.getSVG('window-maximize').' '.getSVG('long-arrow-alt-up').'</a>';
+      echo '<a id="viewmode" href="'.url($oH->selfurl).'?view=C" title="'.L('View_c').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-up').'</a>';
     }
   }
   break;
@@ -208,6 +209,6 @@ echo '</p>
 
 // MAIN CONTENT / $oS->id=-1 in case of 'void'-section
 $str =  isset($oS) && $oS->id>=0 ? ' data-section-type="'.$oS->type.'" data-section-status="'.$oS->status.'"' : '';
-echo '<div id="main-ct" class="pg-'.baseFile($oH->selfurl).'"'.$str.'>
+echo '<div id="main-ct" class="pg-'.qtBasename($oH->selfurl).'"'.$str.'>
 ';
 if ( !empty($oH->error) ) echo '<p class="error center">'.$oH->error.'</p>';

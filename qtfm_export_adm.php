@@ -163,7 +163,7 @@ echo '<form method="post" action="',$oH->selfurl,'">
 <tr><th><label for="year">',$L['Item+'],'</label></th>
 <td><select id="year" name="year" size="1">
 <option value="*">[ ',$L['All'],' ]</option>
-',asTags($arrYears),'
+',qtTags($arrYears),'
 </select></td>
 </tr>
 <tr>

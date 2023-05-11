@@ -6,9 +6,9 @@ To upgrade from version 3.x to 4.0, you can proceed with a normal installation (
 
   IMPORTANT: Do not delete your 'avatar', and 'upload' folders during the file transfert.
   Other files and folders can be overwritten.
-  
+
   NOTE: The database configuration (bin/config.php) is now stored in config/config_db.php (with new variablenames)
-  You can transfert your connection values into this new file, or use the installation procedure. 
+  You can transfert your connection values into this new file, or use the installation procedure.
 
 
 ==============================
@@ -39,7 +39,7 @@ Change the permission of the folder /config/ to make it writable (chmod 777).
 Change the permission of the folders /avatar/ and subfolders to make them writable (chmod 777).
 Change the permission of the folders /upload/ and subfolders to make them writable (chmod 777).
 
-Permissions can be changed remotely with a FTP client 
+Permissions can be changed remotely with a FTP client
 
 
 3. Start the installation
@@ -51,4 +51,3 @@ From your web browser, go to the installation page: install/index.php
 4. Clean up
 -----------
 When previous steps are completed, you can delete the /install/ folder on your website and set the permission for /config/ to readonly.
-

@@ -161,7 +161,7 @@ class CMenu
     if ( strlen($esc)===1 && $str[0]===$esc) return ['!'=>substr($str,1)]; // string start with the escape character: decoding is skipped and source string is returned
     if ( strtolower($sep)==='json' ) return self::attrDecodeJson($str); //...
     $attr = array();
-    foreach(self::asCleanArray($str,$sep) as $str)
+    foreach(self::qtCleanArray($str,$sep) as $str)
     {
       $a = array_map('trim',explode('=',$str,2)); // cut on first '=' only
       if ( !isset($a[1]) || $a[1]==='' || $a[1]==='"' || $a[1]==='""' ) $a[1] = null; // support for attribute without value
@@ -196,7 +196,7 @@ class CMenu
     if ( strpos($arr['class'],$value)===false ) $arr['class'] .= ' '.$value;
   }
 
-  private static function asCleanArray(string $str, string $sep=';')
+  private static function qtCleanArray(string $str, string $sep=';')
   {
     if ( empty($str) ) return [];
     if ( trim($sep)==='' ) die(__METHOD__.' invalid separator (use explode with space separator)' );

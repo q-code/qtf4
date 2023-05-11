@@ -27,7 +27,7 @@ if ( empty($ids) ) die('Missing ids');
 if ( empty($q)) $q = 's';
 if ( $s==='*' || $s==='' || !is_numeric($s) ) $s = '-1';
 if ( empty($st)) $st = '*';
-$v        = asCleanArray($v); // array of (unique) values trimmed (not empty)
+$v        = qtCleanArray($v); // array of (unique) values trimmed (not empty)
 $intCount = count(explode(',',$ids));
 $intLimit = 0;
 $intLen   = (int)$_SESSION[QT]['items_per_page'];

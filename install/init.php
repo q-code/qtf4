@@ -45,7 +45,7 @@ function L(string $k, int $n=null, string $format='n w', array $A=[], string $pk
   }
   // Return the word (with $n if not null)
   if ( $dropDoublequote && strpos($res,'"')!==false ) $res = str_replace('"','',$res);
-  return $n===null ? $res : sprintf($f, $format==='k w' ? intK($n) : $n, $res);
+  return $n===null ? $res : sprintf($f, $format==='k w' ? qtK($n) : $n, $res);
 }
 function saveToFile(string $file, string $str='', bool $create=true)
 {

@@ -81,12 +81,12 @@ echo '
 ';
 echo '<tr>
 <th><label for="language">'.L('Dflt_language').'</label></th>
-<td><select id="language" name="language" onchange="qtFormSafe.not();">'.asTags( $arrFiles, $_SESSION[QT]['language'] ).'</select><span class="small indent">'.(file_exists('language/readme.txt') ? '<a href="tool_txt.php?ro=1&exit=qtf_adm_region.php&file=language/readme.txt&title=How to add languages" onclick="return qtFormSafe.exit(e0);">How to add languages...</a>' :'').'</span></td>
+<td><select id="language" name="language" onchange="qtFormSafe.not();">'.qtTags( $arrFiles, $_SESSION[QT]['language'] ).'</select><span class="small indent">'.(file_exists('language/readme.txt') ? '<a href="tool_txt.php?ro=1&exit=qtf_adm_region.php&file=language/readme.txt&title=How to add languages" onclick="return qtFormSafe.exit(e0);">How to add languages...</a>' :'').'</span></td>
 </tr>
 ';
 echo '<tr>
 <th><label for="userlang">'.L('User_language').'</label></th>
-<td><select id="userlang" name="userlang" onchange="qtFormSafe.not();">'.asTags( [L('N'),L('Y')], (int)$_SESSION[QT]['userlang'] ).'</select><span class="small indent">'.L('H_User_language').'</span></td>
+<td><select id="userlang" name="userlang" onchange="qtFormSafe.not();">'.qtTags( [L('N'),L('Y')], (int)$_SESSION[QT]['userlang'] ).'</select><span class="small indent">'.L('H_User_language').'</span></td>
 </tr>
 </table>
 ';
@@ -115,11 +115,11 @@ echo '<h2 class="config">'.L('Clock').'</h2>
 <table class="t-conf">
 <tr>
 <th>'.L('Show_time_zone').'</th>
-<td><select name="show_time_zone" onchange="qtFormSafe.not();">'.asTags( [L('N'),L('Y'),L('Y').' (+gmt)'], (int)$_SESSION[QT]['show_time_zone'] ).'</select><span class="small indent">'.L('H_Show_time_zone').'</span></td>
+<td><select name="show_time_zone" onchange="qtFormSafe.not();">'.qtTags( [L('N'),L('Y'),L('Y').' (+gmt)'], (int)$_SESSION[QT]['show_time_zone'] ).'</select><span class="small indent">'.L('H_Show_time_zone').'</span></td>
 </tr>
 <tr>
 <th>'.L('Clock_setting').'</th>
-<td><select name="time_zone" onchange="qtFormSafe.not();">'.asTags( L('tz.*'),'gmt'.$_SESSION[QT]['time_zone'] ).'</select><span class="small">&nbsp;</span></td>
+<td><select name="time_zone" onchange="qtFormSafe.not();">'.qtTags( L('tz.*'),'gmt'.$_SESSION[QT]['time_zone'] ).'</select><span class="small">&nbsp;</span></td>
 </tr>
 </table>
 ';

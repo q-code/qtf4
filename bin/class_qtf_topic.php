@@ -143,7 +143,7 @@ function getTagIcon()
 {
   if ( empty($this->descr) ) return '';
   $arr = explode(';',$this->descr);
-  return getSVG('tag'.(count($arr)>1 ? 's' : ''), 'title='.implode(',',$arr));
+  return qtSVG('tag'.(count($arr)>1 ? 's' : ''), 'title='.implode(',',$arr));
 }
 function getTopicTitle()
 {

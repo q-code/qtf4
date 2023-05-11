@@ -2,7 +2,7 @@
 error_reporting(E_ALL);//!!!
 
 // -----------------
-// Connection config and Constants
+// Connection config and Constants // config_db.php is required BEFORE config_cst.php and lib_qt_core.php
 // -----------------
 require 'config/config_db.php';
 include 'config/config_lang.php'; if ( !defined('LANGUAGES') ) define('LANGUAGES',['en'=>'EN English']);

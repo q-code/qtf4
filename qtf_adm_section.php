@@ -141,7 +141,7 @@ echo '<form method="post" action="'.$oH->selfurl.'">
 <tr>
 <th style="width:150px; text-align:right"><span class="texthead">'.L('Domain').'</span></th>
 <td><select name="domain" onchange="qtFormSafe.not();">
-<option value="'.$oS->pid.'" selected>'.$arrDomains[$oS->pid].'</option>'.asTags($arrDest).'</select></td>
+<option value="'.$oS->pid.'" selected>'.$arrDomains[$oS->pid].'</option>'.qtTags($arrDest).'</select></td>
 </tr>
 </table>
 ';
@@ -176,7 +176,7 @@ echo 'input type="hidden" id="usr-t" value="M"/>
 else
 {
 echo '<input type="hidden" name="owneridold" value="'.$oS->ownerid.'" onchange="qtFormSafe.not();"/>
-<select id="ownerid" class="stamprole" name="ownerid" onchange="qtFormSafe.not();">'.asTags($arrStaff, $oS->ownerid).'</select>';
+<select id="ownerid" class="stamprole" name="ownerid" onchange="qtFormSafe.not();">'.qtTags($arrStaff, $oS->ownerid).'</select>';
 }
 echo '</td>
 </tr>
@@ -192,14 +192,14 @@ echo '<tr>
 ';
 echo '<tr>
 <th style="text-align: right; width:150px"><span class="texthead"><label for="titlefield">'.L('Show_item_title').'</label></span></th>
-<td><select id="titlefield" name="titlefield" onchange="qtFormSafe.not();">'.asTags(L('Item_title.*'),$oS->titlefield).'</select>&nbsp;<span class="small">'.L('H_Show_item_title').'</span></td>
+<td><select id="titlefield" name="titlefield" onchange="qtFormSafe.not();">'.qtTags(L('Item_title.*'),$oS->titlefield).'</select>&nbsp;<span class="small">'.L('H_Show_item_title').'</span></td>
 </tr>
 ';
 echo '<tr title="'.L('H_Item_prefix').'">
 <th style="text-align: right; width:150px"><span class="texthead"><label for="prefix">'.L('Item_prefix').'</label></span></th>
 <td>
 <select id="prefix" name="prefix" onchange="qtFormSafe.not();">
-'.asTags(L('PrefixSerie.*'),$oS->prefix).'
+'.qtTags(L('PrefixSerie.*'),$oS->prefix).'
 <option value="0"'.($oS->prefix=='0' ? ' selected' : '').'>'.L('None').'</option>
 </select>&nbsp;<a class="small" href="qtf_adm_prefixicon.php" target="_blank">'.L('Item_prefix_demo').'</a>
 </td>
@@ -247,7 +247,7 @@ $strOrder = $oS->getMF('options','order','lastpostdate');
 echo '<tr>
 <th><span class="texthead">'.L('Default_items_order').'</span></th>
 <td>
-<select name="dfltorder" onchange="qtFormSafe.not();">'.asTags($arr,$strOrder).'</select>
+<select name="dfltorder" onchange="qtFormSafe.not();">'.qtTags($arr,$strOrder).'</select>
 </td>
 </tr>
 ';
@@ -256,7 +256,7 @@ $arr = array('none'=>L('None'),'views'=>L('Views'),'status'=>L('Status'),'id'=>'
 $dflt_lastcol = $oS->getMF('options','last'); if  (strtolower($dflt_lastcol)==='n' || empty($dflt_lastcol) ) $dflt_lastcol='none';
 echo '<tr>
 <th><span class="texthead">'.L('Infofield').'</span></th>
-<td><select name="lastcolumn" onchange="qtFormSafe.not();">'.asTags($arr,$dflt_lastcol).'</select></td>
+<td><select name="lastcolumn" onchange="qtFormSafe.not();">'.qtTags($arr,$dflt_lastcol).'</select></td>
 </tr>
 </table>
 ';
@@ -328,7 +328,7 @@ echo '<p class="submit">
 
 echo '
 </div>
-<p>'.getSVG('angle-left').' <a href="'.$oH->exiturl.'" onclick="return qtFormSafe.exit(e0);">'.$oH->exitname.'</a></p>
+<p>'.qtSVG('angle-left').' <a href="'.$oH->exiturl.'" onclick="return qtFormSafe.exit(e0);">'.$oH->exitname.'</a></p>
 ';
 
 // HTML END

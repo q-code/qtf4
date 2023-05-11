@@ -86,17 +86,17 @@ echo '<form method="post" action="'.$oH->selfurl.'">
 <table class="t-conf">
 <tr title="'.L('H_Section_skin').'">
 <th><label for="skin">'.L('Section_skin').'</label></th>
-<td class="flex-sp"><select id="skin" name="skin" onchange="qtFormSafe.not();toggleCustomCss(this.value,`'.$currentCss.'`);">'.asTags($arrFiles,$currentCss).'</select><span id="custom-css">'.(empty($customCss) ? '' : '('.L('and').' custom.css <a href="tool_txt.php?exit=qtf_adm_skin.php&file='.$customCss.'&rows=30" title="'.L('Edit').'" onclick="return qtFormSafe.exit(e0);">'.getSVG('pen-square').'</a>)').'</span></td>
+<td class="flex-sp"><select id="skin" name="skin" onchange="qtFormSafe.not();toggleCustomCss(this.value,`'.$currentCss.'`);">'.qtTags($arrFiles,$currentCss).'</select><span id="custom-css">'.(empty($customCss) ? '' : '('.L('and').' custom.css <a href="tool_txt.php?exit=qtf_adm_skin.php&file='.$customCss.'&rows=30" title="'.L('Edit').'" onclick="return qtFormSafe.exit(e0);">'.qtSVG('pen-square').'</a>)').'</span></td>
 </tr>
 <tr title="'.L('H_Show_banner').'">
 <th><label for="showbanner">'.L('Show_banner').'</label></th>
-<td><select id="showbanner" name="show_banner" onchange="qtFormSafe.not();">'.asTags([L('Show_banner0'),L('Show_banner1'),L('Show_banner2')],(int)$_SESSION[QT]['show_banner']).'</select></td>
+<td><select id="showbanner" name="show_banner" onchange="qtFormSafe.not();">'.qtTags([L('Show_banner0'),L('Show_banner1'),L('Show_banner2')],(int)$_SESSION[QT]['show_banner']).'</select></td>
 </tr>
 <tr title="'.L('H_Show_welcome').'">
 <th>'.L('Show_welcome').'</th>
 <td class="flex-sp"><select name="show_welcome" onchange="qtFormSafe.not();">';
-echo asTags([2=>L('Y'),0=>L('N'),1=>L('While_unlogged')], (int)$_SESSION[QT]['show_welcome'] );
-echo '</select><span id="welcome-txt">'.(empty($welcomeTxt) ? '' : ' ('.L('edit').' '.L('file').' <a href="tool_txt.php?exit=qtf_adm_skin.php&file='.$welcomeTxt.'" title="'.L('Edit').'" onclick="return qtFormSafe.exit(e0);">'.getSVG('pen-square').'</a>)').'</span></td>
+echo qtTags([2=>L('Y'),0=>L('N'),1=>L('While_unlogged')], (int)$_SESSION[QT]['show_welcome'] );
+echo '</select><span id="welcome-txt">'.(empty($welcomeTxt) ? '' : ' ('.L('edit').' '.L('file').' <a href="tool_txt.php?exit=qtf_adm_skin.php&file='.$welcomeTxt.'" title="'.L('Edit').'" onclick="return qtFormSafe.exit(e0);">'.qtSVG('pen-square').'</a>)').'</span></td>
 </tr>
 </table>
 ';
@@ -110,20 +110,20 @@ if ( $_SESSION[QT]['replies_per_page']==='20' || $_SESSION[QT]['replies_per_page
 echo '<tr title="'.L('H_Items_per_section_page').'">
 <th><label for="items_per_page">'.L('Items_per_section_page').'</label></th>
 <td><select id="items_per_page" name="items_per_page" onchange="qtFormSafe.not();">
-'.asTags($arr,'n'.$_SESSION[QT]['items_per_page']).'
+'.qtTags($arr,'n'.$_SESSION[QT]['items_per_page']).'
 </select></td>
 </tr>
 <tr title="'.L('H_Replies_per_item_page').'">
 <th><label for="replies_per_page">'.L('Replies_per_item_page').'</label></th>
 <td><select id="replies_per_page" name="replies_per_page" onchange="qtFormSafe.not();">
-'.asTags($arr,'n'.$_SESSION[QT]['replies_per_page']).'
+'.qtTags($arr,'n'.$_SESSION[QT]['replies_per_page']).'
 </select></td>
 </tr>
 ';
 echo '<tr title="'.L('H_Show_legend').'">
 <th><label for="show_legend">'.L('Show_legend').'</label></th>
 <td>
-<select id="show_legend" name="show_legend" onchange="qtFormSafe.not();">'.asTags([L('N'),L('Y')],(int)$_SESSION[QT]['show_legend']).'</select>
+<select id="show_legend" name="show_legend" onchange="qtFormSafe.not();">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['show_legend']).'</select>
 </td>
 </tr>
 </table>
@@ -135,7 +135,7 @@ echo '<h2 class="config">'.L('Your_website').'</h2>
 echo '<tr title="'.L('H_Home_website_name').'">
 <th>'.L('Add_home').'</th>
 <td>
-<select name="home_menu" onchange="toggleHome(this.value); qtFormSafe.not();">'.asTags([L('N'),L('Y')],(int)$_SESSION[QT]['home_menu']).'</select>
+<select name="home_menu" onchange="toggleHome(this.value); qtFormSafe.not();">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['home_menu']).'</select>
 &nbsp;<input type="text" id="home_name" name="home_name" size="20" maxlength="64" value="'.qtAttr($_SESSION[QT]['home_name'],64),'"',($_SESSION[QT]['home_menu']=='0' ? ' disabled' : '').' onchange="qtFormSafe.not();"/></td>
 </tr>
 <tr title="'.L('H_Website').'">
@@ -152,29 +152,29 @@ echo '<tr id="home_url_help"'.($_SESSION[QT]['home_menu'] ? '': ' style="display
 echo '</table>
 ';
 // Start helper
-if ( $_SESSION[QT]['home_menu'] && (strlen($_SESSION[QT]['home_url'])<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$_SESSION[QT]['home_url'])) ) echo '<p>'.getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Home_website_url').' '.L('invalid').'</p>';
+if ( $_SESSION[QT]['home_menu'] && (strlen($_SESSION[QT]['home_url'])<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$_SESSION[QT]['home_url'])) ) echo '<p>'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Home_website_url').' '.L('invalid').'</p>';
 
 if ( !isset($_SESSION[QT]['item_firstline']) ) $_SESSION[QT]['item_firstline']='1'; // new in v4.0
 echo '<h2 class="config">'.L('Display_options').'</h2>
 <table class="t-conf">
 <tr>
 <th>'.L('Item_firstline').'</th>
-<td><select name="item_firstline" onchange="qtFormSafe.not();">'.asTags([L('N'),L('Y')],(int)$_SESSION[QT]['item_firstline']).'</select><span class="small indent">'.L('H_Item_firstline').'</span></td>
+<td><select name="item_firstline" onchange="qtFormSafe.not();">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['item_firstline']).'</select><span class="small indent">'.L('H_Item_firstline').'</span></td>
 </tr>
 ';
 echo '<tr>
 <th>'.L('Show_news_on_top').'</th>
-<td><select name="news_on_top" onchange="qtFormSafe.not();">'.asTags([L('N'),L('Y')],(int)$_SESSION[QT]['news_on_top']).'</select><span class="small indent">'.L('H_Show_news_on_top').'</span></td>
+<td><select name="news_on_top" onchange="qtFormSafe.not();">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['news_on_top']).'</select><span class="small indent">'.L('H_Show_news_on_top').'</span></td>
 </tr>
 ';
 echo '<tr>
 <th>'.L('Show_quick_reply').'</th>
-<td><select name="show_quick_reply" onchange="qtFormSafe.not();">'.asTags([L('N'),L('Y')],(int)$_SESSION[QT]['show_quick_reply']).'</select><span class="small indent">'.L('H_Show_quick_reply').'</span></td>
+<td><select name="show_quick_reply" onchange="qtFormSafe.not();">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['show_quick_reply']).'</select><span class="small indent">'.L('H_Show_quick_reply').'</span></td>
 </tr>
 ';
 echo '<tr>
 <th>'.L('Allow_bbc').'</th>
-<td><select name="bbc" onchange="qtFormSafe.not();">'.asTags([L('N'),L('Y')],(int)$_SESSION[QT]['bbc']).'</select><span class="small indent">[b]bold[/b] [i]italic[/i] ...</span></td>
+<td><select name="bbc" onchange="qtFormSafe.not();">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['bbc']).'</select><span class="small indent">[b]bold[/b] [i]italic[/i] ...</span></td>
 </tr>
 </table>
 ';

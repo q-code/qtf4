@@ -77,11 +77,11 @@ $intHidden = $oDB->count( TABSECTION." WHERE type='1'" );
 $arrItems = getItemsInfo($oDB);
 
 // Start Helper
-if ( $intSection-$intHidden==0 ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('No_public_section').' <a href="'.APP.'_adm_sections.php?add=1">'.L('Add').' '.L('domain').'/'.L('section').'...</a></p>';
-if ( !qtIsMail($_SESSION[QT]['admin_email']) ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Contact').' '.L('Adm_e_mail').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
-if ( strlen($_SESSION[QT]['site_url'])<10 ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Site_url').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
-if ( $_SESSION[QT]['home_menu'] && (strlen($_SESSION[QT]['home_url'])<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$_SESSION[QT]['home_url'])) ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Home_website_url').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_skin.php">'.L('Board_layout').'...</a></p>';
-if ( is_dir('install') ) echo '<p class="right article">'.getSVG('flag', 'style=font-size:1.4rem;color:red').' Install folder is accessible: <a href="install/'.APP.'_setup_9.php?lang='.QT_LANG.'">'.L('Change').'...</a></p>';
+if ( $intSection-$intHidden==0 ) echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('No_public_section').' <a href="'.APP.'_adm_sections.php?add=1">'.L('Add').' '.L('domain').'/'.L('section').'...</a></p>';
+if ( !qtIsMail($_SESSION[QT]['admin_email']) ) echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Contact').' '.L('Adm_e_mail').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
+if ( strlen($_SESSION[QT]['site_url'])<10 ) echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Site_url').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
+if ( $_SESSION[QT]['home_menu'] && (strlen($_SESSION[QT]['home_url'])<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$_SESSION[QT]['home_url'])) ) echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Home_website_url').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_skin.php">'.L('Board_layout').'...</a></p>';
+if ( is_dir('install') ) echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:red').' Install folder is accessible: <a href="install/'.APP.'_setup_9.php?lang='.QT_LANG.'">'.L('Change').'...</a></p>';
 
 // BOARD OFFLINE
 echo '<h2 class="config">'.L('Board_status').'</h2>
@@ -92,7 +92,7 @@ echo '<h2 class="config">'.L('Board_status').'</h2>
 <p><span style="display:inline-block;width:16px;background-color:'.($_SESSION[QT]['board_offline'] ? 'red' : 'green').';border-radius:3px">&nbsp;</span> '.L(($_SESSION[QT]['board_offline']?'Off' : 'On').'_line').'</p>
 <form method="post" action="'.$oH->selfurl.'">
 '.L('Change').' <select id="offline" name="offline" onchange="qtFormSafe.not();">
-'.asTags([L('On_line'),L('Off_line')], $_SESSION[QT]['board_offline']).'
+'.qtTags([L('On_line'),L('Off_line')], $_SESSION[QT]['board_offline']).'
 </select> <button type="submit" name="ok" value="save">'.L('Ok').'</button>
 </form>
 </td>

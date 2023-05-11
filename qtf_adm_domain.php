@@ -16,7 +16,7 @@ $oH->selfurl = APP.'_adm_domain.php';
 $oH->selfname = L('Domain_upd');
 $oH->selfparent = L('Board_content');
 $oH->exiturl = APP.'_adm_sections.php';
-$oH->exitname = getSVG('angle-left').' '.L('Section+');
+$oH->exitname = qtSVG('angle-left').' '.L('Section+');
 
 // --------
 // INITIALISE (no cache)

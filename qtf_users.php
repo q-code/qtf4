@@ -31,7 +31,7 @@ $oH->selfname = L('Memberlist');
 // MAP MODULE
 $bMap=false;
 $arrMapData = array();
-if ( useModule('gmap') )
+if ( qtModule('gmap') )
 {
   include translate(APP.'m_gmap.php');
   include 'qtfm_gmap_lib.php';
@@ -79,7 +79,7 @@ echo '<div id="ct-title" class="fix-sp top">
 <div><h2>'.$oH->selfname.'</h2>
 <p>'.( $pageGroup=='all' ? $intTotal.' '.L('Members') : $intCount.' / '.$intTotal.' '.L('Members') );
 if ( SUser::canAccess('show_calendar') )echo ' &middot; <a href="'.url('qtf_calendar.php').'" style="white-space:nowrap">'.L('Birthdays_calendar').'</a>';
-if ( !empty($formAddUser) ) echo ' &middot; <span style="white-space:nowrap">'.SUser::getStamp(SUser::role(), 'class=stamp08').' <a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle(`participants`,`block`,``);qtToggle();">'.L('User_add').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a></span>';
+if ( !empty($formAddUser) ) echo ' &middot; <span style="white-space:nowrap">'.SUser::getStamp(SUser::role(), 'class=stamp08').' <a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle(`participants`,`block`,``);qtToggle();">'.L('User_add').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></span>';
 echo '</p>
 </div>
 ';
@@ -94,7 +94,7 @@ $oDB->query( sqlLimit($strState,'numpost DESC',0,5) );
 for ($i=0;$i<($_SESSION[QT]['viewmode']=='C' ? 2 : 5);++$i) {
   $row = $oDB->getRow();
   if ( !$row ) break;
-  echo '<tr><td><a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.intK((int)$row['numpost']).'</td></tr>';
+  echo '<tr><td><a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.qtK((int)$row['numpost']).'</td></tr>';
 }
 echo '</table>
 </div>';
@@ -138,17 +138,17 @@ $t = new TabTable('id=t1|class=t-user',$intCount);
 $t->thead();
 $t->tbody();
 $t->activecol = 'user'.$pageOrder;
-$t->activelink = '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order='.$pageOrder.'&dir='.($pageDirec=='asc' ? 'desc' : 'asc').'&page=1">%s</a> '.getSVG('caret-'.($pageDirec==='asc' ? 'down' : 'up'));
+$t->activelink = '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order='.$pageOrder.'&dir='.($pageDirec=='asc' ? 'desc' : 'asc').'&page=1">%s</a> '.qtSVG('caret-'.($pageDirec==='asc' ? 'down' : 'up'));
 // TH
 if ( !$bCompact )
-$t->arrTh['userphoto'] = new TabHead(getSVG('camera'), 'title='.L('Picture'));
+$t->arrTh['userphoto'] = new TabHead(qtSVG('camera'), 'title='.L('Picture'));
 $t->arrTh['username'] = new TabHead(L('Username'), '', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=name&dir=asc&page=1">%s</a>');
 $t->arrTh['userrole'] = new TabHead(L('Role'), '', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=role&dir=asc&page=1">%s</a>');
 $t->arrTh['usercontact'] = new TabHead(L('Contact'));
 $t->arrTh['userlocation'] = new TabHead(L('Location'), '', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=location&dir=asc&page=1">%s</a>');
-$t->arrTh['usernumpost'] = new TabHead(getSVG('comments'), 'title="'.L('Messages').'"', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=numpost&dir=desc&page=1">%s</a>');
+$t->arrTh['usernumpost'] = new TabHead(qtSVG('comments'), 'title="'.L('Messages').'"', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=numpost&dir=desc&page=1">%s</a>');
 if ( SUser::isStaff() )
-$t->arrTh['userpriv'] = new TabHead(getSVG('info'), 'title="'.L('Privacy').'"');
+$t->arrTh['userpriv'] = new TabHead(qtSVG('info'), 'title="'.L('Privacy').'"');
 foreach(array_keys($t->arrTh) as $key) $t->arrTh[$key]->append('class','c-'.$key);
 // TD
 $t->cloneThTd();
@@ -176,7 +176,7 @@ while($row=$oDB->getRow()) {
   $t->arrTd['userrole']->content = L('Role_'.strtoupper($row['role']));
   $t->arrTd['usercontact']->content = renderUserMailSymbol($row).' '.renderUserWwwSymbol($row);
   $t->arrTd['userlocation']->content = empty($row['location']) ? '' : $row['location'];
-  $t->arrTd['usernumpost']->content = intK((int)$row['numpost']);
+  $t->arrTd['usernumpost']->content = qtK((int)$row['numpost']);
   if ( isset($t->arrTh['userpriv']) )
   $t->arrTd['userpriv']->content = renderUserPrivSymbol($row);
 
@@ -240,9 +240,9 @@ if ( $bMap ) {
 
     // Show/Hide
     if ( $_SESSION[QT]['m_gmap_hidelist'] ) {
-    echo '<div class="canvashandler"><a class="canvashandler" href="'.url($oH->selfurl).'?showmap">'.getSVG('chevron-down').' '.$L['Gmap']['Show_map'].'</a></div>'.PHP_EOL;
+    echo '<div class="canvashandler"><a class="canvashandler" href="'.url($oH->selfurl).'?showmap">'.qtSVG('chevron-down').' '.$L['Gmap']['Show_map'].'</a></div>'.PHP_EOL;
     } else {
-    echo '<div class="canvashandler"><a class="canvashandler" href="'.url($oH->selfurl).'?hidemap">'.getSVG('chevron-up').' '.$L['Gmap']['Hide_map'].'</a></div>'.PHP_EOL;
+    echo '<div class="canvashandler"><a class="canvashandler" href="'.url($oH->selfurl).'?hidemap">'.qtSVG('chevron-up').' '.$L['Gmap']['Hide_map'].'</a></div>'.PHP_EOL;
     }
   }
 }
@@ -324,11 +324,11 @@ if ( $bMap && !$_SESSION[QT]['m_gmap_hidelist'] ) {
 
 // Symbols
 echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL;
-echo getSVG('symbol-envelope').PHP_EOL;
-echo getSVG('symbol-home').PHP_EOL;
-echo getSVG('symbol-map-marker-alt').PHP_EOL;
-echo getSVG('symbol-key').PHP_EOL;
-echo getSVG('symbol-door-open').PHP_EOL;
+echo qtSVG('symbol-envelope').PHP_EOL;
+echo qtSVG('symbol-home').PHP_EOL;
+echo qtSVG('symbol-map-marker-alt').PHP_EOL;
+echo qtSVG('symbol-key').PHP_EOL;
+echo qtSVG('symbol-door-open').PHP_EOL;
 echo '</svg>'.PHP_EOL;
 
 // hide fix-sp-bottom-controls if less than 5 table rows

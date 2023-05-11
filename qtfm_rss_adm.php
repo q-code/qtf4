@@ -150,7 +150,7 @@ if ( count($arrRss)>0 )
   echo '<tr class="data_t hover"><td >'.$arrSections[$s]['title'].'</td><td ><a class="small" href="'.$strRss.'" target="_blank">'.$strRss,'</a></td></tr>';
   }
   echo '</table></div>';
-  echo '<p class="minor">'.getSVG('info').' The feeds remain accessible when the module is off-line.</p>';
+  echo '<p class="minor">'.qtSVG('info').' The feeds remain accessible when the module is off-line.</p>';
 }
 
 // HTML END

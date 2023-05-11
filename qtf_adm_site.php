@@ -98,7 +98,7 @@ $cur = parse_url($_SERVER['REQUEST_URI']); $cur = empty($cur['path']) ? '' : $cu
 if ( strpos($cur,$str)===false ) $oH->warning .= 'Url do not match with current site url';
 if ( !qtIsMail($_SESSION[QT]['admin_email']) ) $oH->warning .= L('Adm_e_mail').' '.L('invalid').'<br>';
 if ( $strHelper ) $oH->warning .= $strHelper;
-if ( !empty($oH->warning) ) $oH->warning = getSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.$oH->warning;
+if ( !empty($oH->warning) ) $oH->warning = qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.$oH->warning;
 
 include APP.'_adm_inc_hd.php';
 
@@ -156,7 +156,7 @@ echo '<h2 class="config">'.L('Email_settings').'</h2>
 ';
 echo '<tr title="'.L('H_Use_smtp').'">
 <th>'.L('Use_smtp').'</th>
-<td><select name="use_smtp" onchange="toggleSmtp(this.value); qtFormSafe.not();">'.asTags([L('N'),L('Y')],(int)$_SESSION[QT]['use_smtp']).'</select></td>
+<td><select name="use_smtp" onchange="toggleSmtp(this.value); qtFormSafe.not();">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['use_smtp']).'</select></td>
 </tr>
 ';
 echo '<tr>

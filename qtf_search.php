@@ -86,9 +86,9 @@ include APP.'_search_ui.php';
 // SEARCH OPTIONS
 echo '<h2>'.L('Search_option').'</h2>'.PHP_EOL;
 echo '<section class="search-box options" id="broadcasted-options">'.PHP_EOL;
-echo getSVG('cog', 'id=opt-icon|class=filigrane'.($s!=='*' || $st!=='*' ? ' spinning' : ''));
+echo qtSVG('cog', 'id=opt-icon|class=filigrane'.($s!=='*' || $st!=='*' ? ' spinning' : ''));
 echo '<div>'.L('Section').' <select id="opt-s" name="s" size="1" autocomplete="off">'.sectionsAsOption($s,[],[],L('In_all_sections')).'</select></div>';
-echo '<div>'.L('Status').'&nbsp;<select id="opt-st" name="st" size="1" autocomplete="off"><option value="*"'.($st==='*' ? ' selected' : '').'>'.L('Any_status').'</option>'.asTags(CTopic::getStatuses(),$st).'</select></div>'.PHP_EOL;
+echo '<div>'.L('Status').'&nbsp;<select id="opt-st" name="st" size="1" autocomplete="off"><option value="*"'.($st==='*' ? ' selected' : '').'>'.L('Any_status').'</option>'.qtTags(CTopic::getStatuses(),$st).'</select></div>'.PHP_EOL;
 echo '</section>'.PHP_EOL;
 
 // SEARCH CRITERIA
@@ -100,7 +100,7 @@ if ( !empty($criteriaError) ) echo '<p class="error">'.$criteriaError.'</p>';
 // SEARCH BY KEY
 echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
-'.getSVG('search', 'class=filigrane').'
+'.qtSVG('search', 'class=filigrane').'
 <div>'.L('Keywords').' <div id="ac-wrapper-kw" class="ac-wrapper"><input required type="text" id="kw" name="v" size="40" maxlength="64" value="'.($q=='kw' ? qtAttr($v,0,'&quot;') : '').'" data-multi="1"/></div>*</div>
 <div><span class="cblabel"><input type="checkbox" id="to" name="to"'.($to ? ' checked' : '').' value="1"/> <label for="to">'.L('In_title_only').'</label></span></div>
 <div style="flex-grow:1;text-align:right">
@@ -124,7 +124,7 @@ if ( $refExists )
 {
 echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
-'.getSVG('search', 'class=filigrane').'
+'.qtSVG('search', 'class=filigrane').'
 <div>'.L('Ref').' <div id="ac-wrapper-ref" class="ac-wrapper"><input required type="text" id="ref" name="v" size="5" minlength="1" maxlength="10" value="'.($q=='ref' ? qtAttr($v,0,'&quot;') : '').'"/>&nbsp;'.L('H_Reference').'</div></div>
 <div style="flex-grow:1;text-align:right">
 <input type="hidden" name="q" value="ref"/>
@@ -140,13 +140,13 @@ echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 // SEARCH BY DATE & TAGS
 echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
-'.getSVG('search', 'class=filigrane').'
+'.qtSVG('search', 'class=filigrane').'
 <div>'.L('Date').' <select id="tf" name="v2" size="1">
 <option value="*"'.($v2==='*' || $v2==='' ? ' selected' : '').'>'.L('Any_time').'</option>
 <option value="w"'.($v2==='w' ? ' selected' : '').'>&nbsp; '.L('This_week').'</option>
 <option value="m"'.($v2==='m' ? ' selected' : '').'>&nbsp; '.L('This_month').'</option>
 <option value="y"'.($v2==='y' ? ' selected' : '').'>&nbsp; '.L('This_year').'</option>
-'.asTags(L('dateMMM.*'),(int)$v2).'
+'.qtTags(L('dateMMM.*'),(int)$v2).'
 </select><input type="hidden" id="y" name="y" value="'.date('Y').'"/>
 </div>';
 if ( $_SESSION[QT]['tags']!='0' ) echo '<div>'.L('With_tag').' <div id="ac-wrapper-tag-edit" class="ac-wrapper"><input type="text" id="tag-edit" name="v" size="30" value="'.($q==='adv' ? qtAttr($v) : '').'" data-multi="1"/></div>*</div>';
@@ -163,8 +163,8 @@ echo '<div style="flex-grow:1;text-align:right">
 // SEARCH NAME
 echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
-'.getSVG('search', 'class=filigrane').'
-<div><select name="q" size="1">'.asTags( ['user'=>L('Item').' '.L('author'),'userm'=>L('Item').'/'.L('reply').' '.L('author')], $q ).'
+'.qtSVG('search', 'class=filigrane').'
+<div><select name="q" size="1">'.qtTags( ['user'=>L('Item').' '.L('author'),'userm'=>L('Item').'/'.L('reply').' '.L('author')], $q ).'
 </select> <div id="ac-wrapper-user" class="ac-wrapper"><input type="hidden" id="userid" type="text" name="v2" value="'.$v2.'"/><input required id="user" type="text" name="v" value="'.(empty($v) || substr($q,0,4)!=='user' ? '' : qtAttr($v,0,'&quot;')).'" size="32" maxlenght="64"/></div></div>
 <div style="flex-grow:1;text-align:right">
 <input type="hidden" id="user-s" name="s" value="'.$s.'"/>

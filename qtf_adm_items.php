@@ -49,7 +49,7 @@ include APP.'_adm_inc_hd.php';
 $arrDomains = CDomain::getTitles(); // no cache, titles translated
 $stats = CSection::getSectionsStats(); // force recompute stats
 
-echo '<p class="right"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Unreplied').getSVG('angle-down','','',true).getSVG('angle-up','','',true).'</a></p>
+echo '<p class="right"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Unreplied').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></p>
 <div id="tgl-container" class="opt-unreplied right" style="display:none">
 <form method="post" action="'.$oH->selfurl.'">'.
 sprintf(L('Unreplied_def'),'<input type="number" name="d" min="1" max="99" value="'.$d.'"/>').
@@ -100,7 +100,7 @@ foreach($arrDomains as $idDom=>$strDomtitle) {
 }
 echo '</tbody>
 </table>
-<p class="minor">'.getSVG('info').' '.L('Unreplied').': '.sprintf(L('unreplied_def'),$d).'</p>
+<p class="minor">'.qtSVG('info').' '.L('Unreplied').': '.sprintf(L('unreplied_def'),$d).'</p>
 ';
 
 // HTML END

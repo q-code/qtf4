@@ -229,7 +229,7 @@ public static function loginPostProc(CDatabase $oDB)
  */
 public static function getPicture(int $id=0, $attr=[], string $altSrc='bin/css/user.gif'){
   // NOSQL, uses file_exists(). Returns '' when image not found *and* $altSrc=''
-  $path = getDataDir(QT_DIR_PIC,$id,true); if ( empty($path) ) return empty($altSrc) ? '' : '<img src="'.$altSrc.'"'.attrRender($attr).'/>';
+  $path = qtDirData(QT_DIR_PIC,$id,true); if ( empty($path) ) return empty($altSrc) ? '' : '<img src="'.$altSrc.'"'.attrRender($attr).'/>';
   if ( is_string($attr) ) $attr = attrDecode($attr);
   if ( !is_array($attr) || isset($attr['src']) ) die(__METHOD__.' invalid attr');
   if ( !isset($attr['alt']) ) $attr['alt'] = $id;
@@ -239,7 +239,7 @@ public static function getPicture(int $id=0, $attr=[], string $altSrc='bin/css/u
 }
 public static function getStamp(string $role, string $attr='class=stamp', bool $addDefaultTitle=true, string $alt='') {
   if ( $addDefaultTitle ) $attr = attrDecode($attr, '|', 'title='.L('Role_'.$role));
-  if ( in_array($role,['A','M','U','V']) ) return '<span'.attrRender($attr).'>'.getSVG('user-'.$role).'</span>';
+  if ( in_array($role,['A','M','U','V']) ) return '<span'.attrRender($attr).'>'.qtSVG('user-'.$role).'</span>';
   return $alt;
 }
 public static function registerUser(CDatabase $oDB, string $name='', string $password='', bool $sha=true)
@@ -284,7 +284,7 @@ public static function deletePicture($ids)
   if ( !is_array($ids) ) die(__METHOD__.' arg#1 must be an id or array of id');
   foreach($ids as $id) {
     if ( !is_int($id) ) die(__METHOD__.' arg#1 must be an id or array of id');
-    $dir = getDataDir(QT_DIR_PIC,$id,true); if ( empty($dir) ) continue;
+    $dir = qtDirData(QT_DIR_PIC,$id,true); if ( empty($dir) ) continue;
     foreach(array('.jpg','.jpeg','.png','.gif') as $ext) if ( file_exists($dir.$id.$ext) ) unlink($dir.$id.$ext);
   }
 }

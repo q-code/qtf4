@@ -125,7 +125,7 @@ echo '</table>';
 echo '
 <p style="text-align:center"><button type="submit" name="ok" value="ok">'.L('Save').'</button></p>
 </form>
-<p>'.getSVG('angle-left').' <a href="'.$oH->exiturl.'" onclick="return qtFormSafe.exit(e0);">'.$oH->exitname.'</a></p>
+<p>'.qtSVG('angle-left').' <a href="'.$oH->exiturl.'" onclick="return qtFormSafe.exit(e0);">'.$oH->exitname.'</a></p>
 ';
 
 include 'qtf_adm_inc_ft.php';

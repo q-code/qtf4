@@ -272,7 +272,7 @@ echo '<h2 class="config">'.L('Destination').'</h2>
 <tr>
 <th><label for="status">'.L('Status').'</label></th>
 <td><select id="status" name="status"><option value="">(unchanged)</option>
-'.asTags(CTopic::getStatuses(),$strStatus).'</select></td>
+'.qtTags(CTopic::getStatuses(),$strStatus).'</select></td>
 </tr>
 <tr>
 <th>'.L('Import_Dropdate').'</th>
