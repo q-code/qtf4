@@ -7,11 +7,9 @@ echo '<div id="optionsbar">
 <form method="post" action="'.url('qtf_item.php').'" id="modaction">
 <select name="Maction" onchange="document.getElementById(`modaction`).submit()">
 <option hidden disabled selected>'.L('Staff').' '.L('commands').'...</option>
-<optgroup label="'.L('Item').'">
 <option value="reply">'.L('Reply').'...</option>
 <option value="move">'.L('Move').'...</option>
 <option value="delete">'.L('Delete').'...</option>
-</optgroup>
 <optgroup label="'.L('Status').'">';
 foreach(CTopic::getStatuses() as $k=>$value) echo '<option value="status_'.$k.'"'.($oT->status==$k ? ' disabled' : '').'>'.$value.($oT->status==$k ? ' &#10004;' : '').'</option>'; // caution == array keys can be [int]
 echo '</optgroup>
