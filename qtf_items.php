@@ -92,7 +92,7 @@ $sqlFrom = ' FROM TABTOPIC t INNER JOIN TABPOST p ON t.firstpostid=p.id'; // war
 $sqlWhere = ' WHERE t.forum'.($q==='s' ? '='.$s : '>=0');
   // In private section, show topics created by user himself
   if ( $q==='s' && $oS->type==='2' && !SUser::isStaff() ) $sqlWhere .= " AND (t.firstpostuser=".SUser::id()." OR (t.type='A' AND t.status='0'))";
-$sqlValues = array(); // list of values for the prepared-statements
+$sqlValues = []; // list of values for the prepared-statements
 $sqlCount = "SELECT count(*) as countid FROM TABTOPIC t ".$sqlWhere;
 $sqlCountAlt='';
 if ( $q!=='s' ) {
@@ -214,7 +214,7 @@ $navCommands = $oH->backButton().$navCommands.$navCommandsRefine;
 // End if no results
 if ( $intCount===0 ) {
   // if no result with sqlHideClosed, re-count without
-  if ( !empty($sqlHideClosed) ) $intCount = $oDB->count($sqlCount.$sqlHideClosed, $sqlValues);
+  if ( !empty($sqlHideClosed) ) $intCount = $oDB->count($sqlCount, $sqlValues);
   echo '<div class="nav-top">'.$navCommands.'</div>'.PHP_EOL;
   echo '<p class="center" style="margin:1rem 0">'.L('No_result').'...</p>';
   if ( $oS->type==='2' && !SUser::isStaff() ) echo '<p class="center">'.L('Only_your_items').'</p>';
