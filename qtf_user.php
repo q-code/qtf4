@@ -136,7 +136,7 @@ if ( SUser::role()==='M' && SUser::id()!==$id) {
 if ( !SUser::canSeePrivate($row['privacy'],$id) ) { $row['y']=null; $row['x']=null; }
 
 // map settings
-if ( $bMap && !QTgempty($row['x']) && !QTgempty($row['y']) )
+if ( $bMap && !gmapEmpty($row['x']) && !gmapEmpty($row['y']) )
 {
   $y = (float)$row['y']; $x = (float)$row['x'];
   $strPname = $row['name'];

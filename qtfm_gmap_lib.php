@@ -7,7 +7,7 @@
  * This is a module library
  * ------------
  * Class CMapPoint
- * gmapCan gmapHasKey gmapApi QTgempty QTgemptycoord
+ * gmapCan gmapHasKey gmapApi gmapEmpty gmapEmptycoord
  * gmapMarker gmapMarkerMapTypeId gmapMarkerIcon
  * QTgetx QTgety QTgetz QTstr2yx QTdd2dms
  * ============ */
@@ -72,34 +72,34 @@ function gmapApi($strKey='',$strAddLibrary='')
   if ( empty($strKey) ) return '';
   return '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$strKey.'&callback=gmapInitialize"></script>'.PHP_EOL.(empty($strAddLibrary) ? '' : $strAddLibrary);
 }
-function QTgempty($i)
+function gmapEmpty($i)
 {
   // Returns true when $i is empty or a value starting with '0.000000'
   if ( empty($i) ) return true;
-  if ( !is_string($i) && !is_float($i) && !is_int($i) ) die('QTgempty: Invalid argument #1');
+  if ( !is_string($i) && !is_float($i) && !is_int($i) ) die('gmapEmpty: Invalid argument #1');
   if ( substr((string)$i,0,8)==='0.000000' ) return true;
   return false;
 }
-function QTgemptycoord($a)
+function gmapEmptycoord($a)
 {
   // Returns true when $a has empty coordinates in both Y and X.
   // $a can be a CMapPoint or CTopic object or a string Y,X. ex: "51.75,4.12"
   // Note: returns true if $a is not correctly formatted or when properties x or y are missing.
-  // Note: Z coordinate is NOT evaluated. ex: QTgemptycoord("0,0,125") returns true.
+  // Note: Z coordinate is NOT evaluated. ex: gmapEmptycoord("0,0,125") returns true.
 
   if ( is_a($a,'CMapPoint') || is_a($a,'CTopic') )
   {
     if ( !property_exists($a,'y') ) return true;
     if ( !property_exists($a,'x') ) return true;
-    if ( QTgempty($a->y) && QTgempty($a->x) ) return true;
+    if ( gmapEmpty($a->y) && gmapEmpty($a->x) ) return true;
     return false;
   }
   if ( is_string($a) )
   {
-    if ( QTgempty(QTgety($a,true)) && QTgempty(QTgetx($a,true)) ) return true;
+    if ( gmapEmpty(QTgety($a,true)) && gmapEmpty(QTgetx($a,true)) ) return true;
     return false;
   }
-  die('QTgemptycoord: invalid argument #1');
+  die('gmapEmptycoord: invalid argument #1');
 }
 function gmapMarker($centerLatLng='',$draggable=false,$gsymbol=false,$title='',$info='')
 {

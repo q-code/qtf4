@@ -27,8 +27,8 @@
 
 class TabItem
 {
-  public $tag = '';  // html tag (always in lowercase)
-  public $attr = [];    // array of attribute=>value (constructor can generate this array from a compacted-string)
+  public $tag = ''; // html tag (always in lowercase)
+  public $attr = []; // array of attribute=>value (constructor can generate this array from a compacted-string)
   public $eolc = false; // add PHP_EOL after the closing tag
   public $eolo = false; // add PHP_EOL after the opening tag
   public function __construct(string $tag='', $attr=[])
