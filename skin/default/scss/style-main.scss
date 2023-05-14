@@ -65,7 +65,7 @@ div.post{
   grid-template-rows:min-content 1fr;
   grid-template-areas: "g-p-type g-p-title" "g-p-type g-p-msg" "g-p-type g-p-status";
   column-gap:var(--gap);
-  background-color:#eee;border:1px solid #ddd;border-top-left-radius:10px;
+  background-color:#f2f2f2;border:1px solid #ddd;border-top-left-radius:10px;
 }
 div.post-R, div.post-F, div.post-D{margin:10px 0 10px 50px}
 @media screen and (max-width:860px){div.post-R, div.post-F, div.post-D{margin:10px 0}}
@@ -84,13 +84,11 @@ div.post-R, div.post-F, div.post-D{margin:10px 0 10px 50px}
 .post-img{display:block;margin:5px 0;max-width:550px;overflow:auto}
 p.quotetitle,
 p.codetitle{margin:1px;max-width:600px;color:#888;font-style:italic;font-size:0.9rem}
-section.quote{margin:1px 1px 6px 1px;width:600px;padding:3px 5px;background-color:#f4f4f4;color:#888;border-left:solid 5px #d0d0d0}
-section.code{margin:1px 1px 6px 1px;max-width:550px;padding:3px;font-family:Courier,sans-serif;overflow:auto;white-space:pre;background-color:#E4FFCC;border-left:solid 5px #d0d0d0}
+section.quote{margin:1px 1px 6px 1px;width:600px;padding:3px 5px;background-color:#e7ebf3;color:#888;border-left:solid 5px #d0d0d0}
+section.code{margin:1px 1px 6px 1px;max-width:550px;padding:3px;font-family:Courier,sans-serif;overflow:auto;white-space:pre;background-color:#e7ebf3;border-left:solid 5px #d0d0d0}
 /* message content compact */
 #site.compact .post-img{display:none}
 #site.compact p.quotetitle, #site.compact section.quote, #site.compact div.g-p-msg p:not(p.code){display:inline}
-
-
 
 /* Image magnifier */
 .magnifier{position:relative}

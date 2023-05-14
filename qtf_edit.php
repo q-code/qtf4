@@ -264,17 +264,15 @@ echo '<form id="form-edit" method="post" action="'.url($oH->selfurl).'" enctype=
 <h2>'.$oH->selfname.'</h2>
 ';
 
-if ( SUser::isStaff() )
-{
+if ( SUser::isStaff() ) {
   echo '<div id="optionsbar" title="'.L('Staff').' '.L('commands').'">'.qtSVG('user-M');
-  if ( $oP->type==='P' )
-  {
-  echo '<span>'.L('Type').' <select name="topictype" size="1" id="newtopictype" onchange="changeIcon()">';
-  echo qtTags(CTopic::getTypes(),$oT->type);
-  echo '</select></span>';
-  echo '<span>'.L('Status').' <select name="topicstatus" size="1" id="newtopicstatus" onchange="changeIcon()">';
-  echo qtTags(CTopic::getStatuses(),$oT->status);
-  echo '</select></span>';
+  if ( $oP->type==='P' ) {
+    echo '<span>'.L('Type').' <select name="topictype" size="1" id="newtopictype" onchange="changeIcon()">';
+    echo qtTags(CTopic::getTypes(),$oT->type);
+    echo '</select></span>';
+    echo '<span>'.L('Status').' <select name="topicstatus" size="1" id="newtopicstatus" onchange="changeIcon()">';
+    echo qtTags(CTopic::getStatuses(),$oT->status);
+    echo '</select></span>';
   }
   echo '<span id="ac-wrapper-behalf" class="ac-wrapper">'.L('Send_on_behalf').'&nbsp;<input type="text" name="behalf" id="behalf" size="14" maxlength="24" value="'.$oP->username.'" autocomplete="off"/><input type="hidden" id="behalfid" name="behalfid" value="-1"></span></div>';
 }
@@ -355,18 +353,15 @@ echo '</div>
 ';
 
 // ADD TAGS
-if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P') ) )
-{
+if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P') ) ) {
   $arrTags=explode(';',$oT->descr);
-  if ( $oT->status!=='1' )
-  {
+  if ( $oT->status!=='1' ) {
     if ( SUser::isStaff() ) $tagEditor=true;
     if ( $_SESSION[QT]['tags']=='U' && SUser::id()===$oT->firstpostuser ) $tagEditor=true; // 'U'=members can edit in his own ticket
     if ( $_SESSION[QT]['tags']=='U+' && SUser::role()==='U' ) $tagEditor=true; // 'U+'=members can edit any tickets
     if ( $_SESSION[QT]['tags']=='V' ) $tagEditor=true; // 'V'=Visitor can edit any tickets
   }
-  if ( $tagEditor )
-  {
+  if ( $tagEditor ) {
     $tags = '';
     foreach(explode(';',$oT->descr) as $k=>$item) $tags .= empty($item) ? '' : '<span class="tag" onclick="tagClick(this.innerHTML)">'.$item.'</span>';
     echo '<div class="tags right" style="padding:4px 0">'.qtSVG('tag'.(count($arrTags)>1 ? 's' : ''), 'title='.L('Tags'));
@@ -392,15 +387,13 @@ echo '<p class="submit">
 
 // PREVIOUS POSTS
 
-if ( $a=='re' || $a=='qu' )
-{
+if ( $a=='re' || $a=='qu' ) {
   echo '<h2>'.L('Previous_replies').'</h2>'.PHP_EOL;
   $strState = 'p.*, u.role, u.location, u.signature FROM TABPOST p, TABUSER u WHERE p.userid = u.id AND p.topic='.$oT->id.' ';
   $oDB->query( sqlLimit($strState,'p.id DESC',0,5) );
   $iMsgNum = $oT->items + 2;
   $intWhile= 0;
-  while($row=$oDB->getRow())
-  {
+  while($row=$oDB->getRow()) {
     $iMsgNum = $iMsgNum-1;
     $oP = new CPost($row,$iMsgNum);
     echo $oP->render($oS,$oT,false,true,QT_SKIN);

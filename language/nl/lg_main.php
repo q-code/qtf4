@@ -147,7 +147,7 @@ $L['Name']='Naam';
 $L['None']='Niets';
 $L['Only']='Alleen';
 $L['Options']='Opties';
-$L['Opened']='Open';
+$L['Opened']='Geopend';
 $L['Page']='pagina'; $L['Page+']='pagina\'s';
 $L['Password']='Wachtwoord';
 $L['Phone']='Telefoon';

@@ -64,7 +64,7 @@ div.post{
   grid-template-rows:min-content 1fr;
   grid-template-areas: "g-p-type g-p-title" "g-p-type g-p-msg" "g-p-type g-p-status";
   column-gap:var(--gap);
-  background-color:#f3f3f3;
+  background-color:#f2f2f2;
 }
 div.post-R,div.post-F,div.post-D{margin:10px 0 10px 50px}
 @media screen and (max-width:860px){div.post-R,div.post-F,div.post-D{margin:10px 0}}

@@ -72,7 +72,7 @@ if ( !$hideMenuLang ) {
   }
   // contrast
   if ( QT_MENU_CONTRAST ) {
-    $langMenu->add( 'text='.qtSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|title=High contrast display|aria-current=false' );
+    $langMenu->add( 'text='.qtSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|aria-label=High contrast|title=High contrast display|aria-current=false' );
     $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/contrast.css" disabled/>';
     $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', toggleContrast);
       qtApplyStoredState('contrast');
