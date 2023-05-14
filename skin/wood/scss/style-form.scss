@@ -111,7 +111,7 @@ div.edit-form{flex-grow:1}
 div.edit-form th, div.edit-form td{padding:var(--gap)}
 div.edit-form th{width:90px;text-align:right;font-weight:bold}
 input#edit-form-title{width:100%}
-textarea#text{width:100%;resize:vertical}
+#form-edit-text, #form-qr-text{width:100%;resize:vertical}
 
 /* FORMS */
 #signature-preview{margin:5px 0;padding:0.5rem;background-color:#f6f6f6;border:solid 1px #DDD}

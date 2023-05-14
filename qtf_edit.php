@@ -312,10 +312,10 @@ echo '</tr>'.PHP_EOL;
 }
 // message
 echo '<tr>';
-echo '<th><label for="text">'.L('Message').'</label></th>';
+echo '<th>'.L('Message').'</th>';
 echo '<td>';
 if ( QT_BBC ) echo '<div class="bbc-bar">'.bbcButtons($intBbc).'</div>';
-echo '<textarea required tabindex="2" id="text" name="text" '.(strlen($oP->text)>500 ? 'rows="30"' : 'rows="15"' ).' maxlength="'.$_SESSION[QT]['chars_per_post'].'">'.$oP->text.'</textarea>'.PHP_EOL;
+echo '<textarea required tabindex="2" id="form-edit-text" name="text" '.(strlen($oP->text)>500 ? 'rows="30"' : 'rows="15"' ).' maxlength="'.$_SESSION[QT]['chars_per_post'].'">'.$oP->text.'</textarea>'.PHP_EOL;
 
 if ( $canUpload ) echo '<p style="margin:0"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(`tgl-container`,`table-row`,`tgl-ctrl`); return false;">'.L('Attachment').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></p>';
 
@@ -379,7 +379,7 @@ if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P')
 
 echo '<p class="submit">
 <button type="button" tabindex="5" onclick="window.location=`'.url($oH->exiturl).'`">'.L('Cancel').'</button>&nbsp;
-<button type="submit" tabindex="6" id="dopreview" value="'.$certificate.'" onclick="this.form.dataset.state=0">'.L('Preview').'...</button>&nbsp;
+<button type="submit" tabindex="6" id="form-edit-preview" value="'.$certificate.'" onclick="this.form.dataset.state=0">'.L('Preview').'...</button>&nbsp;
 <button type="submit" tabindex="7" name="dosend" value="'.$certificate.'" onclick="this.form.dataset.state=1">'.($a=='ed' ? L('Save') : L('Send')).'</button>
 </p>
 </form>
@@ -411,35 +411,31 @@ if ( $tagEditor || SUser::isStaff() ) {
   $oH->scripts[] = 'acOnClicks["behalf"] = function(focusInput,btn) {
   if ( focusInput.id=="behalf" ) document.getElementById("behalfid").value = btn.dataset.id;
 }
-function changeIcon(){
+function changeIcon() {
   const type = document.getElementById("newtopictype").value.toLowerCase();
   const status = document.getElementById("newtopicstatus").value.toLowerCase();
   const d = document.querySelector(".i-container img");
-  if ( d ){
-    let src = d.getAttribute("src");
-    if ( src ) {
-      src = src.replace(/topic_._./, "topic_"+type+"_"+status);
-      d.setAttribute("src",src);
-      d.setAttribute("data-type",type);
-      d.setAttribute("data-status",status);
-    }
+  if ( d ) {
+    d.setAttribute("data-type", type);
+    d.setAttribute("data-status", status);
+    d.setAttribute("src", d.getAttribute("src").replace(/topic_._./, "topic_"+type+"_"+status));
   }
 }';
 }
 
-$oH->scripts[] = 'const btnPreview = document.getElementById("dopreview");
-if  ( btnPreview ) {
-  btnPreview.addEventListener("click", (e) => {
-    e.preventDefault();
-    if ( document.getElementById("text").value.length==0 ) { alert("No message..."); return; }
-    let formData = new FormData(document.getElementById("form-edit"));
-    fetch("qtf_edit_preview.php", {method:"POST", body:formData})
-    .then( response => response.text() )
-    .then( data => {
-      document.getElementById("message-preview").innerHTML = data;
-      document.querySelectorAll("#message-preview a").forEach( anchor => {anchor.href="javascript:void(0)"; anchor.target="";} ); } )
-    .catch( err => console.log(err) );
-  });
-}';
+$oH->scripts[] = 'const btnPreview = document.getElementById("form-edit-preview");
+btnPreview.addEventListener("click", (e) => {
+  if ( document.getElementById("form-edit-text").value.length===0 ) return false;
+  e.preventDefault();
+  let formData = new FormData(document.getElementById("form-edit"));
+  fetch("qtf_edit_preview.php", {method:"POST", body:formData})
+  .then( response => response.text() )
+  .then( data => {
+    document.getElementById("message-preview").innerHTML = data;
+    document.querySelectorAll("#message-preview a").forEach( anchor => {anchor.href="javascript:void(0)"; anchor.target="";} );
+    })
+  .catch( err => console.log(err) );
+});
+';
 
 include 'qtf_inc_ft.php';

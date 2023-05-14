@@ -169,15 +169,15 @@ if ( SUser::role()==='V' && $_SESSION[QT]['visitor_right']<7 ) {} else {
 $certificate = makeFormCertificate('ec8a0d9ab2cae03d0c7314491eb60d0b');
 echo '
 <div id="message-preview"></div>
-<form id="form-edit" method="post" action="'.url('qtf_edit.php').'?s='.$s.'&t='.$oT->id.'&a=re">
+<form id="form-qr" method="post" action="'.url('qtf_edit.php').'?s='.$s.'&t='.$oT->id.'&a=re">
 <div class="quickreply">
 ';
 echo '<div class="g-qr-icon"><p class="i-container" title="'.L('Reply').'">'.qtSVG('comment-dots').'</p></div>
 <div class="g-qr-title">'.L('Quick_reply').'</div>
 <div class="g-qr-bbc">'.(QT_BBC ? '<div class="bbc-bar">'.bbcButtons(1).'</div>' : '').'</div>
 <div class="g-qr-text">
-<textarea required id="text" name="text" rows="5"></textarea>
-<p id="quickreply-footer"><a href="javascript:void(0)" onclick="document.getElementById(`form-edit`).submit();">'.L('More').'...</a></p>
+<textarea required id="form-qr-text" name="text" rows="5"></textarea>
+<p id="quickreply-footer"><a href="javascript:void(0)" onclick="document.getElementById(`form-qr`).submit();">'.L('More').'...</a></p>
 </div>
 ';
 echo '<div class="g-qr-btn">
@@ -189,7 +189,7 @@ echo '<div class="g-qr-btn">
 <input type="hidden" name="username" value="'.SUser::name().'"/>
 <input type="hidden" name="icon" value="00"/>
 <input type="hidden" name="title" />
-<button type="submit" id="dopreview" name="dopreview" value="'.$certificate.'">'.L('Preview').'...</button><button type="submit" id="dosend" name="dosend" value="'.$certificate.'">'.L('Send').'</button>
+<button type="submit" id="form-qr-preview" name="preview" value="'.$certificate.'">'.L('Preview').'...</button><button type="submit" id="dosend" name="dosend" value="'.$certificate.'">'.L('Send').'</button>
 </div>
 ';
 echo '</div>
@@ -197,19 +197,18 @@ echo '</div>
 ';
 
 if ( QT_BBC ) $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_bbc.js"></script>';
-$oH->scripts[] = 'const btnPreview = document.getElementById("dopreview");
-if  ( btnPreview ) {
-  btnPreview.addEventListener("click", (e) => {
-    e.preventDefault();
-    let formData = new FormData(document.getElementById("form-edit"));
-    fetch("qtf_edit_preview.php", {method:"POST", body:formData})
-    .then( response => response.text() )
-    .then( data => {
-      document.getElementById("message-preview").innerHTML = data;
-      document.querySelectorAll("#message-preview a").forEach( anchor => {anchor.href="javascript:void(0)"; anchor.target="";} ); } )
-    .catch( err => console.log(err) );
-  });
-}';
+$oH->scripts[] = 'document.getElementById("form-qr-preview").addEventListener("click", (e) => {
+  if ( document.getElementById("form-qr-text").value.length===0 ) return false;
+  e.preventDefault();
+  let formData = new FormData(document.getElementById("form-qr"));
+  fetch("qtf_edit_preview.php", {method:"POST", body:formData})
+  .then( response => response.text() )
+  .then( data => {
+    document.getElementById("message-preview").innerHTML = data;
+    document.querySelectorAll("#message-preview a").forEach( anchor => {anchor.href="javascript:void(0)"; anchor.target="";} ); } )
+  .catch( err => console.log(err) );
+});
+';
 
 }}}
 
