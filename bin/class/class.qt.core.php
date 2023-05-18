@@ -43,7 +43,7 @@ class SMem
   // Attention: Uses 'memcached' library (php>7.2) but automatically tries to use legacy 'memcache' when memcached is not available.
   // This class REQUIERES
   // - a function memInit allowing to re-generate specific keys-values you want to store
-  // - constants QT, MEMCACHE_TIMEOUT, MEMCACHE_HOST, MEMCACHE_PORT and MEMCACHE_FAILOVER
+  // - constants QT, MEMCACHE_TIMEOUT, MEMCACHE_HOST and MEMCACHE_PORT
   // Public methods use a 'simple' key to store the data. Private methos use QT (namespace) as key prefix
   // Note #1: php issues a fatal error if memInit is not defined or constants are missing
   // Note #2: Storing FALSE is not recommended (key-not-found or server-failed can also returns false, causing a re-set of the key)

@@ -476,24 +476,21 @@ public function getHost() {
  * @param string|array $arrParam parametre(s) to update
  * @param null|string $value use null to get value from session variable having the same name
  */
-public function updSetting($params,$value=null) {
-  if ( !isset($_SESSION[QT.'_usr']['role']) || $_SESSION[QT.'_usr']['role']!=='A' ) die('CDatabase::updSetting access denied');
+public function updSetting($param, $setting=null) {
+  if ( !isset($_SESSION[QT.'_usr']['role']) || $_SESSION[QT.'_usr']['role']!=='A' ) die(__METHOD__.' access denied');
+  // works recursively on array
+  if ( is_array($param) ) { foreach($param as $item) $this->updSetting($item,$setting); return; }
   // NOTE: arguments must be [strict]string and cannot contain single-quote
-  if ( is_string($params) ) $params = array($params);
-  if ( !is_array($params) || empty($params)) die('CDatabase::updSetting arg #1 must be an array|string');
-  foreach($params as $param) {
-    $setting = is_null($value) && isset($_SESSION[QT][$param]) ? $_SESSION[QT][$param] : $value;
-    if ( !is_string($setting) ) die('CDatabase::updSetting arg #2 must be a string');
-    if ( !is_string($param) )  die('CDatabase::updSetting arg #1 must be a array of strings');
-    if ( strpos($setting,"'")!==false ) die('CDatabase::updSetting setting contains a quote');
-    if ( strpos($param,"'")!==false ) die('CDatabase::updSetting param contains a quote');
-    $this->exec( "UPDATE TABSETTING SET setting='$setting' WHERE param='$param'" );
-  }
+  if ( !is_string($param) || empty($param) ) die(__METHOD__.' arg #1 must be a string');
+  $setting = is_null($setting) && isset($_SESSION[QT][$param]) ? $_SESSION[QT][$param] : $setting;
+  if ( !is_string($setting) ) die(__METHOD__.' arg #2 must be a string');
+  if ( strpos($setting,"'")!==false || strpos($param,"'")!==false ) die(__METHOD__.' setting or param contains a quote');
+  $this->exec( "UPDATE TABSETTING SET setting='$setting' WHERE param='$param'" );
 }
 public function getSettings(string $where='', bool $register=false) {
   // Returns settings [array] matching with $where condition (use '' to get ALL settings)
   // Can also register key-value in $_SESSION[QT]
-  $arr = array();
+  $arr = [];
   $this->query( "SELECT param,setting FROM ".TABSETTING. (empty($where) ? '' : ' WHERE '.$where) );
   while ($row = $this->getRow()) {
     $arr[$row['param']] = $row['setting'];
