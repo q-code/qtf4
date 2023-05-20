@@ -53,16 +53,16 @@ echo '
 // ASIDE INFO & LEGEND
 // --------
 
-if ( !$_SESSION[QT]['board_offline'] ) {
 if ( $_SESSION[QT]['show_legend']==='1' ) {
 if ( in_array($oH->selfurl,array('index.php','qtf_index.php','qtf_items.php','qtf_calendar.php','qtf_item.php')) ) {
+if ( !$_SESSION[QT]['board_offline'] ) {
 
 // Using stats ($_SectionsStats)
 $stats = isset($_SectionsStats) ? $_SectionsStats : SMem::get('_SectionsStats');
 $strStatusText = '';
 
 echo '<aside>'.PHP_EOL;
-echo '<a id="aside-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="toggleAside(); return false;" title="'.L('Showhide_legend').'" aria-current="false">'.qtSVG('info').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>'.PHP_EOL;
+echo '<a id="aside-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="toggleAside(); return false;" title="'.L('Showhide_legend').'" role="switch" aria-checked="false">'.qtSVG('info').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>'.PHP_EOL;
 echo '<div id="aside__info" class="article" style="display:none">'.PHP_EOL;
   echo '<h2>'.L('Information').'</h2>'.PHP_EOL;
   // section info
@@ -122,7 +122,7 @@ echo '</aside>'.PHP_EOL.PHP_EOL;
 
 $oH->scripts[] = 'function toggleAside(){
   const d = document.getElementById("aside-ctrl"); if ( !d ) return;
-  d.setAttribute("aria-current", d.getAttribute("aria-current")==="false" ? "true" : "false" );
+  d.setAttribute("aria-checked", d.getAttribute("aria-checked")==="false" ? "true" : "false" );
   qtToggle("aside__status");
   qtToggle("aside__legend");
   qtToggle("aside__detail");

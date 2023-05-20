@@ -72,18 +72,14 @@ if ( !$hideMenuLang ) {
   }
   // contrast
   if ( QT_MENU_CONTRAST ) {
-    $langMenu->add( 'text='.qtSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|aria-label=High contrast|title=High contrast display|aria-current=false' );
+    $langMenu->add( 'text='.qtSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|aria-label=High contrast|title=High contrast display|role=switch|aria-checked=false' );
     $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/contrast.css" disabled/>';
-    $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', toggleContrast);
+    $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', tglContrast);
       qtApplyStoredState('contrast');
-      function toggleContrast() {
-      const d = document.getElementById('contrastcss');
-      if ( !d ) { console.log('toggleContrast: no element with id=contrastcss'); return; }
-      const ctrl = document.getElementById('contrast-ctrl');
-      if ( !ctrl ) { console.log('toggleContrast: no element with id=contrast-ctrl'); return; }
-      d.toggleAttribute('disabled');
-      ctrl.setAttribute('aria-current', d.disabled ? 'false' : 'true');
+    function tglContrast(){
+      this.setAttribute('aria-checked', this.getAttribute('aria-checked')==='true' ? 'false' : 'true');
       qtAttrStorage('contrast-ctrl','qt-contrast');
+      qtApplyStoredState('contrast');
     }";
   }
 }
