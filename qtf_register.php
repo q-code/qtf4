@@ -818,7 +818,7 @@ $frm[] = '<h2>'.$oH->selfname.'</h2>'.( !empty($oH->error) ? '<p class="error">'
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<div id="signature">';
 $frm[] = '<div class="bbc-bar">'.bbcButtons(3).'</div>';
-$frm[] = '<textarea id="text" name="text" rows="5">'.$row['signature'].'</textarea>';
+$frm[] = '<textarea id="text-area" name="text" rows="5">'.$row['signature'].'</textarea>';
 $frm[] = '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '</div>';
 $frm[] = '</form>';

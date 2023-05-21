@@ -83,20 +83,19 @@ function htmlLettres(string $baseFile, string $current='ALL', string $all='All',
   $group .= '</div>';
   return $group;
 }
-function bbcButtons($size=1)
+function bbcButtons(int $size=1, string $id='text-area')
 {
-  if ( !QT_BBC || $size==0 ) return '';
-  $str = '<a class="bbc" onclick="qtCaret(`b`)" title="'.L('Bbc.bold').'">'.qtSVG('bold').'</a>';
-  $str .= '<a class="bbc" onclick="qtCaret(`i`)" title="'.L('Bbc.italic').'">'.qtSVG('italic').'</a>';
-  $str .= '<a class="bbc" onclick="qtCaret(`u`)" title="'.L('Bbc.under').'">'.qtSVG('underline').'</a>';
-  $str .= '<a class="bbc" onclick="qtCaret(`quote`)" title="'.L('Bbc.quote').'">'.qtSVG('quote-right').'</a>';
-  if ( $size>1 )
-  {
-  $str .= '<a class="bbc" onclick="qtCaret(`code`)" title="'.L('Bbc.code').'">'.qtSVG('code').'</a>';
-  $str .= '<a class="bbc" onclick="qtCaret(`url`)" title="'.L('Bbc.url').'">'.qtSVG('link').'</a>';
-  $str .= '<a class="bbc" onclick="qtCaret(`mail`)" title="'.L('Bbc.mail').'">'.qtSVG('envelope').'</a>';
+  if ( !QT_BBC || $size===0 ) return '';
+  $str = '<a class="bbc" onclick="qtCaret(`b`,`'.$id.'`)" title="'.L('Bbc.bold').'">'.qtSVG('bold').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`i`,`'.$id.'`)" title="'.L('Bbc.italic').'">'.qtSVG('italic').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`u`,`'.$id.'`)" title="'.L('Bbc.under').'">'.qtSVG('underline').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`quote`,`'.$id.'`)" title="'.L('Bbc.quote').'">'.qtSVG('quote-right').'</a>';
+  if ( $size>1 ) {
+  $str .= '<a class="bbc" onclick="qtCaret(`code`,`'.$id.'`)" title="'.L('Bbc.code').'">'.qtSVG('code').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`url`,`'.$id.'`)" title="'.L('Bbc.url').'">'.qtSVG('link').'</a>';
+  $str .= '<a class="bbc" onclick="qtCaret(`mail`,`'.$id.'`)" title="'.L('Bbc.mail').'">'.qtSVG('envelope').'</a>';
   }
-  if ( $size>2 ) $str .= '<a class="bbc" onclick="qtCaret(`img`)" title="'.L('Bbc.image').'">'.qtSVG('image').'</a>';
+  if ( $size>2 ) $str .= '<a class="bbc" onclick="qtCaret(`img`,`'.$id.'`)" title="'.L('Bbc.image').'">'.qtSVG('image').'</a>';
   return $str;
 }
 function icoPrefix(string $serie, int $i, string $src='config/prefix/')

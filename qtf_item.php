@@ -176,7 +176,7 @@ echo '<div class="g-qr-icon"><p class="i-container" title="'.L('Reply').'">'.qtS
 <div class="g-qr-title">'.L('Quick_reply').'</div>
 <div class="g-qr-bbc">'.(QT_BBC ? '<div class="bbc-bar">'.bbcButtons(1).'</div>' : '').'</div>
 <div class="g-qr-text">
-<textarea required id="form-qr-text" name="text" rows="5"></textarea>
+<textarea required id="text-area" name="text" rows="5"></textarea>
 <p id="quickreply-footer"><a href="javascript:void(0)" onclick="document.getElementById(`form-qr`).submit();">'.L('More').'...</a></p>
 </div>
 ';
@@ -198,7 +198,7 @@ echo '</div>
 
 if ( QT_BBC ) $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_bbc.js"></script>';
 $oH->scripts[] = 'document.getElementById("form-qr-preview").addEventListener("click", (e) => {
-  if ( document.getElementById("form-qr-text").value.length===0 ) return false;
+  if ( document.getElementById("text-area").value.length===0 ) return false;
   e.preventDefault();
   let formData = new FormData(document.getElementById("form-qr"));
   fetch("qtf_edit_preview.php", {method:"POST", body:formData})

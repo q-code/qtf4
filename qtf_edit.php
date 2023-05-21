@@ -315,7 +315,7 @@ echo '<tr>';
 echo '<th>'.L('Message').'</th>';
 echo '<td>';
 if ( QT_BBC ) echo '<div class="bbc-bar">'.bbcButtons($intBbc).'</div>';
-echo '<textarea required tabindex="2" id="form-edit-text" name="text" '.(strlen($oP->text)>500 ? 'rows="30"' : 'rows="15"' ).' maxlength="'.$_SESSION[QT]['chars_per_post'].'">'.$oP->text.'</textarea>'.PHP_EOL;
+echo '<textarea required tabindex="2" id="text-area" name="text" '.(strlen($oP->text)>500 ? 'rows="30"' : 'rows="15"' ).' maxlength="'.$_SESSION[QT]['chars_per_post'].'">'.$oP->text.'</textarea>'.PHP_EOL;
 
 if ( $canUpload ) echo '<p style="margin:0"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(`tgl-container`,`table-row`,`tgl-ctrl`); return false;">'.L('Attachment').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></p>';
 
@@ -425,7 +425,7 @@ function changeIcon() {
 
 $oH->scripts[] = 'const btnPreview = document.getElementById("form-edit-preview");
 btnPreview.addEventListener("click", (e) => {
-  if ( document.getElementById("form-edit-text").value.length===0 ) return false;
+  if ( document.getElementById("text-area").value.length===0 ) return false;
   e.preventDefault();
   let formData = new FormData(document.getElementById("form-edit"));
   fetch("qtf_edit_preview.php", {method:"POST", body:formData})
