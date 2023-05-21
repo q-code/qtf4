@@ -3,8 +3,8 @@
  */
 const qtFormSafe = {
   initial: true,
-  not: ()=>{ this.initial=false },
-  exit: (msg='Data not yet saved. Quit without saving?')=>{ if ( !this.initial && !confirm(msg) ) return false; return true; }
+  not: function(){ this.initial=false; },
+  exit: function(msg='Data not yet saved. Quit without saving?'){ if ( !this.initial && !confirm(msg) ) return false; return true; }
 };
 /**
  * @param {string} id
