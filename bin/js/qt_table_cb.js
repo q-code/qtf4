@@ -1,34 +1,31 @@
-// Checkbox event added to [th|td]checkboxes belonging to a specific table
-// The target table is declared in a html element having id="cbe" and the attribute data-tableid
-// tips: here, the <script> itself has id="cbe" and data-tableid="t1"
-const cbTable = document.getElementById("cbe").getAttribute("data-tableid");
-const cbTop = document.querySelector(`#${cbTable} th input[type="checkbox"]`);
-const cbRows = document.querySelectorAll(`#${cbTable} td input[type="checkbox"]`);
-if ( cbTop ) cbTop.addEventListener("click", function(){qtCheckboxAll(cbTop,cbRows);}, true );
-if ( cbRows.length>0 ) cbRows.forEach( cb => {
-  cb.addEventListener("click", qtCheckboxShiftClick, true);
-  cb.addEventListener("click", function(){qtCheckboxUpdateTop(cbTop,cbRows);}, true);
-} );
-// Parametres to handle shift-click (requires an attribute data-row numbering on the checkboxes)
-let firstChecked = -1;
-let lastChecked = -1;
-
-function qtCheckboxAll(cbTop, cbRows){
-  // Apply the top checkbox state to all rows checkboxes
-	if ( cbRows.length<1 ) return;
-  cbRows.forEach( cb => { cb.checked = cbTop.checked; } );
+// Checkbox-events are added if the table(s) has a data-cbe attribute
+// Top checkbox (having the data-target attribute) is linked to row checkboxes by the name attribute
+// ShiftClick event works when checkboxes include an data-row attribute
+const cbTables = document.querySelectorAll('table[data-cbe]');
+cbTables.forEach( cbTable => {
+  const cbTop = document.querySelector(`#${cbTable.id} input[type="checkbox"][data-target]`);
+  const cbRows = document.querySelectorAll(`#${cbTable.id} input[type="checkbox"][name]`);
+  if ( !cbTop || cbRows.length===0 ) return;
+  cbTop.addEventListener("click", qtCheckboxAll);
+  cbRows.forEach( cb => {
+    cb.addEventListener("click", qtCheckboxShiftClick);
+    cb.addEventListener("click", qtCheckboxAllUpdate);
+  });
+});
+function qtCheckboxAll(e) {
+  const target = e.target.dataset.target;
+  if ( !target ) return;
+  document.querySelectorAll(`[name="${target}"]`).forEach( item => { item.checked = e.target.checked; });
 }
-function qtCheckboxUpdateTop(cbTop, cbRows){
-	// Check/uncheck the top checkbox when not all boxes are checked/unchecked
-	if ( cbRows.length<1 ) return;
-  let n = 0;
-  cbRows.forEach( cb => { if (cb.checked) n++; } );
-  cbTop.checked = cbRows.length===n;
+function qtCheckboxAllUpdate(e) {
+  const cbTop = document.querySelector(`[data-target="${e.target.name}"]`);
+  if ( !cbTop ) return;
+  cbTop.checked = document.querySelectorAll(`[name="${e.target.name}"]`).length===document.querySelectorAll(`[name="${e.target.name}"]:checked`).length;
 }
-function qtCheckboxClick(id){
+function qtCheckboxClick(id) {
 	if ( document.getElementById(id) ) document.getElementById(id).click();
 }
-function qtCheckboxIds(ids, prefixId='t1-cb-', state=true){
+function qtCheckboxIds(ids, prefixId='t1-cb-', state=true) {
   // Check/uncheck the checkboxes from a list of ids
   ids.forEach( id => {
     const el = getElementById(prefixId+id);
@@ -36,13 +33,15 @@ function qtCheckboxIds(ids, prefixId='t1-cb-', state=true){
   } );
 }
 function qtCheckboxShiftClick(e) {
-  if ( firstChecked>=0 && e.shiftKey ) { lastChecked = parseInt(e.target.dataset.row); } else { firstChecked = parseInt(e.target.dataset.row); }
-  if ( firstChecked>=0 && lastChecked>=0 && firstChecked<lastChecked ) {
-    for(let i=firstChecked; i<=lastChecked; ++i) {
-      const el = document.querySelector(`#${cbTable} td [data-row="${i}"]`);
-      if ( el ) el.checked = true;
-    }
-    firstChecked = -1;
-    lastChecked = -1;
+  if ( !e.shiftKey ) return;
+  // find checkbox checked having the same [name]
+  const items = document.querySelectorAll(`[name="${e.target.name}"]:checked`);
+  if ( items.length<2 ) return; // no others
+  const sorted_rows = [...items].map(item => parseInt(item.dataset.row)).sort();
+  // checks between first and last found
+  const max = sorted_rows.pop();
+  for(let i=sorted_rows[0]+1; i<max; ++i ) {
+    const el = document.querySelector(`[name="${e.target.name}"][data-row="${i}"]`);
+    if ( el ) el.checked = true;
   }
 }

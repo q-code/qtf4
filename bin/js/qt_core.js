@@ -51,7 +51,7 @@ function qtClipboard(value, doAlert=true, maxSize=255) {
 function qtHideAfterTable(element, table='t1', inflow=false, rows=5) {
   const t = document.getElementById(table);
   const e = document.getElementById(element);
-  if ( t && e && t.tBodies[0].rows.length<rows ) inflow ? e.style.visibility = 'hidden' : e.style.display = 'none';
+  if ( t && e && t.rows.length<rows ) inflow ? e.style.visibility = 'hidden' : e.style.display = 'none';
 }
 /**
  * Puts true|false in localstorage

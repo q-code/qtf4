@@ -210,11 +210,11 @@ echo '<div id="t1-edits-top" class="left checkboxcmds">'.qtSVG('corner-up-right'
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // Table definition
-$t = new TabTable('id=t1|class=t-item|data-content=users',$intCount);
+$t = new TabTable('id=t1|class=t-item|data-content=users|data-cbe',$intCount);
 $t->activecol = $strOrder;
 $t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order='.$strOrder.'&dir='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down')).'';
 // TH
-$t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" name="t1-cb-all" id="t1-cb-all"/>', 'class=c-checkbox');
+$t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" data-target="t1-cb[]"/>', 'class=c-checkbox');
 $t->arrTh['name'] = new TabHead(L('User'), 'class=c-name', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=name&dir=asc">%s</a>');
 $t->arrTh['pic'] = new TabHead(qtSVG('camera'), 'class=c-pic|title='.L('Picture'));
 $t->arrTh['role'] = new TabHead(L('Role'), 'class=c-role ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=role&dir=asc">%s</a>');
@@ -299,6 +299,6 @@ echo '<p class="right" style="padding:0.3rem 0">'.L('Show').': '.$m->build('u'.$
 
 // HTML END
 
-$oH->scripts[] = '<script id="cbe" type="text/javascript" src="bin/js/qt_table_cb.js" data-tableid="t1"></script>';
+$oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js"></script>';
 
 include 'qtf_adm_inc_ft.php';
