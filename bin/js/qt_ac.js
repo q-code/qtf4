@@ -57,8 +57,7 @@ function acCreateDropdown(responses) {
 
 let focusInput = null;
 let multiInput = false;
-const wrappers = document.querySelectorAll(".ac-wrapper");
-wrappers.forEach( (wrapper) => {
+document.querySelectorAll('.ac-wrapper').forEach( (wrapper) => {
   const id = wrapper.id.substring(11);
   const input = document.getElementById(id);
   if ( input ) {
@@ -68,4 +67,4 @@ wrappers.forEach( (wrapper) => {
       acRemoveDropdown(id);
     });
   }
-} );
+});

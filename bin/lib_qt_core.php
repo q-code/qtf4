@@ -552,7 +552,7 @@ function qtInline(string $str, int $max=255, string $end='...', bool $unbbc=true
   if ( !is_string($out) && !is_array($out) ) die(__FUNCTION__.' arg #6 must be a string or array');
   if ( $max>0 ) $str = substr($str,0,$max+64); // reduce length if truncating
   // unbbc and inline
-  if ( $unbbc ) $str = qtUnbbc($str);
+  if ( $unbbc ) $str = qtBBclean($str);
   $str = str_replace($in, $out, $str);
   // truncate
   return $max>0 ? qtTrunc($str,$max,$end) : $str;
@@ -646,7 +646,7 @@ function qtDateTranslate(string $str, array $translations)
   }
   return str_replace(array_keys($dico),array_values($dico),$str);
 }
-function qtBbc(string $str, string $nl='<br>', array $tip=array(), string $bold='<b>$1</b>', string $italic='<i>$1</i>')
+function qtBBcode(string $str, string $nl='<br>', array $tip=array(), string $bold='<b>$1</b>', string $italic='<i>$1</i>')
 {
   // Converts bbc to html
   // $str - [mandatory] a string than can contains bbc tags
@@ -654,8 +654,8 @@ function qtBbc(string $str, string $nl='<br>', array $tip=array(), string $bold=
   // $tip - block info tips
   // $bold - (optional) format ex: <b>$1</b> or <span class="b">$1</span>
   // $italic - (optional) format ex: <b>$1</b> or <span class="i">$1</span>
-  // Example qtBbc('[b]Text[/b]') returns <b>Text</b>
-  // Example qtBbc('[i]<b>Text<b>[/i]') returns <i>&lt;b&gt;Text&lt;/b&gt;</i>
+  // Example qtBBcode('[b]Text[/b]') returns <b>Text</b>
+  // Example qtBBcode('[i]<b>Text<b>[/i]') returns <i>&lt;b&gt;Text&lt;/b&gt;</i>
 
   // check
   if ( strpos($str,'<')!==false) $str = str_replace('<','&#60;',$str);
@@ -712,7 +712,7 @@ function qtBbc(string $str, string $nl='<br>', array $tip=array(), string $bold=
   if ( $nl!=='' ) $str = str_replace( '<p>'.$nl, '<p>', $str );
   return $str;
 }
-function qtUnbbc(string $str, bool $deep=true, array $tip=array())
+function qtBBclean(string $str, bool $deep=true, array $tip=array())
 {
   if ( empty($str) || strpos($str,'[')===false ) return $str;
   if ( !isset($tip['Quotation']) ) $tip['Quotation']='Quotation';

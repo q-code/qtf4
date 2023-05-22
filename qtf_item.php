@@ -196,7 +196,6 @@ echo '</div>
 </form>
 ';
 
-if ( QT_BBC ) $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_bbc.js"></script>';
 $oH->scripts[] = 'document.getElementById("form-qr-preview").addEventListener("click", (e) => {
   if ( document.getElementById("text-area").value.length===0 ) return false;
   e.preventDefault();

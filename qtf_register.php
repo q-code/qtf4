@@ -805,8 +805,7 @@ if ( SUser::id()!==$id && $row['role']==='A' && SUser::role()==='M' ) {
 }
 
 if ( empty($row['signature']) ) $row['signature']='';
-$strSign = qtBbc($row['signature']); if ( empty($strSign) ) $strSign='&nbsp;';
-if ( QT_BBC ) $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_bbc.js"></script>';
+$strSign = qtBBcode($row['signature']); if ( empty($strSign) ) $strSign='&nbsp;';
 
 $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
 $frm_attr = 'class=msgbox formSign';

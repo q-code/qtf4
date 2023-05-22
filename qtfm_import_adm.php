@@ -111,7 +111,7 @@ function endElement($parser, $strTag)
       $oP->id = $intPostInsertId; $intPostInsertId++;
       $oP->topic = $oT->id;
       $oP->section = $_SESSION['m_import_xml']['dest'];
-      if ( $_SESSION['m_import_xml']['dropbbc'] ) $oP->text = qtUnbbc($oP->text,true,L('Bbc.*'));
+      if ( $_SESSION['m_import_xml']['dropbbc'] ) $oP->text = qtBBclean($oP->text,true,L('Bbc.*'));
 
       $oP->insertPost(false);
       if ( $oP->type!='P' ) $arrCounts['reply']++; // count only the replies
