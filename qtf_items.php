@@ -420,15 +420,7 @@ addIRe("t1",['.implode(',', array_keys($arr)).'],['.implode(',', $arr).'],"'.L('
 // --------
 
 // hide href column if empty
-if ( $q!=='s' ) $oH->scripts[] = 'function hideEmptyColumn(id="t1",col="c-numid"){
-  const cols = document.querySelectorAll(`#${id} td.${col}`);
-  if ( cols.length===0 ) return;
-  for(i=0;i<cols.length;++i) if ( cols.item(i).innerHTML!=="" ) return;
-  document.querySelector(`#${id} th.${col}`).style.display="none";
-  cols.forEach( el => { el.style.display="none"; } );
-}
-hideEmptyColumn();';
-
+if ( $q!=='s' ) $oH->scripts[] = 'qtHideEmptyColumn();';
 // hide table-ui-bottom-controls if less than 5 table rows
 $oH->scripts[] = 'qtHideAfterTable("t1-nav-bot");qtHideAfterTable("tablebot");';
 

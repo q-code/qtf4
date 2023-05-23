@@ -160,3 +160,15 @@ function qtBbc(bbc, id='text-area') {
   e.focus();
   e.setSelectionRange(txtBegin.length + bbc.length + 2, txtBegin.length + bbc.length + 2);
 }
+/**
+ * @param {string} tdselector
+ * @param {string} thselector
+ */
+function qtHideEmptyColumn(tdselector='#t1 td.c-numid', thselector='#t1 th.c-numid') {
+  let e = document.querySelectorAll(tdselector); if ( e.length===0 ) return;
+  for(i=0;i<e.length;++i) if ( e.item(i).innerHTML!=='' ) return;
+  // Hide td-cells (all empty) and th-cell (even if not empty)
+  e.forEach( item => { item.style.display = 'none'; } );
+  e = document.querySelectorAll(thselector); if ( e.length===0 ) return;
+  e.forEach( item => { item.style.display = 'none'; } );
+}

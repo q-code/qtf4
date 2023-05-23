@@ -129,7 +129,7 @@ div.pan{background-color:#222}
 #calendar .outdate, #calendarnext .outdate{background-color:#777}
 
 /* TABLE and SEARCH PAGE*/
-tbody[data-dataset="newsontop"] td{border-bottom:solid 5px #333}
+tbody[data-dataset="newsontop"] tr:last-of-type td{border-bottom:solid 5px #333}
 .t-sec, .t-data, .t-item, .t-user,
 .search-box{background-color:#000;border:solid 3px #000}
 .search-box:hover{background-color:#080808}
