@@ -161,14 +161,14 @@ function qtBbc(bbc, id='text-area') {
   e.setSelectionRange(txtBegin.length + bbc.length + 2, txtBegin.length + bbc.length + 2);
 }
 /**
- * @param {string} tdselector
- * @param {string} thselector
+ * @param {string} selectTD querySelector like '#tableid td.columnclass'
+ * @param {string} selectTR querySelector like '#tableid th.columnclass'
  */
-function qtHideEmptyColumn(tdselector='#t1 td.c-numid', thselector='#t1 th.c-numid') {
-  let e = document.querySelectorAll(tdselector); if ( e.length===0 ) return;
-  for(i=0;i<e.length;++i) if ( e.item(i).innerHTML!=='' ) return;
-  // Hide td-cells (all empty) and th-cell (even if not empty)
-  e.forEach( item => { item.style.display = 'none'; } );
-  e = document.querySelectorAll(thselector); if ( e.length===0 ) return;
-  e.forEach( item => { item.style.display = 'none'; } );
+function qtHideEmptyColumn(selectTD='#t1 td.c-numid', selectTR='#t1 th.c-numid') {
+  let nodes = document.querySelectorAll(selectTD); if ( nodes.length===0 ) return;
+  for(const node of nodes) if ( node.innerHTML!=='' ) return;
+  // Hide td-cells (all empty) then th-cells (even if not empty)
+  nodes.forEach( node => { node.style.display = 'none'; } );
+  nodes = document.querySelectorAll(selectTR); if ( nodes.length===0 ) return;
+  nodes.forEach( node => { node.style.display = 'none'; } );
 }
