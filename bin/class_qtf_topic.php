@@ -38,7 +38,7 @@ public function setFrom($ref=null)
     if ( $ref<0 ) die(__METHOD__.' Argument must be positive');
     global $oDB;
     $oDB->query( "SELECT * FROM TABTOPIC WHERE id=$ref" );
-    $row = $oDB->getRow(); if ( $row===false ) die(__METHOD__.' No domain '.$ref);
+    $row = $oDB->getRow(); if ( $row===false ) die(__METHOD__.' No id '.$ref);
     $ref = $row; // continue as array
   }
   if ( is_array($ref) ) {

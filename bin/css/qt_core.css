@@ -89,6 +89,8 @@ p.list{margin-bottom:2px}
 }
 .square42{display:flex;width:42px;height:42px;align-items:center;justify-content:center}
 .square32{display:flex;width:32px;height:32px;align-items:center;justify-content:center}
+.bg-flash{animation:bgFlash 1s ease-in 0s 2 alternate;}
+@keyframes bgFlash{from{background-color:transparent} to{background-color:rgb(255, 255, 146)} }
 
 /* MSGBOX */
 .msgboxbody article{margin-bottom:1.2rem}

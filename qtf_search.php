@@ -19,25 +19,22 @@ $certificate = makeFormCertificate('344cdd26d2c91e14d6fd27ab7e452a6f');
 if ( isset($_POST['ok']) && $_POST['ok']===makeFormCertificate('a2038e83fd6618a444a5de51bf2313de') ) $_POST['ok']=$certificate; // certificates forwarding
 if ( isset($_POST['ok']) && $_POST['ok']!==$certificate ) die('Unable to check certificate');
 
-$q = '';  // query model
-$v = '';  // keyword(s), tag(s), date1 or username
+$q = ''; // query model
+$v = ''; // keyword(s), tag(s), date1 or username
 $v2 = ''; // timeframe, date2 or userid
 $to = false; // title only
-$s = '*';  // section filter can be '*' or [int]
+$s = -1; // [int]
 $st = '*';
-qtArgs('q v v2 boo:to s st qkw');
-if ( $s==='' || $s==='-1' || !is_numeric($s) ) $s='*';
+qtArgs('q v v2 boo:to int:s st qkw');
 if ( $st==='' || $st==='-1' || !is_numeric($st) ) $st='*';
 
 // --------
 // SUBMITTED
 // --------
+if ( isset($_POST['ok']) && !empty($q) ) {
 
-if ( isset($_POST['ok']) && !empty($q) )
-{
   $arg=''; // criterias (other than filters)
-  switch($q)
-  {
+  switch($q) {
   case 'ref':
     if ( empty($v) ) $criteriaError = L('Ref').' '.L('invalid');
     // support direct open when #id is used as ref
@@ -86,7 +83,7 @@ include APP.'_search_ui.php';
 // SEARCH OPTIONS
 echo '<h2>'.L('Search_option').'</h2>'.PHP_EOL;
 echo '<section class="search-box options" id="broadcasted-options">'.PHP_EOL;
-echo qtSVG('cog', 'id=opt-icon|class=filigrane'.($s!=='*' || $st!=='*' ? ' spinning' : ''));
+echo qtSVG('cog', 'id=opt-icon|class=filigrane'.($s<0 && $st==='*' ? '' : ' spinning'));
 echo '<div>'.L('Section').' <select id="opt-s" name="s" size="1" autocomplete="off">'.sectionsAsOption($s,[],[],L('In_all_sections')).'</select></div>';
 echo '<div>'.L('Status').'&nbsp;<select id="opt-st" name="st" size="1" autocomplete="off"><option value="*"'.($st==='*' ? ' selected' : '').'>'.L('Any_status').'</option>'.qtTags(CTopic::getStatuses(),$st).'</select></div>'.PHP_EOL;
 echo '</section>'.PHP_EOL;

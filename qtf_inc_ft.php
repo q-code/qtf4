@@ -37,7 +37,7 @@ if ( QT_SHOW_JUMPTO ) {
   echo '<option disabled selected hidden>'.L('Goto').'...</option>';
   if ( $oH->selfurl=='qtf_search.php' ) echo '<option value="'.url('qtf_index.php').'">'.SLang::translate().'</option>';
   if ( $oH->selfurl!='qtf_search.php' && SUser::canView('V4') ) echo '<option value="'.url('qtf_search.php').'">'.L('Advanced_search').'</option>';
-  echo sectionsAsOption('',[],[],'',32,100,url('qtf_items.php').'?s='); // current section is not rejected (allow returning to page 1 or top page)
+  echo sectionsAsOption(-1,[],[],'',32,100,url('qtf_items.php').'?s='); // current section is not rejected (allow returning to page 1 or top page)
   echo '</select>';
 }
 echo '</p>

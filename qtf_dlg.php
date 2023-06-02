@@ -18,21 +18,17 @@ session_start();
 require 'bin/init.php';
 if ( SUser::role()==='V' ) die('Access denied'); // minimum access rights
 
-$a = empty($_GET['a']) ? '' : $_GET['a']; if ( !empty($_POST['a']) ) $a = $_POST['a']; // a come as get or post
-if ( empty($a) ) die('Missing argument'); // a is mandatory
-$s = isset($_GET['s']) ? (int)$_GET['s'] : -1; if ( isset($_POST['s']) ) $s = (int)$_POST['s'];
-$parentUri = isset($_POST['uri']) ? $_POST['uri'] : 's='.$s;
-
-// ids [array-of-int] from GET, POST, or Checkboxes
-$ids = array();
-if ( isset($_GET['ids']) ) $ids = array_map( 'intval', explode(',',$_GET['ids']) );
-if ( isset($_POST['ids']) ) $ids = array_map( 'intval', explode(',',$_POST['ids']) );
-if ( isset($_POST['t1-cb']) ) $ids = getCheckedIds('t1-cb');
+$a = '';
+$s = 0;
+$ids = '';
+qtArgs('a! s ids');
+$ids = array_map('intval', explode(',',$ids));
+if ( isset($_POST['t1-cb']) ) $ids = getPostedValues('t1-cb');
 $strIds = implode(',',$ids);
+$parentUri = isset($_POST['uri']) ? $_POST['uri'] : 's='.$s;
 
 $oH->selfname = L('Item+');
 $oH->selfurl = APP.'_dlg.php';
-$oH->selfuri = $oH->selfurl.'?a='.$a; // when confirmed, ids must be in POST
 $oH->exiturl = APP.'_items.php?'.$parentUri;
 $oH->exitname = L('Exit');
 $frm_title = 'Multiple edit';
@@ -108,7 +104,7 @@ case 'itemsType':
 
   // FORM (default type/status is U=unchanged)
   $frm_title = L('Change').' '.L('type').'/'.L('status');
-  $frm[] = '<form method="post" action="'.url($oH->selfuri).'" onsubmit="return validateForm(this)">';
+  $frm[] = '<form method="post" action="'.url($oH->selfurl).'" onsubmit="return validateForm(this)">';
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>';
   $frm[] = renderItems($ids,false,true);
@@ -127,7 +123,7 @@ case 'itemsType':
   $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Ok').' ('.count($ids).')</button></p>';
   $frm[] = '<input type="hidden" name="ids" value="'.$strIds.'"/>';
   $frm[] = '<input type="hidden" name="uri" value="'.$parentUri.'"/>';
-  $frm[] = '</form>';
+  $frm[] = '<input type="hidden" name="a" value="'.$a.'"/></form>';
   $oH->scripts[] = 'function validateForm(f) {
     if ( f.elements[0].value=="U" && f.elements[1].value=="U") { alert("'.L('Nothing_selected').'"); return false; }
     document.body.style.cursor = "wait";
@@ -156,7 +152,7 @@ case 'itemsTags':
 
   // FORM
   $frm_title = L('Change').' '.L('tags');
-  $frm[] = '<form method="post" action="'.url($oH->selfuri).'" autocomplete="off">';
+  $frm[] = '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">';
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>'.renderItems($ids,true);
   $frm[] = '</article>';
@@ -173,7 +169,7 @@ case 'itemsTags':
   $frm[] = '</article>';
   $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button></p>';
   $frm[] = '<input type="hidden" name="ids" value="'.$strIds.'"/><input type="hidden" name="uri" value="'.$parentUri.'"/>';
-  $frm[] = '</form>';
+  $frm[] = '<input type="hidden" name="a" value="'.$a.'"/></form>';
   $oH->scripts['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" id="tagdesc" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
   $oH->scripts['tags'] = '<script type="text/javascript" src="bin/js/qt_tags.js"></script>';
   $oH->scripts['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
@@ -198,7 +194,7 @@ case 'itemsMove':
 
   // FORM
   $frm_title = L('Move').' '.L('item+');
-  $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+  $frm[] = '<form method="post" action="'.url($oH->selfurl).'">';
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>';
   $frm[] = renderItems($ids,false,true,true);
@@ -220,7 +216,7 @@ case 'itemsMove':
   $frm[] = '</article>';
   $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Ok').' ('.count($ids).')</button></p>';
   $frm[] = '<input type="hidden" name="ids" value="'.$strIds.'"/><input type="hidden" name="uri" value="'.$parentUri.'"/>';
-  $frm[] = '</form>';
+  $frm[] = '<input type="hidden" name="a" value="'.$a.'"/></form>';
 
   break;
 
@@ -258,7 +254,7 @@ case 'itemsDelete':
 
   // FORM
   $frm_title = L('Delete');
-  $frm[] = '<form method="post" action="'.url($oH->selfuri).'" onsubmit="return validateForm()">';
+  $frm[] = '<form method="post" action="'.url($oH->selfurl).'" onsubmit="return validateForm()">';
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>';
   $frm[] = renderItems($ids,false,true,true);
@@ -270,7 +266,7 @@ case 'itemsDelete':
   $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Ok').' (<span id="submit-sum">...</span>)</button></p>';
   $frm[] = '<input type="hidden" id="ids" name="ids" value="'.$strIds.'"/>';
   $frm[] = '<input type="hidden" name="uri" value="'.$parentUri.'"/>';
-  $frm[] = '</form>';
+  $frm[] = '<input type="hidden" name="a" value="'.$a.'"/></form>';
   $oH->scripts[] = 'const deleteT = document.getElementById("deleteT");
 const deleteR = document.getElementById("deleteR");
 const deleteA = document.getElementById("deleteA");
@@ -362,7 +358,7 @@ case 'replyDelete':
 
   // FORM
   $frm_title = L('Delete');
-  $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+  $frm[] = '<form method="post" action="'.url($oH->selfurl).'">';
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Reply').':</p>';
   $frm[] = renderReply($p);
@@ -373,7 +369,7 @@ case 'replyDelete':
   $frm[] = '<input type="hidden" name="t" value="'.$t.'"/>';
   $frm[] = '<input type="hidden" name="p" value="'.$p.'"/>';
   $frm[] = '<input type="hidden" name="uri" value="'.$parentUri.'"/>';
-  $frm[] = '</form>';
+  $frm[] = '<input type="hidden" name="a" value="'.$a.'"/></form>';
 
   break;
 

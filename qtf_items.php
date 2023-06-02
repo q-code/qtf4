@@ -16,24 +16,20 @@ if ( !SUser::canView('V2') ) exitPage(11, 'user-lock.svg'); //...
 // ---------
 
 // check arguments
-$q = ''; // type of search (if missing will use $q='s')
-$s = ''; // section $s can be '*' or [int] (after argument checking only [int] is allowed)
-$st = ''; // status $st can be '*' or [string]
-$v = ''; // searched text [string] >> array of strings
+$q = ''; // Search type (not required, use 's' if missing)
+$s = -1; // [int]
+$st = '*'; // Status [string] {'*'|status-key}, caution: can be '0'
+$v = ''; // Searched [string] text (converted to array of strings)
 $v2 = ''; // timeframe [string] or userid
 $cid = -1; // allows checking an id when EditByRows (-1 means nothing)
-qtArgs('q s st v v2 int:cid');
+qtArgs('q int:s st v v2 int:cid');
 if ( empty($q) ) $q = 's';
-if ( $s==='*' || $s==='' || !is_numeric($s) ) $s = '-1';
-if ( $st==='' ) $st = '*';
+if ( $q==='s' && $s<0 ) die(__FILE__.' Missing argument $s');
 $v = qtCleanArray($v);
 
-// initialise section
-$s = (int)$s;
-if ( $q==='s' && $s<0 ) die(__FILE__.' Missing argument $s');
-if ( $q==='s' || $s>=0 ) {
+// initialise section or void-section and check specific access right
+if ( $q==='s' ) {
   $oS = new CSection($_Sections[$s]); // new CSection($s)
-  // exit if user role not granted
   if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U') ) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
@@ -46,7 +42,7 @@ if ( $q==='s' || $s>=0 ) {
   }
   $oH->selfname = L('Section').': '.$oS->title;
 } else {
-  $oS = new CSection(); // void-section in case of search query
+  $oS = new CSection();
   $oH->selfname = L('Search_results');
 }
 

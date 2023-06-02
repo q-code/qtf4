@@ -196,6 +196,7 @@ function qtCtype_digit(string $str)
  * @param boolean $inPost read value from $_POST
  * @param boolean $trim trim value
  * @param boolean $striptags remove tags
+ * @param boolean $star2int on int: check, convert '*' to -1
  * @return void global variables listed in $def are re-assigned if the value exists in GET/POST
  */
 function qtArgs(string $def, bool $inGet=true, bool $inPost=true, bool $trim=true, bool $striptags=true)

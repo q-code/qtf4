@@ -54,7 +54,7 @@ public function setFrom($ref=null)
     if ( $ref<0 ) die(__METHOD__.' Argument must be positive');
     $oDB = new CDatabase();
     $oDB->query( "SELECT s.*,d.title as ptitle FROM TABSECTION s INNER JOIN TABDOMAIN d ON d.id=s.domainid WHERE s.id=$ref" );
-    $row = $oDB->getRow(); if ( $row===false ) die(__METHOD__.' No domain '.$ref);
+    $row = $oDB->getRow(); if ( $row===false ) die(__METHOD__.' No id '.$ref);
     $ref = $row; // continue as array
   }
   if ( is_array($ref) ) {

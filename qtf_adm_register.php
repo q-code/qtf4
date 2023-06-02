@@ -23,7 +23,7 @@ if ( !empty($_POST['cat']) ) $cat = substr($_POST['cat'],0,2);
 $ids = array();
 if ( isset($_GET['ids']) ) $ids = array_map( 'intval', explode(',',$_GET['ids']) );
 if ( isset($_POST['ids']) ) $ids = array_map( 'intval', explode(',',$_POST['ids']) );
-if ( isset($_POST['t1-cb']) ) $ids = getCheckedIds('t1-cb');
+if ( isset($_POST['t1-cb']) ) $ids = getPostedValues('t1-cb');
 
 $oH->links['css'] = '<link rel="stylesheet" type="text/css" href="bin/css/admin.css"/>';
 include translate('lg_adm.php');

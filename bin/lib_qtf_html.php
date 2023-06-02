@@ -1,11 +1,8 @@
 <?php // v4.0 build:20230430
 
-function sectionsAsOption($selected='', array $reject=[], array $disabled=[], string $optionAll='', int $textsize=32, int $max=100, string $prefixValue='')
+function sectionsAsOption(int $selected=-1, array $reject=[], array $disabled=[], string $all='', int $textsize=32, int $max=100, string $prefixValue='')
 {
-  if ( !is_int($selected) && !is_string($selected) ) throw new Exception('invalid argument');
-  $selected = (string)$selected;
-  // Attention $selected can be [int] or [string] ('*' when $optionAll is used).
-  // If $optionAll is not empty, the list includes in first position an 'all' option having the value '*' and the label $optionAll.
+  // If $all is not empty, the list includes a $all option in first position having value '-1'.
   // To remove some section(s) from this list, use $reject and provide an array of id's [int]. Providing one id [int] is also possible.
   $arrDS = [];
   $countS = 0;
@@ -17,27 +14,23 @@ function sectionsAsOption($selected='', array $reject=[], array $disabled=[], st
   }}
   // render as options
   $optgroup = $countS>2 && count($arrDS)>1;
-  $str = ''; if ( !empty($optionAll) ) $str ='<option value="*"'.($selected==='*' ? ' selected' : '').(in_array('*',$disabled,true) ? ' disabled': '').'>'.qtTrunc($optionAll,$textsize).'</option>';
+  $str = ''; if ( !empty($all) ) $str ='<option value="-1"'.($selected===-1 ? ' selected' : '').(in_array(-1,$disabled,true) ? ' disabled': '').'>'.qtTrunc($all,$textsize).'</option>';
   foreach($arrDS as $domId=>$arrS) {
     if ( $optgroup ) $str .= '<optgroup label="'.qtTrunc( SLang::translate('domain', 'd'.$domId, $GLOBALS['_Domains'][$domId]['title']), $textsize ).'">';
     foreach($arrS as $id=>$name) {
-      $str .= '<option value="'.$prefixValue.$id.'"'.((string)$id===$selected ? ' selected' : '').(in_array($id,$disabled,true) ? ' disabled': '').'>'.qtTrunc($name,$textsize).'</option>';
+      $str .= '<option value="'.$prefixValue.$id.'"'.($id===$selected ? ' selected' : '').(in_array($id,$disabled,true) ? ' disabled': '').'>'.qtTrunc($name,$textsize).'</option>';
       if ( --$max<1 ) break;
     }
     if ( $optgroup ) $str .= '</optgroup>';
   }
   return $str;
 }
-function getCheckedIds($checkbox='t1-cb',$altCsv='')
+function getPostedValues(string $post='t1-cb', bool $asInt=true)
 {
-  if ( isset($_POST[$checkbox]) ) {
-    $arrId = is_array($_POST[$checkbox]) ? $_POST[$checkbox] : explode(',',$_POST[$checkbox]);
-    return array_map('intval', $arrId);
-  }
-  if ( is_string($altCsv) && !empty($altCsv) ) {
-    return array_map('intval', explode(',',$altCsv));
-  }
-  return array();
+  if ( !isset($_POST[$post]) ) return [];
+  // POSTs values can be transmitted in an array (i.e. checkboxes 'name[]') or in a input csv-string
+  $arr = is_array($_POST[$post]) ? $_POST[$post] : explode(',',$_POST[$post]);
+  return $asInt ? array_map('intval', $arr) : $arr;
 }
 function htmlCsvLink($strUrl,$intCount=20,$intPage=1)
 {
