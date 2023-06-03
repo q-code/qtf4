@@ -14,13 +14,13 @@ class CHtml
   public $scripts_top = [];
   public $scripts = [];
   public $log = []; // Attention if not empty, is VISIBLE at the bottom of the page.
-  public $selfurl = APP.'_index.php'; // page filename
   public $selfname = '';
+  public $selfurl = APP.'_index.php'; // page filename
+  public $selfuri = '';
   public $selfparent = ''; // parent name
   public $selfversion= '';
-  public $selfuri = '';
-  public $exiturl = APP.'_index.php';
   public $exitname = 'Back';
+  public $exiturl = APP.'_index.php';
   public $exituri = '';
   public $items = 0; // number of items in the page, visible (can be in several pages)
   public $itemsHidden = 0; // number of items in the page, hidden (by users preferences)
@@ -71,14 +71,22 @@ class CHtml
     echo PHP_EOL.'<div'.attrRender($attr).'>'.PHP_EOL.PHP_EOL;
   }
 
+  public function self() {
+    return $this->selfurl.(empty($this->selfuri) ? '' :  '?'.$this->selfuri);
+  }
+  public function exit() {
+    return $this->exiturl.(empty($this->exituri) ? '' :  '?'.$this->exituri);
+  }
   /**
-   * Redirect to the url $u, and rewrites $u if QT_URLREWRITE
-   * @param string $u
+   * Redirect to the url $u
+   * @param string $u 'self|exit|url' selfurl?selfuri
    * @param string $s
    */
   public function redirect(string $u, string $s='Continue')
   {
     if ( empty($u) ) die(__METHOD__.' arg must be string');
+    if ( $u==='self' ) $u = $this->self();
+    if ( $u==='exit' ) $u = $this->exit();
     $u = url($u);
     if ( headers_sent() ) {
       echo '<a href="'.$u.'">',$s,'</a><meta http-equiv="REFRESH" content="0;url='.$u.'">';
@@ -91,7 +99,7 @@ class CHtml
   {
     if ( substr($symbol,-4)==='.svg' ) $symbol = file_get_contents('bin/svg/'.$symbol); // on failed returns false
     if ( empty($symbol) ) $symbol = '&lt;';
-    return '<a class="'.$class.'" href="'.url($this->exiturl).'">'.$symbol.'</a>';
+    return '<a class="'.$class.'" href="'.url($this->exit()).'">'.$symbol.'</a>';
   }
   public static function msgBox(string $title='', string $attr='class=msgbox', string $attrTitle='class=msgboxtitle', string $attrBody='class=msgboxbody')
   {

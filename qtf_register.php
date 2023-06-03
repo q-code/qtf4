@@ -386,7 +386,7 @@ if ( isset($_POST['ok']) ) try {
   }
   // exit
   $_SESSION[QT.'splash'] = L('S_update');
-  $oH->redirect($oH->exiturl);
+  $oH->redirect('exit');
 
 } catch (Exception $e) {
 
@@ -471,7 +471,7 @@ if ( isset($_POST['ok']) ) {
   if ( $_POST['role']==='U' ) $oDB->exec( "UPDATE TABSECTION SET moderator=1, moderatorname='Admin' WHERE moderator=" . $id );
   // exit
   $_SESSION[QT.'splash'] = L('S_update');
-  $oH->redirect($oH->exiturl);
+  $oH->redirect('exit');
 }
 
 // FORM
@@ -510,7 +510,7 @@ if ( isset($_POST['ok']) && isset($_POST['t']) ) {
   $b = $oDB->exec( "UPDATE TABUSER SET closed='" . $_POST['t'] . "' WHERE id=".$id);
   // exit
   $_SESSION[QT.'splash'] = $b ? L('S_update') : 'E|'.L('E_failed');
-  $oH->redirect($oH->exiturl);
+  $oH->redirect('exit');
 }
 
 // FORM
@@ -596,7 +596,7 @@ if ( isset($_POST['ok']) ) {
   // exit
   $_SESSION[QT.'splash'] = L('S_update');
   if ( SUser::role()==='A' ) $oH->pageMessage('','<p>'.$strMessage.'</p>'); //...
-  $oH->redirect($oH->exiturl);
+  $oH->redirect('exit');
 }
 
 // FORM
@@ -699,7 +699,7 @@ if ( isset($_POST['ok']) ) {
 
   // exit
   $_SESSION[QT.'splash'] = L('S_update');
-  $oH->redirect($oH->exiturl);
+  $oH->redirect('exit');
 
 }
 
@@ -744,7 +744,7 @@ if ( isset($_POST['ok']) ) try {
   // Execute and exit
   if ( !SUser::rename($oDB,$id,$_POST['username']) ) throw new Exception( 'Unable to perform some queries. Rollback done.' );
   $_SESSION[QT.'splash'] = L('S_save');
-	$oH->redirect($oH->exiturl);
+	$oH->redirect('exit');
 
 } catch (Exception $e) {
 
@@ -788,7 +788,7 @@ if ( isset($_POST['ok']) ) {
     $oDB->exec( "UPDATE TABUSER SET signature=? WHERE id=".$id, [qtAttr($_POST['text'],255)] );
     // exit
     $_SESSION[QT.'splash'] = L('S_update');
-    $oH->redirect($oH->exiturl);
+    $oH->redirect('exit');
   } else {
     $_SESSION[QT.'splash'] = 'E|'.$oH->error;
   }

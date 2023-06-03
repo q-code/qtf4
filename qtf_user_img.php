@@ -50,7 +50,7 @@ if ( !is_readable(QT_DIR_PIC) || !is_writable(QT_DIR_PIC) ) die('Invalid directo
 // --------
 // SUBMITTED for Exit
 // --------
-if ( isset($_POST['exit']) ) $oH->redirect($oH->exiturl);
+if ( isset($_POST['exit']) ) $oH->redirect('exit');
 
 // --------
 // INITIALISE image and repository

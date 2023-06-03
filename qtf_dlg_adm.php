@@ -15,7 +15,8 @@ include translate('lg_adm.php');
 
 $a = '';
 $s = -1;
-qtArgs('a int:s'); if ( empty($a) || $s<0 ) die('Missing arg a or s'); // mandatory $a,$s from get or post
+qtArgs('a! int:s');
+if ( $s<0 ) die('Missing arg s');
 
 $oH->selfparent = L('Board_content');
 $oH->selfname = L('Section');
@@ -42,7 +43,7 @@ case 'Ddelete':
     CDomain::delete($s); // [int]†
     // exit
     $_SESSION[QT.'splash'] = L('S_delete');
-    $oH->redirect($oH->exiturl);
+    $oH->redirect('exit');
 
   } catch (Exception $e) {
 
@@ -84,7 +85,7 @@ case 'Sdelete':
     CSection::delete($s);
     // exit
     $_SESSION[QT.'splash'] = L('S_delete');
-    $oH->redirect($oH->exiturl);
+    $oH->redirect('exit');
   }
 
   // FORM
@@ -264,7 +265,7 @@ case 'Sprune':
     CSection::deleteItems( $s, '0', (isset($_POST['type']) ? $_POST['type'] : ''), '', " AND replies=0 AND firstpostdate<'".addDate(date('Ymd His'),-$days,'day')."'" );
     // exit
     $_SESSION[QT.'splash'] = L('S_delete');
-    $oH->redirect($oH->exiturl);
+    $oH->redirect('exit');
 
   } catch (Exception $e) {
 
@@ -332,7 +333,7 @@ case 'Scntmove':
       CSection::moveAllItems( $s, (int)$_POST['dest'],(int)$_POST['renum'], isset($_POST['dropprefix']), $_POST['status'], $_POST['type'], $_POST['year'] );
       // exit
       $_SESSION[QT.'splash'] = L('S_update');
-      $oH->redirect($oH->exiturl);
+      $oH->redirect('exit');
     } else {
       $oH->error = L('Nothing_selected');
     }

@@ -19,9 +19,10 @@ $s = $oT->pid;
 // ---------
 // SUBMITTED
 // ---------
-if ( isset($_POST['Maction']) )
-{
-  $oH->exiturl  = 'qtf_items.php?s='.$s;
+if ( isset($_POST['Maction']) ) {
+
+  $oH->exiturl = 'qtf_items.php';
+  $oH->exituri = 's='.$s;
   $oH->exitname = L('Section');
   if ( empty($_POST['Maction']) ) $oH->redirect(url('qtf_item.php').'?t='.$t);
   if ( substr($_POST['Maction'],0,7)==='status_' ) $oT->setStatus(substr($_POST['Maction'],-1,1));
@@ -29,6 +30,7 @@ if ( isset($_POST['Maction']) )
   if ( $_POST['Maction']==='reply' ) $oH->redirect( url('qtf_edit.php').'?a=re&t='.$t, L('Reply') );
   if ( $_POST['Maction']==='move' ) $oH->redirect( url('qtf_dlg.php').'?a=itemsMove&s='.$s.'&ids='.$t, L('Move') );
   if ( $_POST['Maction']==='delete' ) $oH->redirect( url('qtf_dlg.php').'?a=itemsDelete&s='.$s.'&ids='.$t, L('Delete') );
+
 }
 
 // ---------
@@ -47,7 +49,7 @@ if ( $oS->type==='2' && SUser::role()==='V' && $oT->type!=='A' ) {
   $oH->exitname = SLang::translate();
   $oH->pageMessage('', L('R_member')); //... exit
 }
-if ( $oS->type==='2' && SUser::role()==='U' && $oT->firstpostuser != SUser::id() && $oT->type!=='A'  ) {
+if ( $oS->type==='2' && SUser::role()==='U' && $oT->firstpostuser != SUser::id() && $oT->type!=='A' ) {
   $oH->selfname = L('Section');
   $oH->exitname = SLang::translate();
   $oH->pageMessage('', L('R_member').'<br>'.L('E_item_private')); //... exit
@@ -61,7 +63,8 @@ $limit = 0;
 $currentPage = 1;
 if ( isset($_GET['page']) ) { $limit = ($_GET['page']-1)*$_SESSION[QT]['replies_per_page']; $currentPage = (int)$_GET['page']; }
 if ( isset($_GET['view']) ) { $_SESSION[QT]['viewmode'] = $_GET['view']; }
-$oH->exiturl = 'qtf_items.php?s='.$s;
+$oH->exiturl = 'qtf_items.php';
+$oH->exituri = 's='.$s;
 $oH->selfname = L('Messages');
 
 // SUBMITTED CHANGE TAGS (tag-edit can be empty to delete all tags)
@@ -106,12 +109,10 @@ echo '<div id="t1-nav-top" class="nav-top">'.$navCommands.'</div>
 // First message
 $oP = new CPost($oT->firstpostid,1);
 echo $oP->render($oS,$oT,true,true,QT_SKIN,'r1');
-if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) )
-{
+if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) ) {
   $arrTags= empty($oT->descr) ? array() : explode(';',$oT->descr);
   echo '<div class="tags right" style="padding:4px 0">'.qtSVG('tag'.(count($arrTags)>1 ? 's' : ''), 'title='.L('Tags')).' ';
-  if ( $tagEditor )
-  {
+  if ( $tagEditor ) {
     $tags = '';
     foreach($arrTags as $k=>$item) $tags .= empty($item) ? '' : '<span class="tag clickable" onclick="tagClick(this.innerHTML)" title="" data-tagdesc="'.$item.'">'.$item.'</span>';
     echo '<div id="tag-shown" style="display:inline-block">'.$tags.'</div>';
@@ -123,9 +124,7 @@ if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) )
     echo '<div id="ac-wrapper-tag-edit" class="ac-wrapper">';
     echo '<input required type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/><button type="reset" class="tag-btn" title="'.L('Reset').'">'.qtSVG('backspace').'</button>&nbsp;<button type="submit" class="tag-btn" title="'.L('Add').'" onclick="tagAdd(); asyncSaveTag('.$t.'); return false;">'.qtSVG('plus').'</button><button type="submit" class="tag-btn"  title="'.L('Delete_tags').'" onclick="tagDel(); asyncSaveTag('.$t.'); return false;">'.qtSVG('minus').'</button>';
     echo '</div></form></div>';
-  }
-  else
-  {
+  } else {
     foreach($arrTags as $strTag) echo '<span class="tag" title="...">'.$strTag.'</span> ';
   }
   echo '</div>'.PHP_EOL;
@@ -144,8 +143,7 @@ if ( $oT->items>0 ) {
   $iMsgNum = $limit+1;
   $intWhile= 0;
   // ========
-  while ( $row=$oDB->getRow() )
-  {
+  while ( $row=$oDB->getRow() ) {
     $iMsgNum = $iMsgNum+1;
     $oP = new CPost($row,$iMsgNum); // when compact view $oP->text is qtInline
     // SHOW MESSAGE
