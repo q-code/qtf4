@@ -32,7 +32,12 @@ $oH->selfurl = APP.'_dlg.php';
 $oH->exiturl = APP.'_items.php';
 $oH->exituri = empty($uri) ? 's='.$s : $uri;
 $oH->exitname = L('Exit');
+
 $frm_title = 'Multiple edit';
+$frm_dflt_args = '<input type="hidden" name="a" value="'.$a.'"/>
+<input type="hidden" id="ids" name="ids" value="'.$strIds.'"/>
+<input type="hidden" name="s" value="'.$s.'"/>
+<input type="hidden" name="uri" value="'.$uri.'"/>';
 $frm_hd = '';
 $frm = [];
 $frm_ft = '';
@@ -105,8 +110,7 @@ case 'itemsType':
 
   // FORM (default type/status is U=unchanged)
   $frm_title = L('Change').' '.L('type').'/'.L('status');
-  $frm[] = '<form method="post" action="'.url($oH->selfurl).'" onsubmit="return validateForm(this)">';
-  $frm[] = '<input type="hidden" name="a" value="'.$a.'"/><input type="hidden" id="ids" name="ids" value="'.$strIds.'"/><input type="hidden" name="s" value="'.$s.'"/><input type="hidden" name="uri" value="'.$uri.'"/>';
+  $frm[] = '<form method="post" action="'.url($oH->self()).'" onsubmit="return validateForm(this)">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>';
   $frm[] = renderItems($ids,false,true);
@@ -152,8 +156,7 @@ case 'itemsTags':
 
   // FORM
   $frm_title = L('Change').' '.L('tags');
-  $frm[] = '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">';
-  $frm[] = '<input type="hidden" name="a" value="'.$a.'"/><input type="hidden" id="ids" name="ids" value="'.$strIds.'"/><input type="hidden" name="s" value="'.$s.'"/><input type="hidden" name="uri" value="'.$uri.'"/>';
+  $frm[] = '<form method="post" action="'.url($oH->self()).'" autocomplete="off">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>'.renderItems($ids,true);
   $frm[] = '</article>';
@@ -194,8 +197,7 @@ case 'itemsMove':
 
   // FORM
   $frm_title = L('Move').' '.L('item+');
-  $frm[] = '<form method="post" action="'.url($oH->selfurl).'">';
-  $frm[] = '<input type="hidden" name="a" value="'.$a.'"/><input type="hidden" id="ids" name="ids" value="'.$strIds.'"/><input type="hidden" name="s" value="'.$s.'"/><input type="hidden" name="uri" value="'.$uri.'"/>';
+  $frm[] = '<form method="post" action="'.url($oH->self()).'">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>';
   $frm[] = renderItems($ids,false,true,true);
@@ -254,8 +256,7 @@ case 'itemsDelete':
 
   // FORM
   $frm_title = L('Delete');
-  $frm[] = '<form method="post" action="'.url($oH->selfurl).'" onsubmit="return validateForm()">';
-  $frm[] = '<input type="hidden" name="a" value="'.$a.'"/><input type="hidden" id="ids" name="ids" value="'.$strIds.'"/><input type="hidden" name="s" value="'.$s.'"/><input type="hidden" name="uri" value="'.$uri.'"/>';
+  $frm[] = '<form method="post" action="'.url($oH->self()).'" onsubmit="return validateForm()">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>';
   $frm[] = renderItems($ids,false,true,true);
@@ -357,8 +358,7 @@ case 'replyDelete':
 
   // FORM
   $frm_title = L('Delete');
-  $frm[] = '<form method="post" action="'.url($oH->selfurl).'"><input type="hidden" name="t" value="'.$t.'"/><input type="hidden" name="p" value="'.$p.'"/>';
-  $frm[] = '<input type="hidden" name="a" value="'.$a.'"/><input type="hidden" id="ids" name="ids" value="'.$strIds.'"/><input type="hidden" name="s" value="'.$s.'"/><input type="hidden" name="uri" value="'.$uri.'"/>';
+  $frm[] = '<form method="post" action="'.url($oH->self()).'">'.$frm_dflt_args.'<input type="hidden" name="t" value="'.$t.'"/><input type="hidden" name="p" value="'.$p.'"/>';
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Reply').':</p>';
   $frm[] = renderReply($p);
