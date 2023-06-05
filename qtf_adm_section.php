@@ -131,7 +131,7 @@ echo '<div class="pan">
 if ( $pan==1 )
 {
 
-echo '<form method="post" action="'.$oH->selfurl.'">
+echo '<form method="post" action="'.$oH->self().'">
 <h2 class="subconfig">'.L('Definition').'</h2>
 <table class="t-conf">
 <tr>
@@ -230,7 +230,7 @@ if ( !empty($strFile) ) {
   if ( !empty($_GET['up']) ) $oS->setMF('options','logo',$strFile,true); // save if uploaded
   $addOption = '<option value="'.$strFile.'"'.(empty($oS->getMF('options','logo')) ? '' : 'selected').'>'.L('Specific_image').'</option>';
 }
-echo '<form method="post" action="'.$oH->selfurl.'">
+echo '<form method="post" action="'.$oH->self().'">
 <table class="t-conf">
 <tr>
 <th><span class="texthead">Logo</span></th>
@@ -281,7 +281,7 @@ $oH->scripts[] = 'function switchpreview(img){
 if ( $pan==3 )
 {
 
-echo '<form method="post" action="'.$oH->selfurl.'">
+echo '<form method="post" action="'.$oH->self().'">
 <table class="t-conf input100">
 <tr>
 <th>'.L('Title').' *</th>

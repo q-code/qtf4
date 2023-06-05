@@ -99,7 +99,7 @@ if ( isset($_POST['ok']) ) try {
 include APP.'_adm_inc_hd.php';
 
 echo '<h2 class="config">'.L('File').'</h2>
-<form method="post" action="'.$oH->selfurl.'" enctype="multipart/form-data">
+<form method="post" action="'.$oH->self().'" enctype="multipart/form-data">
 <input type="hidden" name="maxsize" value="5242880"/>
 <table class="t-conf">
 <tr>

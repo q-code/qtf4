@@ -235,7 +235,7 @@ if ( isset($_SESSION['m_import_xml']['droptags']) )  $bDroptags = $_SESSION['m_i
 if ( isset($_SESSION['m_import_xml']['dropdate']) )  $bDropdate = $_SESSION['m_import_xml']['dropdate'];
 
 
-echo '<form method="post" action="'.$oH->selfurl.'" enctype="multipart/form-data">
+echo '<form method="post" action="'.$oH->self().'" enctype="multipart/form-data">
 <input type="hidden" name="maxsize" value="5242880"/>
 
 <h2 class="config">'.L('Import_File').'</h2>

@@ -173,7 +173,7 @@ $arr = array(
   'V'=>L('Role_V')
   );
 echo '
-<form method="post" action="'.$oH->selfurl.'">
+<form method="post" action="'.$oH->self().'">
 <h2 class="config">'.L('Public_access_level').'</h2>
 <table class="t-conf">
 <tr title="'.L('H_Visitors_can').'">

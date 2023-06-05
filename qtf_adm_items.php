@@ -51,7 +51,7 @@ $stats = CSection::getSectionsStats(); // force recompute stats
 
 echo '<p class="right"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Unreplied').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></p>
 <div id="tgl-container" class="opt-unreplied right" style="display:none">
-<form method="post" action="'.$oH->selfurl.'">'.
+<form method="post" action="'.$oH->self().'">'.
 sprintf(L('Unreplied_def'),'<input type="number" name="d" min="1" max="99" value="'.$d.'"/>').
 '&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></form>
 </div>';
@@ -84,14 +84,14 @@ foreach($arrDomains as $idDom=>$strDomtitle) {
     echo '<td class="c-data ellipsis">'.$intU.'</td>';
     echo '<td class="c-action ellipsis">';
     if ( $stats[$s]['items']>0 ) {
-    echo '<a href="'.APP.'_dlg_adm.php?a=Scntmove&s='.$s.'">'.L('Move').'</a><br>';
-    echo '<a href="'.APP.'_dlg_adm.php?a=Scntdelete&s='.$s.'&d='.$d.'">'.L('Delete').'</a><br>';
+    echo '<a href="'.APP.'_dlg_adm.php?a=moveitems&s='.$s.'">'.L('Move').'</a><br>';
+    echo '<a href="'.APP.'_dlg_adm.php?a=delsecitems&s='.$s.'&d='.$d.'">'.L('Delete').'</a><br>';
     } else {
     echo '<span class="disabled">'.L('Move').'</span><br>';
     echo '<span class="disabled">'.L('Delete').'</span><br>';
     }
     if ( $intU>0 ) {
-    echo '<a href="'.APP.'_dlg_adm.php?a=Sprune&s='.$s.'&d='.$d.'">'.L('Prune').'</a>';
+    echo '<a href="'.APP.'_dlg_adm.php?a=prune&s='.$s.'&d='.$d.'">'.L('Prune').'</a>';
     } else {
     echo '<span class="disabled">'.L('Prune').'</span>';
     }

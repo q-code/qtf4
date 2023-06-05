@@ -34,7 +34,8 @@ $oH->exituri = empty($uri) ? 's='.$s : $uri;
 $oH->exitname = L('Exit');
 
 $frm_title = 'Multiple edit';
-$frm_dflt_args = '<input type="hidden" name="a" value="'.$a.'"/>
+$frm_dflt_args = '
+<input type="hidden" name="a" value="'.$a.'"/>
 <input type="hidden" id="ids" name="ids" value="'.$strIds.'"/>
 <input type="hidden" name="s" value="'.$s.'"/>
 <input type="hidden" name="uri" value="'.$uri.'"/>';

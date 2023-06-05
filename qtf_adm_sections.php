@@ -131,7 +131,7 @@ echo '
 </p>
 ';
 echo '<div id="tgl-container" class="add-dom-sec" style="display:'.($add ? 'block' : 'none' ).'">
-<form method="post" action="'.$oH->selfurl.'">
+<form method="post" action="'.$oH->self().'">
 <div class="add-dom">
 <div class="flex-sp">
 <p>'.L('Domain').' <input required id="domain" name="title" type="text" size="24" maxlength="64" /></p>
@@ -139,7 +139,7 @@ echo '<div id="tgl-container" class="add-dom-sec" style="display:'.($add ? 'bloc
 </div>
 </div>
 </form>
-<form method="post" action="'.$oH->selfurl.'">
+<form method="post" action="'.$oH->self().'">
 <div class="add-sec">
 <div class="flex-sp">
 <p>'.L('Section').' <input required id="section" name="title" type="text" size="24" maxlength="64" /> '.L('in_domain').' <select name="indomain" size="1">'.qtTags($arrDomains).'</select></p>
@@ -159,7 +159,7 @@ echo '<div id="dlg-reorder" style="display:none">
 foreach($arrDomains as $id=>$domain)
 echo '<tr data-dragid="d'.$id.'" draggable="true"><td class="ellipsis">'.qtSVG('arrows-v').'<span class="indent">'.$domain.'</span></td></tr>'.PHP_EOL;
 echo '</table>
-<form method="post" action="'.$oH->selfurl.'">
+<form method="post" action="'.$oH->self().'">
 <p class="submit">
 <input type="hidden" id="neworder" name="neworder" />
 <button type="button" onclick="qtToggle(`dlg-reorder`)">'.L('Cancel').'</button> <button type="submit" id="neworder-save" name="save" value="save">'.L('Save').'</button>
@@ -193,7 +193,7 @@ foreach($arrDomains as $idDomain=>$domain) {
   echo '<td class="group">&nbsp;</td>'.PHP_EOL;
   echo '<td class="group">&nbsp;</td>'.PHP_EOL;
   echo '<td class="group c-action"><a href="'.APP.'_adm_domain.php?id='.$idDomain.'" title="'.L('Edit').'">'.qtSVG('pen-square').'</a>';
-  echo ' &middot; '.($idDomain===0 ? '<span class="disabled" title="'.L('Delete').'">'.qtSVG('trash').'</span>' : '<a href="'.APP.'_dlg_adm.php?a=Ddelete&s='.$idDomain.'" title="'.L('Delete').'">'.qtSVG('trash').'</a>');
+  echo ' &middot; '.($idDomain===0 ? '<span class="disabled" title="'.L('Delete').'">'.qtSVG('trash').'</span>' : '<a href="'.APP.'_dlg_adm.php?a=deldom&s='.$idDomain.'" title="'.L('Delete').'">'.qtSVG('trash').'</a>');
   echo ' &middot; ';
   $strUp = qtSVG('caret-up', 'class=disabled');
   $strDw = qtSVG('caret-down', 'class=disabled');
@@ -222,7 +222,7 @@ foreach($arrDomains as $idDomain=>$domain) {
       echo '<td class="c-data ellipsis">'.( $oS->numfield==='N' ? '<span class="disabled">'.L('N').'</span>' : sprintf($oS->numfield,1) ).'</td>';
       echo '<td class="c-moderator ellipsis">'.$oS->ownername.'</td>';
       echo '<td class="c-action"><a href="'.APP.'_adm_section.php?s='.$oS->id.'" title="'.L('Edit').'">'.qtSVG('pen-square').'</a>';
-      echo ' &middot; '.($idSection===0 ? '<span class="disabled" title="'.L('Delete').'">'.qtSVG('trash').'</span>' : '<a href="'.APP.'_dlg_adm.php?a=Sdelete&s='.$idSection.'" title="'.L('Delete').'">'.qtSVG('trash').'</a>');
+      echo ' &middot; '.($idSection===0 ? '<span class="disabled" title="'.L('Delete').'">'.qtSVG('trash').'</span>' : '<a href="'.APP.'_dlg_adm.php?a=delsec&s='.$idSection.'" title="'.L('Delete').'">'.qtSVG('trash').'</a>');
       echo ' &middot; ';
       if ( count($arrSections[$idDomain])>1 ) {
         if ( $j>0 ) $strUp = '<a href="'.$oH->selfurl.'?d='.$idDomain.'&s='.$idSection.'&a=s_up" title="'.L('Up').'">'.qtSVG('caret-up').'</a>';

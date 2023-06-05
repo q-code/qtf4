@@ -75,7 +75,7 @@ foreach(LANGUAGES as $k=>$values) if ( is_dir('language/'.$k) ) $arrFiles[$k] = 
 
 // FORM
 echo '
-<form method="post" action="'.$oH->selfurl.'">
+<form method="post" action="'.$oH->self().'">
 <h2 class="config">'.L('Language').'</h2>
 <table class="t-conf">
 ';

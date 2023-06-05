@@ -39,7 +39,7 @@ $oH->exiturl = APP.'_index.php';
 $oH->exitname = L('Exit');
 $frm_attr = 'class=msgbox';
 $frm_hd = '';
-$frm = array();
+$frm = [];
 $frm_ft = '';
 
 //=======
