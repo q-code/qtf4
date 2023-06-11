@@ -11,15 +11,13 @@ if ( SUser::role()!=='A' ) die('Access denied');
 include translate('lg_adm.php');
 include translate('lg_zone.php');
 
-if ( SUser::role()!=='A' ) die('Access denied');
-
 // INITIALISE
 
 $oH->selfurl = APP.'_adm_time.php';
 $oH->selfname = 'Server time';
 $oH->selfparent = L('Settings');
 $oH->exiturl = APP.'_adm_region.php';
-$oH->exitname = L('Board_region');
+$oH->exitname = qtSVG('angle-left').' '.L('Board_region');
 
 // Default time zone setting
 
@@ -31,11 +29,11 @@ if ( !isset($_SESSION[QT]['defaulttimezone']) ) $_SESSION[QT]['defaulttimezone']
 
 if ( isset($_POST['ok']) ) try {
 
-  $strTZI = qtAttr($_POST['tzi']);
-  if ( !in_array($strTZI,DateTimeZone::listIdentifiers()) ) throw new Exception( 'Unknown time zone identifier ['.$strTZI.']' );
+  $tzi = qtAttr($_POST['tzi']);
+  if ( !in_array($tzi,DateTimeZone::listIdentifiers()) ) throw new Exception( 'Unknown time zone identifier ['.$tzi.']' );
 
   // Save change. Attention, it can be a empty string (i.e. No change in the timezone)
-  $_SESSION[QT]['defaulttimezone'] = $strTZI;
+  $_SESSION[QT]['defaulttimezone'] = $tzi;
   $oDB->exec( "DELETE FROM TABSETTING WHERE param='defaulttimezone'" );
   $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('defaulttimezone', '" . $_SESSION[QT]['defaulttimezone'] . "')" );
 
@@ -52,6 +50,12 @@ if ( isset($_POST['ok']) ) try {
 // --------
 // HTML BEGIN
 // --------
+
+$arrTZI = [];
+$groups = array('AFRICA'=>'Africa','ANTARCTICA'=>'Antarctica','ARCTIC'=>'Arctic','AMERICA'=>'America','ASIA'=>'Asia','ATLANTIC'=>'Atlantic','AUSTRALIA'=>'Australia','EUROPE'=>'Europe','INDIAN'=>'Indian','PACIFIC'=>'Pacific','OTHERS'=>'Universal & others');
+$group = 'EUROPE';
+qtArgs('group',true,false);
+if ( !array_key_exists($group,$groups) ) $group = 'ALL';
 
 include APP.'_adm_inc_hd.php';
 
@@ -76,31 +80,22 @@ echo '<form method="post" action="'.$oH->self().'">
 </form>
 ';
 
-$arrGroup = array('AFRICA'=>'Africa','ANTARCTICA'=>'Antarctica','ARCTIC'=>'Arctic','AMERICA'=>'America','ASIA'=>'Asia','ATLANTIC'=>'Atlantic','AUSTRALIA'=>'Australia','EUROPE'=>'Europe','INDIAN'=>'Indian','PACIFIC'=>'Pacific','OTHERS'=>'Universal & others');
-$strGroup='EUROPE';
-$arrTZI = array();
-if ( isset($_GET['group']) )
-{
-  $strGroup = strtoupper(strip_tags(trim($_GET['group'])));
-  if ( !array_key_exists($strGroup,$arrGroup) ) $strGroup='ALL';
-}
-switch($strGroup)
-{
-case 'ALL':
-  $arrTZI = DateTimeZone::listIdentifiers();
-  break;
-case 'OTHERS':
-  $arrTZI = DateTimeZone::listIdentifiers();
-  foreach ($arrTZI as $i=>$str) {
-  foreach (array_keys($arrGroup) as $s) {
-    if ( $s==strtoupper(substr($str,0,strlen($s))) ) unset($arrTZI[$i]);
-  }}
-  break;
-default:
-  foreach (DateTimeZone::listIdentifiers() as $str) {
-    if ( $strGroup==strtoupper(substr($str,0,strlen($strGroup))) ) $arrTZI[]=$str;
-  }
-  break;
+switch($group) {
+  case 'ALL':
+    $arrTZI = DateTimeZone::listIdentifiers();
+    break;
+  case 'OTHERS':
+    $arrTZI = DateTimeZone::listIdentifiers();
+    foreach ($arrTZI as $i=>$str) {
+    foreach (array_keys($groups) as $s) {
+      if ( $s===strtoupper(substr($str,0,strlen($s))) ) unset($arrTZI[$i]);
+    }}
+    break;
+  default:
+    foreach (DateTimeZone::listIdentifiers() as $str) {
+      if ( $group==strtoupper(substr($str,0,strlen($group))) ) $arrTZI[]=$str;
+    }
+    break;
 }
 
 echo '
@@ -114,15 +109,15 @@ echo '
 <td class="void bold">Time zone identifiers</td>
 </tr>
 <tr>
-<td class="void right">
+<td class="void right" style="vertical-align:top">
 ';
-foreach ($arrGroup as $strKey=>$strValue) echo '<a href="'.APP.'_adm_time.php?group='.$strKey.'">'.$strValue.'</a><br>';
+foreach ($groups as $k=>$group) echo '<a href="'.APP.'_adm_time.php?group='.$k.'">'.$group.'</a><br>';
 echo '<br><a href="'.APP.'_adm_time.php?group=ALL">Show all</a>';
 echo '</td>
-<td class="void"><div class="scroll">'.implode('<br>',$arrTZI).'</div></td>
+<td class="void" style="vertical-align:top"><div class="scroll">'.implode('<br>',$arrTZI).'</div></td>
 </tr>
 </table>
-<p>'.qtSVG('angle-left').' <a href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>';
+<p><a href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>';
 
 // HTML END
 

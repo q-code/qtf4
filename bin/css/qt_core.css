@@ -57,7 +57,7 @@ select{max-width:260px}
 
 /* INLINE (p has margin in article and msgbox) */
 article p, .article p, p.article, .msgboxbody p{margin-bottom:0.5rem}
-p.submit, .msgboxbody p.submit{margin:0.8rem 0 0 0;text-align:center}
+p.submit, .msgboxbody p.submit{margin:1rem 0 0 0;text-align:center}
 p.error{margin:0.3rem}
 p.debug{font-family:Arial;font-size:8pt}
 p.list{margin-bottom:2px}

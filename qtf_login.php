@@ -88,7 +88,7 @@ echo '<p><a href="'.url('qtf_register.php?a=id').'">'.L('Forgotten_pwd').'</a></
 echo '<p title="'.$str.'">'.qtSVG('user','class=svg-label').' <input required type="text" id="usr" name="usr" size="24" minlength="4" maxlength="50" value="'.qtAttr($strName).'" placeholder="'.$str.'"/></p>';
 echo '<p class="input-pwd" title="'.L('Password').'">'.qtSVG('lock','class=svg-label').' <input required type="password" id="pwd-1" name="pwd" size="24" minlength="4" maxlength="50" placeholder="'.L('Password').'" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
 echo '<p class="submit">';
-if ( QT_REMEMBER_ME ) echo '<span class="cblabel"><input type="checkbox" id="remember" name="remember"/>&nbsp;<label for="remember">'.L('Remember'),'</label></span>&nbsp;&nbsp;';
+if ( QT_REMEMBER_ME ) echo '<span class="cblabel"><input type="checkbox" id="remember" name="remember"/>&nbsp;<label for="remember">'.L('Remember'),'</label>&nbsp;</span> ';
 echo '<button type="submit" name="ok" value="'.$certificate.'">'.L('Ok').'</button></p>';
 echo '</form>';
 

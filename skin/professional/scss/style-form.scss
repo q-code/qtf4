@@ -36,29 +36,32 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 @media print{#searchbar{display:none !important}}
 
 /* MSGBOX general */
-.msgbox{width:450px;margin:0 auto;background-color:var(--bgform);border:solid 1px #0080FF;border-radius:5px 5px 0 0;box-shadow:0 2px 5px #999999}
-  .msgbox.next{margin-top:1.5rem}
-  .msgbox.short{width:350px}
-  @media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:500px} .msgbox.short{width:375px}}
-  @media screen and (min-width:1280px){.msgbox{width:525px}  .msgbox.short{width:400px}}
+.msgbox{margin:0 auto;width:450px;background-color:var(--bgform);border:solid 1px #0080FF;border-radius:5px 5px 0 0;box-shadow:0 2px 5px #999999}
+.msgbox.next{margin-top:1.5rem}
+.msgbox.short{width:350px}
+@media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:475px} .msgbox.short{width:375px}}
+@media screen and (min-width:1280px){.msgbox{width:500px}  .msgbox.short{width:400px}}
 .msgboxtitle{padding:0.75rem 1.5rem;color:#FFF;background:linear-gradient(to right, var(--bgbtn) 30%, #5fb1ff);font-size:1.6rem}
 .msgboxbody{padding:1.5rem}
 .msgboxbody p.list small{color:#888}
 
 /* MSGBOX specific */
 .msgbox.formRegister{width:650px}
-.msgbox.formPwd{width:550px}
+.msgbox.formPwd{width:525px}
+  .msgbox.formPwd p{text-align:right}
+  .msgbox.formLogin p{text-align:center}
+  .msgbox.formLogin .cblabel{display:block;margin-bottom:1rem}
 .pg-privacy .msgbox{width:720px}
 @media screen and (min-width:1280px){
   .msgbox.formRegister{width:700px}
-  .msgbox.formPwd{width:600px}
+  .msgbox.formPwd{width:550px}
   .pg-privacy .msgbox{width:750px}
 }
 @media screen and (max-width:1023px){
   .msgbox.formRegister{width:600px}
   .pg-privacy .msgbox{width:90%}
 }
-div:is(.formLogin, .formPwd) .msgboxbody p{text-align:right}
+/*div:is(.formLogin, .formPwd) .msgboxbody p{text-align:right}*/
 div.formHelp p{margin:0 0 0.8rem 0}
 @media screen and (max-width:1023px){div.formHelp{padding:0.5rem;border:1px solid #ddd} }
 
