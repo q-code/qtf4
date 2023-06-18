@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230430 allows app impersonation [qt f|i|e ]
+<?php // v4.0 build:20230618 allows app impersonation [qt f|i|e ]
 
 // This is included in _adm_section_img.php and _user_image.php
 

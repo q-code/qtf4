@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230430
+<?php // v4.0 build:20230618
 // This is included in qtx_edit.php in a try{}catch{}
 /**
  * Convert $ip string into IPv6 or IPv4 canonincal format (IPv4-over-IPv6 becomes IPv4)<br>A range selector * is possible on the last byte.

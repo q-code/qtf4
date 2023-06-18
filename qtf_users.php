@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230430
+<?php // v4.0 build:20230618
 
 session_start();
 /**
@@ -62,8 +62,8 @@ if ( count($arrGroup)===1 ) {
 $intTotal = $oDB->count( TABUSER." WHERE id>0" );
 $intCount = $pageGroup=='all' ? $intTotal : $oDB->count( TABUSER." WHERE id>0".$sqlWhere);
 
-// User menu
-if ( SUser::isStaff() ) include 'qtf_adm_users_edit.php';
+// User menu (POST submitted and FORM $formAddUser)
+if ( SUser::isStaff() ) include 'qtf_adm_users_add.php';
 
 // --------
 // HTML BEGIN
@@ -90,12 +90,11 @@ echo '<div id="participants"'.(isset($_POST['title']) ? ' style="display:none"' 
 ';
 // Top 5 participants
 $strState = 'name, id, numpost FROM TABUSER WHERE id>0';
-$oDB->query( sqlLimit($strState,'numpost DESC',0,5) );
-for ($i=0;$i<($_SESSION[QT]['viewmode']=='C' ? 2 : 5);++$i) {
-  $row = $oDB->getRow();
-  if ( !$row ) break;
+$oDB->query( sqlLimit($strState, 'numpost DESC', 0, $_SESSION[QT]['viewmode']==='C' ? 2 : 5) );
+while($row = $oDB->getRow()) {
   echo '<tr><td><a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.qtK((int)$row['numpost']).'</td></tr>';
 }
+
 echo '</table>
 </div>';
 

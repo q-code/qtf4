@@ -12,7 +12,7 @@
 * @package    QTF
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2008-2012 The PHP Group
-* @version    1.0 build:20230430
+* @version    1.0 build:20230618
 */
 
 session_start();

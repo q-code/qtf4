@@ -1,5 +1,5 @@
 <?php
-// QT 4.0 build:20230430
+// QT 4.0 build:20230618
 // Actions GET['a'] are deldom,delsec,prune,delsecitems
 
 session_start();

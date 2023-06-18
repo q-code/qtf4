@@ -52,7 +52,7 @@ input:disabled{opacity:0.6}
 option{background-color:#FFF;color:#000}
 optgroup{background-color:#EEE;color:#444}
 option:disabled{color:#888}
-select{max-width:260px}
+select{max-width:260px} select[name="secret_q"]{max-width:360px}
 .cblabel .prefix_icon{vertical-align:baseline}
 
 /* INLINE (p has margin in article and msgbox) */

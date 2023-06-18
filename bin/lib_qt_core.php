@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230205
+<?php // v4.0 build:20230618
 
 /**
  * Convert qt-php-like url into html-like url when urlrewrite is active. Works only on the path-part of the url. Ex: 'qtx_login.php' becomes 'login.html'

@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230430
+<?php // v4.0 build:20230618
 
 session_start();
 /**
@@ -48,17 +48,13 @@ if ( isset($_GET['ipp']) && in_array($_GET['ipp'],['25','50','100']) ) {
 
 $intLimit = ($intPage-1)*25;
 
-// User menu
-
-include 'qtf_adm_users_edit.php';
+// User menu (POST submitted and FORM $formAddUser)
+include 'qtf_adm_users_add.php';
 
 // Prepare to check the last created user
 if ( isset($_GET['cid']) )  $intChecked = (int)strip_tags($_GET['cid']); // allow checking an id. Note checklast overridres this id
 if ( isset($_POST['cid']) ) $intChecked = (int)strip_tags($_POST['cid']);
-if ( isset($_POST['checklast']) || isset($_GET['checklast']) )
-{
-  $intChecked = $oDB->count( "SELECT max(id) as countid FROM TABUSER" ); // Find last id. This overrides the cid value !
-}
+if ( isset($_POST['checklast']) || isset($_GET['checklast']) ) $intChecked = $oDB->count( "SELECT max(id) as countid FROM TABUSER" ); // Find last id. This overrides the cid value !
 
 // --------
 // HTML BEGIN
@@ -126,15 +122,12 @@ echo '</div>
 <p class="title">'.L('Top_participants').'</p>
 <table>
 ';
-  // Top 5 participants
-  $strState = 'name, id, numpost FROM TABUSER WHERE id>0';
-  $oDB->query( sqlLimit($strState,'numpost DESC',0,5) );
-  for ($i=0;$i<5;$i++)
-  {
-    $row = $oDB->getRow();
-    if ( !$row ) break;
-    echo '<tr><td><a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.qtK((int)$row['numpost']).'</td></tr>';
-  }
+// Top 5 participants
+$strState = 'name, id, numpost FROM TABUSER WHERE id>0';
+$oDB->query( sqlLimit($strState,'numpost DESC',0,5) );
+while($row = $oDB->getRow()) {
+  echo '<tr><td><a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.qtK((int)$row['numpost']).'</td></tr>';
+}
 echo '</table>';
 
 echo '</div>
@@ -151,8 +144,7 @@ if ( !empty($formAddUser) ) echo $formAddUser;
 // Category subform
 // --------
 
-if ( $strCateg!='all' )
-{
+if ( $strCateg!='all' ) {
   $intCount = $intFalse;
   if ( $strCateg=='CH' ) $intCount = $intChild;
   if ( $strCateg=='SM' ) $intCount = $intSleeping;
@@ -187,8 +179,7 @@ $intCount = $oDB->count( TABUSER.' WHERE id>0 '.$sqlWhere );
 if ( $intCount>$ipp || $pageGroup!=='all' ) echo htmlLettres(url($oH->selfurl).'?'.qtURI('group|page'), $pageGroup, L('All'), 'lettres', L('Username_starting').' ', $intCount>300 ? 1 : ($intCount>$ipp*2 ? 2 : 3));
 
 // End if no result
-if ( $intCount==0 )
-{
+if ( $intCount==0 ) {
   echo L('None');
   include 'qtf_adm_inc_ft.php';
   exit;

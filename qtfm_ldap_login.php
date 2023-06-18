@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230430 can be app impersonated {qt f|e|i}
+<?php // v4.0 build:20230618 can be app impersonated {qt f|e|i}
 /**
  * @var CDatabase $oDB
  * @var string $username

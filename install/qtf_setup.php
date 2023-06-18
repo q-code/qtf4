@@ -1,6 +1,6 @@
 <?php
 
-// QuickTalk forum 4.0 build:20230430
+// QuickTalk forum 4.0 build:20230618
 
 session_start();
 include 'init.php';

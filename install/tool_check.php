@@ -1,4 +1,4 @@
-<?php // V4.0 build:20230430
+<?php // V4.0 build:20230618
 
 $root = '../';
 define('THISAPPNAME', 'QuickTalk forum');
@@ -46,7 +46,7 @@ span.nok {color:#ff0000; background-color:inherit}
 // 1 CONFIG
 // --------
 
-echo '<p style="text-align:right">'.THISAPPNAME.' 4.0 build:20230430</p>';
+echo '<p style="text-align:right">'.THISAPPNAME.' 4.0 build:20230618</p>';
 
 echo '<p style="text-align:right"><a href="qtf_setup.php">Install...</a>';
 if ( file_exists('tool_tables.php') ) echo ' | <a href="tool_tables.php">Tool tables...</a>';

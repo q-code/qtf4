@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230430
+<?php // v4.0 build:20230618
 
 // SERVEUR SCRIPT
 // Perform async queries on request from web pages (ex: using ajax) with GET method

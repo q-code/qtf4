@@ -1,4 +1,4 @@
-<?php  // v4.0 build:20230430
+<?php  // v4.0 build:20230618
 
 session_start();
 /**
@@ -64,11 +64,11 @@ $oH->selfname = L('Statistics');
 
 $pan = 'g'; // panel: g=global, gt=globaltrend, d=detail, dt=detailtrend
 $bt  = 'm';
-$s   = '*';
+$s   = -1;
 $y   = (int)date('Y'); if ( (int)date('n')<2 ) --$y;
 $y0  = $y-1;
 $tag = '';
-qtArgs('pan bt s int:y int:y0 tag');
+qtArgs('pan bt int:s int:y int:y0 tag');
 
 $sqlSection='';
 $sqlTags = '';
@@ -76,7 +76,7 @@ $sqlTags = '';
 // --------
 // Check and Initialise
 // --------
-if ( $s!=='*' ) $sqlSection = 'forum='.$s.' AND '; // int to avoid injection
+if ( $s>=0 ) $sqlSection = 'forum='.$s.' AND '; // int to avoid injection
 if ( $y0>=$y ) $y0=$y-1;
 if ( !empty($tag) )
 {
@@ -166,7 +166,7 @@ $m = new CMenu($arrM, '');
 echo '<div class=pan-tabs>'.$m->build('pan-'.$pan).'</div>';
 echo '<div class="pan">
 <p class="pan-title">'.$m->get('pan-'.$pan,'title');
-if ( $s!=='*' ) echo '<br>'.L('section').' '.qtQuote(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : $s, "&'");
+if ( $s>=0 ) echo '<br>'.L('section').' '.qtQuote(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : $s, "&'");
 if ( !empty($tag) & $tag!=='*' ) echo '<br> '.L('tag').' '.qtQuote($tag, "&'");
 echo '</p>
 ';

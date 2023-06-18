@@ -1,11 +1,11 @@
-<?php // v4.0 build:20230430
+<?php // v4.0 build:20230618
 /**
  * Part included in qtf_users and qtf_adm_users
  * @var CHtml $oH
  * @var CSection $oS
  * @var CDatabase $oDB
  * @var string $s
-* @var CHtml $oH
+ * @var CHtml $oH
  * @var string $formAddUser
  * @var string $rowCommands
  */
@@ -42,8 +42,7 @@ if ( isset($_POST['add']) && $_POST['add']===$certificate ) try {
   $result = SUser::addUser($strTitle,$strNewpwd,$strMail,$strRole); // return [int]user id or [string]error message
   if ( is_string($result) ) throw new Exception( $result );
   // send email
-  if ( isset($_POST['notify']) )
-  {
+  if ( isset($_POST['notify']) ) {
     $strSubject='Welcome';
     $strMessage='Please find here after your login and password to access the board '.$_SESSION[QT]['site_name'].PHP_EOL.'Login: %s\nPassword: %s';
     $strFile = qtDirLang().'mail_registred.php';

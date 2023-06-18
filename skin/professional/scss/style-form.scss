@@ -47,14 +47,14 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 
 /* MSGBOX specific */
 .msgbox.formRegister{width:650px}
-.msgbox.formPwd{width:525px}
+.msgbox.formPwd{width:550px}
   .msgbox.formPwd p{text-align:right}
   .msgbox.formLogin p{text-align:center}
   .msgbox.formLogin .cblabel{display:block;margin-bottom:1rem}
 .pg-privacy .msgbox{width:720px}
 @media screen and (min-width:1280px){
   .msgbox.formRegister{width:700px}
-  .msgbox.formPwd{width:550px}
+  .msgbox.formPwd{width:575px}
   .pg-privacy .msgbox{width:750px}
 }
 @media screen and (max-width:1023px){

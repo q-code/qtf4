@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230430 allows app impersonation [qt f|i|e|m]
+<?php // v4.0 build:20230618 allows app impersonation [qt f|i|e|m]
 
 session_start();
 /**
