@@ -269,7 +269,6 @@ public static function deleteReplies($ids, bool $dropAttachs=true) {
   $oDB->exec( "DELETE FROM TABPOST WHERE type<>'P' AND topic IN ($ids)" );
   return $i;
 }
-
 /**
  * Update replies-count and lastpost data
  * @param number $intMax above this value, the topic is closed (0 to skipp)
@@ -283,8 +282,7 @@ public function updMetadata(int $intMax=0)
   $arr = array();
   $this->items = 0;
   $oDB->query( "SELECT id,userid,username,issuedate,type FROM TABPOST WHERE topic=$this->id ORDER BY issuedate" );
-  while($row=$oDB->getRow())
-  {
+  while($row=$oDB->getRow()) {
     $arr[]=$row;
     if ( $row['type']!=='P' ) ++$this->items;
   }
@@ -307,11 +305,11 @@ public function updMetadata(int $intMax=0)
   // close topic if full
   if ( $intMax>1 && $this->items>$intMax ) $oDB->exec( "UPDATE TABTOPIC SET status='1' WHERE id=$this->id" );
 }
-
 public function insertTopic(bool $userStat=true)
 {
+  if ( empty($this->firstpostdate) ) $this->firstpostdate = date('Ymd His');
+  if ( empty($this->lastpostdate) ) $this->lastpostdate = $this->firstpostdate;
   global $oDB;
-
   $oDB->exec(
   "INSERT INTO TABTOPIC (id,forum,numid,type,status,statusdate,tags,firstpostid,lastpostid,firstpostuser,lastpostuser,firstpostname,lastpostname,firstpostdate,lastpostdate,replies)
   VALUES ($this->id,$this->pid,$this->numid,?,?,?,?,?,?,?,?,?,?,?,?,$this->items)",
@@ -326,18 +324,17 @@ public function insertTopic(bool $userStat=true)
   $this->lastpostuser,
   qtDb($this->firstpostname),
   qtDb($this->lastpostname),
-  date('Ymd His'),
-  date('Ymd His')
+  $this->firstpostdate,
+  $this->lastpostdate
   ]
   );
 
   // update user stats
-  if ( $userStat )
-  {
-  if ( isset($_SESSION['qtf_usr_posts']) ) $_SESSION['qtf_usr_posts']++;
-  $n = $oDB->count( TABPOST." WHERE userid=".$this->firstpostuser );
-  $oDB->exec( "UPDATE TABUSER SET lastdate=?, numpost=$n, ip=? WHERE id=$this->firstpostuser", [date('Ymd His'), $_SERVER['REMOTE_ADDR']] );
-  $_SESSION[QT.'_usr']['items']++;
+  if ( $userStat ) {
+    if ( isset($_SESSION['qtf_usr_posts']) ) $_SESSION['qtf_usr_posts']++;
+    $n = $oDB->count( TABPOST." WHERE userid=".$this->firstpostuser );
+    $oDB->exec( "UPDATE TABUSER SET lastdate=?, numpost=$n, ip=? WHERE id=$this->firstpostuser", [date('Ymd His'), $_SERVER['REMOTE_ADDR']] );
+    $_SESSION[QT.'_usr']['items']++;
   }
 }
 

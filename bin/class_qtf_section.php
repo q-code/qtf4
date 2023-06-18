@@ -107,7 +107,7 @@ public static function delete(int $id=-1)
 }
 public static function rename(int $id=-1, string $title='untitled')
 {
-  if ( $id<0 ) die(__METHOD__.'  Argument #1 must be an integer' );
+  if ( $id<0 ) die(__METHOD__.' Argument #1 must be an integer' );
 	if ( empty($title) ) die(__METHOD__.' Argument #2 must be a string' );
   global $oDB;
   $oDB->exec( 'UPDATE TABSECTION SET title=? WHERE id='.$id, [qtDb($title)] );
@@ -119,6 +119,14 @@ public static function getOwner(int $id)
   $oDB->query( "SELECT moderator FROM TABSECTION WHERE id=$id" );
   $row=$oDB->getRow();
   return (int)$row['moderator'];
+}
+public static function getIds()
+{
+  $arr = [];
+  global $oDB;
+  $oDB->query( "SELECT id FROM TABSECTION" );
+  while($row=$oDB->getRow()) $arr[] = (int)$row['id'];
+  return $arr;
 }
 
 // --------
@@ -160,7 +168,7 @@ public static function getImage(int $id=0, $attr=[], string $altSrc='')
 }
 public static function deleteImage($ids)
 {
-  if ( is_int($ids) ) $ids = array($ids);
+  if ( is_int($ids) ) $ids = [$ids];
   if ( !is_array($ids) ) die(__METHOD__.' arg#1 must be an id or array of id');
   foreach($ids as $id) {
     if ( !is_int($id) ) die(__METHOD__.' arg#1 must be an id or array of id');
@@ -168,7 +176,8 @@ public static function deleteImage($ids)
     if ( is_dir($dir) ) foreach(array('.jpg','.jpeg','.png','.gif') as $ext) if ( file_exists($dir.$id.$ext) ) unlink($dir.$id.$ext);
   }
 }
-public static function makeLogo(string $src='', string $type='0', string $status='0'){
+public static function makeLogo(string $src='', string $type='0', string $status='0')
+{
   return !empty($src) && file_exists(QT_DIR_DOC.'section/'.$src) ? QT_DIR_DOC.'section/'.$src : QT_SKIN.'img/section_'.$type.'_'.$status.'.gif';
 }
 public static function getIdsInContainer(int $pid)
@@ -181,8 +190,13 @@ public static function getIdsInContainer(int $pid)
 }
 public static function getSectionsStats(bool $closed=true, bool $lastpost=true)
 {
-  // Array also includes a 'all' key, containing the sums
-  $arr = ['all'=>['items'=>0,'replies'=>0,'itemsZ'=>0,'repliesZ'=>0,'lastpostid'=>-1,'lastpostpid'=>-1,'lastpostdate'=>'','lastpostuser'=>-1,'lastpostname'=>'']];
+  $arr = [];
+  // Initialize each section to 0 (because sql will skip empty sections)
+  global $_SectionIds;
+  foreach($_SectionIds as $id)
+  $arr[$id] = ['items'=>0,'replies'=>0,'itemsZ'=>0,'repliesZ'=>0,'lastpostid'=>-1,'lastpostpid'=>-1,'lastpostdate'=>'','lastpostuser'=>-1,'lastpostname'=>''];
+  $arr['all'] = ['items'=>0,'replies'=>0,'itemsZ'=>0,'repliesZ'=>0,'lastpostid'=>-1,'lastpostpid'=>-1,'lastpostdate'=>'','lastpostuser'=>-1,'lastpostname'=>''];
+  // Query
   global $oDB;
   $oDB->query( "SELECT forum,count(id) as items,sum(replies) as replies FROM TABTOPIC GROUP BY forum" );
   while($row=$oDB->getRow()) {
@@ -436,24 +450,11 @@ public static function getPropertiesAll(string $order='d.titleorder,s.titleorder
   }
   return $arr;
 }
-public function updLastPostDate()
-{
-  global $oDB;
-  if ( in_array(QDB_SYSTEM,array('pdo.sqlite','sqlite','pdo.sqlsrv','sqlsrv','pdo.pg','pg')) )
-  {
-  $oDB->exec( "UPDATE TABTOPIC SET lastpostdate=(SELECT MAX(issuedate) FROM TABPOST p, TABTOPIC t WHERE t.id=p.topic) WHERE forum=".$this->id );
-  }
-  else
-  {
-  $oDB->exec( "UPDATE TABTOPIC t SET t.lastpostdate=(SELECT MAX(p.issuedate) FROM TABPOST p WHERE t.id=p.topic) WHERE t.forum=".$this->id );
-  }
-}
 public function updEachItemReplies()
 {
   global $oDB;
   $oDB->exec( "UPDATE TABTOPIC SET replies=(SELECT COUNT(*) FROM TABPOST WHERE TABTOPIC.id=TABPOST.topic AND TABPOST.type<>'P') WHERE forum=$this->id" );
 }
-
 
 // --------
 // Multifield implementation
@@ -467,7 +468,7 @@ public function updEachItemReplies()
  */
 public function readMF(string $prop, bool $assign=false, string $prefix='')
 {
-  if ( empty($prop) || !property_exists('CSection', $prop) )  die('CSection::readMF invalid property');
+  if ( empty($prop) || !property_exists('CSection', $prop) )  die(__METHOD__.' invalid property');
   $arr = qtExplode($this->$prop); // can be [] when property is empty
   if ( $assign ) {
     foreach($arr as $key=>$value) {
@@ -486,7 +487,7 @@ public function readMF(string $prop, bool $assign=false, string $prefix='')
  */
 public function getMF(string $prop,string $key, $alt='')
 {
-  if ( empty($key) )  die('CSection::readMF invalid key');
+  if ( empty($key) )  die(__METHOD__.' invalid key');
   $arr = $this->readMF($prop,false); // read without properties assignement (also checks $this->$prop exists)
   return isset($arr[$key]) ? $arr[$key] : $alt;
 }
@@ -499,7 +500,7 @@ public function getMF(string $prop,string $key, $alt='')
  */
 public function setMF(string $prop, string $key, $value, bool $save=true)
 {
-  if ( empty($key) ) die('CSection::setMF invalid key');
+  if ( empty($key) ) die(__METHOD__.' invalid key');
   $arr = $this->readMF($prop); // read $this->$prop without properties assignement
   $arr[$key] = $value; // add/change the key=value (value NULL removes the key)
   $this->$prop = qtImplode($arr,';');
@@ -507,7 +508,7 @@ public function setMF(string $prop, string $key, $value, bool $save=true)
 }
 public function updateMF(string $prop)
 {
-  if ( empty($prop) || !property_exists('CSection', $prop) ) die('CSection::updateMF invalid property');
+  if ( empty($prop) || !property_exists('CSection', $prop) ) die(__METHOD__.' invalid property');
   global $oDB;
   $oDB->exec( "UPDATE TABSECTION SET $prop=? WHERE id=$this->id", [$this->$prop] );
 }

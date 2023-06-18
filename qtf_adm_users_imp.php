@@ -36,19 +36,15 @@ if ( isset($_POST['ok']) ) try {
   if ( preg_match('/[0-9A-Za-z]/',$strDelimit) ) throw new Exception( L('Separator').' '.L('invalid') );
 
   // Read file
-  if ( $handle = fopen($_FILES['title']['tmp_name'],'r') )
-  {
+  if ( $handle = fopen($_FILES['title']['tmp_name'],'r') ) {
     $i = 0;
     $intCountUser = 0;
     $id = $oDB->nextId(TABUSER);
-    $oDB->stoponerror=false; /*!!!*/
-    while( ($row=fgetcsv($handle,500,$strDelimit))!==FALSE )
-    {
+    while( ($row=fgetcsv($handle,500,$strDelimit))!==FALSE ) {
       $i++;
       if ( $skipFirstLine && $i===1 ) continue;
       if ( count($row)==1 ) continue;
-      if ( count($row)==4 )
-      {
+      if ( count($row)==4 ) {
         $strRole = 'U'; if ( $row[0]=='A' || $row[0]=='M' || $row[0]=='a' || $row[0]=='m') $strRole=strtoupper($row[0]);
         $strLog = trim($row[1]);
         $strPwd = trim($row[2]);
@@ -56,21 +52,15 @@ if ( isset($_POST['ok']) ) try {
         if ( empty($strPwd) ) $strPwd=sha1($strLog);
         $strMail = $row[3];
         // insert
-        if ( !empty($strLog) )
-        {
-          if ( $oDB->exec( "INSERT INTO TABUSER (id,name,pwd,mail,role) VALUES ($id,?,?,?,?)", [qtDb($strLog),$strPwd,$strMail,$strRole] ) )
-          {
+        if ( !empty($strLog) ) {
+          if ( $oDB->exec( "INSERT INTO TABUSER (id,name,pwd,mail,role) VALUES ($id,?,?,?,?)", [qtDb($strLog),$strPwd,$strMail,$strRole] ) ) {
             $id++;
             $intCountUser++;
-          }
-          else
-          {
+          } else {
             echo ' - Cannot insert a new user with username '.$strLog.'<br>';
           }
         }
-      }
-      else
-      {
+      } else {
         $oH->error = 'Number of parameters ('.count($row).') not matching in line '.$i;
       }
     }
@@ -79,8 +69,7 @@ if ( isset($_POST['ok']) ) try {
 
   // End message
 
-  if ( empty($oH->error) )
-  {
+  if ( empty($oH->error) ) {
     unlink($_FILES['title']['tmp_name']);
     $oH->pageMessage('', $intCountUser===0 ? 'No user inserted... Check the file and check that you don\'t have duplicate usernames.<br>' : L('User',$intCountUser).'<br>'.L('S_update').'<br>', 'admin');
   }

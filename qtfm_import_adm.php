@@ -35,97 +35,82 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 // FUNCTIONS
 
-function startElement($parser, $strTag, $arrTagAttr)
-{
-  $strTag = strtolower($strTag);
+function startElement($parser, string $tag, array $attr) {
   global $arrTopic,$arrPosts;
   global $t,$p;
-
-  switch((string)$strTag)
-  {
-  case 'topic':
-    if ( isset($arrTagAttr['ID']) ) { $t=intval($arrTagAttr['ID']); } else { $t=0; }
-    $arrTopic['id'] = $t;
-    $arrTopic['type'] = (isset($arrTagAttr['TYPE']) ? $arrTagAttr['TYPE'] : 'T');
-    break;
-  case 'post':
-    if ( isset($arrTagAttr['ID']) ) { $p=intval($arrTagAttr['ID']); } else { $p=0; }
-    $arrPosts[$p] = array();
-    $arrPosts[$p]['id'] = $p;
-    $arrPosts[$p]['type'] = (isset($arrTagAttr['TYPE']) ? $arrTagAttr['TYPE'] : 'P');
-    break;
+  switch(strtolower($tag)) {
+    case 'topic':
+      $t = isset($attr['ID']) ? (int)$attr['ID'] : 0;
+      $arrTopic['id'] = $t;
+      $arrTopic['type'] = isset($attr['TYPE']) ? $attr['TYPE'] : 'T';
+      break;
+    case 'post':
+      $p = isset($attr['ID']) ? (int)$attr['ID'] : 0;
+      $arrPosts[$p] = [];
+      $arrPosts[$p]['id'] = $p;
+      $arrPosts[$p]['type'] = isset($attr['TYPE']) ? $attr['TYPE'] : 'P';
+      break;
   }
 }
-function characterData($parser, $data)
-{
+function characterData($parser, $data) {
   global $strValue;
   $strValue = trim($data);
 }
-function endElement($parser, $strTag)
-{
-  $strTag = strtolower($strTag);
+function endElement($parser, string $tag) {
 
+  $tag = strtolower($tag);
   global $arrTopic,$arrPosts;
   global $p,$intTopicInsertId,$intPostInsertId;
   global $strValue;
   global $oDB, $arrCounts;
 
-  switch($strTag)
-  {
-  case 'x':         $arrTopic['x']=$strValue; break;
-  case 'y':         $arrTopic['y']=$strValue; break;
-  case 'z':         $arrTopic['z']=$strValue; break;
-  case 'tags':      if ( !$_SESSION['m_import_xml']['droptags'] ) { $arrTopic['tags']=$strValue; } break;
-  case 'eventdate': $arrTopic['eventdate']=$strValue; break;
-  //case 'wisheddate':$arrTopic['wisheddate']=$strValue; break;
-  case 'firstpostdate': if ( $_SESSION['m_import_xml']['dropdate'] ) { $arrTopic['firstpostdate']=date('Ymd His'); } else { $arrTopic['firstpostdate']=$strValue; } break;
-  case 'lastpostdate': if ( $_SESSION['m_import_xml']['dropdate'] ) { $arrTopic['lastpostdate']=date('Ymd His'); } else { $arrTopic['lastpostdate']=$strValue; } break;
-  //case 'param':     $arrTopic['param']=$strValue; break;
+  switch($tag) {
 
-  case 'icon':     $arrPosts[$p]['icon']=$strValue; break;
-  case 'title':    $arrPosts[$p]['title']=$strValue; break;
-  case 'userid':   $arrPosts[$p]['userid']=0; break; //userid must be reset to 0
-  case 'username': $arrPosts[$p]['username']=$strValue; break;
-  case 'issuedate':if ( $_SESSION['m_import_xml']['dropdate'] ) { $arrPosts[$p]['issuedate']=date('Ymd His'); } else { $arrPosts[$p]['issuedate']=$strValue; } break;
-  case 'modifdate':$arrPosts[$p]['modifdate']=$strValue; break;
-  case 'modifuser':$arrPosts[$p]['modifuser']=0; break; //userid must be reset to 0
-  case 'modifname':$arrPosts[$p]['modifname']=$strValue; break;
-  case 'textmsg':  $arrPosts[$p]['textmsg']=$strValue; break;
-  case 'posts':    $arrTopic['posts']=$arrPosts; break;
+    case 'x':         $arrTopic['x'] = $strValue; break;
+    case 'y':         $arrTopic['y'] = $strValue; break;
+    case 'z':         $arrTopic['z'] = $strValue; break;
+    case 'status':    $arrTopic['status'] = $_SESSION['m_import_xml']['status']==='' ? $strValue : $_SESSION['m_import_xml']['status']; break;
+    case 'tags':      $arrTopic['tags'] = $_SESSION['m_import_xml']['droptags'] ? '' : $strValue; break;
+    case 'eventdate': $arrTopic['eventdate'] = $strValue; break;
+    //case 'wisheddate':$arrTopic['wisheddate'] = $strValue; break;
+    case 'firstpostdate': $arrTopic['firstpostdate'] = $_SESSION['m_import_xml']['dropdate'] ? date('Ymd His') : $strValue; break;
+    case 'lastpostdate': $arrTopic['lastpostdate'] = $_SESSION['m_import_xml']['dropdate'] ? date('Ymd His') : $strValue; break;
+    //case 'param':     $arrTopic['param'] = $strValue; break;
+    case 'icon':      $arrPosts[$p]['icon'] = $strValue; break;
+    case 'title':     $arrPosts[$p]['title'] = $strValue; break;
+    case 'userid':    $arrPosts[$p]['userid'] = 0; break; //userid must be reset to 0
+    case 'username':  $arrPosts[$p]['username'] = $strValue; break;
+    case 'issuedate': $arrPosts[$p]['issuedate'] = $_SESSION['m_import_xml']['dropdate'] ? date('Ymd His') : $strValue; break;
+    case 'modifdate': $arrPosts[$p]['modifdate'] = $strValue; break;
+    case 'modifuser': $arrPosts[$p]['modifuser'] = 0; break; //userid must be reset to 0
+    case 'modifname': $arrPosts[$p]['modifname'] = $strValue; break;
+    case 'textmsg':   $arrPosts[$p]['textmsg'] = $strValue; break;
+    case 'post':      break;
+    case 'posts':     break;
+    case 'topic':
+      // Process topic
+      $oT = new CTopic($arrTopic);
+      $oT->pid = $_SESSION['m_import_xml']['dest'];
+      $oT->id = $intTopicInsertId; $intTopicInsertId++;
+      $oT->insertTopic(false);
+      $arrCounts['topic']++;
+      // Process posts
+      foreach($arrPosts as $aPost) {
+        $oP = new CPost($aPost); if ( $_SESSION['m_import_xml']['dropreply'] && $oP->type!='P' ) break;
+        $oP->id = $intPostInsertId; $intPostInsertId++;
+        $oP->topic = $oT->id;
+        $oP->section = $_SESSION['m_import_xml']['dest'];
+        if ( $_SESSION['m_import_xml']['dropbbc'] ) $oP->text = qtBBclean($oP->text,true,L('Bbc.*'));
+        $oP->insertPost(false);
+        if ( $oP->type!='P' ) $arrCounts['reply']++; // count only the replies
+      }
+      $arrPosts = [];
+      memFlush();
+      break;
+    default:
+      if ( trim($strValue)!=='' ) $arrTopic[$tag] = $strValue;
+      break;
 
-  case 'topic':
-
-    // Process topic
-
-    $oT = new CTopic($arrTopic);
-    $oT->pid = $_SESSION['m_import_xml']['dest'];
-    $oT->id = $intTopicInsertId; $intTopicInsertId++;
-    $oT->status = $_SESSION['m_import_xml']['status'];
-    $oT->insertTopic(false);
-    $arrCounts['topic']++;
-
-    // Process posts
-    foreach($arrTopic['posts'] as $arrPost)
-    {
-      $oP = new CPost($arrPost); if ( $_SESSION['m_import_xml']['dropreply'] && $oP->type!='P' ) break;
-      $oP->id = $intPostInsertId; $intPostInsertId++;
-      $oP->topic = $oT->id;
-      $oP->section = $_SESSION['m_import_xml']['dest'];
-      if ( $_SESSION['m_import_xml']['dropbbc'] ) $oP->text = qtBBclean($oP->text,true,L('Bbc.*'));
-
-      $oP->insertPost(false);
-      if ( $oP->type!='P' ) $arrCounts['reply']++; // count only the replies
-    }
-
-    // Topic stats
-    $oT->updMetadata(); // This update firstpost/lastpost (and do not perform close-topic check)
-    // clear SectionsStats and Sections
-    memFlush();
-    break;
-
-  default:
-    if ( trim($strValue)!=='' ) $arrTopic[$strTag]=$strValue;
-    break;
   }
 }
 
@@ -149,76 +134,56 @@ $oH->selfversion = L('Import_Version').' 4.0';
 // SUBMITTED
 // --------
 
-if ( isset($_POST['ok']) )
-{
-  // check file
+if ( isset($_POST['ok']) ) try {
 
-  if ( !is_uploaded_file($_FILES['title']['tmp_name'])) $oH->error = L('Import_E_nofile');
+  // check file
+  if ( !is_uploaded_file($_FILES['title']['tmp_name'])) throw new Exception(L('Import_E_nofile'));
 
   // check form value
-
-  if ( empty($oH->error) )
-  {
-    if ( isset($_POST['dropbbc']) ) $bDropbbc=true;
-    if ( isset($_POST['dropreply']) ) $bDropreply=true;
-    if ( isset($_POST['droptags']) ) $bDroptags=true;
-    if ( isset($_POST['dropdate']) ) $bDropdate=true;
-    $intDest = intval($_POST['section']);
-    $strStatus = $_POST['status'];
-    $_SESSION['m_import_xml']=array('dest'=>$intDest,'status'=>$strStatus,'dropbbc'=>$bDropbbc,'dropreply'=>$bDropreply,'droptags'=>$bDroptags,'dropdate'=>$bDropdate);
-  }
+  if ( isset($_POST['dropbbc']) ) $bDropbbc=true;
+  if ( isset($_POST['dropreply']) ) $bDropreply=true;
+  if ( isset($_POST['droptags']) ) $bDroptags=true;
+  if ( isset($_POST['dropdate']) ) $bDropdate=true;
+  $intDest = intval($_POST['section']);
+  $strStatus = $_POST['status'];
+  $_SESSION['m_import_xml'] = array('dest'=>$intDest,'status'=>$strStatus,'dropbbc'=>$bDropbbc,'dropreply'=>$bDropreply,'droptags'=>$bDroptags,'dropdate'=>$bDropdate);
 
   // check format
-
-  if ( empty($oH->error) )
-  {
-    if ( $_FILES['title']['type']!='text/xml' )
-    {
-    $oH->error = L('Import_E_format');
-    unlink($_FILES['title']['tmp_name']);
-    }
-  }
+  if ( $_FILES['title']['type']!=='text/xml' ) throw new Exception(L('Import_E_format'));
 
   // import xml
-
-  if ( empty($oH->error) )
-  {
-    $arrTopic = array();
-    $arrPosts = array();
-    $t = 0;
-    $p = 0;
-    $strValue = '';
-    $intTopicInsertId = $oDB->nextId(TABTOPIC);
-    $intPostInsertId = $oDB->nextId(TABPOST);
-
-    $xml_parser = xml_parser_create();
-    xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, true);
-    xml_set_element_handler($xml_parser, 'startElement', 'endElement');
-    xml_set_character_data_handler($xml_parser, 'characterData');
-    if ( !($fp = fopen($_FILES['title']['tmp_name'],'r')) ) die('could not open XML input');
-    while ($data = fread($fp,4096))
-    {
-      if ( !xml_parse($xml_parser, $data, feof($fp)) ) die(sprintf('XML error: %s at line %d', xml_error_string(xml_get_error_code($xml_parser)), xml_get_current_line_number($xml_parser)));
-    }
-    xml_parser_free($xml_parser);
+  $arrTopic = array();
+  $arrPosts = array();
+  $t = 0;
+  $p = 0;
+  $strValue = '';
+  $intTopicInsertId = $oDB->nextId(TABTOPIC);
+  $intPostInsertId = $oDB->nextId(TABPOST);
+  $xml_parser = xml_parser_create();
+  xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, true);
+  xml_set_element_handler($xml_parser, 'startElement', 'endElement');
+  xml_set_character_data_handler($xml_parser, 'characterData');
+  if ( !($fp = fopen($_FILES['title']['tmp_name'],'r')) ) throw new Exception('could not open XML input');
+  while ($data = fread($fp,4096)) {
+    if ( !xml_parse($xml_parser, $data, feof($fp)) ) throw new Exception( sprintf('XML error: %s at line %d', xml_error_string(xml_get_error_code($xml_parser)), xml_get_current_line_number($xml_parser)) );
   }
+  xml_parser_free($xml_parser);
 
-  if ( empty($oH->error) )
-  {
-    // Clean file
+  // Update section stats and system stats
+  $voidSec = new CSection(); $voidSec->id=$intDest;
+  $voidSec->updEachItemReplies();
 
-    unlink($_FILES['title']['tmp_name']);
+  // End message (pause)
+  $oH->pageMessage('', '<p class="small">'.L('Item',$arrCounts['topic']).'<br>'.L('Reply',$arrCounts['reply']).'</p><br>'.L('Import_S_import'), 'admin');
 
-    // Update section stats and system stats
+} catch (Exception $e) {
 
-    $voidSec = new CSection(); $voidSec->id=$intDest;
-    $voidSec->updLastPostDate();
-    $voidSec->updEachItemReplies();
+  $oH->error .= $e->getMessage();
 
-    // End message (pause)
+} finally {
 
-    $oH->pageMessage('', '<p class="small">'.L('Item',$arrCounts['topic']).'<br>'.L('Reply',$arrCounts['reply']).'</p><br>'.L('Import_S_import'), 'admin');
-  }
+  unlink($_FILES['title']['tmp_name']);
+
 }
 
 // --------

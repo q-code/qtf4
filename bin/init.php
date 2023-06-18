@@ -77,8 +77,9 @@ if ( !isset($_SESSION[QT]['show_welcome']) ) $_SESSION[QT]['show_welcome'] = '1'
 // Note: SMem::get() puts the data in the shared-memory if not existing, and returns the data
 // When one changes, the class clears the shared-memory while following get() recomputes and stores it
 $_Domains = SMem::get('_Domains');
-$_SectionsStats = SMem::get('_SectionsStats');
-$_Sections = SMem::get('_Sections');
+$_SectionIds = SMem::get('_SectionIds');
+$_SectionsStats = SMem::get('_SectionsStats'); // uses _SectionIds
+$_Sections = SMem::get('_Sections'); // uses _SectionsStats
 $_L = SMem::get('_L'.QT_LANG); // includes types ['index','domain','sec','secdesc'], for each id (words translated to QT_LANG)
 
 // ----------------

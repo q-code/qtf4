@@ -1,1 +1,1 @@
-This module will export the content of the database to a xml file. Only messages (and author name) will be exported. Section description and member's profiles are skipped. Note: if you export all forums, the messages will be grouped in one forum by the import module.
+This module will export the content of the database to a xml file. Only messages (and author name) will be exported. Section description and member's profiles are skipped. Note: if you export all forums, the messages will be grouped as belonging to one forum (import module will place the messages in one forum).
