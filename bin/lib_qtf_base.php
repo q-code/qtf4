@@ -36,7 +36,7 @@ function memInit(string $key, $onUnknownKey=false)
     case 'settingsage': return time();
     case '_Domains': return CDomain::getPropertiesAll();
       // all domains (including empty/invisible domains), array contains property=>value from CDomain class
-    case '_SectionIds': return CSection::getIds();
+    case '_SectionsId': return CSection::getIds();
       // array of Id
     case '_Sections': return CSection::getPropertiesAll();
       // all sections (including empty/invisible sections), array contains property=>value from CSection class
@@ -55,7 +55,7 @@ function memFlush(array $arrKeep=['_Domains'], string $option='')
   // DEEP FLUSH
   if ( $option==='**' ) SMem::clear('**'); // only admin can use option to deep flush
   // Flush keys, if not in the $arrKeep list (by default, _Domains is preserved)
-  foreach(['_Domains','_SectionIds','_Sections','_SectionsStats'] as $k) if ( !in_array($k,$arrKeep) ) SMem::clear($k);
+  foreach(['_Domains','_SectionsId','_Sections','_SectionsStats'] as $k) if ( !in_array($k,$arrKeep) ) SMem::clear($k);
   return true;
 }
 function memFlushLang()

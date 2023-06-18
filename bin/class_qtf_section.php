@@ -192,8 +192,8 @@ public static function getSectionsStats(bool $closed=true, bool $lastpost=true)
 {
   $arr = [];
   // Initialize each section to 0 (because sql will skip empty sections)
-  global $_SectionIds;
-  foreach($_SectionIds as $id)
+  global $_SectionsId;
+  foreach($_SectionsId as $id)
   $arr[$id] = ['items'=>0,'replies'=>0,'itemsZ'=>0,'repliesZ'=>0,'lastpostid'=>-1,'lastpostpid'=>-1,'lastpostdate'=>'','lastpostuser'=>-1,'lastpostname'=>''];
   $arr['all'] = ['items'=>0,'replies'=>0,'itemsZ'=>0,'repliesZ'=>0,'lastpostid'=>-1,'lastpostpid'=>-1,'lastpostdate'=>'','lastpostuser'=>-1,'lastpostname'=>''];
   // Query
