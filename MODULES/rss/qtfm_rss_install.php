@@ -12,14 +12,13 @@
 * @package    QuickTalk
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2012 The PHP Group
-* @version    4.0 build:20221111
+* @version    4.0 build:20230618
 */
 
 session_start();
 require 'bin/init.php';
 /**
-* @var CVip $oV'lg_adm.php'
-* @var cHtml $oHtml
+* @var CHtml $oH
 * @var array $L
 * @var CDatabase $oDB
 */
@@ -29,8 +28,8 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v4.0';
-$oV->selfurl = 'qtfm_rss_install.php';
-$oV->selfname = 'Installation module RSS '.$strVersion;
+$oH->selfurl = 'qtfm_rss_install.php';
+$oH->selfname = 'Installation module RSS '.$strVersion;
 
 $bStep0 = true;
 $bStep1 = true;
@@ -40,43 +39,43 @@ if ( isset($_SESSION[QT]['m_rss_conf']) ) unset($_SESSION[QT]['m_rss_conf']);
 
 // STEP 0: check version
 
-$strQTF = VERSION; if ( substr(VERSION,0,1)=='v') $strQTF = substr(VERSION,1);
+$strQTF = VERSION; if ( substr(VERSION,0,1)==='v') $strQTF = substr(VERSION,1);
 $arrQTF = explode('.',$strQTF);
-if ( intval($arrQTF[0])<2 ) $error="Your QuickTalk version is $strQTF. Please, upgrade to QuickTalk 3.0 before installing this module...";
-if ( !empty($error) ) $bStep0 = false;
+if ( intval($arrQTF[0])<2 ) $oH->error="Your QuickTalk version is $strQTF. Please, upgrade to QuickTalk 3.0 before installing this module...";
+if ( !empty($oH->error) ) $bStep0 = false;
 
 // STEP 1
 
-if ( empty($error) )
+if ( empty($oH->error) )
 {
   $strFile = 'qtfm_rss.php';
-  if ( !file_exists($strFile) ) $error="Missing file: $strFile<br>This module cannot be used.";
+  if ( !file_exists($strFile) ) $oH->error="Missing file: $strFile<br>This module cannot be used.";
   $strFile = 'qtfm_rss_adm.php';
-  if ( !file_exists($strFile) ) $error="Missing file: $strFile<br>This module cannot be used.";
+  if ( !file_exists($strFile) ) $oH->error="Missing file: $strFile<br>This module cannot be used.";
   $strFile = 'qtfm_rss_inc.php';
-  if ( !file_exists($strFile) ) $error="Missing file: $strFile<br>This module cannot be used.";
-  if ( !empty($error) ) $bStep1 = false;
+  if ( !file_exists($strFile) ) $oH->error="Missing file: $strFile<br>This module cannot be used.";
+  if ( !empty($oH->error) ) $bStep1 = false;
 }
 
 // STEP 2
 
-if ( empty($error) )
+if ( empty($oH->error) )
 {
   $strFile = 'rss';
   if ( !is_dir($strFile) )
   {
-  $error='Missing directory '.$strFile.': First create this directory and make it writable.<br>This module cannot be used because a writable directory is mandatory.';
+  $oH->error='Missing directory '.$strFile.': First create this directory and make it writable.<br>This module cannot be used because a writable directory is mandatory.';
   }
   else
   {
-  if ( !is_writable($strFile) ) $error='Directory '.$strFile.' is not writable.<br>This module cannot be used because a writable directory is mandatory.';
+  if ( !is_writable($strFile) ) $oH->error='Directory '.$strFile.' is not writable.<br>This module cannot be used because a writable directory is mandatory.';
   }
-  if ( !empty($error) ) $bStep2 = false;
+  if ( !empty($oH->error) ) $bStep2 = false;
 }
 
 // INSTALL
 
-if ( empty($error) )
+if ( empty($oH->error) )
 {
   $oDB->exec( 'DELETE FROM TABSETTING WHERE param="module_rss" OR param="m_rss" OR param="m_rss_conf"');
   $oDB->exec( 'INSERT INTO TABSETTING (param,setting) VALUES ("module_rss","RSS")');
@@ -96,14 +95,14 @@ include 'qtf_adm_inc_hd.php';
 
 if ( !$bStep0 )
 {
-  echo '<p class="error">',$error,'</p>';
+  echo '<p class="error">',$oH->error,'</p>';
   include 'qtf_adm_inc_ft.php';
   exit;
 }
 echo '<h2>Checking components</h2>';
 if ( !$bStep1 )
 {
-  echo '<p class="error">',$error,'</p>';
+  echo '<p class="error">',$oH->error,'</p>';
   include 'qtf_adm_inc_ft.php';
   exit;
 }
@@ -111,7 +110,7 @@ echo '<p>Ok</p>';
 echo '<h2>Checking rss subdirectory</h2>';
 if ( !$bStep2 )
 {
-  echo '<p class="error">',$error,'</p>';
+  echo '<p class="error">',$oH->error,'</p>';
   include 'qtf_adm_inc_ft.php';
   exit;
 }

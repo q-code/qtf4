@@ -1,10 +1,9 @@
-<?php // v4.0 build:20221111
+<?php // v4.0 build:20230618
 
 session_start();
 require 'bin/init.php';
 /**
-* @var CVip $oV
-* @var cHtml $oHtml
+* @var CHtml $oH
 * @var array $L
 * @var CDatabase $oDB
 */
@@ -37,11 +36,11 @@ if ( !isset($_SESSION['m_export_xml']) )
   'dropbbc' => 'Y');
 }
 
-$oV->selfurl = 'qtfm_export_adm.php';
-$oV->selfname = L('Export_Admin');
-$oV->exiturl = $oV->selfurl;
-$oV->exitname = $oV->selfname;
-$oV->selfversion = L('Export_Version').' 4.0';
+$oH->selfurl = 'qtfm_export_adm.php';
+$oH->selfname = L('Export_Admin');
+$oH->exiturl = $oH->selfurl;
+$oH->exitname = $oH->selfname;
+$oH->selfversion = L('Export_Version').' 4.0';
 
 // --------
 // SUBMITTED
@@ -51,33 +50,33 @@ if ( isset($_POST['ok']) )
 {
   // read and check mandatory
   if ( isset($_POST['dropbbc']) ) { $_SESSION['m_export_xml']['dropbbc']='Y'; } else { $_SESSION['m_export_xml']['dropbbc']='N'; }
-  if ( empty($_POST['title']) ) $error='Filename '.L('invalid');
-  if ( substr($_POST['title'],-4,4)!='.xml' ) $_POST['title'] .= '.xml';
-  if ( $_POST['section']=='-' ) $error='No data found';
-  if ( $_POST['year']=='-' ) $error='No data found';
+  if ( empty($_POST['title']) ) $oH->error='Filename '.L('invalid');
+  if ( substr($_POST['title'],-4,4)!=='.xml' ) $_POST['title'] .= '.xml';
+  if ( $_POST['section']=='-' ) $oH->error='No data found';
+  if ( $_POST['year']=='-' ) $oH->error='No data found';
 
   // EXPORT COUNT
-  if ( empty($error) )
+  if ( empty($oH->error) )
   {
     $sqlWhere = '';
     if ( $_POST['section']!='*' ) { $sqlWhere .= 'forum='.$_POST['section']; } else { $sqlWhere .= 'forum>=0'; }
     if ( $_POST['year']!='*' ) $sqlWhere .= ' AND '.sqlDateCondition($_POST['year'],'firstpostdate');
     $oDB->query( 'SELECT count(*) as countid FROM TABTOPIC WHERE '.$sqlWhere );
     $row=$oDB->getRow();
-    if ( $row['countid']==0 ) $error='No data found';
+    if ( $row['countid']==0 ) $oH->error='No data found';
   }
 
   // ------
   // EXPORT XML
   // ------
 
-  if ( empty($error) )
+  if ( empty($oH->error) )
   {
     $oDB2 = new CDatabase();
 
     // start export
 
-    if (!headers_sent())
+    if ( !headers_sent())
     {
       header('Content-Type: text/xml; charset='.QT_XML_CHAR);
       header('Content-Disposition: attachment; filename="'.$_POST['title'].'"');
@@ -149,8 +148,8 @@ if ( isset($_POST['ok']) )
 
 include 'qtf_adm_inc_hd.php';
 
-echo '<form method="post" action="',$oV->selfurl,'">
-<h2 class="subtitle">',$L['Export_Content'],'</h2>
+echo '<form method="post" action="',$oH->selfurl,'">
+<h2 class="config">',$L['Export_Content'],'</h2>
 <table class="t-conf">
 <tr>
 <th><label for="section">',$L['Section'],'</label></th>
@@ -161,10 +160,10 @@ echo '<form method="post" action="',$oV->selfurl,'">
 </select>
 </td>
 </tr>
-<tr><th><label for="year">',$L['Items'],'</label></th>
+<tr><th><label for="year">',$L['Item+'],'</label></th>
 <td><select id="year" name="year" size="1">
 <option value="*">[ ',$L['All'],' ]</option>
-',asTags($arrYears),'
+',qtTags($arrYears),'
 </select></td>
 </tr>
 <tr>
@@ -174,7 +173,7 @@ echo '<form method="post" action="',$oV->selfurl,'">
 </table>
 ';
 
-echo '<h2 class="subtitle">',$L['Destination'],'</h2>
+echo '<h2 class="config">',$L['Destination'],'</h2>
 <table class="t-conf">
 <tr>
 <th><label for="title">',$L['Export_Filename'],'</label></th>
@@ -182,7 +181,7 @@ echo '<h2 class="subtitle">',$L['Destination'],'</h2>
 </tr>
 </table>
 ';
-echo '<p class="submit center"><button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>
+echo '<p class="submit"><button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>
 </form>
 ';
 

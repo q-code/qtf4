@@ -12,14 +12,13 @@
 * @package    QTF
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2008-2012 The PHP Group
-* @version    1.0 build:20221111
+* @version    1.0 build:20230618
 */
 
 session_start();
 /**
-* @var string $error
-* @var CVip $oV
-* @var cHtml $oHtml
+* @var CHtml $oH
+* @var CHtml $oH
 * @var CDatabase $oDB
 */
 require 'bin/init.php';
@@ -29,23 +28,23 @@ include translate('lg_adm.php');
 // INITIALISE
 
 $strVersion='v1.0';
-$oV->selfurl = 'qtfm_ldap_install.php';
-$oV->selfname = 'Installation module LDAP '.$strVersion;
+$oH->selfurl = 'qtfm_ldap_install.php';
+$oH->selfname = 'Installation module LDAP '.$strVersion;
 
 $bStep1 = true;
 
 // STEP 1
 
-if ( empty($error) )
+if ( empty($oH->error) )
 {
   $strFile = 'qtfm_ldap_adm.php';
-  if ( !file_exists($strFile) ) $error="Missing file: $strFile. Check installation instructions.<br>This module cannot be used.";
-  if ( !empty($error) ) $bStep1 = false;
+  if ( !file_exists($strFile) ) $oH->error="Missing file: $strFile. Check installation instructions.<br>This module cannot be used.";
+  if ( !empty($oH->error) ) $bStep1 = false;
 }
 
 // STEP 2
 
-if ( empty($error) )
+if ( empty($oH->error) )
 {
   $oDB->exec( "DELETE FROM TABSETTING WHERE param='module_ldap' OR param='m_ldap:login' OR param='m_ldap'" );
   // Declare ldap as a module, then add configuration settings with param='m_ldap'
@@ -57,9 +56,9 @@ if ( empty($error) )
 
 // STEP 3
 
-if ( empty($error) )
+if ( empty($oH->error) )
 {
-  if ( !function_exists('ldap_connect') ) $error = 'LDAP function not found. It seems that module LDAP is not activated on your webserver';
+  if ( !function_exists('ldap_connect') ) $oH->error = 'LDAP function not found. It seems that module LDAP is not activated on your webserver';
 }
 
 // --------
@@ -70,7 +69,7 @@ include 'qtf_adm_inc_hd.php';
 echo '<h2>Checking components</h2>';
 if ( !$bStep1 )
 {
-  echo '<p class="error">',$error,'</p>';
+  echo '<p class="error">',$oH->error,'</p>';
   include 'qtf_adm_inc_ft.php';
   exit;
 }

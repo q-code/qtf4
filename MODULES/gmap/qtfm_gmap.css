@@ -7,7 +7,7 @@ a.gmap:hover{text-decoration:underline}
 
 div.gmap{margin:10px auto 0 auto;padding:5px;border:solid 1px #AAA;border-radius:3px}
 div.gmap_disabled{margin:5px;padding:5px;background-color:inherit;color:#888}
-#btn-geocode{margin-left:2px;padding:5px 4px;vertical-align:middle;border:solid 1px #CCC;border-radius:3px;cursor:pointer}
+#btn-geocode{margin-left:2px;padding:5px 4px;vertical-align:middle;border:solid 1px #CCC;border-radius:3px}
 #btn-geocode:hover{border-color:#0000FF;color:#0000FF}
 #gmapcontainer{padding:4px;border-width:0}
 .ginfo{margin-top:5px;width:225px;font-family:verdana,arial,sans-serif;font-size:0.8rem}
@@ -18,19 +18,15 @@ a.canvashandler{
  display:inline-block;vertical-align:top;margin:0 10px;padding:2px 5px;
  border-style:solid;border-width:0 1px 1px 1px;border-color:#BBB;border-radius:0 0 3px 3px;
 }
-img.marker{margin:0 3px 3px 0;padding:2px;border:solid 1px #CCC;border-radius:3px}
-img.marker:hover{border-color:#AAA;background-color:#FFF}
-img.marker.checked{background-color:#FFF}
-img.markerprofileimage{float:left;max-width:60px;max-height:60px;margin:0 5px 0 0}
 
-img#markerpicked,
-img#markerpicked_U,
-img#markerpicked_M,
-img#markerpicked_A{margin:0 0 5px 0;padding:5px;vertical-align:top;border:solid 1px #AAA;border-radius:3px}
-div.markerpicker{display:inline-block;padding:5px;overflow:auto;white-space:nowrap;opacity:0.3}
-div.markerpicker:hover{opacity:1}
-div.markerpicker input{display:none}
-div.markerpicker input:checked + label img{background-color:#eee}
+.markerpicker{opacity:0.5}
+.markerpicker:hover{opacity:1}
+.markerpicked{padding:5px;border:solid 1px #AAA;border-radius:3px}
+
+img.marker{padding:2px;border:solid 1px #CCC;border-radius:3px}
+img.marker:hover{border-color:#999;cursor:pointer}
+img.marker[aria-checked=true]{background-color:#ccc;pointer-events:none}
+img.markerprofileimage{float:left;max-width:60px;max-height:60px;margin:0 5px 0 0}
 
 @media print
 {

@@ -12,14 +12,13 @@
 * @package    QTF
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2012 The PHP Group
-* @version    1.0 build:20221111
+* @version    1.0 build:20230618
 */
 
 session_start();
 require 'bin/init.php';
 /**
-* @var CVip $oV
-* @var cHtml $oHtml
+* @var CHtml $oH
 * @var array $L
 * @var CDatabase $oDB
 */
@@ -29,8 +28,8 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v1.0';
-$oV->selfurl = 'qtfm_ldap_uninstall.php';
-$oV->selfname = 'Uninstallation module LDAP '.$strVersion;
+$oH->selfurl = 'qtfm_ldap_uninstall.php';
+$oH->selfname = 'Uninstallation module LDAP '.$strVersion;
 
 // UNINSTALL
 

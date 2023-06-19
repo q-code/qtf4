@@ -12,15 +12,14 @@
  * @package    QuickTalk
  * @author     Philippe Vandenberghe <info@qt-cute.org>
  * @copyright  2012 The PHP Group
- * @version    4.0 build:20221111
+ * @version    4.0 build:20230618
  */
 
 session_start();
 require 'bin/init.php';
 /**
-* @var string $error
-* @var CVip $oV'lg_adm.php'
-* @var cHtml $oHtml
+* @var CHtml $oH
+* @var CHtml $oH
 * @var array $L
 * @var CDatabase $oDB
 */
@@ -30,22 +29,22 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v4.0';
-$oV->selfurl = 'qtfm_import_install.php';
-$oV->selfname = 'Installation module IMPORT '.$strVersion;
+$oH->selfurl = 'qtfm_import_install.php';
+$oH->selfname = 'Installation module IMPORT '.$strVersion;
 $bStep1 = true;
 
 // STEP 1
 
-if ( empty($error) )
+if ( empty($oH->error) )
 {
   $strFile = 'qtfm_import_adm.php';
-  if ( !file_exists($strFile) ) $error="Missing file: $strFile. Check installation instructions.<br>This module cannot be used.";
-  if ( !empty($error) ) $bStep1 = false;
+  if ( !file_exists($strFile) ) $oH->error="Missing file: $strFile. Check installation instructions.<br>This module cannot be used.";
+  if ( !empty($oH->error) ) $bStep1 = false;
 }
 
 // STEP 2
 
-if ( empty($error) )
+if ( empty($oH->error) )
 {
   $oDB->exec( 'DELETE FROM TABSETTING WHERE param="module_import"');
   $oDB->exec( 'INSERT INTO TABSETTING (param,setting) VALUES ("module_import","Import")');
@@ -60,7 +59,7 @@ include 'qtf_adm_inc_hd.php';
 echo '<h2>Checking components</h2>';
 if ( !$bStep1 )
 {
-  echo '<p class="error">',$error,'</p>';
+  echo '<p class="error">',$oH->error,'</p>';
   include 'qtf_adm_inc_ft.php';
   exit;
 }

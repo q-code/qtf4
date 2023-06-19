@@ -1,6 +1,6 @@
 <?php
 
-// v4.0 build:20221111
+// v4.0 build:20230618
 // Script added in qtf_edit.php when rss is activated.
 
 function toXml($str)
@@ -44,7 +44,7 @@ while ($row = $oDB->getRow())
   $item[$i]['link'] = $_SESSION[QT]['site_url']."/qtf_item.php?t=".$row['id']."&p=".$row['firstpostid'];
 
   // format the RSS text
-  $item[$i]['description'] = toXml( QTinline($row['textmsg'],400) );
+  $item[$i]['description'] = toXml( qtInline($row['textmsg'],400) );
   $item[$i]['pudDate'] = $row['lastpostdate'];
   $item[$i]['author'] = $row['firstpostname'];
   $i++;
@@ -71,7 +71,7 @@ fwrite($handle,"<item>\n");
 fwrite($handle,"<title>{$item[$n]['title']}</title>\n");
 fwrite($handle,"<link>{$item[$n]['link']}</link>\n");
 fwrite($handle,"<description>{$item[$n]['description']}</description>\n");
-fwrite($handle,"<pubDate>".QTdatestr($item[$n]['pudDate'],'D, d M Y H:i:00 O','')."</pubDate>\n");
+fwrite($handle,"<pubDate>".qtDatestr($item[$n]['pudDate'],'D, d M Y H:i:00 O','')."</pubDate>\n");
 fwrite($handle,"<guid>{$item[$n]['link']}</guid>\n");
 fwrite($handle,"</item>\n");
 }
@@ -88,7 +88,7 @@ fwrite($handle,'<title>'.toXml($_SESSION[QT]['site_name'].' - '.$oS->title).'</t
 fwrite($handle,'<link href="'.$_SESSION[QT]['site_url'].'/qtf_items.php?s='.$s.'"/>');
 fwrite($handle,'<link href="'.$_SESSION[QT]['site_url'].'/rss/qtf_atom_'.$s.'.xml" rel="self"/>');
 fwrite($handle,"<id>{$_SESSION[QT]['site_url']}/qtf_items.php?s=$s</id>\n");
-fwrite($handle,"<updated>".QTdatestr(date('Y-m-d H:i:s'),'RFC-3339')."</updated>\n");
+fwrite($handle,"<updated>".qtDatestr(date('Y-m-d H:i:s'),'RFC-3339')."</updated>\n");
 fwrite($handle,"<author><name>Webmaster</name><email>{$_SESSION[QT]['admin_email']}</email></author>\n");
 fwrite($handle,'<category term="Troubleticket"/>');
 fwrite($handle,"<generator>QuickTalk ".substr(VERSION,0,3)."</generator>\n");
@@ -99,7 +99,7 @@ for ($n=0; $n<$i; $n++)
 fwrite($handle,"<entry>\n");
 fwrite($handle,"<id>{$item[$n]['link']}</id>\n");
 fwrite($handle,"<title>{$item[$n]['title']}</title>\n");
-fwrite($handle,"<updated>".QTdatestr($item[$n]['pudDate'],'RFC-3339')."</updated>\n");
+fwrite($handle,"<updated>".qtDatestr($item[$n]['pudDate'],'RFC-3339')."</updated>\n");
 fwrite($handle,"<author><name>{$item[$n]['author']}</name></author>\n");
 fwrite($handle,"<content>{$item[$n]['description']}</content>\n");
 fwrite($handle,'<link href="'.$item[$n]['link'].'"/>');

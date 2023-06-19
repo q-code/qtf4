@@ -1,4 +1,4 @@
-<?php // v4.0 build:20221111 can be app impersonated {qt f|i}
+<?php // v4.0 build:20230618 can be app impersonated {qt f|i}
 
 /**
 * PHP version 7
@@ -17,8 +17,7 @@
 session_start();
 require 'bin/init.php';
 /**
-* @var CVip $oV
-* @var cHtml $oHtml
+* @var CHtml $oH
 * @var array $L
 * @var CDatabase $oDB
 */
@@ -34,8 +33,8 @@ if ( !SUser::canView(($strUser=='V' ? 'V' : 'U')) ) die('Access denied');
 
 include translate(APP.'m_rss.php');
 
-$oV->selfurl = APP.'m_rss.php';
-$oV->selfname = $L['rss']['Rss'];
+$oH->selfurl = APP.'m_rss.php';
+$oH->selfname = $L['rss']['Rss'];
 
 $strRssUrl = $_SESSION[QT]['site_url'].'/rss/';
 
@@ -49,7 +48,7 @@ if ( count($arrDS)==0 )
 {
   // end if no section
   include APP.'_inc_hd.php';
-  echo '<h2>'.$oV->selfname.'</h2><p>Format: '.($strForm==='atom' ? 'Atom' : 'Rss 2.0').'</p>'.PHP_EOL;
+  echo '<h2>'.$oH->selfname.'</h2><p>Format: '.($strForm==='atom' ? 'Atom' : 'Rss 2.0').'</p>'.PHP_EOL;
   echo '<p>'.$L['rss']['E_nosection'].'</p>';
   include APP.'_inc_ft.php';
   exit;
@@ -58,7 +57,7 @@ if ( count($arrDS)==0 )
 // Prepare rss-link header
 foreach($arrDS as $arrSections) {
 foreach($arrSections as $id=>$mSec) {
-  $oHtml->links[] = '<link rel="alternate" type="application/rss+xml" title="'.qtAttr($mSec['title']).'" href="'.$strRssUrl.'/qtf_'.$strForm.'_'.$id.'.xml"/>';
+  $oH->links[] = '<link rel="alternate" type="application/rss+xml" title="'.qtAttr($mSec['title']).'" href="'.$strRssUrl.'/qtf_'.$strForm.'_'.$id.'.xml"/>';
 }}
 
 // --------
@@ -68,12 +67,12 @@ foreach($arrSections as $id=>$mSec) {
 include APP.'_inc_hd.php';
 
 // TITLE & version
-echo '<h2>'.$oV->selfname.'</h2><p>Format: '.($strForm=='atom' ? 'Atom' : 'Rss 2.0').'</p>'.PHP_EOL;
+echo '<h2>'.$oH->selfname.'</h2><p>Format: '.($strForm=='atom' ? 'Atom' : 'Rss 2.0').'</p>'.PHP_EOL;
 
 foreach($arrDS as $domId=>$arrSections)
 {
 //  $arrSections = getSections('V',$intDomain);
-    echo '<table class="t-sec domain">'.PHP_EOL;
+    echo '<table class="t-sec">'.PHP_EOL;
     echo '<tr class="t-sec">';
     echo '<th style="width:50px">&nbsp;</th>';
     echo '<th style="width:35%" class="c-section">'.SLang::translate('domain', 'd'.$domId, empty($_Domains[$domId]['title']) ? '(domain-'.$domId.')' : $_Domains[$domId]['title'] ).'</th>';
@@ -82,17 +81,14 @@ foreach($arrDS as $domId=>$arrSections)
 
     // SHOW SECTIONS
 
-    $altRow = 'r1';
-
     foreach($arrSections as $id=>$mSec)
     {
-      echo '<tr class="t-sec '.$altRow.' hover">';
-      echo '<td class="c-icon">'.asImg( QT_SKIN.'img/section_'.$mSec['type'].'_'.$mSec['status'].'.gif', 'title='.Lh('Ico_section_'.$mSec['type'].'_'.$mSec['status']) ).'</td>';
+      echo '<tr class="t-sec hover">';
+      echo '<td class="c-icon">'.asImg( QT_SKIN.'img/section_'.$mSec['type'].'_'.$mSec['status'].'.gif', 'title='.L('Ico_section_'.$mSec['type'].'_'.$mSec['status']) ).'</td>';
       echo '<td class="c-section"><span class="section">'.$mSec['title'].'</span><br><span class="sectiondesc">'.$mSec['descr'].'</span></td><td>';
-      echo '<a href="'.$strRssUrl.APP.'_'.$strForm.'_'.$id.'.xml" title="syndication"><i class="fa fa-rss-square"></i> rss</a> &middot; '.$strRssUrl.APP.'_'.$strForm.'_'.$id.'.xml';
-      if ( !file_exists('rss/'.APP.'_'.$strForm.'_'.$id.'.xml') ) echo '<p class="minor"><i class="fa fa-exclamation-triangle"></i> '.L('rss.File_not_available').'</p>';
+      echo '<a href="'.$strRssUrl.APP.'_'.$strForm.'_'.$id.'.xml" title="syndication">'.qtSVG('rss-square').' rss</a> &middot; '.$strRssUrl.APP.'_'.$strForm.'_'.$id.'.xml';
+      if ( !file_exists('rss/'.APP.'_'.$strForm.'_'.$id.'.xml') ) echo '<p class="minor">'.qtSVG('exclamation-triangle').' '.L('rss.File_not_available').'</p>';
       echo '</td></tr>';
-      $altRow = $altRow==='r1' ? 'r2' : 'r1';
     }
     echo '</table>'.PHP_EOL;
 }

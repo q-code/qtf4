@@ -3,11 +3,11 @@
 /* ============
  * map_lib.php
  * ------------
- * version: 4.0 build:20221111
+ * version: 4.0 build:20230618
  * This is a module library
  * ------------
  * Class CMapPoint
- * gmapCan gmapHasKey gmapApi QTgempty QTgemptycoord
+ * gmapCan gmapHasKey gmapApi gmapEmpty gmapEmptycoord
  * gmapMarker gmapMarkerMapTypeId gmapMarkerIcon
  * QTgetx QTgety QTgetz QTstr2yx QTdd2dms
  * ============ */
@@ -70,36 +70,36 @@ function gmapHasKey()
 function gmapApi($strKey='',$strAddLibrary='')
 {
   if ( empty($strKey) ) return '';
-  return '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$strKey.'"></script>'.PHP_EOL.(empty($strAddLibrary) ? '' : $strAddLibrary);
+  return '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$strKey.'&callback=gmapInitialize"></script>'.PHP_EOL.(empty($strAddLibrary) ? '' : $strAddLibrary);
 }
-function QTgempty($i)
+function gmapEmpty($i)
 {
   // Returns true when $i is empty or a value starting with '0.000000'
   if ( empty($i) ) return true;
-  if ( !is_string($i) && !is_float($i) && !is_int($i) ) die('QTgempty: Invalid argument #1');
-  if ( substr((string)$i,0,8)=='0.000000' ) return true;
+  if ( !is_string($i) && !is_float($i) && !is_int($i) ) die('gmapEmpty: Invalid argument #1');
+  if ( substr((string)$i,0,8)==='0.000000' ) return true;
   return false;
 }
-function QTgemptycoord($a)
+function gmapEmptycoord($a)
 {
   // Returns true when $a has empty coordinates in both Y and X.
   // $a can be a CMapPoint or CTopic object or a string Y,X. ex: "51.75,4.12"
   // Note: returns true if $a is not correctly formatted or when properties x or y are missing.
-  // Note: Z coordinate is NOT evaluated. ex: QTgemptycoord("0,0,125") returns true.
+  // Note: Z coordinate is NOT evaluated. ex: gmapEmptycoord("0,0,125") returns true.
 
   if ( is_a($a,'CMapPoint') || is_a($a,'CTopic') )
   {
     if ( !property_exists($a,'y') ) return true;
     if ( !property_exists($a,'x') ) return true;
-    if ( QTgempty($a->y) && QTgempty($a->x) ) return true;
+    if ( gmapEmpty($a->y) && gmapEmpty($a->x) ) return true;
     return false;
   }
   if ( is_string($a) )
   {
-    if ( QTgempty(QTgety($a,true)) && QTgempty(QTgetx($a,true)) ) return true;
+    if ( gmapEmpty(QTgety($a,true)) && gmapEmpty(QTgetx($a,true)) ) return true;
     return false;
   }
-  die('QTgemptycoord: invalid argument #1');
+  die('gmapEmptycoord: invalid argument #1');
 }
 function gmapMarker($centerLatLng='',$draggable=false,$gsymbol=false,$title='',$info='')
 {
@@ -126,7 +126,7 @@ function gmapMarker($centerLatLng='',$draggable=false,$gsymbol=false,$title='',$
 		' . $draggable . gmapMarkerIcon($gsymbol) . '
 		title: "'.$title.'"
 		});
-		markers.push(marker); '.PHP_EOL.(empty($info) ? '' : '	gmapInfo(marker,\''.$info.'\');');
+		markers.push(marker); '.PHP_EOL.(empty($info) ? '' : '	gmapInfo(marker,`'.$info.'`);');
 }
 function gmapMarkerIcon($gsymbol=false)
 {
@@ -212,10 +212,10 @@ function QTstr2yx($str)
   foreach($arr as $intKey=>$str)
   {
     $str = trim(strtoupper($str));
-    if ( substr($str,0,1)=='N' || substr($str,0,1)=='E' ) $str = substr($str,1);
-    if ( substr($str,0,1)=='S' || substr($str,0,1)=='W' ) $str = '-'.substr($str,1);
-    if ( substr($str,-1,1)=='N' || substr($str,-1,1)=='E' ) $str = trim(substr($str,0,-1));
-    if ( substr($str,-1,1)=='S' || substr($str,-1,1)=='W' ) $str = '-'.trim(substr($str,0,-1));
+    if ( substr($str,0,1)==='N' || substr($str,0,1)==='E' ) $str = substr($str,1);
+    if ( substr($str,0,1)==='S' || substr($str,0,1)==='W' ) $str = '-'.substr($str,1);
+    if ( substr($str,-1,1)==='N' || substr($str,-1,1)==='E' ) $str = trim(substr($str,0,-1));
+    if ( substr($str,-1,1)==='S' || substr($str,-1,1)==='W' ) $str = '-'.trim(substr($str,0,-1));
     $str = str_replace('--','-',$str);
 
     // convert dms to dd
@@ -224,17 +224,17 @@ function QTstr2yx($str)
       $str = str_replace(array('SEC','S',"''",'??','"'),'/',$str);
       $str = str_replace(array('MIN','M',"'",'?'),'/',$str);
       $str = str_replace(array('DEG','D','?',':'),'/',$str);
-      if ( substr($str,-1,1)=='/' ) $str = substr($str,0,-1);
+      if ( substr($str,-1,1)==='/' ) $str = substr($str,0,-1);
       $arrValues = explode('/',$str);
-      $intD = intval($arrValues[0]); if ( !QTisbetween($intD,($intKey==0 ? -90 : -180),($intKey==0 ? 90 : 180)) ) return false;
+      $intD = intval($arrValues[0]); if ( !qtIsBetween($intD,($intKey==0 ? -90 : -180),($intKey==0 ? 90 : 180)) ) return false;
       $intM = 0;
       $intS = 0;
-      if ( isset($arrValues[1]) ) { $intM = intval($arrValues[1]); if ( !QTisbetween($intM,0,59) ) return false; }
-      if ( isset($arrValues[2]) ) { $intS = intval($arrValues[2]); if ( !QTisbetween($intS,0,59) ) return false; }
+      if ( isset($arrValues[1]) ) { $intM = intval($arrValues[1]); if ( !qtIsBetween($intM,0,59) ) return false; }
+      if ( isset($arrValues[2]) ) { $intS = intval($arrValues[2]); if ( !qtIsBetween($intS,0,59) ) return false; }
       $str = $intD+($intM/60)+($intS/3600);
     }
 
-    if ( !QTisbetween(intval($str),($intKey==0 ? -90 : -180),($intKey==0 ? 90 : 180)) ) return false;
+    if ( !qtIsBetween(intval($str),($intKey==0 ? -90 : -180),($intKey==0 ? 90 : 180)) ) return false;
     $arr[$intKey]=$str;
   }
 

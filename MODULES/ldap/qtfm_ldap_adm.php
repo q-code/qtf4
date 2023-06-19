@@ -1,17 +1,16 @@
-<?php // v4.0 build:20221111 can be app impersonated {qt f|e|i}
+<?php // v4.0 build:20230618 can be app impersonated {qt f|e|i}
 
 /**
  * @package    QuickTalk
  * @author     Philippe Vandenberghe <info@qt-cute.org>
  * @copyright  2012 The PHP Group
- * @version    4.0 build:20221111
+ * @version    4.0 build:20230618
  */
 
 session_start();
 require 'bin/init.php';
 /**
- * @var CVip $oV
- * @var cHtml $oHtml
+ * @var CHtml $oH
  * @var array $L
  * @var CDatabase $oDB
  */
@@ -22,12 +21,12 @@ include APP.'m_ldap_lib.php';
 // INITIALISE
 
 $pan=0;
-$oV->selfurl = APP.'m_ldap_adm.php';
-$oV->selfname = 'LDAP/AD stettings';
-$oV->selfparent = L('Module');
-$oV->exiturl = APP.'_adm_secu.php';
+$oH->selfurl = APP.'m_ldap_adm.php';
+$oH->selfname = 'LDAP/AD stettings';
+$oH->selfparent = L('Module');
+$oH->exiturl = APP.'_adm_secu.php';
 
-qtHttp('int:pan');
+qtArgs('int:pan');
 if ( $pan<0 || $pan>2) $pan=0;
 
 if ( !isset($_SESSION[QT]['m_ldap']) ) $_SESSION[QT]['m_ldap']='0';
@@ -48,15 +47,15 @@ if ( isset($_POST['ok']) && $pan==0 )
   $_SESSION[QT]['m_ldap']='0';
   if ( $_POST['m_ldap']=='1' )
   {
-    if ( empty($_SESSION[QT]['m_ldap_host']) ) $error = 'First defined Ldap settings';
-    if ( !function_exists('ldap_connect') ) $error = 'Ldap function not found, unable to start the module.';
-    if ( empty($error) ) $_SESSION[QT]['m_ldap']='1';
+    if ( empty($_SESSION[QT]['m_ldap_host']) ) $oH->error = 'First defined Ldap settings';
+    if ( !function_exists('ldap_connect') ) $oH->error = 'Ldap function not found, unable to start the module.';
+    if ( empty($oH->error) ) $_SESSION[QT]['m_ldap']='1';
 
   }
   $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_ldap','".$_SESSION[QT]['m_ldap']."')" );
 
   // exit
-  $_SESSION[QT.'splash'] = empty($error) ? L('S_save') : 'E|'.$error;
+  $_SESSION[QT.'splash'] = empty($oH->error) ? L('S_save') : 'E|'.$oH->error;
 }
 
 if ( isset($_POST['ok']) && $pan>0 )
@@ -86,7 +85,7 @@ if ( isset($_POST['ok']) && $pan>0 )
     $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_ldap_s_filter','".$_SESSION[QT]['m_ldap_s_filter']."')" );
     $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_ldap_s_info','".$_SESSION[QT]['m_ldap_s_info']."')" );
     // exit
-    $_SESSION[QT.'splash'] = empty($error) ? L('S_save') : 'E|'.$error;
+    $_SESSION[QT.'splash'] = empty($oH->error) ? L('S_save') : 'E|'.$oH->error;
   }
 
   // TEST
@@ -108,7 +107,7 @@ if ( isset($_POST['ok']) && $pan>0 )
 
     // open connection
     $c = @ldap_connect($_SESSION[QT]['m_ldap_host']);
-    if ($c===false) throw new Exception( 'Unable to connect ldap service' );
+    if ( $c===false) throw new Exception( 'Unable to connect ldap service' );
 
     // admin(anonymous) bind
     $test_conn='<span style="color:green">started</span>';
@@ -121,12 +120,12 @@ if ( isset($_POST['ok']) && $pan>0 )
     } else {
       $b = @ldap_bind($c); // bind (anonymous by default)
     }
-    if ($b===false) throw new Exception( 'Connection result: '.ldap_err2str(ldap_errno($c)) );
+    if ( $b===false) throw new Exception( 'Connection result: '.ldap_err2str(ldap_errno($c)) );
 
     // search test user
     $filter = str_replace('$username',$username,$_SESSION[QT]['m_ldap_s_filter']);
     $s = @ldap_search($c,$_SESSION[QT]['m_ldap_s_rdn'],$filter,explode(',',$_SESSION[QT]['m_ldap_s_info']));
-    if ($s===false) throw new Exception( 'Search result: '.ldap_err2str(ldap_errno($c)) );
+    if ( $s===false) throw new Exception( 'Search result: '.ldap_err2str(ldap_errno($c)) );
 
     // analyse search results
     $intEntries = ldap_count_entries($c,$s);
@@ -154,7 +153,7 @@ if ( isset($_POST['ok']) && $pan>0 )
     else
     {
       $test_login='<span style="color:red">denied</span>';
-      $test_login.='<br><span class="small" style="color:red">&gt; '.$error.'<br>&gt; Possible cause: '.($intEntries==0 ? 'the username does not exists (or is not in the group specied by the login DN)' : 'username exists but the password is invalid') .'</span>';
+      $test_login.='<br><span class="small" style="color:red">&gt; '.$oH->error.'<br>&gt; Possible cause: '.($intEntries==0 ? 'the username does not exists (or is not in the group specied by the login DN)' : 'username exists but the password is invalid') .'</span>';
     }
 
     // Successfull end
@@ -163,7 +162,7 @@ if ( isset($_POST['ok']) && $pan>0 )
 
   } catch (Exception $e) {
 
-    $error = $e->getMessage();
+    $oH->error = $e->getMessage();
     $_SESSION[QT.'splash'] = 'E|'.$e->getMessage();
 
   }
@@ -184,26 +183,19 @@ if ( !isset($_SESSION[QT]['m_ldap_s_filter']) ) $_SESSION[QT]['m_ldap_s_filter']
 if ( !isset($_SESSION[QT]['m_ldap_s_info']) ) $_SESSION[QT]['m_ldap_s_info']='mail';
 if ( !isset($_SESSION[QT]['m_ldap_users']) ) $_SESSION[QT]['m_ldap_users']='all';
 
-$oHtml->scripts[] = 'function ToggleAnonymous(checked){
-  var doc = document.getElementById("bind_input");
-  if ( doc ) doc.style.display=(checked ? "none" : "block");
-}';
-
 include APP.'_adm_inc_hd.php';
 
 // DISPLAY TABS
 $arrM = array();
-$arrM[] = '!<div class="panitemfirst"></div>';
 foreach(['Authority','Settings','Test'] as $k=>$str)
-$arrM['pan-'.$k] = $str.'|href='.$oV->selfurl.'?pan='.$k.'|id=pan-'.$k.'|class=panitem';
-$arrM[] = '!<div class="panitemlast"></div>';
+$arrM['pan-'.$k] = $str.'|href='.$oH->selfurl.'?pan='.$k.'|id=pan-'.$k.'|class=pan-tab';
 $m = new CMenu($arrM, '');
-echo '<div id="panitems" class="panitems">'.$m->build('pan-'.$pan).'</div>';
+echo '<div class="pan-tabs">'.$m->build('pan-'.$pan).'</div>';
 
 // DISPLAY TAB PANEL
 echo '<div class="pan">
-<style>.t-conf.ldap th{width:110px}</style>
-<div class="pan-top">'.$m->get('pan-'.$pan).'</div>
+<style>.config.ldap th{width:110px}</style>
+<p class="pan-title">'.$m->get('pan-'.$pan).'</p>
 ';
 
 if ( !function_exists('ldap_connect') ) echo '<p class="error">LDAP function not found. It seems that module LDAP is not activated on your webserver.</p>';
@@ -216,13 +208,13 @@ if ( $_SESSION[QT]['login_addon']==='0')
 {
 echo '<p>Current authority is <span class="bold italic">Internal authority (default)</span>.<br>When module is on-line, change the authority in the page <a href="qtf_adm_secu.php" onclick="return qtFormSafe.exit(e0);">'.L('Board_security').'</a>.</p><br>';
 }
-echo '<form method="post" action="'.Href($oV->selfurl).'">
-<h2 class="subtitle">Module status</h2>
+echo '<form method="post" action="'.url($oH->selfurl).'">
+<h2 class="subconfig">Module status</h2>
 
 <table class="t-conf ldap">
 <tr>
 <th>Status</th>
-<td style="width:100px"><span style="display:inline-block;width:15px;background-color:'.( $_SESSION[QT]['m_ldap']==='1' ? 'green' : 'red').';border-radius:3px">&nbsp;</span>&nbsp;'.L(($_SESSION[QT]['m_ldap']==='1' ? 'On' : 'Off').'_line').'</td>
+<td style="width:100px"><span style="display:inline-block;width:16px;background-color:'.( $_SESSION[QT]['m_ldap']==='1' ? 'green' : 'red').';border-radius:3px">&nbsp;</span>&nbsp;'.L(($_SESSION[QT]['m_ldap']==='1' ? 'On' : 'Off').'_line').'</td>
 ';
 echo '<td style="text-align:right">'.L('Change').'&nbsp;
 <select id="m_ldap" name="m_ldap" onchange="qtFormSafe.not();">
@@ -233,7 +225,7 @@ echo '<td style="text-align:right">'.L('Change').'&nbsp;
 </tr>
 </table>
 
-<h2 class="subtitle">User authentication</h2>
+<h2 class="subconfig">User authentication</h2>
 <table class="t-conf ldap">
 <tr>
 <th>Login users</th>
@@ -245,13 +237,11 @@ echo '<td style="text-align:right">'.L('Change').'&nbsp;
 ';
 echo '<tr>
 <th>'.L('Information').'</th>
-<td>
-<p><span class="bold italic">Accept locally registered users AND ldap account</span><br>
-With this option, users without ldap entry must first register before using the application. Users having a valid ldap account don\'t need to register.</p>
-<p><span class="bold italic">Accept ONLY valid ldap accounts</span><br>
-On first login, a local profile is created for the user having a valid ldap account.<br>
-For users without ldap account, the register page allows sending a request to the Administrator in order to create a new ldap entry.<br>
-With this option, it\'s recommended to turn the registration mode to "backoffice" (see security page).</p>
+<td class="article">
+<p class="bold italic">Accept locally registered users AND ldap account</p>
+<p style="font-size:0.9rem">With this option, users without ldap entry must first register before using the application. Users having a valid ldap account don\'t need to register.</p>
+<p class="bold italic">Accept ONLY valid ldap accounts</p>
+<p style="font-size:0.9rem">On first login, a local profile is created for the user having a valid ldap account. For users without ldap account, the register page allows sending a request to the Administrator in order to create a new ldap entry. With this option, it\'s recommended to turn the registration mode to "backoffice" (see security page).</p>
 </td>
 </tr>
 </table>
@@ -260,51 +250,51 @@ With this option, it\'s recommended to turn the registration mode to "backoffice
 
 if ( $pan==1 || $pan==2 )
 {
-echo '<form method="post" action="'.Href($oV->selfurl).'">
-<h2 class="subtitle">Connection and authentication</h2>
+echo '<form method="post" action="'.url($oH->selfurl).'">
+<h2 class="subconfig">Connection and authentication</h2>
 <table class="t-conf ldap">
 <tr>
 <th>Host</th>
-<td><input type="text" id="m_ldap_host" name="m_ldap_host" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_host'].'"/></td>
-<td><span class="small">Host and port. Example </span><span class="small" style="color:#4444ff">ldap://localhost:10389</span></td>
+<td><input type="text" id="m_ldap_host" name="m_ldap_host" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_host'].'"/><br>
+<span class="small">Host and port. Ex.: </span><span class="small" style="color:#4444ff">ldap://localhost:10389</span></td>
 </tr>
 <tr>
 <th>Login DN</th>
-<td><input type="text" id="m_ldap_login_dn" name="m_ldap_login_dn" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_login_dn'].'"/></td>
-<td><span class="small">Use $username as placeholder. Example </span><span class="small" style="color:#4444ff">cn=$username,ou=users,o=mycompany</span></td>
+<td><input type="text" id="m_ldap_login_dn" name="m_ldap_login_dn" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_login_dn'].'"/><br>
+<span class="small">Use $username as placeholder. Ex.: </span><span class="small" style="color:#4444ff">cn=$username,ou=users,o=mycompany</span></td>
 </tr>
 </table>
 ';
-echo '<h2 class="subtitle">Search configuration (to create new user)</h2>
+echo '<h2 class="subconfig">Search configuration (to create new user)</h2>
 <table class="t-conf ldap">
 <tr>
 <th style="vertical-align:top">When searching</th>
-<td style="vertical-align:top">
-<p class="cblabel"><input type="checkbox" id="m_ldap_bind" name="m_ldap_bind" value="a"'.($_SESSION[QT]['m_ldap_bind']==='a' ? 'checked' : '').' onclick="ToggleAnonymous(this.checked);"/> <label for="m_ldap_bind">Server supports anonymous bind</label></p>
-<div id="bind_input" style="display:'.($_SESSION[QT]['m_ldap_bind']==='a' ? 'none' : 'block').'">
-<input type="text" id="m_ldap_bind_rdn" name="m_ldap_bind_rdn" size="20" maxlength="34" value="'.$_SESSION[QT]['m_ldap_bind_rdn'].'"/>&nbsp;System DN<br>
-<input type="text" id="m_ldap_bind_pwd" name="m_ldap_bind_pwd" size="20" maxlength="64" value="'.$_SESSION[QT]['m_ldap_bind_pwd'].'"/>&nbsp;Password</span>
-</div>
+<td style="vertical-align:top" class="article">
+<p class="cblabel"><input type="checkbox" id="m_ldap_bind" name="m_ldap_bind" value="a"'.($_SESSION[QT]['m_ldap_bind']==='a' ? 'checked' : '').' onclick="toggleAnonymous(this.checked);"/> <label for="m_ldap_bind">Server supports anonymous bind</label></p>
+<p id="bind_input" style="display:'.($_SESSION[QT]['m_ldap_bind']==='a' ? 'none' : 'block').'">
+<input type="text" id="m_ldap_bind_rdn" name="m_ldap_bind_rdn" size="20" maxlength="34" value="'.$_SESSION[QT]['m_ldap_bind_rdn'].'" placeholder="System DN"/><br>
+<input type="text" id="m_ldap_bind_pwd" name="m_ldap_bind_pwd" size="20" maxlength="64" value="'.$_SESSION[QT]['m_ldap_bind_pwd'].'" placeholder="Password"/>
+</p>
 </td>
-<td></td>
 </tr>
 <tr>
 <th>Search RDN</th>
-<td><input type="text" id="m_ldap_s_rdn" name="m_ldap_s_rdn" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_s_rdn'].'"/></td>
-<td><span class="small">dn or rdn (search basis)</span></td>
+<td><input type="text" id="m_ldap_s_rdn" name="m_ldap_s_rdn" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_s_rdn'].'"/><br>
+<span class="small">dn or rdn (search basis)</span></td>
 </tr>
 <tr>
 <th>Search filter</th>
-<td><input type="text" id="m_ldap_s_filter" name="m_ldap_s_filter" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_s_filter'].'"/></td>
-<td><span class="small">Use $username as placeholder. Example </span><span class="small" style="color:#4444ff">(cn=$username)</span><span class="small"> allows searching the username specified in the login panel</span></td>
+<td><input type="text" id="m_ldap_s_filter" name="m_ldap_s_filter" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_s_filter'].'"/><br>
+<span class="small">Use $username as placeholder. Ex.: </span><span class="small" style="color:#4444ff">(cn=$username)</span><span class="small"> allows searching the username specified in the login panel</span></td>
 </tr>
 <tr>
 <th>Requested info</th>
-<td><input type="text" id="m_ldap_s_info" name="m_ldap_s_info" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_s_info'].'"/></td>
-<td><span class="small">At least the mail is recommended. This is usefull when a user performs his very first login (the application will create a new profile with the same e-mail as in ldap).</span></td>
+<td><input type="text" id="m_ldap_s_info" name="m_ldap_s_info" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_s_info'].'"/><br>
+<span class="small">At least the mail is recommended. This is usefull when a user performs his very first login (the application will create a new profile with the same e-mail as in ldap).</span></td>
 </tr>
 </table>
 ';
+$oH->scripts[] = 'function toggleAnonymous(checked){ document.getElementById("bind_input").style.display = checked ? "none" : "block"; }';
 }
 
 if ( $pan===2  )
@@ -314,15 +304,15 @@ if ( !isset($test_conn) ) $test_conn='<span class="disabled">(none)</span>';
 if ( !isset($test_find) ) $test_find='<span class="disabled">(none)</span>';
 if ( !isset($test_login) ) $test_login='<span class="disabled">(none)</span>';
 
-echo '<h2 class="subtitle">Test</h2>
+echo '<h2 class="subconfig">Test</h2>
 <table class="t-conf ldap">
 <tr>
 <th>Username</th>
-<td><input type="text" id="username" name="username" size="30" maxlength="64" value=""/></td>
+<td><input type="text" id="username" name="username" size="30" maxlength="64" /></td>
 </tr>
 <tr>
 <th>Password</th>
-<td><input type="text" id="password" name="password" size="30" maxlength="64" value=""/></td>
+<td><input type="text" id="password" name="password" size="30" maxlength="64" /></td>
 </tr>
 <tr>
 <th>Test result</th>
@@ -368,7 +358,7 @@ echo '
 if ( $pan>0 )
 {
 echo '<br>
-<h2 class="subtitle">Setting examples</h2>
+<h2 class="subconfig">Setting examples</h2>
 <table class="t-conf">
 <tr>
 <td>

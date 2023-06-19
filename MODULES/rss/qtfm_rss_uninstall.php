@@ -12,14 +12,13 @@
 * @package    QuickTalk
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2012 The PHP Group
-* @version    4.0 build:20221111
+* @version    4.0 build:20230618
 */
 
 session_start();
 require 'bin/init.php';
 /**
-* @var CVip $oV
-* @var cHtml $oHtml
+* @var CHtml $oH
 * @var array $L
 * @var CDatabase $oDB
 */
@@ -29,8 +28,8 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v4.0';
-$oV->selfurl = 'qtfm_rss_uninstall.php';
-$oV->selfname = 'Uninstall module RSS '.$strVersion;
+$oH->selfurl = 'qtfm_rss_uninstall.php';
+$oH->selfname = 'Uninstall module RSS '.$strVersion;
 
 // UNINSTALL
 

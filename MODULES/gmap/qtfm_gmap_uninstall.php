@@ -1,9 +1,8 @@
-<?php // v4.0 build:20221111
+<?php // v4.0 build:20230618
 
 session_start();
 require 'bin/init.php'; /**
-* @var CVip $oV
-* @var cHtml $oHtml
+* @var CHtml $oH
 * @var array $L
 * @var CDatabase $oDB
 */
@@ -14,8 +13,8 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 $strVersion='v4.0';
 
-$oV->selfurl = 'qtfm_gmap_uninstall.php';
-$oV->selfname = 'Uninstall module Gmap '.$strVersion;
+$oH->selfurl = 'qtfm_gmap_uninstall.php';
+$oH->selfname = 'Uninstall module Gmap '.$strVersion;
 
 // UNINSTALL
 

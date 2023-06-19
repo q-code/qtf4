@@ -1,9 +1,8 @@
-<?php // v4.0 build:20221111
+<?php // v4.0 build:20230618
 
 session_start();
 /**
- * @var CVip $oV
- * @var cHtml $oHtml
+ * @var CHtml $oH
  * @var array $L
  * @var CDatabase $oDB
  */
@@ -15,8 +14,8 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 $strVersion='v4.0';
 
-$oV->selfurl = 'qtfm_gmap_install.php';
-$oV->selfname = 'Installation module Gmap '.$strVersion;
+$oH->selfurl = 'qtfm_gmap_install.php';
+$oH->selfname = 'Installation module Gmap '.$strVersion;
 
 $bStep1 = true;
 $bStepZ = true;
@@ -25,12 +24,12 @@ $bStepZ = true;
 
 foreach(array('qtfm_gmap_uninstall.php','qtfm_gmap_adm.php','qtfm_gmap_load.php','qtfm_gmap_lib.php') as $strFile)
 {
-if ( !file_exists($strFile) ) $error='Missing file: '.$strFile.'<br>This module cannot be used.';
+if ( !file_exists($strFile) ) $oH->error='Missing file: '.$strFile.'<br>This module cannot be used.';
 }
-if ( !empty($error) ) $bStep1 = false;
+if ( !empty($oH->error) ) $bStep1 = false;
 
 // STEP Z
-if ( empty($error) )
+if ( empty($oH->error) )
 {
   $_SESSION[QT]['module_gmap'] = 'Gmap';
   $_SESSION[QT]['m_gmap_gkey'] = '';
@@ -62,7 +61,7 @@ include 'qtf_adm_inc_hd.php';
 echo '<h2>Checking components</h2>';
 if ( !$bStep1 )
 {
-  echo '<p class="error">',$error,'</p>';
+  echo '<p class="error">',$oH->error,'</p>';
   include 'qtf_adm_inc_ft.php';
   exit;
 }
@@ -70,16 +69,16 @@ echo '<p>Ok</p>';
 echo '<h2>Database settings</h2>';
 if ( !$bStepZ )
 {
-  echo '<p class="error">',$error,'</p>';
+  echo '<p class="error">',$oH->error,'</p>';
   include 'qtf_adm_inc_ft.php';
   exit;
 }
 echo '<p>Ok</p>';
 echo '<h2>Installation completed</h2>';
 
-if ( substr($_SESSION[QT]['version'],0,1)=='2' )
+if ( substr($_SESSION[QT]['version'],0,1)==='2' )
 {
-  echo '<p class="error">Your database version is 2.x. We recommand you to upgrade to 3.0 (use the installation wizard of QuickTalk).</p>';
+  echo '<p class="error">Your database version is 2.x. We recommend you to upgrade to 3.0 (use the installation wizard of QuickTalk).</p>';
 }
 
 // --------

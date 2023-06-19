@@ -1,21 +1,21 @@
-<?php // v4.0 build:20221111 can be app impersonated {qt f|e|i}
+<?php // v4.0 build:20230618 can be app impersonated {qt f|e|i}
 
-// Returns true/false, in case of troubles $error will include the ldap error message
+// Returns true/false, in case of troubles $oH->error will include the ldap error message
 
 function qt_ldap_bind($username,$password)
 {
   $b = false;
-  global $error;
-  if ( !function_exists('ldap_connect') ) { $error='Ldap functions not available from the current webserver configuration.'; return false; }
-  $c = @ldap_connect($_SESSION[QT]['m_ldap_host']) or $error=ldap_err2str(ldap_errno($c));
+  global $oH;
+  if ( !function_exists('ldap_connect') ) { $oH->error='Ldap functions not available from the current webserver configuration.'; return false; }
+  $c = @ldap_connect($_SESSION[QT]['m_ldap_host']) or $oH->error=ldap_err2str(ldap_errno($c));
   // bind
-  if ( empty($error) )
+  if ( empty($oH->error) )
   {
     ldap_set_option($c, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($c, LDAP_OPT_REFERRALS, 0);
     $login_dn = str_replace('$username',$username,$_SESSION[QT]['m_ldap_login_dn']);
     $b = @ldap_bind($c,$login_dn,$password);
-    if ( !$b ) $error=ldap_err2str(ldap_errno($c));
+    if ( !$b ) $oH->error=ldap_err2str(ldap_errno($c));
   }
   @ldap_close($c);
   return $b;
@@ -26,32 +26,32 @@ function qt_ldap_bind($username,$password)
 
 function qt_ldap_search($username)
 {
-  global $error;
-  $error = '';
+  global $oH;
+  $oH->error = '';
   $mail = '';
-  $c = @ldap_connect($_SESSION[QT]['m_ldap_host']) or $error=ldap_err2str(ldap_errno($c));
+  $c = @ldap_connect($_SESSION[QT]['m_ldap_host']) or $oH->error=ldap_err2str(ldap_errno($c));
   // admin or anonymous bind
-  if ( empty($error) )
+  if ( empty($oH->error) )
   {
     ldap_set_option($c, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($c, LDAP_OPT_REFERRALS, 0);
     if ( $_SESSION[QT]['m_ldap_bind']==='n' )
     {
-      @ldap_bind($c,$_SESSION[QT]['m_ldap_bind_rdn'],$_SESSION[QT]['m_ldap_bind_pwd']) or $error='Connection result: '.ldap_err2str(ldap_errno($c)); // bind (anonymous by default)
+      @ldap_bind($c,$_SESSION[QT]['m_ldap_bind_rdn'],$_SESSION[QT]['m_ldap_bind_pwd']) or $oH->error='Connection result: '.ldap_err2str(ldap_errno($c)); // bind (anonymous by default)
     }
     else
     {
-      @ldap_bind($c) or $error='Connection result: '.ldap_err2str(ldap_errno($c)); // bind (anonymous by default)
+      @ldap_bind($c) or $oH->error='Connection result: '.ldap_err2str(ldap_errno($c)); // bind (anonymous by default)
     }
   }
   // search username
-  if ( empty($error) )
+  if ( empty($oH->error) )
   {
     $filter = str_replace('$username',$username,$_SESSION[QT]['m_ldap_s_filter']);
-    $s = @ldap_search($c,$_SESSION[QT]['m_ldap_s_rdn'],$filter,explode(',',$_SESSION[QT]['m_ldap_s_info'])) or $error='Search result: '.ldap_err2str(ldap_errno($c));
+    $s = @ldap_search($c,$_SESSION[QT]['m_ldap_s_rdn'],$filter,explode(',',$_SESSION[QT]['m_ldap_s_info'])) or $oH->error='Search result: '.ldap_err2str(ldap_errno($c));
   }
   // analyse search results
-  if ( empty($error) )
+  if ( empty($oH->error) )
   {
     $users = ldap_get_entries($c, $s);
     $intEntries = ldap_count_entries($c,$s);
@@ -64,7 +64,7 @@ function qt_ldap_search($username)
       {
         foreach($infos as $info)
         {
-          if ( isset($info[0]) && QTismail($info[0]) ) { $mail = $info[0]; break; }
+          if ( isset($info[0]) && qtIsMail($info[0]) ) { $mail = $info[0]; break; }
         }
       }
       if ( !empty($mail) ) break;

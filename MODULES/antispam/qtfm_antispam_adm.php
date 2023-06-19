@@ -1,11 +1,10 @@
-<?php // v4.0 build:20221111
+<?php // v4.0 build:20230618
 
 session_start();
 require 'bin/init.php';
 /**
-* @var string $error
-* @var CVip $oV
-* @var cHtml $oHtml
+* @var CHtml $oH
+* @var CHtml $oH
 * @var array $L
 * @var CDatabase $oDB
 */
@@ -15,12 +14,12 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 // INITIALISE
 
-$oV->selfurl = 'qtfm_antispam_adm.php';
-$oV->selfname = $L['Antispam']['Admin'];
-$oV->selfparent = L('Module');
-$oV->exiturl = $oV->selfurl;
-$oV->exitname = $oV->selfname;
-$oV->selfversion = $L['Antispam']['Version'].' 4.0<br>';
+$oH->selfurl = 'qtfm_antispam_adm.php';
+$oH->selfname = $L['Antispam']['Admin'];
+$oH->selfparent = L('Module');
+$oH->exiturl = $oH->selfurl;
+$oH->exitname = $oH->selfname;
+$oH->selfversion = $L['Antispam']['Version'].' 4.0<br>';
 
 // --------
 // SUBMITTED
@@ -51,7 +50,7 @@ if ( isset($_POST['ok']) )
   SMem::set('settingsage',time());
   $_SESSION[QT]['m_antispam_conf'] = $str;
   $_SESSION[QT]['m_antispam'] = $i;
-  $_SESSION[QT.'splash'] = empty($error) ? L('S_save') : 'E|'.$error;
+  $_SESSION[QT.'splash'] = empty($oH->error) ? L('S_save') : 'E|'.$oH->error;
 }
 
 if ( isset($_GET['a']) )
@@ -93,8 +92,8 @@ $strIp       = substr($_SESSION[QT]['m_antispam_conf'],11,1);
 
 // FORM
 
-echo '<form method="post" action="'.$oV->selfurl.'">
-<h2 class="subtitle">'.$L['Antispam']['Basic_rules'].'</h2>
+echo '<form method="post" action="'.$oH->self().'">
+<h2 class="config">'.$L['Antispam']['Basic_rules'].'</h2>
 <table class="t-conf">
 <tr>
 <th style="width:30px"><input type="checkbox" id="az" name="az"'.($strAz=='1' ? 'checked' : '').'/></th>
@@ -125,7 +124,7 @@ echo '<form method="post" action="'.$oV->selfurl.'">
 </tr>
 </table>
 ';
-echo '<h2 class="subtitle">'.$L['Antispam']['Content_checking_rules'].'</h2>
+echo '<h2 class="config">'.$L['Antispam']['Content_checking_rules'].'</h2>
 <table class="t-conf">
 <tr>
 <th style="width:30px"><input type="checkbox" id="good" name="good"'.($strGood=='1' ? 'checked' : '').'/></th>
@@ -133,7 +132,7 @@ echo '<h2 class="subtitle">'.$L['Antispam']['Content_checking_rules'].'</h2>
 <select name="good_n" size="1">
 <option value="0"'.($strGood_n=='0' ? ' selected' : '').'>'.$L['Antispam']['Langue_0'].'</option>
 <option value="1"'.($strGood_n=='1' ? ' selected' : '').'>'.$L['Antispam']['Langue_1'].'</option>
-</select></td>
+</select>*</td>
 </tr>
 <tr>
 <th style="width:30px"><input type="checkbox" id="insane" name="insane"'.($strInsane=='1' ? 'checked' : '').'/></th>
@@ -141,17 +140,17 @@ echo '<h2 class="subtitle">'.$L['Antispam']['Content_checking_rules'].'</h2>
 <select name="insane_n" size="1">
 <option value="1"'.($strInsane_n=='1' ? ' selected' : '').'>'.$L['Antispam']['Insane_1'].'</option>
 <option value="2"'.($strInsane_n=='2' ? ' selected' : '').'>'.$L['Antispam']['Insane_2'].'</option>
-</select></td>
+</select>*</td>
 </tr>
 ';
 echo '<tr>
-<td colspan="2" style="background-color:transparent"><small>'.L('Antispam.Langue_other').'</small></td>
+<td colspan="2" class="asterix">* '.L('Antispam.Langue_other').'</td>
 </tr>
 </table>
 ';
 
 echo '
-<h2 class="subtitle">'.$L['Antispam']['Activity_check'].'</h2>
+<h2 class="config">'.$L['Antispam']['Activity_check'].'</h2>
 <table class="t-conf">
 <tr>
 <th style="width:30px"><input type="checkbox" id="repeat" name="repeat"'.($strRepeat=='1' ? 'checked' : '').'/></th>
@@ -163,8 +162,8 @@ echo '
 if ( isset($arrIp) )
 {
   $i = count($arrIp); if ( $i==1 && empty($arrIp[0]) ) $i=0; // one line but empty
-  echo ' ['.sprintf($L['Antispam']['Banned_ip'],$i).'] <a href="tool_txt.php?exit='.$oV->selfurl.'&file='.$file.'&help=qtfm_antispam_ip.txt">'.L('Edit').'...</a>';
-  if ( $i ) echo ' | <a href="tool_txt.php?a=delete&exit='.$oV->selfurl.'&file='.$file.'&help=qtfm_antispam_ip.txt">'.L('Delete').'</a>';
+  echo ' ['.sprintf($L['Antispam']['Banned_ip'],$i).'] <a href="tool_txt.php?exit='.$oH->selfurl.'&file='.$file.'&help=qtfm_antispam_ip.txt">'.L('Edit').'...</a>';
+  if ( $i ) echo ' | <a href="tool_txt.php?a=delete&exit='.$oH->selfurl.'&file='.$file.'&help=qtfm_antispam_ip.txt">'.L('Delete').'</a>';
 
 }
 echo '</td>
@@ -172,7 +171,7 @@ echo '</td>
 </table>
 ';
 echo '<p class="submit">
-<a href="'.$oV->selfurl.'?a=default" style="font-weight:normal;">'.$L['Antispam']['Default'].'</a>&nbsp;&middot;&nbsp;<button type="submit" name="ok" value="ok">'.L('Save').'</button>
+<a href="'.$oH->selfurl.'?a=default" style="font-weight:normal;">'.$L['Antispam']['Default'].'</a>&nbsp;&middot;&nbsp;<button type="submit" name="ok" value="ok">'.L('Save').'</button>
 </p>
 </form>
 ';
