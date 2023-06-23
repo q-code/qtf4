@@ -42,7 +42,7 @@ function ArraySwap($arr,$n=1)
     $arrK = array_keys($arr);
     while($n>0) { array_push($arr,array_shift($arr)); $n--; }
     $arrV = array_values($arr);
-    $arr = array();
+    $arr = [];
     for($i=0;$i<count($arrK);$i++) $arr[$arrK[$i]] = $arrV[$i];
   }
   return $arr;
@@ -87,8 +87,8 @@ if ( QT_WEEKSTART>1 )
 // LIST OF ITEMS
 // --------
 
-$arrEvents = array();
-$arrEventsN = array();
+$arrEvents = [];
+$arrEventsN = [];
 $intEvents = 0;
 $intEventsN = 0;
 

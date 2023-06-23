@@ -5,9 +5,9 @@
  * @var array $gmap_events
  * @var array $gmap_functions
  */
-if ( !isset($gmap_markers) ) $gmap_markers = array();
-if ( !isset($gmap_events) ) $gmap_events = array();
-if ( !isset($gmap_functions) ) $gmap_functions = array();
+if ( !isset($gmap_markers) ) $gmap_markers = [];
+if ( !isset($gmap_events) ) $gmap_events = [];
+if ( !isset($gmap_functions) ) $gmap_functions = [];
 
 $oH->scripts[] = 'var map, mapOptions, geocoder, infowindow;
 var markers = [];

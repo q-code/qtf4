@@ -30,7 +30,7 @@ $oH->selfname = L('Memberlist');
 
 // MAP MODULE
 $bMap=false;
-$arrMapData = array();
+$arrMapData = [];
 if ( qtModule('gmap') )
 {
   include translate(APP.'m_gmap.php');
@@ -53,7 +53,7 @@ if ( count($arrGroup)===1 ) {
     default:    $sqlWhere = ' AND '.sqlFirstChar('name','u',strlen($pageGroup)).'="'.strtoupper($pageGroup).'"'; break;
   }
 } else {
-  $arr = array();
+  $arr = [];
   foreach($arrGroup as $str) $arr[] = sqlFirstChar('name','u').'="'.strtoupper($str).'"';
   $sqlWhere = ' AND ('.implode(' OR ',$arr).')';
 }
@@ -277,9 +277,9 @@ if ( $bMap && !$_SESSION[QT]['m_gmap_hidelist'] ) {
   // update center
   $_SESSION[QT]['m_gmap_gcenter'] = $y.','.$x;
 
-  $gmap_markers = array();
-  $gmap_events = array();
-  $gmap_functions = array();
+  $gmap_markers = [];
+  $gmap_events = [];
+  $gmap_functions = [];
   foreach($arrMapData as $oMapPoint)
   {
     if ( !empty($oMapPoint->y) && !empty($oMapPoint->x) )

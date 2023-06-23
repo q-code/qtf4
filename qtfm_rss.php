@@ -38,7 +38,7 @@ $oH->selfname = $L['rss']['Rss'];
 
 $strRssUrl = $_SESSION[QT]['site_url'].'/rss/';
 
-$arrDS = array(); // only public sections (type '0')
+$arrDS = []; // only public sections (type '0')
 foreach(SMem::get('_Sections') as $id=>$mSec)
 {
   if ( $mSec['type'] ) continue;
@@ -69,9 +69,7 @@ include APP.'_inc_hd.php';
 // TITLE & version
 echo '<h2>'.$oH->selfname.'</h2><p>Format: '.($strForm=='atom' ? 'Atom' : 'Rss 2.0').'</p>'.PHP_EOL;
 
-foreach($arrDS as $domId=>$arrSections)
-{
-//  $arrSections = getSections('V',$intDomain);
+foreach($arrDS as $domId=>$arrSections) {
     echo '<table class="t-sec">'.PHP_EOL;
     echo '<tr class="t-sec">';
     echo '<th style="width:50px">&nbsp;</th>';
@@ -80,9 +78,7 @@ foreach($arrDS as $domId=>$arrSections)
     echo '</tr>';
 
     // SHOW SECTIONS
-
-    foreach($arrSections as $id=>$mSec)
-    {
+    foreach($arrSections as $id=>$mSec) {
       echo '<tr class="t-sec hover">';
       echo '<td class="c-icon">'.asImg( QT_SKIN.'img/section_'.$mSec['type'].'_'.$mSec['status'].'.gif', 'title='.L('Ico_section_'.$mSec['type'].'_'.$mSec['status']) ).'</td>';
       echo '<td class="c-section"><span class="section">'.$mSec['title'].'</span><br><span class="sectiondesc">'.$mSec['descr'].'</span></td><td>';

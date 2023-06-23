@@ -48,4 +48,4 @@ const ALLOWED_FILE_EXT = array(
 // Note here the mimetypes allowed. Use empty array() to allow all mimetypes
 // Must be lowercase.
 
-const ALLOWED_MIME_TYPE = array();
+const ALLOWED_MIME_TYPE = [];

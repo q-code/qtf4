@@ -417,7 +417,7 @@ public function getRow()
   case 'sqlite':
     $row = sqlite_fetch_array($this->qry,SQLITE_ASSOC);// php 5.0
     if ( $row===false ) return false;
-    $arr = array();
+    $arr = [];
     foreach($row as $key=>$val)
     {
       if ( substr($key,1,1)==='.') $key = strtolower(substr($key,2));
@@ -427,7 +427,7 @@ public function getRow()
     break;
   case 'oci':
     $row = oci_fetch_assoc($this->qry); if ( $row===false ) return false;
-    $arr = array();
+    $arr = [];
     foreach($row as $key=>$val) $arr[strtolower($key)]=$val;
     $row = $arr;
     break;

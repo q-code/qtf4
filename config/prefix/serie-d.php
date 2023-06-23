@@ -2,8 +2,8 @@
 // prefixIcon can be a svg or an image source
 // prefixStyle (optional)
 
-$prefixIcon = array();
-$prefixStyle = array();
+$prefixIcon = [];
+$prefixStyle = [];
 
 $prefixIcon[1] = 'prefix_d_01.gif';
 $prefixIcon[2] = 'prefix_d_02.gif';

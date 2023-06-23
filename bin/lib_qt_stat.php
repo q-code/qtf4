@@ -47,7 +47,7 @@ function qtRoof($arr)
 function qtCumul(array $arr, int $d=0)
 {
   // This is supposed to works with frequencies (0 or positive values only)
-  $arrC = array();
+  $arrC = [];
   $i=0;
   foreach($arr as $k=>$value)
   {
@@ -69,7 +69,7 @@ function qtPercent(array $arr, int $d=0, bool $percent=true)
   // This is supposed to works with frequencies (0 or positive values only), negative values are reset to 0.
   if ( $d<0 ) die ('qtPercent: Arg #2 must be an integer');
   if ( !$percent && $d<1 ) $d=1; // for ratio, at least 1 decimal
-  $arrP = array();
+  $arrP = [];
   foreach($arr as $k=>$value) if ( $value<0 ) $arr[$k]=0; // frequences cannot be negative
   $intTotal = array_sum($arr); // if 0, each value will be set to 0.0
   foreach($arr as $k=>$value)
@@ -85,7 +85,7 @@ function serieExtract($key, array $a, array $b=array(null))
   // Returns the $key array inside the $a serie (values are unindexed)
   // If $b is an array containing also a $key-value, this value is added to the array (push)
   // Note: returns an empty array if the $key is not found
-  $arr = array();
+  $arr = [];
   if ( isset($a[$key]) )
   {
     if ( !is_array($a[$key]) ) $a[$key] = array($a[$key]);
@@ -105,7 +105,7 @@ function getArrDiff($a,$b,$percent=0, int $round=-1, $null=0)
   // return $null if value is not set in $a or $b
   if ( !is_array($a) || !is_array($b) ) die('getArrDiff: invalid arguments #1 or #2');
   if ( !is_numeric($percent) || $percent<0 ) die('getArrDiff: invalid#3');
-  $arr = array();
+  $arr = [];
   $a = array_values($a); // drops array keys
   $b = array_values($b);
   for($i=0;$i<count($a);++$i)
@@ -120,7 +120,7 @@ function getArrDiff($a,$b,$percent=0, int $round=-1, $null=0)
 function getAbscissa(string $block='m', int $maxBlock=12, int $dayshift=-10)
 {
   // Note: for ease of use, blocktime array index starts at 1. Ex: Jan-Dec have index 1 to 12
-  $arr = array();
+  $arr = [];
   switch($block)
   {
   case 'q': for ($i=1;$i<=$maxBlock;++$i) { $arr[$i]='Q'.$i; } break;

@@ -2,8 +2,8 @@
 // prefixIcon can be a svg or an image source
 // prefixStyle (optional)
 
-$prefixIcon = array();
-$prefixStyle = array();
+$prefixIcon = [];
+$prefixStyle = [];
 
 $prefixIcon[1] = 'arrow-alt-circle-down.svg';
 $prefixIcon[2] = 'arrow-alt-circle-right.svg';

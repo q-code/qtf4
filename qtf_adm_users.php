@@ -161,7 +161,7 @@ if ( count($arrGroup)===1 ) {
     default:    $sqlWhere = ' AND '.sqlFirstChar('name','u',strlen($pageGroup)).'="'.strtoupper($pageGroup).'"'; break;
   }
 } else {
-  $arr = array();
+  $arr = [];
   foreach($arrGroup as $str) $arr[] = sqlFirstChar('name','u').'="'.strtoupper($str).'"';
   $sqlWhere = ' AND ('.implode(' OR ',$arr).')';
 }

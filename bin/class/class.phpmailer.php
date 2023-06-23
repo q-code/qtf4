@@ -246,15 +246,15 @@ class PHPMailer {
   /////////////////////////////////////////////////
 
   public $smtp            = NULL;
-  public $to              = array();
-  public $cc              = array();
-  public $bcc             = array();
-  public $ReplyTo         = array();
-  public $attachment      = array();
-  public $CustomHeader    = array();
+  public $to              = [];
+  public $cc              = [];
+  public $bcc             = [];
+  public $ReplyTo         = [];
+  public $attachment      = [];
+  public $CustomHeader    = [];
   public $message_type    = '';
-  public $boundary        = array();
-  public $language        = array();
+  public $boundary        = [];
+  public $language        = [];
   public $error_count     = 0;
   public $LE              = "\n";
   public $sign_cert_file  = "";
@@ -512,7 +512,7 @@ class PHPMailer {
   function SmtpSend($header, $body) {
     include_once $this->PluginDir . 'class.smtp.php';
     $error = '';
-    $bad_rcpt = array();
+    $bad_rcpt = [];
 
     if(!$this->SmtpConnect()) {
       return false;
@@ -588,7 +588,7 @@ class PHPMailer {
 
     /* Retry while there is no connection */
     while($index < count($hosts) && $connection == false) {
-      $hostinfo = array();
+      $hostinfo = [];
       if(preg_match('/^(.+):([0-9]+)$/', $hosts[$index], $hostinfo)) {
         $host = $hostinfo[1];
         $port = $hostinfo[2];
@@ -650,7 +650,7 @@ class PHPMailer {
     } elseif ( file_exists($lang_path.'phpmailer.lang-en.php')) {
       include $lang_path.'phpmailer.lang-en.php';
     } else {
-      $PHPMAILER_LANG = array();
+      $PHPMAILER_LANG = [];
       $PHPMAILER_LANG["provide_address"]      = 'You must provide at least one ' .
           $PHPMAILER_LANG["mailer_not_supported"] = ' mailer is not supported.';
           $PHPMAILER_LANG["execute"]              = 'Could not execute: ';
@@ -879,7 +879,7 @@ class PHPMailer {
       }
     }
 
-    $from = array();
+    $from = [];
     $from[0][0] = trim($this->From);
     $from[0][1] = $this->FromName;
     $result .= $this->AddrAppend('From', $from);
@@ -1153,7 +1153,7 @@ class PHPMailer {
    */
   function AttachAll() {
     /* Return text of body */
-    $mime = array();
+    $mime = [];
 
     /* Add all attachments */
     for($i = 0; $i < count($this->attachment); ++$i) {
@@ -1263,7 +1263,7 @@ class PHPMailer {
    */
   function EncodeHeader ($str, $position = 'text') {
     $x = 0;
-    $matches = array();
+    $matches = [];
     switch(strtolower($position)) {
       case 'phrase':
         if ( !preg_match('/[\200-\377]/', $str)) {
@@ -1533,7 +1533,7 @@ class PHPMailer {
    * @return void
    */
   function ClearAddresses() {
-    $this->to = array();
+    $this->to = [];
   }
 
   /**
@@ -1541,7 +1541,7 @@ class PHPMailer {
    * @return void
    */
   function ClearCCs() {
-    $this->cc = array();
+    $this->cc = [];
   }
 
   /**
@@ -1549,7 +1549,7 @@ class PHPMailer {
    * @return void
    */
   function ClearBCCs() {
-    $this->bcc = array();
+    $this->bcc = [];
   }
 
   /**
@@ -1557,7 +1557,7 @@ class PHPMailer {
    * @return void
    */
   function ClearReplyTos() {
-    $this->ReplyTo = array();
+    $this->ReplyTo = [];
   }
 
   /**
@@ -1566,9 +1566,9 @@ class PHPMailer {
    * @return void
    */
   function ClearAllRecipients() {
-    $this->to = array();
-    $this->cc = array();
-    $this->bcc = array();
+    $this->to = [];
+    $this->cc = [];
+    $this->bcc = [];
   }
 
   /**
@@ -1577,7 +1577,7 @@ class PHPMailer {
    * @return void
    */
   function ClearAttachments() {
-    $this->attachment = array();
+    $this->attachment = [];
   }
 
   /**
@@ -1585,7 +1585,7 @@ class PHPMailer {
    * @return void
    */
   function ClearCustomHeaders() {
-    $this->CustomHeader = array();
+    $this->CustomHeader = [];
   }
 
   /////////////////////////////////////////////////
@@ -1711,7 +1711,7 @@ class PHPMailer {
    * @return $message
    */
   function MsgHTML($message,$basedir='') {
-    $images = array();
+    $images = [];
     preg_match_all("/(src|background)=\"(.*)\"/Ui", $message, $images);
     if(isset($images[2])) {
       foreach($images[2] as $i => $url) {

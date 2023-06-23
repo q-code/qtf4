@@ -386,9 +386,9 @@ if ( $bMap )
   // update center
   $_SESSION[QT]['m_gmap_gcenter'] = $y.','.$x;
 
-  $gmap_markers = array();
-  $gmap_events = array();
-  $gmap_functions = array();
+  $gmap_markers = [];
+  $gmap_events = [];
+  $gmap_functions = [];
   if ( isset($arrMapData[$id]) && !empty($oMapPoint->y) && !empty($oMapPoint->x) ) {
   $gmap_markers[] = gmapMarker($oMapPoint->y.','.$oMapPoint->x,true,$gmap_symbol,$row['name']);
   $gmap_events[] = '

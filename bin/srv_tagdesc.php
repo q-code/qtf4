@@ -30,5 +30,5 @@ if ( isset($_GET['cs']) ) {
 }
 
 // No result
-$L = array(); include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
+$L = []; include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
 echo empty($L['No_descr']) ? 'no description' : mb_strtolower($L['No_descr']);

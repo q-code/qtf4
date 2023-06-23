@@ -50,7 +50,7 @@ class CHtml
   public function end(bool $allowSplash=true)
   {
     $log = empty($this->log) ? '' : '<p id="pagelog">'.implode('<br>',$this->log).(SUser::auth() ? '<br><small>Sign out to stop debugging</small>' : '').'</p>'.PHP_EOL;
-    $this->log = array(); // clear log
+    $this->log = []; // clear log
     $splash = '';
     if ( $allowSplash && !empty($_SESSION[QT.'splash']) ) $splash .= Splash::getSplash();
     // check/add <script> enclosing tag

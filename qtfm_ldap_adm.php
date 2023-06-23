@@ -132,7 +132,7 @@ if ( isset($_POST['ok']) && $pan>0 )
     $test_find='<span style="color:green">'.$intEntries.' matching entry</span>';
     $users = ldap_get_entries($c, $s);
     $infos = explode(',',$_SESSION[QT]['m_ldap_s_info']);
-    $results = array();
+    $results = [];
     for($i=0;$i<$intEntries;$i++)
     {
       $results[$i] = '';
@@ -186,7 +186,7 @@ if ( !isset($_SESSION[QT]['m_ldap_users']) ) $_SESSION[QT]['m_ldap_users']='all'
 include APP.'_adm_inc_hd.php';
 
 // DISPLAY TABS
-$arrM = array();
+$arrM = [];
 foreach(['Authority','Settings','Test'] as $k=>$str)
 $arrM['pan-'.$k] = $str.'|href='.$oH->selfurl.'?pan='.$k.'|id=pan-'.$k.'|class=pan-tab';
 $m = new CMenu($arrM, '');

@@ -107,7 +107,7 @@ $sqlFrom = ' FROM TABTOPIC t INNER JOIN TABPOST p ON t.firstpostid=p.id'; // war
 $sqlWhere = ' WHERE t.forum'.($q==='s' ? '='.$s : '>=0');
   // In private section, show topics created by user himself
   if ( $q==='s' && $oS->type==='2' && !SUser::isStaff()) $sqlWhere .= " AND (t.firstpostuser=".SUser::id()." OR (t.type='A' AND t.status='0'))";
-$sqlValues = array(); // list of values for the prepared-statements
+$sqlValues = []; // list of values for the prepared-statements
 $sqlCount = "SELECT count(*) as countid FROM TABTOPIC t".$sqlWhere;
 $sqlCountAlt='';
 if ( $q!=='s' ) {

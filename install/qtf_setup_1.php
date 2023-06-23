@@ -9,7 +9,7 @@ session_start();
 include 'init.php';
 
 // manipulate config values through $arr holding const defined in the file
-$arr = array();
+$arr = [];
 foreach(array('QDB_SYSTEM','QDB_HOST','QDB_DATABASE','QDB_PREFIX','QDB_USER','QDB_PWD','QDB_INSTALL') as $key) $arr[$key] = defined($key) ? constant($key) : '';
 $urlPrev = APP.'_setup.php';
 $urlNext = APP.'_setup_2.php';

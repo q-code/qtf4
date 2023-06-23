@@ -57,7 +57,7 @@ if ( isset($_POST['cancel']) )
 
 if ( isset($_POST['ok']) )
 {
-  $arrSymbols = array();
+  $arrSymbols = [];
   foreach(array('U','M','A') as $key)
   {
   if ( isset($_POST['symbol_'.$key]) ) $arrSymbols[$key]=$_POST['symbol_'.$key];
@@ -93,7 +93,7 @@ echo '
 ';
 
 // Read png in directory (shadow is obsolete)
-$arrFiles = array();
+$arrFiles = [];
 foreach(glob('qtfm_gmap/*.png') as $file) {
   $file = substr($file,10,-4);
   if ( strpos($file,'_shadow') ) continue;

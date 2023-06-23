@@ -73,7 +73,7 @@ function renderReply(int $id, string $parentType='T', string $parentStatus='1') 
   return $str;
 }
 function listTags(array $ids, bool $sort=true, bool $format=true, int $max=32) {
-  $arr = array();
+  $arr = [];
   global $oDB;
   $oDB->query( "SELECT tags FROM TABTOPIC WHERE id IN (".implode(',',$ids).")" );
   while($row = $oDB->getRow()) {

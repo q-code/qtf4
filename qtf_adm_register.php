@@ -20,7 +20,7 @@ $cat = empty($_GET['cat']) ? '' : $_GET['cat']; if ( !empty($_POST['cat']) ) $ca
 if ( !empty($_GET['cat']) ) $cat = substr($_GET['cat'],0,2); // in case working by category
 if ( !empty($_POST['cat']) ) $cat = substr($_POST['cat'],0,2);
 // ids [array-of-int] from GET, POST, or Checkboxes
-$ids = array();
+$ids = [];
 if ( isset($_GET['ids']) ) $ids = array_map( 'intval', explode(',',$_GET['ids']) );
 if ( isset($_POST['ids']) ) $ids = array_map( 'intval', explode(',',$_POST['ids']) );
 if ( isset($_POST['t1-cb']) ) $ids = getPostedValues('t1-cb');

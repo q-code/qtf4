@@ -148,7 +148,7 @@ function formatCsvRow($arrFLD,$row,$oS=null)
   }
 
   // Process
-  $arrValues = array();
+  $arrValues = [];
   foreach(array_keys($arrFLD) as $k) {
     $str='';
     switch((string)$k) {
@@ -240,7 +240,7 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
   if ( empty($formatRef) ) $formatRef = 'N';
 
   // PRE-PROCESS
-  $arr = array();
+  $arr = [];
   $strPrefixSerie='';
   // prefix smile
   if ( isset($row['icon']) ) {

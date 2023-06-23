@@ -70,7 +70,7 @@ include 'qtf_adm_inc_hd.php';
 
 // Get skin subfolders (without /)
 $intHandle = opendir('skin');
-$arrFiles = array();
+$arrFiles = [];
 while(false!==($strFile=readdir($intHandle))) if ( $strFile!='.' && $strFile!='..' && is_dir('skin/'.$strFile) ) $arrFiles[$strFile]=ucfirst($strFile);
 closedir($intHandle);
 asort($arrFiles);

@@ -55,7 +55,7 @@ case 'deldom':
   }
 
   // FORM
-  $arrSections = CSection::getTranslatedTitles(CSection::getIdsInContainer($s));
+  $arrSections = CSection::getTitles(true, 'WHERE id IN ('.implode(',',CSection::getIdsInContainer($s)).')');
   $strSections = '('.L('none').')';
   if ( count($arrSections)>4 ) { $arrSections = array_slice($arrSections,0,4); $arrSections[]='...'; }
   if ( count($arrSections)>0 ) { $strSections = implode('<br>',$arrSections); }
@@ -63,22 +63,17 @@ case 'deldom':
   $frm_title = L('Domain_del');
   $frm[] = '<form method="post" action="'.$oH->self().'">'.$frm_dflt_args;
   $frm[] = '<article>';
-  $frm[] = '<p>'.L('Domain').':</p>';
-  $frm[] = '<p class="ellipsis indent"><span class="bold">'.CDomain::translate($s).'</span><br><span class="minor">#'.$s.' &middot; '.(isset($_Domains[$s]['title']) ? $_Domains[$s]['title'] : 'Domain '.$s).'</span></p>';
+  $frm[] = '<p>'.L('Domain').':</p><p class="ellipsis indent"><span class="bold">'.CDomain::translate($s).'</span><br><span class="minor">#'.$s.' &middot; '.(isset($_Domains[$s]['title']) ? $_Domains[$s]['title'] : 'Domain '.$s).'</span></p>';
   $frm[] = '</article>';
   $frm[] = '<article>';
-  $frm[] = '<p>'.L('Containing_sections').':</p>';
-  $frm[] = '<p class="indent">'.$strSections.'</p>';
+  $frm[] = '<p>'.L('Containing_sections').':</p><p class="indent">'.$strSections.'</p>';
   $frm[] = '</article>';
   if ( count($arrSections)>0 ) {
     $frm[] = '<article>';
-    $frm[] = '<p>'.L('Move_sections_to').':</p>';
-    $frm[] = '<p class="indent"><select name="dest" size="1">'.qtTags(CDomain::getTitles([$s])).'</select></p>';
+    $frm[] = '<p>'.L('Move_sections_to').':</p><p class="indent"><select name="dest" size="1">'.qtTags(CDomain::getTitles([$s])).'</select></p>';
     $frm[] = '</article>';
   }
-  $frm[] = '<p class="row-confirm">'.L('Confirm').':</p>';
-  $frm[] = '<p class="indent"><span class="cblabel"><input required type="checkbox" id="itemDelete" name="itemDelete"/> <label for="itemDelete">'.L('Domain_del').(count($arrSections)===0 ? '' : ' '.L('and').' '.L('move').' '.L('section',count($arrSections))).'</label></span></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exit().'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
+  $frm[] = '<p class="row-confirm">'.L('Confirm').':</p><p class="indent"><span class="cblabel"><input required type="checkbox" id="itemDelete" name="itemDelete"/> <label for="itemDelete">'.L('Domain_del').(count($arrSections)===0 ? '' : ' '.L('and').' '.L('move').' '.L('section',count($arrSections))).'</label></span></p><p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exit().'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
   $frm[] = '</form>';
 
   break;

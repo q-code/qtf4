@@ -3,7 +3,7 @@
 function readTagsFile(string $file, bool $lower=false)
 {
   if ( empty($file) || !file_exists($file) ) return [];
-  $arr = array();
+  $arr = [];
   if ( $h=fopen($file,'r') ) {
     while( ($r=fgetcsv($h,500,';'))!==false )
     {

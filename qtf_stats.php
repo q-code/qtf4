@@ -128,7 +128,7 @@ $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_chart.js"></scri
 include 'qtf_inc_hd.php';
 
 // OPTIONS
-$arrY = array(); // all possible years
+$arrY = []; // all possible years
 for ($i=$intStartyear;$i<=$intEndyear;$i++) $arrY[$i]=$i;
 echo '<div class="flex-sp top">
 <h1>'.L('Options').'</h1>
@@ -157,7 +157,7 @@ echo '<h1>'.L('Statistics').'</h1>'.PHP_EOL;
 
 // DISPLAY TABS
 $href = $oH->selfurl.'?'.qtURI('pan');
-$arrM = array();
+$arrM = [];
 $arrM['pan-g']  = L('Global')        .'|href='.$href.'&pan=g |id=pan-g |class=pan-tab|title='.L('H_Global').' '.$y;
 $arrM['pan-gt'] = L('Global_trends') .'|href='.$href.'&pan=gt|id=pan-gt|class=pan-tab|title='.L('H_Global_trends').' '.$y0.'-'.$y;
 $arrM['pan-d']  = L('Details')       .'|href='.$href.'&pan=d |id=pan-d |class=pan-tab|title='.L('H_Details').' '.$y;
@@ -179,7 +179,7 @@ include 'qtf_stats_inc.php';
 
 // DISPLAY title & option
 $href = $oH->selfurl.'?'.qtURI('bt'); // remove argument &bt=
-$arrM = array();
+$arrM = [];
 $arrM['bt-q'] = L('Per_q').'|id=bt-q|href='.$href.'&bt=q';
 $arrM['bt-m'] = L('Per_m').'|id=bt-m|href='.$href.'&bt=m';
 $arrM['bt-d'] = L('Per_d').'|id=bt-d|href='.$href.'&bt=d';

@@ -78,7 +78,7 @@ class TabItem
     // Note: For an unformatted $str, the array [0=>$str] is returned
     if ( empty($str) ) return [];
     if ( substr_count($str,$sep)===0 && substr_count($str,'=')>1 ) return [$str]; // check if $str is compacted
-    $attr = array();
+    $attr = [];
     foreach(qtCleanArray($str,$sep)as $str)
     {
       $a = array_map('trim',explode('=',$str,2)); // cut on first '=' only
@@ -185,7 +185,7 @@ class TabTable extends TabItem
   public function getTDrow($attr=[]) { return $this->getRow($this->arrTd,$attr,'td'); }
   public function getTHnames()
   {
-    $arr = array();
+    $arr = [];
     foreach($this->arrTh as $key=>$objTh) $arr[$key] = $objTh->content;
     return $arr;
   }
@@ -299,7 +299,7 @@ class TabTable extends TabItem
     // When $values is 1 value, it will be inserted in each column
     if ( !is_array($values) ) {
       $value = $values;
-      $values = array();
+      $values = [];
       foreach(array_keys($this->$property) as $key) $values[$key] = $value; // use property $this->arrTh or $this->arrTh
     }
     // Process each column

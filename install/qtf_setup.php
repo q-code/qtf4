@@ -47,7 +47,7 @@ if ( !file_exists('../config/config_lang.php') )
 
 // Read language subdirectories
 include '../config/config_lang.php';
-$arrOptions = array();
+$arrOptions = [];
 foreach(LANGUAGES as $k=>$values)
 {
   $arr = explode(' ',$values,2); if ( empty($arr[1]) ) $arr[1]=$arr[0];

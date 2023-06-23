@@ -28,8 +28,8 @@ $intCurrentYear = $y;
 $strCurrentTendaysago = $strTendaysago;
 
 $arrA = getAbscissa($bt,MAXBT,$strTendaysago);
-$arrD = array(); // Datasets
-$arrS = array(); // Datasets_sum
+$arrD = []; // Datasets
+$arrS = []; // Datasets_sum
 
 // -----
 foreach($arrYears as $year) {

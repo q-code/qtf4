@@ -149,7 +149,7 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
   // prevent searching in Admin sections while not staffmember
   if ( $s<0 && !SUser::isStaff() && isset($GLOBALS['_Sections']) )
   {
-    $ad_Sections = array();
+    $ad_Sections = [];
     foreach($GLOBALS['_Sections'] as $mId=>$mSec) if ( isset($mSec['type']) && $mSec['type']=='1' ) $ad_Sections[] = $mId;
     if ( !empty($ad_Sections) ) $sqlWhere = ' WHERE t.forum NOT IN ('.implode(',',$ad_Sections).')';
   }

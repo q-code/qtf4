@@ -70,7 +70,7 @@ if ( isset($_POST['ok']) ) try {
 include APP.'_adm_inc_hd.php';
 
 // Check language subdirectories
-$arrFiles = array();
+$arrFiles = [];
 foreach(LANGUAGES as $k=>$values) if ( is_dir('language/'.$k) ) $arrFiles[$k] = $values;
 
 // FORM

@@ -108,7 +108,7 @@ function attrDecode(string $str, string $sep='|', string $required='')
   if ( empty($str) && empty($required) ) return [];
   $str = $required.$sep.$str;
   if ( substr_count($str,$sep)===0 && substr_count($str,'=')===0 ) return [$str]; // $str not compacted
-  $attr = array();
+  $attr = [];
   foreach(qtCleanArray($str,$sep) as $str) {
     $a = array_map('trim',explode('=',$str,2)); // cut on first '=' only
     if ( !isset($a[1]) || $a[1]==='' || $a[1]==='"' || $a[1]==='""' ) $a[1] = null; // support for attribute without value

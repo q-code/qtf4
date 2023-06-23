@@ -160,7 +160,7 @@ class CMenu
     if ( empty($str) ) return [];
     if ( strlen($esc)===1 && $str[0]===$esc) return ['!'=>substr($str,1)]; // string start with the escape character: decoding is skipped and source string is returned
     if ( strtolower($sep)==='json' ) return self::attrDecodeJson($str); //...
-    $attr = array();
+    $attr = [];
     foreach(self::qtCleanArray($str,$sep) as $str)
     {
       $a = array_map('trim',explode('=',$str,2)); // cut on first '=' only

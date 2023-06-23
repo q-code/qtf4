@@ -128,7 +128,7 @@ public static function dropAttachs($ids, bool $updAttach=true, bool $idsAreTopic
 public static function dropAttachSql(string $sql='', bool $updAttach=true) {
   // sql MUST be SELECT id,attach FROM TABPOST...
   if ( empty($sql) ) die('CPost::dropAttachSql arg #1 must be a string');
-  $arr = array();
+  $arr = [];
   global $oDB; $oDB->query( $sql );
   while( $row=$oDB->getRow() ) { $arr[(int)$row['id']] = $row['attach']; }
   return CPost::dropDocuments($arr,$updAttach);

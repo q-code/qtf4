@@ -34,11 +34,11 @@ function memInit(string $key, $onUnknownKey=false)
   // Dataset memory
   switch($key) {
     case 'settingsage': return time();
-    case '_Domains': return CDomain::getPropertiesAll();
+    case '_Domains': return CDomain::getProperties();
       // all domains (including empty/invisible domains), array contains property=>value from CDomain class
-    case '_SectionsId': return CSection::getIds();
-      // array of Id
-    case '_Sections': return CSection::getPropertiesAll();
+    case '_SectionsTitle': return CSection::getTitles();
+      // array of Id=>Title (translated)
+    case '_Sections': return CSection::getProperties();
       // all sections (including empty/invisible sections), array contains property=>value from CSection class
       // items,replies,lastpost are recomputed for each section
     case '_SectionsStats': return CSection::getSectionsStats();
@@ -55,7 +55,7 @@ function memFlush(array $arrKeep=['_Domains'], string $option='')
   // DEEP FLUSH
   if ( $option==='**' ) SMem::clear('**'); // only admin can use option to deep flush
   // Flush keys, if not in the $arrKeep list (by default, _Domains is preserved)
-  foreach(['_Domains','_SectionsId','_Sections','_SectionsStats'] as $k) if ( !in_array($k,$arrKeep) ) SMem::clear($k);
+  foreach(['_Domains','_SectionsTitle','_Sections','_SectionsStats'] as $k) if ( !in_array($k,$arrKeep) ) SMem::clear($k);
   return true;
 }
 function memFlushLang()
@@ -144,8 +144,7 @@ function addDate(string $d='', int $i=-1, string $str='year')
   $intY = (int)substr($d,0,4);
   $intM = (int)substr($d,4,2);
   $intD = (int)substr($d,6,2);
-  switch($str)
-  {
+  switch($str) {
     case 'year': $intY += $i; break;
     case 'month': $intM += $i; break;
     case 'day': $intD += $i; break;
@@ -158,38 +157,9 @@ function addDate(string $d='', int $i=-1, string $str='year')
   if ( $intM==2 && $intD>28 ) { $intM++; $intD -= 28; }
   return (string)($intY*10000+$intM*100+$intD).(strlen($d)>8 ? substr($d,8) : '');
 }
-function getSections(string $role='V', int $domain=-1, array $reject=[], string $filter='', string $order='d.titleorder,s.titleorder')
-{
-  // Returns an array of [key] section id, array of [values] section
-  // Use $domain to get section in this domain only
-  // $domain=-1 mean in alls domains. -2 means in all domains but grouped by domain
-  // Attention: using $domain -2, when a domains does NOT contains sections, this key is NOT existing in the returned list !
-
-  global $oDB;
-  $sqlWhere = $domain>=0 ? "s.domainid=$domain" : "s.domainid>=0";
-  if ( $role==='V' || $role==='U' ) $sqlWhere .= " AND s.type<>'1'";
-  if ( !empty($filter) ) $sqlWhere .= " AND $filter";
-
-  $arrSections = array();
-  $oDB->query( "SELECT s.* FROM TABSECTION s INNER JOIN TABDOMAIN d ON s.domainid=d.id WHERE $sqlWhere ORDER BY $order" );
-  while($row=$oDB->getRow()) {
-    $id = (int)$row['id'];
-    // if reject
-    if ( in_array($id,$reject,true) ) continue;
-    // search translation
-    $row['title'] = SLang::translate('sec', 's'.$id, $row['title']);
-    // compile sections
-    if ( $domain==-2 ) {
-    $arrSections[(int)$row['domainid']][$id] = $row;
-    } else {
-    $arrSections[$id] = $row;
-    }
-  }
-  return $arrSections;
-}
 function getItemsInfo(CDatabase $oDB)
 {
-  $arr = array();
+  $arr = [];
   $arr['post'] = $oDB->count( TABPOST );
   $arr['startdate'] = $arr['post']==0 ? '' : qtDatestr( $oDB->count( "SELECT min(firstpostdate) as countid FROM ".TABTOPIC ),'$', '' );
   $arr['topic'] = $oDB->count( TABTOPIC );
@@ -221,7 +191,7 @@ function getUsersInfo($ids, string $fields='name', bool $excludezero=true)
   }
   if ( empty($where) ) die('getUsersInfo: invalid ids');
 
-  $res = array();
+  $res = [];
   global $oDB; $oDB->query( "SELECT id,$fields FROM TABUSER WHERE $where" );
   while( $row=$oDB->getRow() ) $res[(int)$row['id']] = $row;
   return $res;
@@ -251,7 +221,7 @@ function getUsers(string $q='A', string $name='', int $max=100)
     default: die('getUser: invalid query');
   }
   $oDB->query( "SELECT id,name FROM TABUSER WHERE $where ORDER BY name" );
-  $res = array();
+  $res = [];
   while ($row=$oDB->getRow())
   {
     $res[(int)$row['id']]=$row['name'];
@@ -259,7 +229,6 @@ function getUsers(string $q='A', string $name='', int $max=100)
   }
   return $res;
 }
-
 function validateFile(&$arrFile=[], $extensions='', $mimes='', int $size=0, int $width=0, int $height=0, bool $strictName=true)
 {
   // For the uploaded document ($arrFile), this function returns [string] '' if it matches with all conditions
@@ -275,19 +244,16 @@ function validateFile(&$arrFile=[], $extensions='', $mimes='', int $size=0, int 
   if ( is_array($extensions) ) $extensions = implode(',', $extensions);
   if ( is_array($mimes) ) $mimes = implode(',', $mimes);
   if ( !is_array($arrFile) || !is_string($extensions) || !is_string($mimes) ) die('CheckUpload: invalid argument type');
-
   // Check load
   if ( !is_uploaded_file($arrFile['tmp_name']) ) {
     unlink($arrFile['tmp_name']);
     return 'You did not upload a file!';
   }
-
   // Check size (kb)
   if ( $size>0 && $arrFile['size']>($size*1024+16) ) {
     unlink($arrFile['tmp_name']);
     return L('E_file_size').' (&lt;'.$size.' Kb)';
   }
-
   // check extension
   if ( !empty($extensions) ) {
     $result = validateFileExt($arrFile['name'], $extensions);
@@ -296,13 +262,11 @@ function validateFile(&$arrFile=[], $extensions='', $mimes='', int $size=0, int 
       return $result;
     }
   }
-
   // Check mimetype
   if ( !empty($mimes) && strpos(strtolower($mimes),strtolower($arrFile['type']))===false ) {
     unlink($arrFile['tmp_name']);
     return 'Format ['.$arrFile['type'].'] not supported... Use '.$extensions;
   }
-
   // Check size (pixels)
   if ( $width>0 || $height>0 ) {
     $size = getimagesize($arrFile['tmp_name']);
@@ -315,12 +279,10 @@ function validateFile(&$arrFile=[], $extensions='', $mimes='', int $size=0, int 
       return $width.'x'.$height.' '.L('e_pixels_max');
     }
   }
-
   if ( $strictName ) {
     $arrFile['name'] = strtolower(qtDropDiacritics($arrFile['name']));
     $arrFile['name'] = preg_replace('/[^a-z0-9_\-\.]/i', '_', $arrFile['name']);
   }
-
   return '';
 }
 function validateFileExt($file, $extensions='')
@@ -350,18 +312,15 @@ function makePager(string $uri, int $count, int $intPagesize=50, int $currentpag
   $arrPages = array(1,2,3,4,5);
   if ( $currentpage>4 ) $arrPages = $currentpage==$top ? array($top-4,$top-3,$top-2,$top-1,$top) : array($currentpage-2,$currentpage-1,$currentpage,$currentpage+1,$currentpage+2);
   // pages
-  foreach($arrPages as $page)
-  {
-    if ( $page>=1 && $page<=$top )
-    {
+  foreach($arrPages as $page) {
+    if ( $page>=1 && $page<=$top ) {
       $first = $page==1 ? ' first' : '';
       $last = $page==$top ? ' last' : '';
       $strPages .= $sep.($currentpage===$page ? '<a class="page '.$currentclass.$first.$last.'" href="javascript:void(0)" tabindex="-1">'.$page.'</a>' : '<a class="page'.$first.$last.'" href="'.$uri.'?'.$arg.'&page='.$page.'">'.$page.'</a>');
     }
   }
   // extreme
-  if ( $count>($intPagesize*5) )
-  {
+  if ( $count>($intPagesize*5) ) {
     if ( $arrPages[0]>1 ) $firstpage = $sep.'<a class="page first" href="'.$uri.'?'.$arg.'&page=1" title="'.L('First').'">&laquo;</a>';
     if ( $arrPages[4]<$top ) $lastpage = $sep.'<a class="page last" href="'.$uri.'?'.$arg.'&page='.$top.'" title="'.L('Last').': '.$top.'">&raquo;</a>';
   }
@@ -395,30 +354,28 @@ function sqlLimit(string $state, string $order='id', int $start=0, int $length=5
   if ( empty($order) ) die('sqlLimit: invalid argument'); // order is required with limit
   global $oDB;
   $order = trim($order); if ( strtolower(substr($order,-3,3))!=='asc' && strtolower(substr($order,-4,4))!=='desc' ) $order .= ' asc';
-  switch($oDB->type)
-  {
-  case 'mysql':
-  case 'pdo.mysql': return "SELECT $state ORDER BY $order LIMIT $start,$length"; break;
-  case 'sqlsrv':
-  case 'pdo.sqlsrv':
-    if ( $start==0 ) return "SELECT TOP $length $state ORDER BY $order";
-    return "SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY $order) AS rownum, $state) AS orderrows WHERE rownum BETWEEN ".($start+1)." AND ".($start+$length)." ORDER BY rownum )"; break;
-  case 'pdo.pg':
-  case 'pg': return "SELECT $state ORDER BY $order LIMIT $length OFFSET $start"; break;
-  case 'pdo.sqlite':
-  case 'sqlite': return "SELECT $state ORDER BY $order LIMIT $length OFFSET $start"; break;
-  case 'pdo.oci':
-  case 'oci': return ($start==0 ? "SELECT * FROM (SELECT $state ORDER BY $order) WHERE ROWNUM<$length" : "SELECT * FROM (SELECT a.*, rownum rn FROM (SELECT $state ORDER BY $order) a WHERE rownum<$start+1+$length) WHERE rn>=$start"); break;
-  default: return "SELECT $state ORDER BY $order LIMIT $start,$length"; break;
+  switch($oDB->type) {
+    case 'mysql':
+    case 'pdo.mysql': return "SELECT $state ORDER BY $order LIMIT $start,$length"; break;
+    case 'sqlsrv':
+    case 'pdo.sqlsrv':
+      if ( $start==0 ) return "SELECT TOP $length $state ORDER BY $order";
+      return "SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY $order) AS rownum, $state) AS orderrows WHERE rownum BETWEEN ".($start+1)." AND ".($start+$length)." ORDER BY rownum )"; break;
+    case 'pdo.pg':
+    case 'pg': return "SELECT $state ORDER BY $order LIMIT $length OFFSET $start"; break;
+    case 'pdo.sqlite':
+    case 'sqlite': return "SELECT $state ORDER BY $order LIMIT $length OFFSET $start"; break;
+    case 'pdo.oci':
+    case 'oci': return ($start==0 ? "SELECT * FROM (SELECT $state ORDER BY $order) WHERE ROWNUM<$length" : "SELECT * FROM (SELECT a.*, rownum rn FROM (SELECT $state ORDER BY $order) a WHERE rownum<$start+1+$length) WHERE rn>=$start"); break;
+    default: return "SELECT $state ORDER BY $order LIMIT $start,$length"; break;
   }
 }
 function sqlFirstChar(string $field, string $case='u', int $len=1)
 {
-  // returns the whereclause of the $field's first-character(s) being:
+  // returns the whereclause of the $field first-character(s) being:
   // 'u' uppercase, 'l' lowercase, '~' symbol/digit or '' unchanged (strick case)
   global $oDB;
-  switch($oDB->type)
-  {
+  switch($oDB->type) {
     case 'pdo.sqlsrv':
     case 'sqlsrv':
       if ( $case==='u' ) return "UPPER(LEFT($field,$len))";
@@ -469,13 +426,13 @@ function sqlDateCondition(string $date='', string $field='firstpostdate', int $l
   global $oDB;
   if ( $date==='old' ) { $oper = '<='; $date = Date('Y')-2; }
   switch($oDB->type) {
-  case 'pdo.pg':
-  case 'pg': return 'SUBSTRING('.$field.' FROM 1 FOR '.$length.')'.$oper.$quote.$date.$quote; break;
-  case 'pdo.sqlite':
-  case 'sqlite':
-  case 'pdo.oci':
-  case 'oci': return 'SUBSTR('.$field.',1,'.$length.')'.$oper.$quote.$date.$quote; break;
-  default: return 'LEFT('.$field.','.$length.')'.$oper.$quote.$date.$quote;
+    case 'pdo.pg':
+    case 'pg': return 'SUBSTRING('.$field.' FROM 1 FOR '.$length.')'.$oper.$quote.$date.$quote; break;
+    case 'pdo.sqlite':
+    case 'sqlite':
+    case 'pdo.oci':
+    case 'oci': return 'SUBSTR('.$field.',1,'.$length.')'.$oper.$quote.$date.$quote; break;
+    default: return 'LEFT('.$field.','.$length.')'.$oper.$quote.$date.$quote;
   }
 }
 function postsTodayAcceptable(int $intMax=100)

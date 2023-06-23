@@ -153,7 +153,7 @@ public static function confirmCookie(CDatabase $oDB)
 public static function unsetSession()
 {
   // User's properties as in CURRENT SESSION
-  $_SESSION[QT.'_usr'] = array();
+  $_SESSION[QT.'_usr'] = [];
   $_SESSION[QT.'_usr']['auth'] = false;
   $_SESSION[QT.'_usr']['id'] = 0;
   $_SESSION[QT.'_usr']['name'] = L('Role_V');
@@ -311,7 +311,7 @@ public static function rename(CDatabase $oDB, int $id=0, string $name='visitor')
 }
 public static function getLastMember(CDatabase $oDB,$sqlWhere='')
 {
-  $arr = array();
+  $arr = [];
   $id = $oDB->count( "SELECT max(id) as countid FROM TABUSER WHERE id>=0".$sqlWhere ); // can be 0 if nothing found
   if ( $id ) {
     $arr['id'] = $id;

@@ -59,8 +59,7 @@ public function setFrom($ref=null)
   }
   if ( is_array($ref) ) {
     foreach($ref as $k=>$value) {
-      switch((string)$k)
-      {
+      switch((string)$k) {
         case 'id':           $this->id        = (int)$value; break;
         case 'title':        $this->title     = empty($value) ? 'section-'.$this->id : (string)$value; break;
         case 'domainid':
@@ -117,18 +116,35 @@ public static function getOwner(int $id)
 {
   global $oDB;
   $oDB->query( "SELECT moderator FROM TABSECTION WHERE id=$id" );
-  $row=$oDB->getRow();
+  $row = $oDB->getRow();
   return (int)$row['moderator'];
 }
-public static function getIds()
+public static function getTitles($translate=true, $sqlWhere='')
 {
   $arr = [];
-  global $oDB;
-  $oDB->query( "SELECT id FROM TABSECTION" );
-  while($row=$oDB->getRow()) $arr[] = (int)$row['id'];
+  global $oDB; $oDB->query( "SELECT id,title FROM TABSECTION $sqlWhere" );
+  while($row=$oDB->getRow()) $arr[$row['id']] = $translate ? SLang::translate('sec', 's'.$row['id'], $row['title']) : $row['title'];
   return $arr;
 }
-
+public static function getSections(string $role='V', int $domain=-1, array $reject=[], string $order='d.titleorder,s.titleorder')
+{
+  // Returns an array of [key] section id, array of [values] section (db attributes, no translation)
+  // Use $domain to get sections in this domain. -1 means in any domain. -2 grouped by domain
+  // Attention: using $domain -2, when a domains does NOT contains sections, this key is NOT returned
+  $arrSections = [];
+  $sqlWhere = 's.domainid'.($domain<0 ? '>=0' : '='.$domain).($role==='V' || $role==='U' ? " AND s.type<>'1'" : '');
+  global $oDB; $oDB->query( "SELECT s.* FROM TABSECTION s INNER JOIN TABDOMAIN d ON s.domainid=d.id WHERE $sqlWhere ORDER BY $order" );
+  while($row=$oDB->getRow()) {
+    $id = (int)$row['id']; if ( in_array($id,$reject,true) ) continue;
+    // compile sections
+    if ( $domain===-2 ) {
+      $arrSections[(int)$row['domainid']][$id] = $row;
+    } else {
+      $arrSections[$id] = $row;
+    }
+  }
+  return $arrSections;
+}
 // --------
 // Other methods
 // --------
@@ -140,12 +156,9 @@ public static function translate(int $id, string $type='sec')
 {
   // returns translated title (from session memory), uses config name if no translation
   switch($type) {
-    case 'sec':
-      return SLang::translate('sec', 's'.$id, empty($GLOBALS['_Sections'][$id]['title']) ? '(section-'.$id.')' : $GLOBALS['_Sections'][$id]['title']);
-    case 'secdesc':
-      return SLang::translate('secdesc', 's'.$id, empty($GLOBALS['_Sections'][$id]['descr']) ? '' : $GLOBALS['_Sections'][$id]['descr']);
-    default:
-      die(__FUNCTION__.' invalid argument [type]');
+    case 'sec': return SLang::translate('sec', 's'.$id, empty($GLOBALS['_Sections'][$id]['title']) ? '(section-'.$id.')' : $GLOBALS['_Sections'][$id]['title']);
+    case 'secdesc': return SLang::translate('secdesc', 's'.$id, empty($GLOBALS['_Sections'][$id]['descr']) ? '' : $GLOBALS['_Sections'][$id]['descr']);
+    default: die(__FUNCTION__.' invalid argument [type]');
   }
 }
 /**
@@ -182,9 +195,8 @@ public static function makeLogo(string $src='', string $type='0', string $status
 }
 public static function getIdsInContainer(int $pid)
 {
-  global $oDB;
-  $oDB->query( "SELECT id FROM TABSECTION WHERE domainid=$pid" );
   $ids = [];
+  global $oDB; $oDB->query( "SELECT id FROM TABSECTION WHERE domainid=$pid" );
   while( $row=$oDB->getRow() ) $ids[] = (int)$row['id'];
   return $ids;
 }
@@ -192,8 +204,8 @@ public static function getSectionsStats(bool $closed=true, bool $lastpost=true)
 {
   $arr = [];
   // Initialize each section to 0 (because sql will skip empty sections)
-  global $_SectionsId;
-  foreach($_SectionsId as $id)
+  global $_SectionsTitle;
+  foreach(array_keys($_SectionsTitle) as $id)
   $arr[$id] = ['items'=>0,'replies'=>0,'itemsZ'=>0,'repliesZ'=>0,'lastpostid'=>-1,'lastpostpid'=>-1,'lastpostdate'=>'','lastpostuser'=>-1,'lastpostname'=>''];
   $arr['all'] = ['items'=>0,'replies'=>0,'itemsZ'=>0,'repliesZ'=>0,'lastpostid'=>-1,'lastpostpid'=>-1,'lastpostdate'=>'','lastpostuser'=>-1,'lastpostname'=>''];
   // Query
@@ -235,15 +247,6 @@ public static function getSectionsStats(bool $closed=true, bool $lastpost=true)
   }
   return $arr;
 }
-public static function getTranslatedTitles(array $ids=[])
-{
-  if ( count($ids)===0 ) $ids = array_keys($GLOBALS['_Sections']); // empty list means all sections
-  $arr = [];
-  foreach($ids as $id) {
-    $arr[$id] = SLang::translate('sec', 's'.$id, empty($GLOBALS['_Sections'][$id]['title']) ? '' : $GLOBALS['_Sections'][$id]['title']);
-  }
-  return $arr;
-}
 public static function getLastPost(int $id=0)
 {
   // Returns the LastPost attributes (with keys lastpostid lastpostpid lastpostdate lastpostuser lastpostname
@@ -261,14 +264,13 @@ public static function getLastPost(int $id=0)
 public static function getSectionsFields(string $fields='numfield')
 {
   // for each section, returns an array containing the field settings
-  $arr = array();
+  $arr = [];
   global $oDB;
   $oDB->query( "SELECT id,$fields FROM TABSECTION" );
   $arrFields = explode(',',$fields);
-  while($row=$oDB->getRow())
-  {
-  $arr[(int)$row['id']] = array();
-  foreach($arrFields as $field) $arr[(int)$row['id']][$field] = $row[$field];
+  while($row=$oDB->getRow()) {
+    $arr[(int)$row['id']] = [];
+    foreach($arrFields as $field) $arr[(int)$row['id']][$field] = $row[$field];
   }
   return $arr;
 }
@@ -283,7 +285,7 @@ public static function getTagsUsed(int $s=-1, int $intMax=20, string $sqlWhere='
 
   // Process
 
-  $arrTags = array();
+  $arrTags = [];
   global $oDB;
   $oDB->query( "SELECT DISTINCT t.tags,t.lastpostdate FROM TABTOPIC t $sqlWhere ORDER BY t.lastpostdate DESC" );
   $i=0;
@@ -436,11 +438,11 @@ public static function sqlCountItems($s, string $q='items', string $status='',st
     default: die('CSection::sqlCountItems: Wrong argument (q) '.$q);
   }
 }
-public static function getPropertiesAll(string $order='d.titleorder,s.titleorder')
+public static function getProperties(string $order='d.titleorder,s.titleorder')
 {
   // Returns an array[pid] of [CSection] objects (array key is the object->id)
   global $oDB;
-  $arr = array();
+  $arr = [];
   $oDB->query( "SELECT s.* FROM TABSECTION s INNER JOIN TABDOMAIN d ON s.domainid=d.id ORDER BY $order" );
   while($row=$oDB->getRow())  {
     $oS = new CSection($row);

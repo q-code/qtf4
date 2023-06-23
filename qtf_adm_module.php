@@ -48,7 +48,7 @@ if ( isset($_POST['ok']) )
 
 include APP.'_adm_inc_hd.php';
 
-$arr = array();
+$arr = [];
 foreach(glob(APP.'m_*_install.php') as $name) $arr[] = '<a href="javascript:void(0)" onclick="addValue(this)">'.strtolower(substr($name,5,-12)).'</a>';
 
 echo '<form method="post" action="'.$oH->self().'">

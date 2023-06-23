@@ -116,5 +116,5 @@ include APP.'_setup_ft.php'; // this will show $error
 
 // DISCONNECT to reload new variables (keep same language)
 $str = $_SESSION[APP.'_setup_lang'];
-$_SESSION = array();
+$_SESSION = [];
 $_SESSION[APP.'_setup_lang']=$str;

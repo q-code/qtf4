@@ -43,7 +43,7 @@ if ( $row['setting']=='2.0' )
   // update section options
 
   $oDB->query( "SELECT id,sortfield,infofield,logo FROM ".QDB_PREFIX."qtaforum" );
-  $arr = array();
+  $arr = [];
   while($row=$oDB->getRow())
   {
     if ( $row['sortfield']=='lastpostdate' ) $row['sortfield']='0';
@@ -179,7 +179,7 @@ if ( empty($error) )
 
 // DISCONNECT to reload new variables (keep same language)
 $str = $_SESSION[APP.'_setup_lang'];
-$_SESSION = array();
+$_SESSION = [];
 $_SESSION[APP.'_setup_lang']=$str;
 
 // --------

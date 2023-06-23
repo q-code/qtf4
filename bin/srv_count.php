@@ -111,7 +111,7 @@ function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate
 $q = $_GET['q'];
 
 // errors
-$L = array(); include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
+$L = []; include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
 $e0 = empty($L['No_result'])           ? 'No result'           : $L['No_result'];
 $e1 = empty($L['E_try_other_lettres'])   ? 'Try other lettres'   : $L['E_try_other_lettres'];
 $e2 = empty($L['E_try_without_options']) ? 'Try without options' : $L['E_try_without_options'];

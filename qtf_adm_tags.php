@@ -34,11 +34,11 @@ if ( $_SESSION[QT]['tags']==='0' )
 }
 
 $arrDomains = CDomain::getTitles(); // titles translated
-$arrSections = getSections('A',-2); // titles translated, optimisation: get all sections at once (grouped by domain)
+$arrSections = CSection::getSections('A',-2); // titles not translated, optimisation: get all sections at once (grouped by domain)
 
 // DISPLAY TABS
 
-$arrM = array();
+$arrM = [];
 foreach (LANGUAGES as $iso=>$lang)
 {
   $lang = explode(' ',$lang);

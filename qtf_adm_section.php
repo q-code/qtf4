@@ -114,7 +114,7 @@ Unset($arrDest[$oS->pid]);
 $arrDest = array_map(function($str){ return L('Move_to').': '.$str;}, $arrDest);
 
 // DISPLAY TABS
-$arrM = array(); $str = $oH->selfurl.'?s='.$s.'&pan=';
+$arrM = []; $str = $oH->selfurl.'?s='.$s.'&pan=';
 $arrM['pan-1'] = L('Settings').       '|href='.$str.'1|id=pan-1|class=pan-tab|onclick=return qtFormSafe.exit(e0);';
 $arrM['pan-2'] = L('Display_options').'|href='.$str.'2|id=pan-2|class=pan-tab|onclick=return qtFormSafe.exit(e0);';
 $arrM['pan-3'] = L('Translations').   '|href='.$str.'3|id=pan-3|class=pan-tab|onclick=return qtFormSafe.exit(e0);';

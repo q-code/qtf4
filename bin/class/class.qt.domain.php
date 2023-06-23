@@ -109,7 +109,7 @@ class CDomain extends AContainer implements IContainer
     // clear cache
     SMem::clear('_Sections');
   }
-  public static function getPropertiesAll(string $order='titleorder')
+  public static function getProperties(string $order='titleorder')
   {
     // Returns an array of all [CDomain] object-properties
     $arr = [];
@@ -126,7 +126,7 @@ class CDomain extends AContainer implements IContainer
     // list visible sections in memory '_Sections' (hide type 1 section for non-staff)
     if ( !isset($GLOBALS['_Sections']) ) die('CDomain::get_pSectionsVisible missing _Sections');
     if ( $pid<0 ) die('CDomain::get_pSectionsVisible arg #1 must be a integer');
-    $arr = array();
+    $arr = [];
     foreach($GLOBALS['_Sections'] as $mId=>$mSec) {
       if ( $mSec['pid']!=$pid ) continue;
       if ( $mSec['type']==='1' && !SUser::isStaff() ) continue;

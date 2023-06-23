@@ -184,8 +184,8 @@ public static function tagsClear($str, bool $dropDuplicate=true)
   $str = qtDropDiacritics($str);
   $str = str_replace(',',';',$str);
   $arr = explode(';',$str);
-  $arrClear = array();
-  $arrClearLC = array();
+  $arrClear = [];
+  $arrClearLC = [];
   foreach($arr as $str)
   {
     $str=trim($str);
@@ -228,7 +228,7 @@ public function tagsDel(string $str, $oS=false)
   {
     $arrTag = explode(';',$this->descr); // Current tags
     $arrDel = explode(';',strtolower($str)); // Tag to delete
-    $arr = array(); // new tags
+    $arr = []; // new tags
     foreach($arrTag as $tag) if ( !in_array(strtolower($tag),$arrDel) ) $arr[]=$tag; // keep not deleted tags
     $this->descr = implode(';',$arr);
   }
@@ -279,7 +279,7 @@ public function updMetadata(int $intMax=0)
 
   // Count
   global $oDB;
-  $arr = array();
+  $arr = [];
   $this->items = 0;
   $oDB->query( "SELECT id,userid,username,issuedate,type FROM TABPOST WHERE topic=$this->id ORDER BY issuedate" );
   while($row=$oDB->getRow()) {

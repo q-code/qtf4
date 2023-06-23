@@ -152,8 +152,8 @@ if ( isset($_POST['ok']) ) try {
   if ( $_FILES['title']['type']!=='text/xml' ) throw new Exception(L('Import_E_format'));
 
   // import xml
-  $arrTopic = array();
-  $arrPosts = array();
+  $arrTopic = [];
+  $arrPosts = [];
   $t = 0;
   $p = 0;
   $strValue = '';

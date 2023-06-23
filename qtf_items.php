@@ -325,8 +325,8 @@ $oDB->query(sqlLimit(
 // ========
 
 $intRow=0; // count row displayed
-$arrRe = array(); // topic id having replies (use in post-processing)
-$arrTags = array();
+$arrRe = []; // topic id having replies (use in post-processing)
+$arrTags = [];
 $arrOptions = [];
 $arrOptions['bmap'] = $bMap;
 if ( $_SESSION[QT]['item_firstline']==='0' ) {
@@ -396,7 +396,7 @@ if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && count($arrTags)>0 ) {
 
 // Post-compute user's replied items (for topics having replies). Result is added using js.
 if ( QT_LIST_ME && count($arrRe)>0 && (int)SUser::getInfo('numpost',0)>0 ) {
-  $arr = array();
+  $arr = [];
   $oDB->query( "SELECT topic,issuedate FROM TABPOST WHERE type='R' AND userid=".SUser::id()." AND topic IN (".implode(',', $arrRe).")" );
   while($row = $oDB->getRow())
     $arr[(int)$row['topic']] = '"'.qtDatestr($row['issuedate'], 'j M', 'H:i', true, true).'"';

@@ -37,7 +37,7 @@ $strOrder = 't.lastpostdate DESC';
 $strQ = sqlLimit($strState,$strOrder,0,$top);
 $oDB->query($strQ);
 $i=0;
-$item = array();
+$item = [];
 while ($row = $oDB->getRow())
 {
   $item[$i]['title'] = toXml($row['title']);
