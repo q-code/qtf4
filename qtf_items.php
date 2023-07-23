@@ -399,7 +399,7 @@ if ( QT_LIST_ME && count($arrRe)>0 && (int)SUser::getInfo('numpost',0)>0 ) {
   $arr = [];
   $oDB->query( "SELECT topic,issuedate FROM TABPOST WHERE type='R' AND userid=".SUser::id()." AND topic IN (".implode(',', $arrRe).")" );
   while($row = $oDB->getRow())
-    $arr[(int)$row['topic']] = '"'.qtDatestr($row['issuedate'], 'j M', 'H:i', true, true).'"';
+    $arr[(int)$row['topic']] = '"'.qtDate($row['issuedate'], 'j M', 'H:i', true, true).'"';
   if ( count($arr)>0 ) {
     $oH->scripts[] = 'function addIRe(table,tids,ttitles,title="I replied") {
   for (let i=0;i<tids.length;++i) {

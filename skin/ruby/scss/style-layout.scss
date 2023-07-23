@@ -63,9 +63,9 @@ footer p{padding-bottom:4px;text-align:center;font-size:0.9rem;color:#999} foote
 #banner[data-layout="1"],
 #banner[data-layout="2"]{padding:6px 6px 0 6px; min-height:75px; border-radius:5px 5px 0 0; background:linear-gradient(130deg,var(--bgbtn) 10%,#fd595b 30%,var(--bgbtn) 50%,var(--bgbtn))}
   /* LANG */
+  #menulang{color:#BBB}
   #menulang a{text-decoration:none}
   #menulang a:hover{text-decoration:underline}
-  #menulang{color:#BBB}
   #menulang .active{color:#FFF;font-weight:bold} #banner[data-layout="0"] #menulang .active{color:#666}
   #menulang a{color:#BBB}                        #banner[data-layout="0"] #menulang a{color:#777}
   #menulang a:hover{color:#FFF}                  #banner[data-layout="0"] #menulang a:hover{color:var(--ah)}

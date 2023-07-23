@@ -161,7 +161,7 @@ function getItemsInfo(CDatabase $oDB)
 {
   $arr = [];
   $arr['post'] = $oDB->count( TABPOST );
-  $arr['startdate'] = $arr['post']==0 ? '' : qtDatestr( $oDB->count( "SELECT min(firstpostdate) as countid FROM ".TABTOPIC ),'$', '' );
+  $arr['startdate'] = $arr['post']==0 ? '' : qtDate( $oDB->count( "SELECT min(firstpostdate) as countid FROM ".TABTOPIC ),'$', '' );
   $arr['topic'] = $oDB->count( TABTOPIC );
   $arr['reply'] = $oDB->count( TABPOST." WHERE type<>'P'" );
   $arr['content'] = L('Message',$arr['post']).' <span  class="small">('.L('Item',$arr['topic']).', '.L('Reply',$arr['reply']).')</span>';

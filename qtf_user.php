@@ -308,7 +308,7 @@ if ( $items>0 ) {
 }
 if ( $countmessages>0 ) {
   $strParticip .= '<a href="'.url('qtf_items.php').'?q=userm&v2='.$id.'&v='.urlencode($row['name']).'">'.L('Message',$countmessages).'</a>';
-  $strParticip .= ', '.strtolower($L['Last_message']).' '.qtDatestr($row['lastdate'],'$','$',true);
+  $strParticip .= ', '.strtolower($L['Last_message']).' '.qtDate($row['lastdate'],'$','$',true);
   $oDB->query( "SELECT p.id,p.topic,p.forum FROM TABPOST p WHERE p.userid=$id ORDER BY p.issuedate DESC" );
   $row2 = $oDB->getRow();
   $strParticip .= ' <a href="'.url('qtf_item.php').'?t='.$row2['topic'].'#p'.$row2['id'].'" title="'.L('Goto_message').'">'.qtSVG('caret-square-right').'</a>';
@@ -320,8 +320,8 @@ echo '
 <tr><th>'.L('Location').'</th><td class="fix-sp"><span>'.$strLocation.'</span><span>'.$strPriv.'</span></td></tr>
 <tr><th>'.L('Email').'</th><td class="fix-sp"><span>'.$strMail.'</span><span>'.$strPriv.'</span></td></tr>
 <tr><th>'.L('Website').'</th><td>'.( empty($row['www']) ? '&nbsp;' : '<a href="'.$row['www'].'" target="_blank">'.$row['www'].'</a>' ).'</td></tr>
-<tr><th>'.L('Birthday').'</th><td>'.(empty($row['birthday']) ? '&nbsp;' : qtDatestr($row['birthday'],'$','')).'</td></tr>
-<tr><th>'.L('Joined').'</th><td>'.qtDatestr($row['firstdate'],'$','$',true).'</td></tr>
+<tr><th>'.L('Birthday').'</th><td>'.(empty($row['birthday']) ? '&nbsp;' : qtDate($row['birthday'],'$','')).'</td></tr>
+<tr><th>'.L('Joined').'</th><td>'.qtDate($row['firstdate'],'$','$',true).'</td></tr>
 <tr><th>'.L('Messages').'</th><td>'.$strParticip.'</td></tr>
 ';
 

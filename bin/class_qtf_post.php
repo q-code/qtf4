@@ -220,7 +220,7 @@ public function render(CSection $oS, CTopic $oT, bool $avatar=true, bool $cmd=tr
   }
   // closed topic
   if ( $this->type==='P' && $oT->status==='1' && !empty($oT->statusdate) ) {
-    $strEndLine .= '<span>'.L('Closed_item').' ('.strtolower(qtDatestr($oT->statusdate,'$','$',true)).')</span>';
+    $strEndLine .= '<span>'.L('Closed_item').' ('.strtolower(qtDate($oT->statusdate,'$','$',true)).')</span>';
   }
 
   // Show message
@@ -229,7 +229,7 @@ public function render(CSection $oS, CTopic $oT, bool $avatar=true, bool $cmd=tr
   <div class="g-p-type"><p class="i-container">'.$strIcon.'</p></div>
   <div class="g-p-title">
     <p class="post-title-r">'.$strTitle.'</p>
-    <p class="post-title-l" data-num="'.$this->num.'"><a href="'.url('qtf_user.php').'?id='.$this->userid.'">'.$this->username.'</a>&thinsp;&middot;&thinsp;'.qtDatestr($this->issuedate,'$','$',true).'</p>
+    <p class="post-title-l" data-num="'.$this->num.'"><a href="'.url('qtf_user.php').'?id='.$this->userid.'">'.$this->username.'</a>&thinsp;&middot;&thinsp;'.qtDate($this->issuedate, '$', '$', true, true, true).'</p>
   </div>
   <div class="g-p-msg article">'.$picUser.$msg.'</div>
   <div class="g-p-status"><p class="post-cmd">'.$strEndLine.'</p></div>

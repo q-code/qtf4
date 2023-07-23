@@ -558,23 +558,21 @@ function qtInline(string $str, int $max=255, string $end='...', bool $unbbc=true
   // truncate
   return $max>0 ? qtTrunc($str,$max,$end) : $str;
 }
-function qtDateClean($d='now', int $size=14, string $failed='')
+function qtDateClean($d='now', int $size=14, string $e='?')
 {
   // Works recursively on array
-  if ( is_array($d) ) { foreach($d as $k=>$item) $d[$k] = qtDateClean($item,$size); return $d; }
-  // Returns datetime [string] 'YYYYMMDD[HHMM[SS]]' from 'now', integer or a string like 'YYYY-MM-DD HH:MM:SS'
-  if ( is_int($d) ) $d = (string)$d; // support int
-  if ( !is_string($d) ) die(__FUNCTION__.' invalid arg #1');
-  if ( $size<4 || $size>14) die(__FUNCTION__.' invalid arg #2');
-  if ( empty($d) ) return $failed;
+  if ( is_array($d) ) { foreach($d as $k=>$item) $d[$k] = qtDateClean($item,$size,$e); return $d; }
+  // Returns datetime [string] 'YYYYMMDD[HHMM[SS]]' from 'now'|integer|'YYYY-MM-DD HH:MM:SS'
+  if ( is_int($d) && $d>0 ) $d = (string)$d;
+  if ( !is_string($d) || $size<4 || $size>14 || strlen($d)<4 ) return $e;
   // Sanitize
   if ( $d==='now' ) return substr(date('YmdHis'),0,$size);
-  if ( $d===(string)abs((int)$d) ) return substr($d,0,$size); // unsignedint [string] is sanitized
+  if ( $d===(string)(int)$d ) return substr($d,0,$size);
   $d = str_replace([' ','-','.','/',':'], '', $d);
   if ( $d===(string)(int)$d ) return substr($d,0,$size);
-  return $failed;
+  return $e;
 }
-function qtDatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', bool $friendly=true, bool $dropOldTime=true, $title=false, $titleid=false, $e='?')
+function qtDate($sDate='now', string $sOutDate='$', string $sOutTime='$', bool $friendly=true, bool $dropOldTime=true, bool $title=false, $e='?')
 {
   // Converts a date [string|int|'now'] to a formatted date [string] and translate it.
   // $sDate - The date string, can be 'YYYYMMDD[HH][MM][SS]' or 'now'. It can include [.][/][-][ ]
@@ -582,9 +580,10 @@ function qtDatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
   // $sOutTime - The output format for the time (or '$' to use constant FORMATTIME). If not empty, time is appended to the date (or friendlydate)
   // $friendly - Replace date by 'Today','Yesterday'
   // $dropOldTime - Don't show time for date > 2 days.
-  // $e - When $sDate is '0' or empty, or when the input date format is unsupported the function returns $e ('?')
-  // The translation uses $L['dateSQL']. If not existing, the php words remains (english).
-  $sDate = qtDateClean($sDate); if ( empty($sDate) ) return $e; // Clean $sDate to a [string] YYYYMMDD[HHMMSS] (max 14 char, supports 'now')
+  // $e - When $sDate is '0' or empty, or when the input date format is unsupported
+  // The translation uses $L['dateSQL']. If not existing, the php engliqhe remains.
+  $sDate = qtDateClean($sDate); // Clean $sDate to a [string] YYYYMMDD[HHMMSS] (max 14 char, supports 'now')
+  if ( strlen($sDate)<4 || $sDate===$e ) return $e;
   if ( strlen($sDate)===4 ) return $sDate; // Stop if input is a year
   // Analyse date time: returns $e when input is a invalid date otherwhise detect if recent date
   $intDate = false;
@@ -618,17 +617,12 @@ function qtDatestr($sDate='now', string $sOutDate='$', string $sOutTime='$', boo
   $format = trim($sOutDate.' '.$sOutTime);
   $sDate = trim($stamp.(empty($format) ?  '' : date($format,$intDate)));
   if ( empty($sDate) )  return $e;
-  $sDateFull = date('j F Y, '.(empty($sOutTime) ? 'G:i' : $sOutTime),$intDate);
   // Translating
   global $L;
-  if ( isset($L['dateSQL']) && is_array($L['dateSQL']) ) {
-    $sDate = qtDateTranslate($sDate, $L['dateSQL']);
-    $sDateFull = qtDateTranslate($sDateFull, $L['dateSQL']);
-  }
-
+  if ( isset($L['dateSQL']) && is_array($L['dateSQL']) ) $sDate = qtDateTranslate($sDate, $L['dateSQL']);
   // Exit
-  if ( $title===false ) return $sDate;
-  return '<span'.(empty($titleid) ? '' : ' id="'.$titleid.'" ').' title="'.qtAttr($sDateFull).'">'.$sDate.'</span>';
+  if ( !$title ) return $sDate;
+  return '<span'.(empty($titleid) ? '' : ' id="'.$titleid.'" ').' title="'.date('Y-m-d H:i:s',$intDate).'">'.$sDate.'</span>';
 }
 function qtDateTranslate(string $str, array $translations)
 {

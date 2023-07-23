@@ -38,8 +38,9 @@ div.lettres a:not(.active):hover{background-color:#000;color:#FFFF00;border-colo
 .toggle-pwd:has(.svg-eye):hover{color:#000}
 
 /* BANNER */
-#banner[data-layout="0"] #menulang{background-color: #333; border:none}
-#banner[data-layout="0"] nav{background-color: var(--bgbanner);border-radius:5px}
+#banner[data-layout="0"] {padding:0;background-color: transparent; border:none}
+#banner[data-layout="0"] #menulang{background-color: transparent; border:none}
+#banner[data-layout="0"] nav{background-color: var(--bgbanner);border-radius:0}
 #banner[data-layout="1"],
 #banner[data-layout="2"] {background:linear-gradient(to bottom, #0b4783 20%, var(--bgbanner));border:2px solid var(--bgbanner);border-radius:5px 5px 0 0;border-bottom:none}
   /* LANG */
@@ -53,9 +54,9 @@ div.lettres a:not(.active):hover{background-color:#000;color:#FFFF00;border-colo
   nav a.active{color:var(--c)}
 
 /* WELCOME and SEARCH */
-#intro{margin:0;background:none;background-color:#094178;border:none}
+#intro{margin:0;background:none;background-color:#094178;border:none;border-radius:0}
 #intro a{color:#FFF}
-#searchbar{background:none;background-color:#094178;border:none;border-bottom:2px solid var(--bgbanner)}
+#searchbar{background:none;background-color:#094178;border:none;border-bottom:2px solid #222;border-radius:0}
   #searchbar a{color:var(--a)}
   #searchbar a.button-x:hover{color:var(--a)}
 #viewmode{padding:4px 6px;background-color:transparent;border:solid 1px #fff;color:#FFF} #viewmode:hover{color:#FFFF00;border-color:#FFFF00}

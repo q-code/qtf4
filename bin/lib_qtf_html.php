@@ -162,8 +162,8 @@ function formatCsvRow($arrFLD,$row,$oS=null)
       case 'title': $str = isset($row['posttype']) && $row['posttype']==='R' ? '('.L('reply').')' : $row['title'] ; break;
       case 'text': $str = $row['preview']; break;
       case 'section': $str = SLang::translate('sec','s'.$row['forum']); break;
-      case 'firstpostdate': $str = qtDatestr($row['firstpostdate'],'Y-m-d','$'); break;
-      case 'lastpostdate': $str = qtDatestr($row['lastpostdate'],'Y-m-d','$'); break;
+      case 'firstpostdate': $str = qtDate($row['firstpostdate'],'Y-m-d','$'); break;
+      case 'lastpostdate': $str = qtDate($row['lastpostdate'],'Y-m-d','$'); break;
       case 'posts':
       case 'replies': $str = (int)$row['replies']; break;
       case 'coord':
@@ -188,8 +188,8 @@ function formatCsvRow($arrFLD,$row,$oS=null)
       case 'user.contact': $str = (isset($row['mail']) ? $row['mail'].' ' : '').(isset($row['www']) ? $row['www'] : ''); break;
       case 'user.location': $str = $row['location']; break;
       case 'user.notes': $str = (int)$row['notes']; break;
-      case 'user.firstdate': $str = qtDatestr($row['firstdate'],'Y-m-d',''); break;
-      case 'user.lastdate': $str = qtDatestr($row['lastdate'],'Y-m-d','').(empty($row['ip']) ?  '&nbsp;' : ' ('.$row['ip'].')'); break;
+      case 'user.firstdate': $str = qtDate($row['firstdate'],'Y-m-d',''); break;
+      case 'user.lastdate': $str = qtDate($row['lastdate'],'Y-m-d','').(empty($row['ip']) ?  '&nbsp;' : ' ('.$row['ip'].')'); break;
       default: if ( isset($row[$k]) ) $str = $row[$k]; break;
     }
     $arrValues[] = toCsv($str);
@@ -315,18 +315,18 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
       break;
     case 'firstpostname':
       $arr[$k] = '<a href="'.url('qtf_user.php').'?id='.$row['firstpostuser'].'">'.$row['firstpostname'].'</a>';
-      $arr[$k] .= '<br><small>'.qtDatestr($row['firstpostdate'],'$','$').'</small>';
+      $arr[$k] .= '<br><small>'.qtDate($row['firstpostdate'],'$','$').'</small>';
       break;
     case 'lastpostdate':
       if ( empty($row['lastpostdate']) ) {
         $arr[$k] = '&nbsp;';
       } else {
-        $arr[$k] = qtDatestr($row['lastpostdate'],'$','$').'<a class="lastitem" href="'.url('qtf_item.php').'?t='.$row['id'].'#p'.$row['lastpostid'].'" title="'.L('Goto_message').'"><svg class="svg-symbol symbol-caret-square-right"><use href="#symbol-caret-square-right" xlink:href="#symbol-caret-square-right"></use></svg></a>';
+        $arr[$k] = qtDate($row['lastpostdate'],'$','$').'<a class="lastitem" href="'.url('qtf_item.php').'?t='.$row['id'].'#p'.$row['lastpostid'].'" title="'.L('Goto_message').'"><svg class="svg-symbol symbol-caret-square-right"><use href="#symbol-caret-square-right" xlink:href="#symbol-caret-square-right"></use></svg></a>';
         $arr[$k] .= '<br><small>'.L('by').' <a href="'.url('qtf_user.php').'?id='.$row['lastpostuser'].'" title="'.qtAttr($row['lastpostname']).'">'.$row['lastpostname'].'</a></small>';
       }
       break;
     case 'status':
-      $arrStatuses = CTopic::getStatuses(); $arr[$k] = '<span title="'.(empty($row['statusdate']) ? '' : qtDatestr($row['statusdate'],'d M','H:i',true,true)).'">'.$arrStatuses[$row['status']].'</span>';
+      $arrStatuses = CTopic::getStatuses(); $arr[$k] = '<span title="'.(empty($row['statusdate']) ? '' : qtDate($row['statusdate'],'d M','H:i',true,true)).'">'.$arrStatuses[$row['status']].'</span>';
       break;
     case 'tags':
     	$strTags = '';
@@ -353,10 +353,10 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
       $arr[$k] = $row['numpost'];
       break;
     case 'firstdate':
-      $arr[$k] = empty($row['firstdate']) ? '&nbsp;' : qtDatestr($row['firstdate'],'$','',true,false,true);
+      $arr[$k] = empty($row['firstdate']) ? '&nbsp;' : qtDate($row['firstdate'],'$','',true,false,true);
       break;
     case 'modifdate':
-      $arr[$k] = empty($row['modifdate']) ? '&nbsp;' : qtDatestr($row['modifdate'],'$','',true,false,true);
+      $arr[$k] = empty($row['modifdate']) ? '&nbsp;' : qtDate($row['modifdate'],'$','',true,false,true);
       break;
     default:
       if ( isset($row[$k]) ) {

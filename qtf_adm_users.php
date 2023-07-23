@@ -256,11 +256,11 @@ while($row=$oDB->getRow())
   $t->arrTd['numpost']->content = qtK((int)$row['numpost']);
   if ( $strCateg=='FM' || $strCateg=='SC' )
   {
-  $t->arrTd['firstdate']->content = empty($row['firstdate']) ? '' : qtDatestr($row['firstdate'],'$','',true);
+  $t->arrTd['firstdate']->content = empty($row['firstdate']) ? '' : qtDate($row['firstdate'],'$','',true);
   }
   else
   {
-  $t->arrTd['lastdate']->content = (empty($row['lastdate']) ? '' : qtDatestr($row['lastdate'],'$','',true)) . (empty($row['ip']) ? '' : '<br><span class="small">('.$row['ip'].')</span>');
+  $t->arrTd['lastdate']->content = (empty($row['lastdate']) ? '' : qtDate($row['lastdate'],'$','',true)) . (empty($row['ip']) ? '' : '<br><span class="small">('.$row['ip'].')</span>');
   }
   $t->arrTd['closed']->content = $strLock;
   $t->arrTd['id']->content = $row['id'];

@@ -63,10 +63,9 @@ footer a{color:#777} footer a:hover{color:#555}
   #banner[data-layout="1"],
   #banner[data-layout="2"]{padding:5px 5px 0 5px;min-height:75px;background:linear-gradient(to bottom, #0C4C8C 20%, var(--bgbanner))}
   /* LANG */
-  #menulang{padding-right: 3px}
+  #menulang{padding-right: 3px;color:#999}
   #menulang a{text-decoration:none}
   #menulang a:hover{text-decoration:underline}
-  #menulang{color:#BBB}
   #menulang .active{color:#FFF;font-weight:bold} #banner[data-layout="0"] #menulang .active{color:#666}
   #menulang a{color:#BBB}                        #banner[data-layout="0"] #menulang a{color:#777}
   #menulang a:hover{color:#FFF}                  #banner[data-layout="0"] #menulang a:hover{color:#000}

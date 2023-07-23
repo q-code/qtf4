@@ -75,7 +75,7 @@ foreach(array_keys($_Domains) as $idDom) {
     $strLastpost = '&nbsp;';
     $logofile = empty($mSec['options']) ? '' : qtExplodeGet($mSec['options'],'logo',''); // specific logo, or '' for default logo
     if ( $mSec['items']>0 ) {
-      $strLastpost = qtDatestr($mSec['lastpostdate'],'$','$',true,true,true);
+      $strLastpost = qtDate($mSec['lastpostdate'],'$','$',true,true,true);
       $strLastpost .= '<a class="lastitem" href="'.url('qtf_item.php').'?t='.$mSec['lastpostpid'].'#p'.$mSec['lastpostid'].'" title="'.L('Goto_message').'"><svg class="svg-symbol symbol-caret-square-right"><use href="#symbol-caret-square-right" xlink:href="#symbol-caret-square-right"></use></svg></a><br><span class="small">'.L('by').' <a href="'.url('qtf_user.php').'?id='.$mSec['lastpostuser'].'">'.$mSec['lastpostname'].'</a></span>';
     }
     $t->arrTd[0]->content = asImg( CSection::makeLogo($logofile,$mSec['type'],$mSec['status']), 'title='.L('Ico_section_'.$mSec['type'].'_'.$mSec['status']), url('qtf_items.php?s='.$idSec) );

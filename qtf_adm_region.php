@@ -130,7 +130,7 @@ echo '<h2 class="config">'.L('Preview').'</h2>
 <table class="t-conf" style="width:250px;">
 ';
 echo '<tr>
-<td class="void right">'.L('Date').'</td><td class="void">'.qtDatestr('now',$_SESSION[QT]['formatdate'],'',false).'</td>
+<td class="void right">'.L('Date').'</td><td class="void">'.qtDate('now',$_SESSION[QT]['formatdate'],'',false).'</td>
 </tr>
 <tr>
 <td class="void right">'.L('Clock').'</td><td class="void">';
