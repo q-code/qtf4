@@ -1,20 +1,23 @@
 <?php // v4.0 build:20230618
-
-session_start();
 /**
-* @var CHtml $oH
+ * @var string $strPrev
+ * @var string $strNext
+ * @var string $urlPrev
+ * @var string $urlNext
  */
-include 'init.php'; if ( SUser::role()!=='A' ) die('Access denied');
+session_start();
+include 'init.php';
+$error='';
+$strPrev= L('Back');
+$strNext= L('Finish');
+$urlPrev = 'setup_3.php';
+$urlNext = 'setup_9.php';
 
-$database = strpos(QDB_SYSTEM,'sqlite') ? '../'.QDB_DATABASE : QDB_DATABASE; // using SQLite, database file is in the root directory
-$oH->error='';
 $strMessage = '';
 
 // CHECK DB VERSION (in case of update)
-
-$oDB = new CDatabase(QDB_SYSTEM,QDB_HOST,$database);
+$oDB = new CDatabase();
 if ( !empty($oDB->error) ) die ('<p><font color="red">Connection with database failed.<br>Please contact the webmaster for further information.</font></p><p>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database.</p>');
-
 $oDB->query( "SELECT setting FROM ".QDB_PREFIX."qtasetting WHERE param='version'" );
 $row=$oDB->getRow();
 
@@ -24,18 +27,18 @@ if ( $row['setting']=='2.0' )
 {
   switch($oDB->type)
   {
-    case 'sqlite':
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD modifdate text" );
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtaforum ADD options text" );
-      break;
-    case 'oci':
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD modifdate varchar2(20)" );
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtaforum ADD options varchar2(255)" );
-      break;
-    default:
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD modifdate varchar(20)" );
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtaforum ADD options varchar(255)" );
-      break;
+  case 'sqlite':
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD modifdate text" );
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtaforum ADD options text" );
+    break;
+  case 'oci':
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD modifdate varchar2(20)" );
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtaforum ADD options varchar2(255)" );
+    break;
+  default:
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD modifdate varchar(20)" );
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtaforum ADD options varchar(255)" );
+    break;
   }
   // update section options
 
@@ -49,7 +52,7 @@ if ( $row['setting']=='2.0' )
   }
   foreach($arr as $strKey=>$strValue)
   {
-    $oDB->exec( "UPDATE ".QDB_PREFIX."qtaforum SET options='$strValue' WHERE id=$strKey" );
+  $oDB->exec( "UPDATE ".QDB_PREFIX."qtaforum SET options='$strValue' WHERE id=$strKey" );
   }
 
   // Register version
@@ -66,15 +69,15 @@ if ( $row['setting']=='2.1' || $row['setting']=='2.2' || $row['setting']=='2.3' 
   $oDB->exec( "UPDATE ".QDB_PREFIX."qtasetting SET setting='2.4' WHERE param='version'" );
   switch($oDB->type)
   {
-    case 'sqlite':
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD param text" );
-      break;
-    case 'oci':
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD param varchar2(255)" );
-      break;
-    default:
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD param varchar(255)" );
-      break;
+  case 'sqlite':
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD param text" );
+    break;
+  case 'oci':
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD param varchar2(255)" );
+    break;
+  default:
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtatopic ADD param varchar(255)" );
+    break;
   }
   $row['setting']='2.4';
   $strMessage .= '<p>Database upgraded to 2.4</p>';
@@ -87,18 +90,18 @@ if ( $row['setting']=='2.4' )
   $oDB->exec( "UPDATE ".QDB_PREFIX."qtasetting SET setting='2.5' WHERE param='version'" );
   switch($oDB->type)
   {
-    case 'sqlite':
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_q text" );
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_a text" );
-      break;
-    case 'oci':
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_q varchar2(255)" );
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_a varchar2(255)" );
-      break;
-    default:
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_q varchar(255)" );
-      $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_a varchar(255)" );
-      break;
+  case 'sqlite':
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_q text" );
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_a text" );
+    break;
+  case 'oci':
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_q varchar2(255)" );
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_a varchar2(255)" );
+    break;
+  default:
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_q varchar(255)" );
+    $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtauser ADD secret_a varchar(255)" );
+    break;
   }
   $row['setting']='2.5';
   $strMessage .= '<p>Database upgraded to 2.5</p>';
@@ -118,11 +121,11 @@ if ( $row['setting']=='3.0' )
 {
   $oDB->exec( "UPDATE ".QDB_PREFIX."qtasetting SET param='item_firstline' WHERE param='section_desc'" );
   $oDB->exec( "UPDATE ".QDB_PREFIX."qtasetting SET setting='4.0' WHERE param='version'" );
+  $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting VALUES ('formatpicture','mime=gif jpg jpeg png;width=120;height=120','1')" );
   $row['setting']='4.0';
   $strMessage .= '<p>Database upgraded to 4.0</p>';
   $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtasetting DROP COLUMN loaded" );
 }
-
 
 // --------
 // HTML BEGIN
@@ -135,28 +138,28 @@ if ( !empty($strMessage) ) echo $strMessage;
 if ( isset($_SESSION['qtfInstalled']) )
 {
 echo '<p>Database 4.0 in place.</p>';
-echo '<p>',L('S_install_exit'),'</p>';
+echo '<p>'.L('S_install_exit').'</p>';
 echo '<div style="width:350px; padding:10px; border-style:solid; border-color:#FF0000; border-width:1px; background-color:#EEEEEE">',L('End_message'),'<br>',L('User'),': <b>Admin</b><br>',L('Password'),': <b>Admin</b><br></div><br>';
 }
 else
 {
-echo '<h2>',L('N_install'),'</h2>';
+echo '<h1>'.L('N_install').'</h1>';
 }
 
 // document folders
 
-$oH->error='';
+$error='';
 if ( !is_dir('upload') )
 {
-  $oH->error .= '<font color=red>Directory <b>upload</b> not found.</font><br>Please create this directory and make it writeable (chmod 777) if you want to allow uploads<br>';
+  $error .= '<font color=red>Directory <b>upload</b> not found.</font><br>Please create this directory and make it writeable (chmod 777) if you want to allow uploads<br>';
 }
 else
 {
-  if ( !is_readable('upload') ) $oH->error .= '<font color=red>Directory <b>upload</b> is not readable.</font><br>Change permissions (chmod 777) if you want to allow uploads<br>';
-  if ( !is_writable('upload') ) $oH->error .= '<font color=red>Directory <b>upload</b> is not writable.</font><br>Change permissions (chmod 777) if you want to allow uploads<br>';
+  if ( !is_readable('upload') ) $error .= '<font color=red>Directory <b>upload</b> is not readable.</font><br>Change permissions (chmod 777) if you want to allow uploads<br>';
+  if ( !is_writable('upload') ) $error .= '<font color=red>Directory <b>upload</b> is not writable.</font><br>Change permissions (chmod 777) if you want to allow uploads<br>';
 }
 
-if ( empty($oH->error) )
+if ( empty($error) )
 {
   $iY = intval(date('Y'));
   for ($i=$iY;$i<=$iY+5;$i++)
@@ -183,6 +186,8 @@ $_SESSION['setup_lang']=$str;
 // HTML END
 // --------
 
-if ( file_exists('check.php') ) echo '<p><a href="check.php">',L('Check_install'),'</a></p>';
+echo '<p>';
+if ( file_exists('tool_check.php') ) echo '<a href="tool_check.php">',L('Check_install'),'...</a>';
+echo '</p>';
 
 include 'setup_ft.php';

@@ -128,7 +128,7 @@ if ( $row['setting']=='3.0' )
 // HTML BEGIN
 // --------
 
-include 'setup_hd.php';
+include APP.'_setup_hd.php';
 
 if ( !empty($strMessage) ) echo $strMessage;
 
@@ -175,9 +175,9 @@ if ( empty($oH->error) )
 }
 
 // DISCONNECT to reload new variables (keep same language)
-$str = $_SESSION['setup_lang'];
+$str = $_SESSION[APP.'_setup_lang'];
 $_SESSION = [];
-$_SESSION['setup_lang']=$str;
+$_SESSION[APP.'_setup_lang']=$str;
 
 // --------
 // HTML END
@@ -185,4 +185,4 @@ $_SESSION['setup_lang']=$str;
 
 if ( file_exists('check.php') ) echo '<p><a href="check.php">',L('Check_install'),'</a></p>';
 
-include 'setup_ft.php';
+include APP.'_setup_ft.php';

@@ -61,8 +61,8 @@ switch($q)
     $data .= getUserImg('../'.$dir, $id, $alt); // output to page without "../"
     $data .= '<p class="ellipsis">'.$row['name'].'</p>';
     switch($row['role']) {
-      case 'A':  $data .= '<p><span data-role="A" onmouseover="titleRole(this);">'.getSimpleSVG('user-A').'</span></p>'; break;
-      case 'M':  $data .= '<p><span data-role="M" onmouseover="titleRole(this);">'.getSimpleSVG('user-M').'</span></p>'; break;
+      case 'A':  $data .= '<p><span data-role="A" onmouseover="titleRole(this);">'.getSimpleSVG('user-a').'</span></p>'; break;
+      case 'M':  $data .= '<p><span data-role="M" onmouseover="titleRole(this);">'.getSimpleSVG('user-m').'</span></p>'; break;
     }
     if ( !empty($row['location']) ) $data .= '<p class="ellipsis"><small>('.$row['location'].')</small></p>';
     break;

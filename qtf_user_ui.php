@@ -6,7 +6,7 @@
 */
 if ( SUser::role()==='A' ) {
   echo '<form id="modaction" method="get" action="'.url(APP.'_register.php').'"><div id="optionsbar">
-'.qtSVG('user-A', 'title='.L('Role_A')).'
+'.qtSVG('user-a', 'title='.L('Role_A')).'
 <select name="a" onchange="if ( this.value!=`` && qtFormSafe.exit(e0) ) document.getElementById(`modaction`).submit();">
 <option value="" disabled selected hidden>'.L('Role_A').' '.L('commands').'</option>
 <option value="adm-reset">'.L('Reset_pwd').'...</option>

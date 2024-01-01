@@ -115,7 +115,7 @@ echo '</span>';
 if ( !empty($oDB->error) || !$b )
 {
   echo '<div class="setup_err">',sprintf (L('E_install'),QDB_PREFIX.'qtaforum',QDB_DATABASE,QDB_USER),'</div>';
-  echo '<br><table  class="ta_button"><tr><td></td><td class="td_button" style="width:120px">&nbsp;<a href="setup_1.php">',L('Restart'),'</a>&nbsp;</td></tr></table>';
+  echo '<br><table  class="ta_button"><tr><td></td><td class="td_button" style="width:120px">&nbsp;<a href="qtf_setup_1.php">',L('Restart'),'</a>&nbsp;</td></tr></table>';
   exit;
 }
 

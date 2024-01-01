@@ -8,8 +8,8 @@
  */
 session_start();
 include 'init.php';
-$urlPrev = 'setup_4.php';
-$urlNext  = 'setup_4.php';
+$urlPrev = APP.'_setup_4.php';
+$urlNext  = APP.'_setup_4.php';
 
 function SqlDrop(string $table, string $constrain='')
 {
@@ -26,7 +26,7 @@ include 'lg_install.php';
 // HTML BEGIN
 // --------
 
-include 'setup_hd.php'; // this will show $oH->error
+include APP.'_setup_hd.php'; // this will show $oH->error
 
 echo '<p>1. <span class="bold">Opening database connection</span>... ';
 
@@ -109,11 +109,11 @@ function doIt(a) { return confirm("Are you sure you want to "+a+"?"); }
 </script>
 ';
 
-echo '<br><p><a href="setup.php">Install...</a>';
+echo '<br><p><a href="qtf_setup.php">Install...</a>';
 if ( file_exists('tool_check.php') ) echo ' | <a href="tool_check.php">Check installation...</a>';
 echo '</p>';
 
 // --------
 // HTML END
 // --------
-include 'setup_ft.php'; // this will show $oH->error
+include APP.'_setup_ft.php'; // this will show $oH->error

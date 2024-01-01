@@ -33,7 +33,7 @@ echo '<style>
 // Dataset (form)
 
 echo '
-<h1>'.$oH->selfname.' '.qtSVG('user-A', 'title=Administrator only').'</h1>
+<h1>'.$oH->selfname.' '.qtSVG('user-a', 'title=Administrator only').'</h1>
 <p><small>As tablename can have prefix in your database, use following alias to query the correct table:<br>
 TABSETTING TABDOMAIN TABSECTION TABTOPIC TABPOST TABUSER TABLANG</small></p>
 

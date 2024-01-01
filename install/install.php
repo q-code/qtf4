@@ -1,3 +1,3 @@
 <?php
 
-include 'qtf_setup.php';
+include 'setup.php';

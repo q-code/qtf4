@@ -265,7 +265,7 @@ echo '<form id="form-edit" method="post" action="'.url($oH->selfurl).'" enctype=
 ';
 
 if ( SUser::isStaff() ) {
-  echo '<div id="optionsbar" title="'.L('Staff').' '.L('commands').'">'.qtSVG('user-M');
+  echo '<div id="optionsbar" title="'.L('Staff').' '.L('commands').'">'.qtSVG('user-m');
   if ( $oP->type==='P' ) {
     echo '<span>'.L('Type').' <select name="topictype" size="1" id="newtopictype" onchange="changeIcon()">';
     echo qtTags(CTopic::getTypes(),$oT->type);

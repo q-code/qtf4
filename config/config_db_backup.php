@@ -5,4 +5,4 @@
   const QDB_PREFIX = "";
   const QDB_USER = "";
   const QDB_PWD = "";
-  const QDB_INSTALL = "2023-12-31 qtf1";
+  const QDB_INSTALL = "2021-10-11 qtf1";

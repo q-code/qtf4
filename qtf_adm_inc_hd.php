@@ -89,7 +89,7 @@ if ( !defined('HIDE_MENU_TOC') || !HIDE_MENU_TOC )
   }
   echo '<div class="group">'.$navMenu->build($oH->selfurl).'<p class="item"><a href="qtf_adm_module.php?a=add" onclick="return qtFormSafe.exit(e0);">['.L('Add').']</a> &middot; <a href="qtf_adm_module.php?a=rem" onclick="return qtFormSafe.exit(e0);">['.L('Remove').']</a></p></div>';
   echo '<a style="display:block;margin:8px 0" class="button center" href="'.APP.'_index.php" onclick="return qtFormSafe.exit(e0);">'.L('Exit').'</a>';
-  echo qtSVG('user-A', 'class=filigrane');
+  echo qtSVG('user-a', 'class=filigrane');
   echo '</div>'.PHP_EOL;
 }
 

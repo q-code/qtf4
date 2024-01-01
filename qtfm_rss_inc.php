@@ -34,8 +34,8 @@ $strState = 't.*,p.title,p.textmsg ';
 $strState .= 'FROM TABTOPIC t INNER JOIN TABPOST p ON t.firstpostid = p.id ';
 $strState .= "WHERE t.forum = $s ";
 $strOrder = 't.lastpostdate DESC';
-$strQ = sqlLimit($strState,$strOrder,0,$top);
-$oDB->query($strQ);
+$sql = sqlLimit($strState,$strOrder,0,$top);
+$oDB->query($sql);
 $i=0;
 $item = [];
 while ($row = $oDB->getRow())

@@ -1,0 +1,18 @@
+PHP server extensions
+---------------------
+
+intl [php_intl.dll]
+  Required
+
+mbstring [php_mbstring.dll]
+  Required
+
+memcached (or legacy memcache) [php_memcached.dll]
+  Recommended. The application detects when a cache is available and can work without cache
+
+gd2 [php_gd.dll or php_gd2.dll]
+  Allows using Image-code as registration security method
+  Optional. The application detects when the gb extension is available and can work without this extension
+
+pdo_mysql, pdo_sqlite or other database connector
+  Depends on the installation options selected

@@ -60,7 +60,7 @@ echo '</span>';
 if ( !empty($oDB->error) )
 {
   echo '<div class="setup_err">',sprintf (L('E_install'),QDB_PREFIX.'qtasetting',QDB_DATABASE,QDB_USER),'</div>';
-  echo '<br><table class="button"><tr><td></td><td class="button" style="width:120px">&nbsp;<a href="setup_1.php">',L('Restart'),'</a>&nbsp;</td></tr></table>';
+  echo '<br><table class="button"><tr><td></td><td class="button" style="width:120px">&nbsp;<a href="qtf_setup_1.php">',L('Restart'),'</a>&nbsp;</td></tr></table>';
   exit;
 }
 
@@ -90,7 +90,7 @@ $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('use_s
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('show_welcome','1')" );
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('items_per_page','20')" );
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('replies_per_page','20')" );
-$oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('language','".(empty($_SESSION['setup_lang']) ? 'en' : $_SESSION['setup_lang'])."')" );
+$oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('language','".(empty($_SESSION['qtf_setup_lang']) ? 'en' : $_SESSION['qtf_setup_lang'])."')" );
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('userlang','1')" );
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('item_firstline','1')" );
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('show_banner','2')" );
