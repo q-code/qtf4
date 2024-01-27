@@ -70,8 +70,6 @@ require '../config/config_cst.php';
 include '../bin/class/class.qt.db.php'; if ( strpos(QDB_SYSTEM,'sqlite') ) define ('QDB_SQLITEPATH', '../');
 $error = '';
 
-$_SESSION[QT.'_usr']['role'] = 'A'; // admin impersonation
-
 // Language (GET from url, otherwise use session)
 if ( isset($_GET['lang']) ) $_SESSION['setup_lang']=$_GET['lang'];
 if ( !isset($_SESSION['setup_lang']) ) $_SESSION['setup_lang']='en';

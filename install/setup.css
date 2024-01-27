@@ -17,19 +17,11 @@ aside{padding-left:0.5rem;border-left:2px dotted #cccccc;font-size:0.8rem;color:
 h1{margin-bottom:1rem;font-size:1.1rem}
 a{color:#0000FF;text-decoration:none}
 a:hover{text-decoration:underline}
-.setup_ok{margin-bottom:1rem;padding:0.2rem 0.5rem;background-color:#CCFFCC;border:1px solid #99FF00}
-
-input{padding:3px 5px;background-color:white;border:solid 1px #d0d0d0}
-button{padding:2px 8px;background-color:#1364B7;opacity:0.8;color:white;border:2px solid #1364B7;text-decoration:none;border-radius:3px}
+.is_ok{margin-bottom:1rem;padding:0.2rem 0.5rem;background-color:#CCFFCC;border:1px solid #99FF00}
+.is_err{margin-bottom:1rem;padding:0.2rem 0.5rem;background-color:#FFFFCC;border:1px solid #FF9900}
+input, select{padding:3px 5px;border:solid 1px #d0d0d0}
+button{padding:3px 8px;background-color:#1364B7;opacity:0.8;color:white;border:2px solid #1364B7;text-decoration:none;border-radius:3px}
 button:hover, button:focus{opacity:1}
-select{padding:2px 5px 2px 2px;border:solid 1px #d0d0d0}
-
-a.footer_menu{color:blue;font-size:8pt}
-
-.t-conn td{padding:4px;vertical-align:middle}
-
-div.setup_err{flex-basis:400px;margin:10px 0 20px 0;padding:5px 10px;color:inherit;background-color:#FFFFCC;border:1px solid #FF9900}
-
-span.button,
 a.button{display:inline-block;margin:0 0 0 0.5rem;padding:7px 15px;border:1px solid #AAA;font-weight:bold;background:linear-gradient(to top,#FFF 3px,#d4d4d4)}
-span.button{color:#AAA}
+a.button:hover{text-decoration:none}
+a.button:not(.disabled):hover{background:linear-gradient(to bottom,#FFF 3px,#d4d4d4)}

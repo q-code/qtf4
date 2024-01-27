@@ -108,17 +108,7 @@ default:
 
 }
 
-echo '<span style="color:blue">';
-$b = $oDB->query($sql);
-echo '</span>';
-
-if ( !empty($oDB->error) || !$b )
-{
-  echo '<div class="setup_err">',sprintf (L('E_install'),QDB_PREFIX.'qtaforum',QDB_DATABASE,QDB_USER),'</div>';
-  echo '<br><table  class="ta_button"><tr><td></td><td class="td_button" style="width:120px">&nbsp;<a href="setup_1.php">',L('Restart'),'</a>&nbsp;</td></tr></table>';
-  exit;
-}
-
+$oDB->query($sql);
 $sql = "INSERT INTO ".QDB_PREFIX."qtaforum (
 id,type,status,notify,domainid,title,titleorder,moderator,moderatorname,options,titlefield,numfield,prefix)
 VALUES (0,'1','0','0',0,'Administration forum',0,1,'Admin','logo=0','1','N','a')";

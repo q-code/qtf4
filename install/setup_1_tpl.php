@@ -19,7 +19,7 @@ if ( isset($_POST['ok']) && !empty($_POST['template']) && file_exists('../config
   $copied = true;
   if ( $_POST['template']!=='config_db_backup.php' ) $copied = copy('../config/config_db.php', '../config/config_db_backup.php');
   $copied = copy('../config/'.$_POST['template'], '../config/config_db.php');
-  $result = $copied ? '<div class="setup_ok">Backup created. Template successfully loaded.</div>' : '<div class="setup_err">Fail to copy</div>';
+  $result = $copied ? '<p class="is_ok">Backup created. Template successfully loaded.</p>' : '<p class="is_err">Fail to copy</p>';
 }
 
 // --------
@@ -44,7 +44,8 @@ if ( count($arrFiles)>0 ) {
 } else {
   echo 'No template in /config/ directory...';
 }
-echo '<p style="margin-top:20px;font-size:0.8rem">Templates are php files starting with "config_db_" in the "/config/" folder.<br>On load, previous parametres are saved as "config_db_backup".</p>';
+echo '<p style="margin-top:20px;font-size:0.8rem">On load, previous parametres are saved as "config_db_backup".<br>
+Templates are in the "/config/" folder.</p>';
 
 // --------
 // HTML END

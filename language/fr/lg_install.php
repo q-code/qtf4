@@ -47,7 +47,7 @@ $L['Help_1'] = '<b>Pour la BDD et les logins</b>: Pour une BDD autre que SQLite,
 $L['Help_2'] = '<b>Database tables</b>: Ceci va installer les tables dans votre base de donnée. Si vous procédez  à un upgrade, veillez sauter cette étape.<br>';
 $L['Help_3'] = '<b>E-mail administrateur</b>: Il est recommendé de donner une adresse de contact. Cette adresse est visible dans la page Conditions générales.<br>';
 
-$L['Prevent_install'] = 'Interdire une autre installation';
+$L['Prevent_install'] = 'Sécuriser l\'installation';
 $L['Disable_install'] = 'Pour des raisons de s&eacutecurit&eacute, il est obligatoire d\'encrypter ou d\'effacer le répertoire install lorsque la configuration est terminée.<br>
 <br>Pour réaliser cela, sélectionnez l\'une des actions suivantes :<br>';
 $L['Disable'][0] = 'Je ferai cette action plus tard';

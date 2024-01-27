@@ -164,16 +164,6 @@ default:
   die('Database type ['.$oDB->type.'] not supported... Must be mysql, sqlsrv, pg, oci');
 }
 
-echo '<span style="color:blue">';
-$b = $oDB->query($sql);
-echo '</span>';
-
-if ( !empty($oDB->error) || !$b )
-{
-  echo '<div class="setup_err">',sprintf (L('E_install'),QDB_PREFIX.'qtauser',QDB_DATABASE,QDB_USER),'</div>';
-  echo '<br><table class="button"><tr><td></td><td class="button" style="width:120px">&nbsp;<a href="setup_1.php">',L('Restart'),'</a>&nbsp;</td></tr></table>';
-  exit;
-}
-
+$oDB->query($sql);
 $oDB->exec( 'INSERT INTO '.QDB_PREFIX.'qtauser (id,name,picture,closed,role,firstdate,lastdate,numpost,privacy,children,parentagree) VALUES (0,"Visitor","0","0","V","'.date('Ymd His').'","'.date('Ymd His').'",0,"0","0","0")' );
 $oDB->exec( 'INSERT INTO '.QDB_PREFIX.'qtauser (id,name,picture,closed,role,pwd,firstdate,lastdate,numpost,privacy,signature,children,parentagree) VALUES (1,"Admin","0","0","A","'.sha1('Admin').'","'.date('Ymd His').'","'.date('Ymd His').'",0,"0","[i][b]The forum Administrator[/b][/i]","0","0")' );

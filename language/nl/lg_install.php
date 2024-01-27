@@ -45,7 +45,7 @@ $L['Help_1'] = '<b>Wat betref database en logins</b>: Behalve SQLite, de databas
 $L['Help_2'] = 'Als u een upgrade van versie 1.x maakt, u moet NIET tabel installeren. Ga naar de volgende stap.<br>';
 $L['Help_3'] = '<b>Contact e-mail</b>: Het is noodzakelijk om een contact e-mail te geven. Dit is zichtbaar in de pagina: Gebruiksvoorwaarden.<br>';
 
-$L['Prevent_install'] = 'Voorkom andere installatie';
+$L['Prevent_install'] = 'Beveilig uw installatie';
 $L['Disable_install'] = 'Om veiligheidsredenen is het verplicht om uw installatiemap te versleutelen of te verwijderen.<br>
 <br>Deze actie kan nu worden uitgevoerd door een van deze opties te selecteren :<br>';
 $L['Disable'][0] = 'Ik zal deze actie later uitvoeren';

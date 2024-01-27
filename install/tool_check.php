@@ -342,7 +342,7 @@ echo '
   if ( $strOff=='1' ) echo 'Your board seams well installed, but is currently <font color="red">off-line</font>.<br>Log as Administrator and go to the Administration panel to turn your board on-line.<br>';
 
 echo '</p><p>';
-if ( is_dir($root.'install') ) echo '<a href="setup_9.php">Prevent other installation...</a> | ';
+if ( is_dir($root.'install') ) echo '<a href="setup_9.php">Secure your installation...</a> | ';
 echo '<a href="'.$root.'qtf_index.php">Go to '.THISAPPNAME.'</a></p>';
 
 // --------

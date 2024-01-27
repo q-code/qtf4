@@ -45,7 +45,7 @@ $L['Help_2'] = '<b>Database tables</b>: This will install the tables in your dat
 $L['Help_3'] = '<b>Board e-mail</b>: It\'s recommended to provide a contact e-mail address. This adress is visible in the page: General conditions.<br>';
 
 
-$L['Prevent_install'] = 'Prevent other installation';
+$L['Prevent_install'] = 'Secure your installation';
 $L['Disable_install'] = 'For security reason it\'s mandatory to encrypt or remove your install folder.<br>
 <br>Select your preference:<br>';
 $L['Disable'][0] = 'I will perform this action later';

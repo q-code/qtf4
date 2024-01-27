@@ -33,12 +33,12 @@ if ( !empty($_GET['sqlite']) ) try {
   $oDB = new CDatabase($arr['QDB_SYSTEM'],'',$arr['QDB_DATABASE'],'','',true); // true to create sqlite file
   if ( !empty($oDB->error) ) throw new Exception( 'Unable to create SQLite database file: '.$arr['QDB_DATABASE'].'<br>'.$oDB->error );
   // end
-  echo '<div class="setup_ok">'.L('S_connect').'</div>';
+  echo '<p class="is_ok">'.L('S_connect').'</p>';
 
 } catch (Exception $e) {
 
   $error = $e->getMessage();
-  echo '<div class="setup_err">Unable to create SQLite database file: '.$arr['QDB_DATABASE'].'<br>'.$error.'</div>';
+  echo '<p class="is_err">Unable to create SQLite database file: '.$arr['QDB_DATABASE'].'<br>'.$error.'</p>';
 
 }
 
@@ -77,7 +77,7 @@ if ( isset($_POST['ok']) ) try {
   const QDB_INSTALL = "'.$date.' '.APP.substr($date,-1).'";'; // default memory namespace is "qtf{n}"
   $error = saveToFile('../config/config_db.php',$str); // SAVE TO FILE
   if ( !empty($error) ) throw new Exception( L('E_save').'<br>'.$error );
-  echo '<div class="setup_ok">',L('S_save'),'</div>';
+  echo '<p class="is_ok">'.L('S_save').'</p>';
 
   // Test Connection
   if ( $arr['QDB_SYSTEM']=='pdo.sqlite' || $arr['QDB_SYSTEM']=='sqlite' )
@@ -98,12 +98,12 @@ if ( isset($_POST['ok']) ) try {
     if ( !empty($oDB->error) ) throw new Exception( sprintf(L('E_connect'),$arr['QDB_DATABASE'],$arr['QDB_HOST']).'<br>'.$oDB->error );
   }
   // Test Result
-  echo '<div class="setup_ok">'.L('S_connect').'</div>';
+  echo '<p class="is_ok">'.L('S_connect').'</p>';
 
 } catch (Exception $e) {
 
   $error = $e->getMessage();
-  echo '<div class="setup_err">'.$error.'</div>';
+  echo '<p class="is_err">'.$error.'</p>';
 
 }
 
@@ -178,8 +178,7 @@ echo '<tr id="db-host"',($arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']
 </form>
 ';
 
-echo '<aside>'.L('Help_1').'</aside>
-';
+$aside = L('Help_1');
 
 // --------
 // HTML END

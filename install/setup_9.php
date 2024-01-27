@@ -68,8 +68,7 @@ include 'setup_hd.php'; // this will show $error
 
 if ( isset($_POST['method']) )
 {
-  switch($_POST['method'])
-  {
+  switch($_POST['method']) {
     case 'm0':
       redirect($urlNext);
       break;
@@ -87,7 +86,7 @@ if ( isset($_POST['method']) )
         $_SESSION[QT.'splash'] = 'Install deleted';
         redirect('../'.APP.'_index.php');
       } catch (Exception $e) {
-        echo '<div class="setup_err">'.$e->getMessage().'</div>';
+        echo '<p class="is_err">'.$e->getMessage().'</p>';
       }
       break;
   }
@@ -99,13 +98,12 @@ echo '<h1>'.L('Prevent_install').'</h1>';
 
 echo '<p>'.L('Disable_install').'</p>';
 
-echo '<div style="margin:20px"><form action="'.$selfurl.'" method="post">';
+echo '<form action="'.$selfurl.'" method="post">';
 echo '<p style="margin:10px 0"><input type="radio" id="m0" name="method" value="m0" checked>&nbsp;<label for="m0">'.L('Disable.0').'</label></p>';
 echo '<p style="margin:10px 0"><input type="radio" id="m1" name="method" value="m1">&nbsp;<label for="m1">'.L('Disable.1').'</label></p>';
 echo '<p style="margin:10px 0"><input type="radio" id="m2" name="method" value="m2">&nbsp;<label for="m2">'.L('Disable.2').'</label></p>';
 echo '<p style="margin:10px 0"><button type="submit">'.L('Ok').'</button></p>';
-echo '</form>
-</div>';
+echo '</form>';
 
 
 // --------

@@ -53,17 +53,7 @@ default:
 
 }
 
-echo '<span style="color:blue">';
 $oDB->exec($sql);
-echo '</span>';
-
-if ( !empty($oDB->error) )
-{
-  echo '<div class="setup_err">',sprintf (L('E_install'),QDB_PREFIX.'qtasetting',QDB_DATABASE,QDB_USER),'</div>';
-  echo '<br><table class="button"><tr><td></td><td class="button" style="width:120px">&nbsp;<a href="setup_1.php">',L('Restart'),'</a>&nbsp;</td></tr></table>';
-  exit;
-}
-
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('version','4.0')" );
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('board_offline','1')" );
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtasetting (param,setting) VALUES ('site_name','QT-cute')" );

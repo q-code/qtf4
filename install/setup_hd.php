@@ -18,10 +18,11 @@ echo '<body'.(empty($self) ? '' : ' class="'.$self.'"').'>
 <main>
 <header class="flex-sp bot">
   <img id="logo" src="'.APP.'_logo.gif" alt="'.APPNAME.'" title="'.APPNAME.'" />
-  <p>'.L('Installation').' '.APPNAME.' v'.VERSION.' '.BUILD.'</p>
+  <p class="small">'.L('Installation').' '.APPNAME.' v'.VERSION.' '.BUILD.'</p>
 </header>
 '.(empty($tools) ? '' : $tools).'
 <div class="main">
+<div class="content">
 ';
 
-if ( !empty($error) ) echo '<div class="setup_err">'.$error.'</div>';
+if ( !empty($error) ) echo '<p class="is_err">'.$error.'</p>';

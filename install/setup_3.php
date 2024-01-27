@@ -37,9 +37,6 @@ if ( !isset($_SESSION[QT]['admin_email']) ) $_SESSION[QT]['admin_email']='';
 
 include 'setup_hd.php';
 
-echo '<form method="post" name="install" action="setup_3.php">
-';
-
 // Submitted
 
 if ( !empty($_POST['admin_email']) ) {
@@ -47,12 +44,12 @@ if ( !empty($_POST['admin_email']) ) {
     $_SESSION[QT]['admin_email'] = $_POST['admin_email'];
     $oDB->updSetting('admin_email');
     if ( empty($oDB->error) ) {
-    echo '<div class="setup_ok">',L('S_save'),'</div>';
+    echo '<p class="is_ok">'.L('S_save').'</p>';
     } else {
-      echo '<div class="setup_err">',sprintf (L('E_connect'),QDB_DATABASE,QDB_HOST),'</div>';
+      echo '<p class="is_err">'.sprintf (L('E_connect'),QDB_DATABASE,QDB_HOST).'</p>';
     }
   } else {
-    echo '<div class="setup_err">Invalid e-mail</div>';
+    echo '<p class="is_err">Invalid e-mail</p>';
   }
   // save the url
   $strURL = 'http'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on' ? 's' : '').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
@@ -62,10 +59,12 @@ if ( !empty($_POST['admin_email']) ) {
 
 // Form
 
-echo '<h1>'.L('Board_email').'</h1>
+echo '<form method="post" name="install" action="setup_3.php">
+<h1>'.L('Board_email').'</h1>
 <p><input required type="email" name="admin_email" value="',$_SESSION[QT]['admin_email'],'" size="30" maxlength="100"/> <button type="submit" name="ok" value="ok">'.L('Save').'</button></p>
 </form>
-<aside>'.L('Help_3').'</aside>
 ';
+
+$aside = L('Help_3');
 
 include 'setup_ft.php';

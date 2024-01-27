@@ -106,7 +106,7 @@ function attrDecode(string $str, string $sep='|', string $required='')
   // Note: For an unformatted $str, the array [0=>$str] is returned
   // $required allow adding some default attributes if not declared in $str
   if ( empty($str) && empty($required) ) return [];
-  $str = $required.$sep.$str;
+  if ( !empty($required) ) $str = $required.$sep.$str;
   if ( substr_count($str,$sep)===0 && substr_count($str,'=')===0 ) return [$str]; // $str not compacted
   $attr = [];
   foreach(qtCleanArray($str,$sep) as $str) {
@@ -388,10 +388,10 @@ function qtImplode(array $arr, string $sep='&', bool $skipNull=true)
 function qtCleanArray(string $str, string $sep=';', array $append=[])
 {
   if ( empty($str) ) return $append ? array_unique(array_filter(array_map('trim',$append))) : [];
-  if ( trim($sep)==='' ) die(__FUNCTION__.' invalid separator (use explode with space separator)' );
+  if ( trim($sep)==='' ) die(__FUNCTION__.' invalid separator. For space use explode()');
   $arr = explode($sep,$str); if ( $append ) $arr = array_merge($arr,$append);
   return array_unique(array_filter(array_map('trim',$arr)));
-  // NOTE: if $append contains sub-array, they are skipped and php generates a warning
+  // NOTE: if $append contains sub-array, they are skipped and php throws a warning
 }
 /**
  * Switch between mail() and external-PHPMailer (unsing class.pop3.php and class.smtp.php)
