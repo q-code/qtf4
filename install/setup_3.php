@@ -42,7 +42,7 @@ include 'setup_hd.php';
 if ( !empty($_POST['admin_email']) ) {
   if ( qtIsEmail($_POST['admin_email']) ) {
     $_SESSION[QT]['admin_email'] = $_POST['admin_email'];
-    $oDB->updSetting('admin_email');
+    $oDB->exec( "UPDATE TABSETTING SET setting='".$_POST['admin_email']."' WHERE param='admin_email'" );
     if ( empty($oDB->error) ) {
     echo '<p class="is_ok">'.L('S_save').'</p>';
     } else {
@@ -54,7 +54,7 @@ if ( !empty($_POST['admin_email']) ) {
   // save the url
   $strURL = 'http'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on' ? 's' : '').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
   $strURL = substr($strURL,0,-24);
-  $oDB->updSetting('site_url', $strURL);
+  $oDB->exec( "UPDATE TABSETTING SET setting='$strURL' WHERE param='site_url'" );
 }
 
 // Form

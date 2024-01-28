@@ -22,8 +22,7 @@ $L['Database_user'] = 'Gebruiker (login/wachtwoord)';
 $L['Table_prefix'] = 'Tabel prefixe';
 $L['Create_tables'] = 'Tabels in uw database[%s] make';
 $L['Htablecreator'] = 'Als database gebruiker geen recht heeft om de tabel te make, u can here een andere login/wachtwoord geven.';
-$L['Upgrade'] = 'Als u een upgrade van versie 3.x maakt, hier zijn uw vorige parameters. U kan click Volgende.';
-$L['Upgrade2'] = 'Als u een upgrade van versie 3.x maakt, u moet NIET tabel installeren en ga naar de volgende stap.';
+$L['Not_install_on_upgrade'] = 'Als u een upgrade van versie 3.x maakt, u moet NIET tabel installeren en ga naar de volgende stap.';
 $L['End_message'] = 'U kunt de forum als Admin bereiken';
 $L['Check_install'] = 'Installatie controleren';
 

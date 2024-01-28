@@ -23,8 +23,7 @@ $L['Table_prefix'] = 'Table prefix';
 $L['Create_tables'] = 'Create tables into database [%s]';
 $L['Htablecreator'] = 'If the database user is not granted to create table, you can enter here an alternate login.';
 $L['End_message'] = 'You can access the board as Admin.';
-$L['Upgrade'] = 'If you upgrade from version 3.x, your previous settings are displayed here. You can continue to the next step.';
-$L['Upgrade2'] = 'If you upgrade from version 3.x, you do NOT have to install the tables and you can continue to the next step.';
+$L['Not_install_on_upgrade'] = 'If you upgrade from version 3.x, do NOT install the tables. You can continue to the next step.';
 $L['Check_install'] = 'Check installation';
 
 $L['Default_setting'] = 'default settings inserted.';

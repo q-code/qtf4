@@ -8,8 +8,8 @@
  */
 session_start();
 include 'init.php';
-$urlPrev = 'setup_4.php';
-$urlNext  = 'setup_4.php';
+$urlPrev = 'setup_2.php';
+$urlNext  = 'setup_2.php';
 
 function SqlDrop(string $table, string $constrain='')
 {

@@ -6,23 +6,13 @@ session_start();
 include 'init.php';
 
 // --------
-// Basic check
-// --------
-
-$bConfig = false;
-if ( file_exists('../config/config_db.php') ) {
-if ( is_readable('../config/config_db.php') ) {
-if ( is_writable('../config/config_db.php') ) {
-  $bConfig=true;
-}}}
-
-// --------
 // Html start
 // --------
 
 include 'setup_hd.php'; // this will show $oH->error
 
-if ( !$bConfig ) {
+// Check config_db
+if ( !file_exists('../config/config_db.php') || !is_readable('../config/config_db.php') || !is_writable('../config/config_db.php') ) {
   echo '<h2 style="color:#000000;margin:10px 0 5px 0">[EN] Before install</h2>';
   echo '<p>The configuration file <span class="bold">config/config_db.php</span> is not writable. Please make this file writable before starting installation (e.g. with a FTP client, set the file attributes to chmod 777)</p>';
   echo '<h2 style="color:#666666;margin:0 0 5px 20px">[FR] Avant d\'installer</h2>';
@@ -33,6 +23,7 @@ if ( !$bConfig ) {
   exit;
 }
 
+// Check config_lang
 if ( !file_exists('../config/config_lang.php') ) {
   echo '<h2 style="color:#000000;margin:10px 0 5px 0">[EN] Before install</h2>';
   echo '<p>The configuration file <span class="bold">config/config_lang.php</span> is missing. Please make this file available before starting installation.</p>';
@@ -47,17 +38,17 @@ if ( !file_exists('../config/config_lang.php') ) {
 // Read language subdirectories
 include '../config/config_lang.php';
 $arrOptions = [];
-foreach(LANGUAGES as $k=>$values) {
-  $arr = explode(' ',$values,2); if ( empty($arr[1]) ) $arr[1] = $arr[0];
-  if ( file_exists('../language/'.$k.'/lg_install.php') ) $arrOptions[$k] = $arr[1];
+foreach(LANGUAGES as $iso=>$lang) {
+  $arr = explode(' ',$lang,2); if ( empty($arr[1]) ) $arr[1] = $arr[0];
+  if ( file_exists('../language/'.$iso.'/lg_install.php') ) $arrOptions[$iso] = $arr[1];
 }
 asort($arrOptions);
 
 echo '<h1 class="center">Language ?</h1>
 <form method="get" action="setup_1.php">
 <p class="center"><select name="lang" size="1">';
-foreach($arrOptions as $key=>$str) {
-  echo '<option value="'.$key.'"'.($_SESSION['setup_lang']===$key ? ' selected' : '').'>'.$str.'</option>';
+foreach($arrOptions as $iso=>$lang) {
+  echo '<option value="'.$iso.'"'.($_SESSION['setup_lang']===$iso ? ' selected' : '').'>'.$lang.'</option>';
 }
 echo '</select>
 <button type="submit">Ok</button>

@@ -37,7 +37,7 @@ if ( isset($_POST['ok']) ) {
     // Install the tables
     $out = '';
     $table = TABSETTING;
-    $out .= '<p>A) '.L('Installation').' '.$table.'... ';
+    $out .= 'A) '.L('Installation').' '.$table.'... ';
     include 'qtf_table_setting.php';
     $out .= L('Done').', '.L('Default_setting').'<br>';
     $table = TABDOMAIN;
@@ -63,7 +63,7 @@ if ( isset($_POST['ok']) ) {
     $table = TABLANG;
     $out .= 'G) '.L('Installation').' '.$table.'... ';
     include 'qtf_table_lang.php';
-    $out .= L('Done').'</p>';
+    $out .= L('Done');
     if ( !empty($oDB->error) ) throw new Exception( $oDB->error );
 
     echo '<p>'.$out.'</p>
@@ -88,7 +88,7 @@ else
 
   echo '<form method="post" name="install" action="setup_2.php" onsubmit="showWait()">
   <h1>'.L('Install_db').'</h1>
-  <p>'.L('Upgrade2').'</p>
+  <p class="italic">'.L('Not_install_on_upgrade').'</p>
   <br>
   <p><button type="submit" id="btn-create" name="ok" value="ok" onclick="return this.innerHTML!=msgWait">'.sprintf(L('Create_tables'),QDB_DATABASE).'</button></p>
   </form>
