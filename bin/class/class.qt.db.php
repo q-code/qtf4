@@ -475,9 +475,10 @@ public function getHost() {
  * Update application setting(s), can be used only when user is Admin. Value must be unquoted
  * @param string|array $arrParam parametre(s) to update
  * @param null|string $value use null to get value from session variable having the same name
+ * @param bool $userAsAdmin overwrite session user control (is used during setup)
  */
-public function updSetting($param, $setting=null) {
-  if ( !isset($_SESSION[QT.'_usr']['role']) || $_SESSION[QT.'_usr']['role']!=='A' ) die(__METHOD__.' access denied');
+public function updSetting($param, $setting=null, bool $userAsAdmin=false) {
+  if ( !$this->userisstaff && !$userAsAdmin ) die(__METHOD__.' access denied');
   // works recursively on array
   if ( is_array($param) ) { foreach($param as $item) $this->updSetting($item,$setting); return; }
   // NOTE: arguments must be [strict]string and cannot contain single-quote

@@ -42,7 +42,7 @@ include 'setup_hd.php';
 if ( !empty($_POST['admin_email']) ) {
   if ( qtIsEmail($_POST['admin_email']) ) {
     $_SESSION[QT]['admin_email'] = $_POST['admin_email'];
-    $oDB->exec( "UPDATE TABSETTING SET setting='".$_POST['admin_email']."' WHERE param='admin_email'" );
+    $oDB->updSetting('admin_email',null,true);
     if ( empty($oDB->error) ) {
     echo '<p class="is_ok">'.L('S_save').'</p>';
     } else {
@@ -54,14 +54,14 @@ if ( !empty($_POST['admin_email']) ) {
   // save the url
   $strURL = 'http'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on' ? 's' : '').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
   $strURL = substr($strURL,0,-24);
-  $oDB->exec( "UPDATE TABSETTING SET setting='$strURL' WHERE param='site_url'" );
+  $oDB->updSetting('site_url',$strURL,true);
 }
 
 // Form
 
 echo '<form method="post" name="install" action="setup_3.php">
 <h1>'.L('Board_email').'</h1>
-<p><input required type="email" name="admin_email" value="',$_SESSION[QT]['admin_email'],'" size="30" maxlength="100"/> <button type="submit" name="ok" value="ok">'.L('Save').'</button></p>
+<p><input required type="email" name="admin_email" value="'.$_SESSION[QT]['admin_email'].'" size="30" maxlength="100"/> <button type="submit" name="ok" value="ok">'.L('Save').'</button></p>
 </form>
 ';
 
