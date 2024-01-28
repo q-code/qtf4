@@ -37,7 +37,7 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 
 /* MSGBOX general */
 .msgbox{margin:0 auto;width:450px;background-color:var(--bgform);border:solid 1px #0080FF;border-radius:5px 5px 0 0;box-shadow:0 2px 5px #999999}
-.msgbox.next{margin-top:1.5rem}
+.msgbox + .msgbox{margin-top:1.5rem}
 .msgbox.short{width:350px}
 @media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:475px} .msgbox.short{width:375px}}
 @media screen and (min-width:1280px){.msgbox{width:500px}  .msgbox.short{width:400px}}
