@@ -1,4 +1,4 @@
-<?php // v6.3 build:20240118
+<?php // v6.2 build:20230618
 
 // REQUIREMENTS:
 // Methods use typed-arguments (basic types)
@@ -36,7 +36,11 @@ debug into log-stack requires in addition a $oH object (instance of the CHtml cl
 class CDatabase
 {
 
-private $type; // framework used to connect database engine (must be in lowercase). Ex: pdo.mysql
+public $type; // framework used to connect database engine (must be in lowercase). Ex: pdo.mysql
+public $error = ''; // Error message (must be set as string)
+public $debug = false; // With debug true, queries are shown (and full error message), with 'log' query is send to CHtml->log stack
+public $debugForStaffOnly = true; // When degug is active, show the SQL-query/prepare only when a staff/admin is connected (hides sql-statements when visitor/user try to debug)
+public $stats; // timer and query counter, initialized by using startStats() method
 private $host; // server host name and port if required. NOT USED with sqlite. When port is used, storing format is 'host=hostname;port=1234'
 private $db;   // database name
 private $user; // NOT USED with sqlite
@@ -45,30 +49,9 @@ private $con;  // Connection as PDO object (or connection id for legacy driver)
 private $qry;  // PDOstatement object (or query id for legacy driver)
 private $transac = false; // is transaction started
 private $singlequote = true; // String-literal delimiter: singlequote is recommended because db-server may have ansi_quote enabled (i.e. use doublequote as identifier)
-
-public $stats; // [NULL|array] timer and query counter (NULL means no stats). startStats() initializes the array.
-public $error = ''; // Error message (must be set as string)
-public $debug = false; // With debug true, queries are shown (and full error message), with 'log' query is send to CHtml->log stack
-public $debugForStaffOnly = true; // When degug is active, show the SQL-query/prepare only when a staff/admin is connected (hides sql-statements when visitor/user try to debug)
 private $userisstaff = false; // true when construct() detect that current user (session) is a staff member. Used to be independant from SUser class
 private $throwexception = true; // Halt() will throw exception in case of sql error. With FALSE, the script continues. In case of database connection error it die()
 
-// SETTING METHODS
-public function startStats()
-{
-  $t = (float)vsprintf('%d.%06d', gettimeofday());
-  $this->stats = ['num'=>0, 'start'=>$t, 'pagestart'=>$t, 'rows'=>0];
-}
-public function setSinglequote(bool $b=true)
-{
-  $this->singlequote = $b;
-}
-public function setThrowException(bool $b=true)
-{
-  $this->throwexception = $b;
-}
-
-// CORE METHODS
 public function __construct(string $type='', string $host='', string $db='', string $user='', string $pwd='', bool $createSqliteFile=false)
 {
   $this->type = empty($type) ? QDB_SYSTEM : $type;
@@ -77,15 +60,21 @@ public function __construct(string $type='', string $host='', string $db='', str
   if ( defined('QDB_SQLITEPATH') ) $this->db = QDB_SQLITEPATH.$this->db; // sqlite may required filepath "../" if php is running from subfolder
   $this->user = empty($user) ? QDB_USER : $user;
   $this->pwd = empty($pwd) ? QDB_PWD : $pwd;
-
-  // QT SESSION hacks
-  $this->userisstaff = isset($_SESSION[QT.'_usr']['role']) && ($_SESSION[QT.'_usr']['role']==='A' || $_SESSION[QT.'_usr']['role']==='M');
+  $this->userisstaff = isset($_SESSION[QT.'_usr']['role']) && ($_SESSION[QT.'_usr']['role']==='A' || $_SESSION[QT.'_usr']['role']==='M') ;
   if ( !empty($_SESSION['QTstatsql']) ) $this->startStats();
+  // debug mode
   if ( isset($_SESSION['QTdebugsql']) && $_SESSION['QTdebugsql'] ) $this->debug = true;
   if ( isset($_SESSION['QTdebugsql']) && $_SESSION['QTdebugsql']==='log' && isset($GLOBALS['oHtml']) ) { $this->debug = 'log'; }
-
-  // Connect
+  // connect
   return $this->connect($createSqliteFile);
+}
+public function setSinglequote(bool $b=true)
+{
+  $this->singlequote = $b;
+}
+public function setThrowException(bool $b=true)
+{
+  $this->throwexception = $b;
 }
 private function connect(bool $createSqliteFile=false)
 {
@@ -150,14 +139,15 @@ public function beginTransac()
 {
   if ( $this->transac ) return; // already in transaction
 
-  switch($this->type) {
-    case 'pdo.mysql':
-    case 'pdo.sqlsrv':
-    case 'pdo.pg':
-    case 'pdo.oci':
-    case 'pdo.sqlite':
-      $this->transac = $this->con->beginTransaction(); // Can be false (in case of transaction not supported by server)
-      break;
+  switch($this->type)
+  {
+  case 'pdo.mysql':
+  case 'pdo.sqlsrv':
+  case 'pdo.pg':
+  case 'pdo.oci':
+  case 'pdo.sqlite':
+    $this->transac = $this->con->beginTransaction(); // Can be false (in case of transaction not supported by server)
+    break;
   }
   if ( $this->debug===true ) echo '<p style="padding:2px;background-color:#fff;color:#1364B7;font-size:9pt;font-weight:normal;font-family:Verdana,Arial">SQL: begin transaction ('.($this->transac ? 'success' : 'failed').')</p>';
   if ( $this->debug==='log' ){ global $oH; $oH->log[] = 'SQL: begin transaction ('.($this->transac ? 'success' : 'failed').')'; }
@@ -231,8 +221,7 @@ private function sqlQuote($value)
   $q = $this->singlequote ? "'" : '"';
   return $q.$value.$q;
 }
-private function sqlConst(string $sql)
-{
+private function sqlConst(string $sql) {
   // Use actual tablenames (constant in the sql statement is replaced by the constant value) - only uppercase
   foreach(TABTABLES as $table) {
     if ( strpos($sql,$table) ) {
@@ -287,7 +276,7 @@ public function query(string $sql, array $sqlValues=[])
     $this->halt(null,$sql);
     return false;
   }
-  if ( $this->stats ) { ++$this->stats['num']; $this->stats['end']=(float)vsprintf('%d.%06d', gettimeofday()); }
+  if ( isset($this->stats) ) { ++$this->stats['num']; $this->stats['end']=(float)vsprintf('%d.%06d', gettimeofday()); }
   return true; // success
 }
 private function queryDirect(string $sql)
@@ -328,12 +317,12 @@ private function queryDirect(string $sql)
     $this->halt(null);
     return false;
   }
-  if ( $this->stats ) { ++$this->stats['num']; $this->stats['end']=(float)vsprintf('%d.%06d', gettimeofday()); }
+  if ( isset($this->stats) ) { ++$this->stats['num']; $this->stats['end']=(float)vsprintf('%d.%06d', gettimeofday()); }
   return true; // success
 }
 public function exec(string $sql, array $sqlValues=[])
 {
-  if ( $this->stats ) ++$this->stats['num'];
+  if ( isset($this->stats) ) ++$this->stats['num'];
   $sql = $this->sqlConst($sql); // actual tablenames (constant-name in the sql statement is replaced by the constant value) - only uppercase
 
   // Direct query (no preparation args or no pdo)
@@ -391,11 +380,10 @@ private function execDirect(string $sql)
  * @param array|false $sqlValues list of values in case of prepared statement (false to make a direct query)
  * @return integer the count result (0 if no result field "countid")
  */
-public function count(string $sql, array $sqlValues=[])
-{
+public function count(string $sql, array $sqlValues=[]) {
   // Execute a count(*) query. Can also be math function like max(id)...
   // Note: the computed value is supposed to be returned as integer (or false if no data found)
-  if ( empty($sql) ) die(__METHOD__.' invalid sql');
+  if ( empty($sql) ) die('CDatabase::count invalid argument');
   if ( strtoupper(substr($sql,0,6))!=='SELECT' ) $sql = 'SELECT count(*) as countid FROM '.$sql; // support short sql statement
   $this->query($sql,$sqlValues);
   $row = $this->getRow();
@@ -403,7 +391,7 @@ public function count(string $sql, array $sqlValues=[])
 }
 public function nextId(string $table='', string $field='id', string $where='')
 {
-  if ( empty($table) || empty($field) ) die(__METHOD__.' invalid argument');
+  if ( empty($table) || empty($field) ) die('CDatabase->nextId: invalid arguments');
   return $this->count( "SELECT max($field)+1 as countid FROM $table $where" );
 }
 public function getRows(int $max=999)
@@ -474,9 +462,14 @@ private function addErrorInfo()
   case 'oci':    $e=oci_error(); $this->error .= $e['message']; break;
   }
 }
-public function getHost()
+public function startStats()
 {
-  return $this->type==='pdo.sqlite' || $this->type==='sqlite' ? '(local file) '.$this->db : $this->host;
+  $t = (float)vsprintf('%d.%06d', gettimeofday());
+  $this->stats=array( 'num'=>0, 'start'=>$t, 'pagestart'=>$t, 'rows'=>0 );
+}
+public function getHost() {
+  if ( $this->type=='sqlite' || $this->type=='pdo.sqlite' ) return '(local file) '.$this->db;
+  return $this->host;
 }
 /**
  * Update application setting(s), can be used only when user is Admin. Value must be unquoted
@@ -484,8 +477,7 @@ public function getHost()
  * @param null|string $value use null to get value from session variable having the same name
  * @param bool $userAsAdmin overwrite session user control (is used during setup)
  */
-public function updSetting($param, $setting=null, bool $userAsAdmin=false)
-{
+public function updSetting($param, $setting=null, bool $userAsAdmin=false) {
   if ( !$this->userisstaff && !$userAsAdmin ) die(__METHOD__.' access denied');
   // works recursively on array
   if ( is_array($param) ) { foreach($param as $item) $this->updSetting($item,$setting); return; }
@@ -496,8 +488,7 @@ public function updSetting($param, $setting=null, bool $userAsAdmin=false)
   if ( strpos($setting,"'")!==false || strpos($param,"'")!==false ) die(__METHOD__.' setting or param contains a quote');
   $this->exec( "UPDATE TABSETTING SET setting='$setting' WHERE param='$param'" );
 }
-public function getSettings(string $where='', bool $register=false)
-{
+public function getSettings(string $where='', bool $register=false) {
   // Returns settings [array] matching with $where condition (use '' to get ALL settings)
   // Can also register key-value in $_SESSION[QT]
   $arr = [];
@@ -524,8 +515,7 @@ public function getSetting(string $key='', string $dflt='')
  * @param boolean $tag convert < and > (true by default)
  * @return string
  */
-public static function sqlEncode(string $str, bool $double=true, bool $amp=false, bool $tag=true)
-{
+public static function sqlEncode(string $str, bool $double=true, bool $amp=false, bool $tag=true) {
   if ( empty($str) ) return $str;
   if ( $amp && strpos($str,'&')!==false ) $str = str_replace('&','&#38;',$str);
   if ( $double && strpos($str,'"')!==false ) $str = str_replace('"','&#34;',$str);
@@ -533,8 +523,7 @@ public static function sqlEncode(string $str, bool $double=true, bool $amp=false
   if ( $tag && strpos($str,'>')!==false ) $str = str_replace('>','&#62;',$str);
   return strpos($str,"'")===false ? $str : str_replace("'",'&#39;',$str);
 }
-public static function sqlDecode(string $str, bool $double=true, bool $amp=false, bool $tag=true)
-{
+public static function sqlDecode(string $str, bool $double=true, bool $amp=false, bool $tag=true) {
   if ( empty($str) || strpos($str,'&')===false ) return $str;
   if ( $amp && strpos($str,'&#38;')!==false ) $str = str_replace('&#38;','&',$str);
   if ( $double && strpos($str,'&#34;')!==false ) $str = str_replace('&#34;','"',$str);
