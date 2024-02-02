@@ -262,21 +262,18 @@ public static function registerUser(CDatabase $oDB, string $name='', string $pas
 public static function delete(CDatabase $oDB, int $id=0)
 {
   if ( $id<2 ) die('self::delete invalid argument');
+  SMem::clear('_Sections');
   $oDB->beginTransac();
   $oDB->exec( "UPDATE TABPOST SET userid=0,username='Visitor' WHERE userid=".$id );
   $oDB->exec( "UPDATE TABTOPIC SET firstpostuser=0,firstpostname='Visitor' WHERE firstpostuser=".$id );
   $oDB->exec( "UPDATE TABTOPIC SET lastpostuser=0,lastpostname='Visitor' WHERE lastpostuser=".$id );
   $oDB->exec( "UPDATE TABSECTION SET moderator=1,moderatorname='Admin' WHERE moderator=".$id );
   $oDB->exec( "DELETE FROM TABUSER WHERE id=".$id );
-  $b = $oDB->commitTransac(); // return false in case of query error or transaction failed
-  SMem::clear('_Sections');
-  if ( $b )
-  {
-    self::deletePicture($id); // remove picture
-    SMem::clear('_NewUser'); // clear memcache
-    return true;
-  }
-  return false;
+  if ( !$oDB->commitTransac() ) return false; // return false in case of error or transaction failed
+  // delete linked asset
+  self::deletePicture($id); // remove picture
+  SMem::clear('_NewUser'); // clear memcache
+  return true;
 }
 public static function deletePicture($ids)
 {
