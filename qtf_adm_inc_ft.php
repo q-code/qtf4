@@ -8,15 +8,8 @@ echo '
 </div>
 ';
 
-if ( isset($oDB->stats) )
-{
-  $end = (float)vsprintf('%d.%06d', gettimeofday());
-  $str = '';
-  if ( isset($oDB->stats['num']) ) $str .= $oDB->stats['num'].' query. ';
-  if ( isset($oDB->stats['rows']) ) $str .= $oDB->stats['rows'].' rows fetched. ';
-  if ( isset($oDB->stats['start']) ) $str .= 'End queries in '.round($end-$oDB->stats['start'],4).' sec. ';
-  if ( isset($oDB->stats['pagestart']) ) $str .= 'End page in '.round($end-$oDB->stats['pagestart'],4).' sec. ';
-  $oH->log[] = $str;
+if ( isset($oDB->stats) ) {
+  $oH->log[] = vsprintf('%d queries. %d rows fetched in %01.4f sec.', [$oDB->stats['num'], $oDB->stats['rows'], (float)vsprintf('%d.%06d', gettimeofday()) - $oDB->stats['start']]);
 }
 
 echo '
