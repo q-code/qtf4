@@ -3,7 +3,7 @@
 /*
 Methods use typed-arguments (basic types).
 Methods typed-return and typed-properties are NOT used to stay compatible with php 7.1
-(typed-properties requires php 7.4, method typed-return requires php 8, mixed or pseudo-types requires php 8)
+(typed-properties requires php 7.4, method typed-return, mixed or pseudo-types requires php 8)
 
 REQUIREMENTS:
 Constant QT must be defined before instanciating CDatabase
@@ -11,16 +11,15 @@ Constant QDB_SQLITEPATH must be defined if using SQLite engine
 debug into log-stack requires in addition a [CHtml] $oH object
 
 PUBLIC METHODS:
-query() Perform a select query using PREPRARE statement when 2 arguments are provided, otherwise uses queryDirect
-exec()  Perform a insert,update,delete,create query using PREPRARE statement when 2 arguments are provided, otherwise uses execDirect
+query() Perform a select query using PREPRARE statement when arguments are provided, otherwise uses queryDirect
+exec()  Perform a insert,update,delete,create query using PREPRARE statement when arguments are provided, otherwise uses execDirect
 
 PRIVATE METHODS:
 queryDirect() Perform a select query.
 execDirect()  Perform a insert,update,delete,create query. For non-PDO frameworks execDirect() uses queryDirect()
 
 TIPS:
-Properties $debug and startStats() can be overrided with session variables
-through $_SESSION['QTdebugsql'] and $_SESSION['QTstatsql'] (not empty)
+Properties $debug and startStats() can be changed with session variables $_SESSION['QTdebugsql'] and $_SESSION['QTstatsql'] (not empty)
 */
 
 class CDatabase
@@ -36,14 +35,39 @@ private $qry;  // PDOstatement object (or query id for legacy driver)
 private $transac = false; // is transaction started
 private $singlequote = true; // String-literal delimiter: singlequote is recommended because db-server may have ansi_quote enabled (i.e. use doublequote)
 public $stats; // [NULL|array] timer and counters (NULL = no stats). startStats() initializes the array.
-public $error = ''; // Error message (must be set as string)
+public $error = ''; // Last error
 public $debug = false; // {true|false|'log'} show sql statement. With 'log' queries are send to CHtml->log stack
-private $debugrole = 'U'; // {'V|U|M|A'} Staffmembers 'M|A' have rights to see the queries while debugging.
+private $userrole = 'U'; // {'V|U|M|A'} Staffmembers 'M|A' have rights to see the queries while debugging.
 
 // SET/GET METHODS
 public function setSinglequote(bool $b=true){ $this->singlequote = $b; }
 public function getHost(){ return $this->type==='pdo.sqlite' || $this->type==='sqlite' ? '(local file) '.$this->db : $this->host; }
-public function startStats(){ $this->stats = ['num'=>0, 'start'=>(float)vsprintf('%d.%06d', gettimeofday()), 'rows'=>0]; }
+public function startStats(){ $this->stats = ['num'=>0, 'start'=>gettimeofday(true), 'rows'=>0]; }
+
+// ERROR handler
+private function halt($e, string $sql='')
+{
+  if ( is_a($e,'PDOException') ) { $dflt = $e->getCode().' '.$e->getMessage(); }
+  elseif ( is_a($e,'Exception') ) { $dflt = $e->getMessage().' '.$this->addErrorInfo(); }
+  else { $dflt = (string)$e; }
+  $this->error = '<p class="debug red"><strong>Database error</strong>: '.$dflt.' '.$sql.'</p>'; // Error required to allow rollback
+  // No halt while in transaction. Commit while error exist triggers a rollback
+  if ( !$this->transac ) throw new Exception( $this->error );
+}
+private function addErrorInfo()
+{
+  try {
+    switch($this->type) {
+      case 'mysql': return '['.mysql_errno().'] '.mysql_error();
+      case 'sqlsrv': $err = end(sqlsrv_errors()); return $err['message'];
+      case 'pg': return pg_last_error();
+      case 'sqlite': return '['.sqlite_last_error($this->con).'] '.sqlite_error_string(sqlite_last_error($this->con));
+      case 'oci': $err = oci_error(); return $err['message'];
+    }
+  } catch (Exception $e) {
+    return '(unable to find error details)';
+  }
+}
 
 // CORE METHODS
 public function __construct(string $type='', string $host='', string $db='', string $user='', string $pwd='', bool $createSqliteFile=false)
@@ -56,7 +80,7 @@ public function __construct(string $type='', string $host='', string $db='', str
   $this->pwd = empty($pwd) ? QDB_PWD : $pwd;
 
   // QT SESSION hacks
-  if ( isset($_SESSION[QT.'_usr']['role']) ) $this->debugrole = $_SESSION[QT.'_usr']['role'];
+  if ( isset($_SESSION[QT.'_usr']['role']) ) $this->userrole = $_SESSION[QT.'_usr']['role'];
   if ( !empty($_SESSION['QTstatsql']) ) $this->startStats();
   if ( !empty($_SESSION['QTdebugsql']) ) $this->debug = $_SESSION['QTdebugsql']==='log' && isset($GLOBALS['oH']) ? 'log' : true;
 
@@ -67,7 +91,7 @@ private function connect(bool $createSqliteFile=false)
 {
   // This function connects the database (and select database if required)
   // Returns true|false
-  $e = 'Unable to connect the database.';
+  $dflt = 'Unable to connect the database.';
   try {
 
     switch($this->type) {
@@ -81,31 +105,32 @@ private function connect(bool $createSqliteFile=false)
         $this->con = new PDO('pgsql:host='.$this->host.';dbname='.$this->db, $this->user, $this->pwd);
         break;
       case 'pdo.sqlite':
-        if ( !file_exists($this->db) && !$createSqliteFile ) throw new Exception($e);
+        if ( !file_exists($this->db) && !$createSqliteFile ) throw new Exception($dflt);
         $this->con = new PDO('sqlite:'.$this->db);
         break; // $this->db can be '' or contains the sqlite file
       case 'pdo.oci':
         $this->con = new PDO('oci:dbname='.$this->host, $this->user, $this->pwd);
         break;
       case 'mysql':
-        $this->con = mysql_connect($this->host,$this->user,$this->pwd); if ( !$this->con ) throw new Exception($e);
+        $this->con = mysql_connect($this->host,$this->user,$this->pwd); if ( !$this->con ) throw new Exception($dflt);
         if ( !mysql_select_db($this->db,$this->con) ) throw new Exception('Cannot select database.');
         return true;
       case 'pg':
-        $this->con = pg_connect('host='.$this->host.' dbname='.$this->db.' user='.$this->user.' password='.$this->pwd); if ( !$this->con ) throw new Exception($e);
+        $this->con = pg_connect('host='.$this->host.' dbname='.$this->db.' user='.$this->user.' password='.$this->pwd); if ( !$this->con ) throw new Exception($dflt);
         return true;
       case 'sqlite':
-        if ( !file_exists($this->db) && !$createSqliteFile ) throw new Exception($e);
-        $this->con = sqlite_open($this->db,0666,$this->error); if ( !$this->con ) throw new Exception($e);
+        if ( !file_exists($this->db) && !$createSqliteFile ) throw new Exception($dflt);
+        $sqliteerr = '';
+        $this->con = sqlite_open($this->db,0666,$sqliteerr); if ( !$this->con ) throw new Exception($dflt.' '.$sqliteerr);
         return true;
       case 'sqlsrv':
         $arr=array('Database'=>$this->db,'UID'=>$this->user,'PWD'=>$this->pwd);
         // use windows authentication if no UID and no PWD
         if ( empty($this->user) && empty($this->pwd) ) $arr=array('Database'=>$this->db);
-        $this->con = sqlsrv_connect($this->host,$arr); if ( !$this->con ) throw new Exception($e);
+        $this->con = sqlsrv_connect($this->host,$arr); if ( !$this->con ) throw new Exception($dflt);
         return true;
       case 'oci':
-        $this->con = oci_connect($this->user,$this->pwd,$this->db); if ( !$this->con ) throw new Exception($e);
+        $this->con = oci_connect($this->user,$this->pwd,$this->db); if ( !$this->con ) throw new Exception($dflt);
         return true;
       default:
         die('Database object interface ['.$this->type.'] is not supported.');
@@ -113,10 +138,10 @@ private function connect(bool $createSqliteFile=false)
     $b = $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // false if unable to set attributes
     if ( !$b ) $this->showDebug('Unable to add pdo-errormode attribute');
 
-  } catch(Exception $e) {
+  } catch (Exception $e) {
 
-    $this->halt($e, 'connect');
-    return false;
+    // FATAL no db
+    die('<p class="debug red"><strong>Database connection error</strong>: '.$e->getMessage().'<br>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database</p>');
 
   }
   return true;
@@ -138,7 +163,7 @@ public function beginTransac()
 public function commitTransac(bool $rollbackOnError=true)
 {
   if ( !$this->transac ) return true; // already committed
-  if ( !empty($this->error) && $rollbackOnError ) { $this->rollbackTransac(); return false; }
+  if ( $this->error && $rollbackOnError ) { $this->rollbackTransac(); return false; }
   $b = false; // commit successful
   switch($this->type) {
     case 'pdo.mysql':
@@ -168,7 +193,7 @@ public function rollbackTransac()
 private function sqlPrepare(string $sql, array $sqlValues)
 {
   // Emulates a prepare function for non pdo driver. Supports [?] (sequential) or [:named] placeholder)
-  // Arguments are required.
+  // Arguments are REQUIRED
   if ( empty($sql) || empty($sqlValues) || substr($this->type,0,4)==='pdo.' ) die(__METHOD__.' invalid arguments');
 
   // $sqlValue can have [int] index (when using ? placeholder) or [string]index (when using :named placeholder)
@@ -192,6 +217,7 @@ private function sqlQuote($value)
 }
 private function sqlConst(string $sql)
 {
+  if ( empty($sql) ) die(__METHOD__.' invalid arguments');
   // Use actual tablenames (constant in the sql statement is replaced by the constant value) - only uppercase
   foreach(TABTABLES as $table) {
     if ( strpos($sql,$table) ) {
@@ -221,11 +247,11 @@ public function query(string $sql, array $sqlValues=[])
         $this->qry = $this->con->prepare($sql); // if ( $this->qry===false) throw new Exception('Preparation failed');
         $this->qry->execute($sqlValues); //returns false if failed
         break; // warning this->qry is now a PDOstatement object
-      case 'mysql':  $sql = $this->sqlPrepare($sql,$sqlValues); if ( $sql===false) throw new Exception($this->error); $this->qry = mysql_query($sql,$this->con); break;
-      case 'sqlsrv': $sql = $this->sqlPrepare($sql,$sqlValues); if ( $sql===false) throw new Exception($this->error); $this->qry = sqlsrv_query($this->con,$sql); break;
-      case 'pg':     $sql = $this->sqlPrepare($sql,$sqlValues); if ( $sql===false) throw new Exception($this->error); $this->qry = pg_query($this->con,$sql); break;
-      case 'sqlite': $sql = $this->sqlPrepare($sql,$sqlValues); if ( $sql===false) throw new Exception($this->error); $this->qry = sqlite_query($this->con,$sql); break;
-      case 'oci':    $sql = $this->sqlPrepare($sql,$sqlValues); if ( $sql===false) throw new Exception($this->error); $this->qry = oci_parse($this->con,$sql); oci_execute($this->qry); break;
+      case 'mysql':  $sql = $this->sqlPrepare($sql,$sqlValues); $this->qry = mysql_query($sql,$this->con); break;
+      case 'sqlsrv': $sql = $this->sqlPrepare($sql,$sqlValues); $this->qry = sqlsrv_query($this->con,$sql); break;
+      case 'pg':     $sql = $this->sqlPrepare($sql,$sqlValues); $this->qry = pg_query($this->con,$sql); break;
+      case 'sqlite': $sql = $this->sqlPrepare($sql,$sqlValues); $this->qry = sqlite_query($this->con,$sql); break;
+      case 'oci':    $sql = $this->sqlPrepare($sql,$sqlValues); $this->qry = oci_parse($this->con,$sql); oci_execute($this->qry); break;
       default: die('db_type ['.$this->type.'] not supported.');
     }
 
@@ -235,13 +261,15 @@ public function query(string $sql, array $sqlValues=[])
     return false;
 
   }
+  // if legacy query returns false instead of throw exception
   if ( !$this->qry ) {
-    $this->addErrorInfo();
-    $this->halt(null,$sql);
+    $this->error = $this->addErrorInfo();
+    $this->halt($this->error,$sql);
     return false;
   }
-  if ( $this->stats ) { ++$this->stats['num']; $this->stats['end']=(float)vsprintf('%d.%06d', gettimeofday()); }
-  return true; // success
+  // Success
+  if ( $this->stats ) { ++$this->stats['num']; $this->stats['end'] = gettimeofday(true); }
+  return true;
 }
 private function queryDirect(string $sql)
 {
@@ -266,13 +294,15 @@ private function queryDirect(string $sql)
     $this->halt($e,$sql);
     return false;
   }
+  // if legacy query returns false instead of throw exception
   if ( !$this->qry ) {
-    $this->addErrorInfo();
-    $this->halt(null);
+    $this->error = $this->addErrorInfo();
+    $this->halt($this->error,$sql);
     return false;
   }
-  if ( $this->stats ) { ++$this->stats['num']; $this->stats['end'] = (float)vsprintf('%d.%06d', gettimeofday()); }
-  return true; // success
+  // Success
+  if ( $this->stats ) { ++$this->stats['num']; $this->stats['end'] = gettimeofday(true); }
+  return true;
 }
 public function exec(string $sql, array $sqlValues=[])
 {
@@ -362,48 +392,24 @@ public function getRow()
   }
   return $row;
 }
-private function halt($e, string $sql='')
-{
-  if ( $sql==='connect' ) die('<p class="debug red">Please contact the webmaster for further information.<br>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database.<br>'.$e.'</p>' );
-  // Puts error message in $this->error, shows error and stop (following settings)
-  // Prepare $this->error
-  if ( is_a($e,'PDOException') ) {
-    $this->error = $e->getCode().' '.$e->getMessage();
-  } elseif ( is_a($e,'Exception') ) {
-    $this->error = $e->getMessage(); $this->addErrorInfo();
-  } else {
-    $this->error = 'Database error while executing '.$sql;
-  }
-  throw new Exception($this->error);
-}
-private function addErrorInfo()
-{
-  // Puts error message in $this->error. Only used with non PDO
-  switch($this->type) {
-    case 'mysql':  $this->error .= '['.mysql_errno().'] '.mysql_error(); break;
-    case 'sqlsrv': $err=end(sqlsrv_errors());  $this->error .= $err['message']; break;
-    case 'pg':     $this->error .= pg_last_error(); break;
-    case 'sqlite': $this->error .= '['.sqlite_last_error($this->con).'] '.sqlite_error_string(sqlite_last_error($this->con)); break;
-    case 'oci':    $e=oci_error(); $this->error .= $e['message']; break;
-  }
-}
 public function updSetting($param, $setting=null, bool $userAsAdmin=false)
 {
-  if ( !$userAsAdmin || $this->debugrole==='U' || $this->debugrole==='V'  ) die(__METHOD__.' access denied');
-  // works recursively on array
-  if ( is_array($param) ) { foreach($param as $item) $this->updSetting($item,$setting); return; }
+  // Works recursively on array
+  if ( is_array($param) ) { foreach($param as $item) $this->updSetting($item, $setting, $userAsAdmin); return; }
+  // Admin security
+  if ( $this->userrole==='A' ) $userAsAdmin = true; if ( !$userAsAdmin ) die(__METHOD__.' access denied');
   // NOTE: arguments must be [strict]string and cannot contain single-quote
   if ( !is_string($param) || empty($param) ) die(__METHOD__.' arg #1 must be a string');
   $setting = is_null($setting) && isset($_SESSION[QT][$param]) ? $_SESSION[QT][$param] : $setting;
   if ( !is_string($setting) ) die(__METHOD__.' arg #2 must be a string');
   if ( strpos($setting,"'")!==false || strpos($param,"'")!==false ) die(__METHOD__.' setting or param contains a quote');
-  $this->exec( "UPDATE TABSETTING SET setting='$setting' WHERE param='$param'" );
+  $this->execDirect( "UPDATE ".TABSETTING." SET setting='$setting' WHERE param='$param'" );
 }
 public function getSettings(string $where='', bool $register=false)
 {
   // Returns settings [array] matching with $where condition (use '' to get ALL settings). Can also register key-values in $_SESSION[QT]
   $arr = [];
-  $this->query( "SELECT param,setting FROM ".TABSETTING.(empty($where) ? '' : ' WHERE '.$where) );
+  $this->queryDirect( "SELECT param,setting FROM ".TABSETTING.(empty($where) ? '' : ' WHERE '.$where) );
   while ($row = $this->getRow()) {
     $arr[$row['param']] = $row['setting'];
     if ( $register ) $_SESSION[QT][$row['param']] = $row['setting'];
@@ -414,7 +420,7 @@ public function getSetting(string $key='', string $alt='')
 {
   // Returns the db setting [string] for param $key, or $alt if $key does not existing
   if ( empty($key) ) die(__METHOD__.' invalid key');
-  $this->query( "SELECT setting FROM TABSETTING WHERE param='$key'" );
+  $this->queryDirect( "SELECT setting FROM ".TABSETTING." WHERE param='$key'" );
   $row = $this->getRow();
   return isset($row['setting']) ? (string)$row['setting'] : $alt;
 }
@@ -441,7 +447,7 @@ private function showDebug(string $msg='Query: ', string $sql='',  array $sqlVal
   // only role {M|A} staffmembers or admin can see the sql statement while debugging
   if ( !$this->debug ) return;
   if ( $sqlValues ) $msg .= '['.implode(' ',array_map(function($k,$v){return $k.'='.$v;},array_keys($sqlValues),$sqlValues)).'] ';
-  if ( $sql ) $msg .= $this->debugrole==='M' || $this->debugrole==='A' ? $sql : '...you are not granted to see the statement';
+  if ( $sql ) $msg .= $this->userrole==='M' || $this->userrole==='A' ? $sql : '...you are not granted to see the statement';
   if ( $this->debug==='log' ) { global $oH; $oH->log[] = $msg; return; }
   echo '<p class="debug">'.$msg.'</p>';
 }

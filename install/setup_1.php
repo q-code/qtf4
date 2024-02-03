@@ -83,7 +83,7 @@ if ( isset($_POST['ok']) ) try {
   if ( $arr['QDB_SYSTEM']=='pdo.sqlite' || $arr['QDB_SYSTEM']=='sqlite' )
   {
     // for sqlite, check filename insead of connect()
-    if ( !file_exists('../'.$arr['QDB_DATABASE']) ) throw new Exception( '<p>SQLite database file not found: '.$arr['QDB_DATABASE'].'</p><p><a href="setup_1.php?sqlite='.$arr['QDB_DATABASE'].'">Create SQLite file ['.$arr['QDB_DATABASE'].']...</a></p>' );
+    if ( !file_exists('../'.$arr['QDB_DATABASE']) ) throw new Exception( 'SQLite database file not found: '.$arr['QDB_DATABASE'].'<br><a href="setup_1.php?sqlite='.$arr['QDB_DATABASE'].'">Create SQLite file ['.$arr['QDB_DATABASE'].']...</a>' );
   }
   else
   {
