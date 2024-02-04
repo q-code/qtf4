@@ -60,10 +60,9 @@ foreach($arrSections as $id=>$mSec) {
   $oH->links[] = '<link rel="alternate" type="application/rss+xml" title="'.qtAttr($mSec['title']).'" href="'.$strRssUrl.'/qtf_'.$strForm.'_'.$id.'.xml"/>';
 }}
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_inc_hd.php';
 
 // TITLE & version

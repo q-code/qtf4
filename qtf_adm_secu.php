@@ -45,8 +45,7 @@ if ( !isset($_SESSION[QT]['recaptcha3sk']) ) $_SESSION[QT]['recaptcha3sk']=''; /
 $oH->selfurl = 'qtf_adm_secu.php';
 $oH->selfname = L('Board_security');
 $oH->selfparent = L('Settings');
-switch(QDB_SYSTEM)
-{
+switch(QDB_SYSTEM) {
   //Note utf-8 coding may consume 4bytes/character, that's why MAXCHAR < varchar limit of the database
   case 'pdo.sqlsrv' :
   case 'sqlsrv' :
@@ -57,10 +56,9 @@ switch(QDB_SYSTEM)
   default : define('MAX_K',10); break; // mysql text(64K), sqlite text(>1MB)
 }
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) ) try {
 
   // check form
@@ -156,14 +154,15 @@ if ( isset($_POST['ok']) ) try {
 
 } catch (Exception $e) {
 
-  $_SESSION[QT.'splash'] = 'E|'.$e->getMessage();
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 $arr = array(

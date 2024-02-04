@@ -20,10 +20,9 @@ $oH->selfname = L('Item+');
 $oH->selfparent = L('Board_content');
 $oH->exitname = '&laquo; '.L('Item+');
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) ) try {
 
   if ( !qtIsBetween($d,1,99) ) throw new Exception( L('Days').' '.L('invalid').' (1-99)' );
@@ -36,14 +35,15 @@ if ( isset($_POST['ok']) ) try {
 
 } catch (Exception $e) {
 
-  $_SESSION[QT.'splash'] = 'E|'.$e->getMessage();
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_adm_inc_hd.php';
 
 $arrDomains = CDomain::getTitles(); // no cache, titles translated

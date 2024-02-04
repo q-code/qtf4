@@ -11,10 +11,9 @@ require 'bin/init.php';
 $oH->selfurl = APP.'_calendar.php';
 if ( !SUser::canView('V2') || !SUser::canAccess('show_calendar') ) die('Access denied');
 
-// ---------
+// ------
 // FUNCTIONS
-// ---------
-
+// ------
 function FirstDayDisplay($intYear,$intMonth,$intWeekstart=1)
 {
   // search date of the first 'monday' (or weekstart if not 1)
@@ -48,10 +47,9 @@ function ArraySwap($arr,$n=1)
   return $arr;
 }
 
-// ---------
+// ------
 // INITIALISE
-// ---------
-
+// ------
 $s = -1;
 $v = 'birthday';
 qtArgs('int:s');
@@ -83,10 +81,9 @@ if ( QT_WEEKSTART>1 )
   $arrWeekCss = ArraySwap($arrWeekCss,intval(QT_WEEKSTART)-1);
 }
 
-// --------
+// ------
 // LIST OF ITEMS
-// --------
-
+// ------
 $arrEvents = [];
 $arrEventsN = [];
 $intEvents = 0;
@@ -121,10 +118,9 @@ while($row=$oDB->getRow())
   if ( $i>8 ) break;
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 $oH->links[] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.APP.'_calendar.css"/>';
 
 include APP.'_inc_hd.php';

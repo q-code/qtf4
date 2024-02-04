@@ -9,20 +9,18 @@ session_start();
 require 'bin/init.php';
 if ( !SUser::canView('V6') ) die(L('E_11'));
 
-// --------
+// ------
 // Check posted certificates
-// --------
-
+// ------
 $certificate = makeFormCertificate('db6a94aa9b95da757a97f96ab4ce4ca5');
 // Forwarding certificate. Note: 'dopreview' is ajax-transfered to edit_preview.php
 if ( isset($_POST['dosend']) && $_POST['dosend']===makeFormCertificate('ec8a0d9ab2cae03d0c7314491eb60d0b') ) $_POST['dosend']=$certificate;
 // Check certificate
 if ( isset($_POST['dosend']) && $_POST['dosend']!==$certificate ) die('Unable to check certificate');
 
-// --------
+// ------
 // INITIALISE
-// --------
-
+// ------
 $a = ''; // required
 $s = -1;
 $t = -1;
@@ -70,10 +68,9 @@ case 'ed': if ( $t<0 || $p<0 ) die('Missing parameters: t or p'); break;
 
 if ( isset($_GET['debug']) ) var_dump($oP);
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['dosend']) ) try {
 
   // Current editor/creator (modifuser), can be the onbehalf
@@ -163,10 +160,10 @@ if ( isset($_POST['dosend']) ) try {
     $oT->insertTopic(true);
     $oDB->commitTransac();
     if ( isset($_SESSION[QT.'_usr']['numpost']) ) $_SESSION[QT.'_usr']['numpost']++;
-    // ----------
+    // ------
     // module rss
     if ( qtModule('rss') ) { if ( $_SESSION[QT]['m_rss']=='1' ) include 'qtfm_rss_inc.php'; }
-    // ----------
+    // ------
     break;
 
   case 're':
@@ -243,10 +240,9 @@ if ( isset($_POST['dosend']) ) try {
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 $canUpload = SUser::canAccess('upload');
 $intBbc = $canUpload ? 3 : 2;
 

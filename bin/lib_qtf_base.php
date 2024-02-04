@@ -14,10 +14,9 @@ function makeFormCertificate(string $publickey)
   // Allow checking that POST requests come from a qtx page (register,login,search,items,item,edit)
 }
 
-// --------
+// ------
 // Specific functions: added for or using [SMem] class
-// --------
-
+// ------
 function memInit(string $key, $onUnknownKey=false)
 {
   // Recomputes basic data (to be stored in shared-memory)
@@ -84,10 +83,9 @@ function memFlushStats($arrYears='default')
   return true;
 }
 
-// --------
+// ------
 // COMMON FUNCTIONS
-// --------
-
+// ------
 function emptyFloat($i)
 {
   // Return true when $i is empty or a value starting with '0.000000'

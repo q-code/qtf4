@@ -46,9 +46,9 @@ $frm_ft = '';
 switch($a) {
 //=======
 
-//-------
+//------
 case 'rules':
-//-------
+//------
 
 $oH->selfname = L('Register');
 $intY = empty($_GET['y']) ? 1970 : (int)$_GET['y'];
@@ -82,9 +82,9 @@ $frm[] = '</form>';
 
 break;
 
-//-------
+//------
 case 'in':
-//-------
+//------
 
 $oH->selfname = L('Register').($_SESSION[QT]['register_mode']=='backoffice' ? ' ('.L('request').')' : '');
 $birthday = '';
@@ -299,9 +299,9 @@ $frm[] = '</form>';
 
 break;
 
-//-------
+//------
 case 'out':
-//-------
+//------
 
 if ( $id<2 ) die('Admin and Visitor cannot be removed');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
@@ -349,9 +349,9 @@ $frm_ft = '</div>';
 
 break;
 
-//-------
+//------
 case 'pwd':
-//-------
+//------
 
 if ( $id<1 ) die('Invalid id');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
@@ -422,9 +422,9 @@ $frm_ft = '
 
 break;
 
-//-------
+//------
 case 'id':
-//-------
+//------
 $oH->selfname = L('Forgotten_pwd');
 
 // SUBMITTED
@@ -454,9 +454,9 @@ $frm[] = '</form>';
 
 break;
 
-//-------
+//------
 case 'role':
-//-------
+//------
 if ( $id<2 ) die('Guest and first administrator are protected');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('Change_role');
@@ -494,9 +494,9 @@ $frm_ft = '
 
 break;
 
-//-------
+//------
 case 'ban':
-//-------
+//------
 if ( $id<2 ) die('Guest and first administrator are protected');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('Ban');
@@ -533,9 +533,9 @@ $frm_ft = '</div>';
 
 break;
 
-//-------
+//------
 case 'delete':
-//-------
+//------
 if ( $id<2 ) die('Wrong argument (guest and first administrator are protected)');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('User_del');
@@ -562,9 +562,9 @@ $frm_ft = '</div>';
 
 break;
 
-//-------
+//------
 case 'adm-reset':
-//-------
+//------
 if ( $id<1 ) die('Missing argument');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('Reset_pwd');
@@ -612,9 +612,9 @@ $frm_ft = '</div>';
 
 break;
 
-//-------
+//------
 case 'reset':
-//-------
+//------
 if ( $id<1 ) die('Visitor password can not be reset');
 $oH->selfname = L('Forgotten_pwd');
 $oH->selfuri .= '&id='.$id;
@@ -679,9 +679,9 @@ $oH->scripts[] = 'document.getElementById("secret_a").focus();';
 
 break;
 
-//-------
+//------
 case 'qa':
-//-------
+//------
 if ( $id<1 ) die('Missing argument');
 $oH->selfname = L('Secret_question');
 $oH->selfuri .= '&id='.$id;
@@ -723,9 +723,9 @@ $frm_ft = '</div>';
 
 break;
 
-//-------
+//------
 case 'name':
-//-------
+//------
 if ( $id<1 ) die('Missing parameters');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
 
@@ -771,9 +771,9 @@ $oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_re
 
 break;
 
-//-------
+//------
 case 'sign':
-//-------
+//------
 if ( $id<1 ) die('Visitor cannot be edited');
 if ( SUser::id()!==$id && !SUser::isStaff() ) die('Access denied.');
 
@@ -826,18 +826,17 @@ $oH->scripts[] = 'document.querySelectorAll("#signature-preview a").forEach( anc
 
 break;
 
-//-------
+//------
 default: die('Unknown command');
-//-------
+//------
 
 //=======
 }
 //=======
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_inc_hd.php';
 
 if ( !empty($frm_hd) ) echo $frm_hd.PHP_EOL;

@@ -5,10 +5,9 @@
 session_start();
 include 'init.php';
 
-// --------
+// ------
 // Html start
-// --------
-
+// ------
 include 'setup_hd.php'; // this will show $oH->error
 
 // Check config_db
@@ -56,8 +55,7 @@ echo '</select>
 </form>
 ';
 
-// --------
+// ------
 // HTML END
-// --------
-
+// ------
 include 'setup_ft.php';

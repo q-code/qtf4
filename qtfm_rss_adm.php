@@ -33,10 +33,9 @@ $oH->selfurl = 'qtfm_rss_adm.php';
 $oH->selfname = $L['rss']['Admin'];
 $oH->selfversion = $L['Version'].' 4.0';
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) )
 {
   // check others
@@ -56,10 +55,9 @@ if ( isset($_POST['ok']) )
   }
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 // read values

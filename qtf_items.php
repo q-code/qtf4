@@ -11,10 +11,9 @@ $oH->selfurl = 'qtf_items.php';
 if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) exitPage(99,'tools.svg',false); //...
 if ( !SUser::canView('V2') ) exitPage(11, 'user-lock.svg'); //...
 
-// ---------
+// ------
 // INITIALISE
-// ---------
-
+// ------
 // check arguments
 $q = ''; // Search type (not required, use 's' if missing)
 $s = -1; // [int]
@@ -187,10 +186,9 @@ if ( $q!=='s' ) {
 // full title
 if ( !empty($pageTitle) ) $pageTitle = '<p class="pg-title">'.$pageTitle.'</p>'.(empty($pageSubtitle) ? '' : '<p class="pg-title pg-subtitle">'.$pageSubtitle.'</p>');
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_inc_hd.php';
 
 // PAGE title and UI
@@ -411,10 +409,9 @@ addIRe("t1",['.implode(',', array_keys($arr)).'],['.implode(',', $arr).'],"'.L('
   }
 }
 
-// --------
+// ------
 // HTML END
-// --------
-
+// ------
 // hide href column if empty
 if ( $q!=='s' ) $oH->scripts[] = 'qtHideEmptyColumn();';
 // hide table-ui-bottom-controls if less than 5 table rows

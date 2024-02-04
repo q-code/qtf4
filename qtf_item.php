@@ -9,16 +9,16 @@ require 'bin/init.php';
 $oH->selfurl = 'qtf_item.php';
 if ( !SUser::canView('V3') ) exitPage(11,'user-lock.svg'); //...
 
-// ---------
+// ------
 // PRE-INITIALISE
-// ---------
+// ------
 $t = -1; qtArgs('int:t!'); if ( $t<0 ) die('Invalid argument');
 $oT = new CTopic($t); //provide userid to update stats, after access granted, does not increment views
 $s = $oT->pid;
 
-// ---------
+// ------
 // SUBMITTED
-// ---------
+// ------
 if ( isset($_POST['Maction']) ) {
 
   $oH->exiturl = 'qtf_items.php';
@@ -33,9 +33,9 @@ if ( isset($_POST['Maction']) ) {
 
 }
 
-// ---------
+// ------
 // INITIALISE and check grant access
-// ---------
+// ------
 $oS = new CSection($s);
 
 // access denied
@@ -73,10 +73,9 @@ if ( isset($_POST['tag-ok']) && isset($_POST['tag-edit']) ) {
   $oT->tagsUpdate();
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_inc_hd.php';
 
 // -- Title and staff commands --
@@ -209,10 +208,9 @@ $oH->scripts[] = 'document.getElementById("form-qr-preview").addEventListener("c
 
 }}}
 
-// --------
+// ------
 // HTML END
-// --------
-
+// ------
 if ( $_SESSION[QT]['tags']!='0' )
 {
   $oH->scripts['tags'] = '<script type="text/javascript" src="bin/js/qt_tags.js"></script>';

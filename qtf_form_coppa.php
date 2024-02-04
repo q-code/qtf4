@@ -25,10 +25,9 @@ require 'bin/init.php';
 include translate('lg_coppa.php');
 $oH->selfurl = 'qtf_form_coppa.php';
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 const HIDE_MENU_TOC=true;
 
 $oH->links['cssIcons']=''; // remove webicons

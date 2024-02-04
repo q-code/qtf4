@@ -11,9 +11,9 @@ $urlPrev = 'setup_1.php';
 $urlNext = 'setup_1.php';
 $result = '';
 
-// --------
+// ------
 // Submitted
-// --------
+// ------
 if ( isset($_POST['ok']) && !empty($_POST['template']) && file_exists('../config/'.$_POST['template'])) {
 
   $copied = true;
@@ -22,9 +22,9 @@ if ( isset($_POST['ok']) && !empty($_POST['template']) && file_exists('../config
   $result = $copied ? '<p class="is_ok">Backup created. Template successfully loaded.</p>' : '<p class="is_err">Fail to copy</p>';
 }
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 $intHandle = opendir('../config');
 $arrFiles = [];
 while(false!==($strFile=readdir($intHandle))) if ( $strFile!='.' && $strFile!='..' && substr($strFile,0,10)==='config_db_' ) $arrFiles[]=$strFile;
@@ -47,8 +47,7 @@ if ( count($arrFiles)>0 ) {
 echo '<p style="margin-top:20px;font-size:0.8rem">On load, previous parametres are saved as "config_db_backup".<br>
 Templates are in the "/config/" folder.</p>';
 
-// --------
+// ------
 // HTML END
-// --------
-
+// ------
 include 'setup_ft.php';

@@ -31,10 +31,9 @@ $_SESSION[QT][$row['param']]=strval($row['setting']);
 }
 if ( !isset($_SESSION[QT]['admin_email']) ) $_SESSION[QT]['admin_email']='';
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'setup_hd.php';
 
 // Submitted

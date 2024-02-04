@@ -28,9 +28,9 @@ $st = '*';
 qtArgs('q v v2 boo:to int:s st qkw');
 if ( $st==='' || $st==='-1' || !is_numeric($st) ) $st='*';
 
-// --------
+// ------
 // SUBMITTED
-// --------
+// ------
 if ( isset($_POST['ok']) && !empty($q) ) {
 
   $arg=''; // criterias (other than filters)
@@ -71,10 +71,9 @@ if ( isset($_POST['ok']) && !empty($q) ) {
   }
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_inc_hd.php';
 
 // SEARCH SHORTCUTS

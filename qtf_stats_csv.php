@@ -49,10 +49,9 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
   return $csv;
 }
 
-// --------
+// ------
 // INITIALISE
-// --------
-
+// ------
 include translate('lg_stat.php');
 
 $csv = '';
@@ -67,9 +66,9 @@ qtArgs('pan bt s int:y int:y0 tag');
 $sqlSection='';
 $sqlTags = '';
 
-// --------
+// ------
 // Check and Initialise
-// --------
+// ------
 if ( $s!=='*' ) $sqlSection = 'forum='.$s.' AND '; // int to avoid injection
 if ( $y0>=$y ) $y0=$y-1;
 if ( !empty($tag) )
@@ -112,10 +111,10 @@ $colorFade = array('96,96,255','241,184,255','0,231,183','200,200,200', '255,100
 $colorBase = array('0,0,102',  '153,0,153',  '0,153,153','150,150,150', '200,0,0');
 
 // Statistic computation
-//----------------------
+//------
 $arrSeries = $pan=='d' || $pan=='dt' ? array('T','N','C','Z','ATT') : array('T','R','U');
 include APP.'_stats_inc.php';
-//----------------------
+//------
 
 switch($pan)
 {
@@ -154,7 +153,6 @@ switch($pan)
 // ------
 // Export
 // ------
-
 if ( !headers_sent() )
 {
   $csv = str_replace('<br>',"\r\n",$csv);

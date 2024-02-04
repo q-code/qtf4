@@ -16,15 +16,14 @@ foreach(array('QDB_SYSTEM','QDB_HOST','QDB_DATABASE','QDB_PREFIX','QDB_USER','QD
 $urlPrev = 'setup.php';
 $urlNext = 'setup_2.php';
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'setup_hd.php'; // this will show $error
 
-// --------
+// ------
 // SUBMITTED create sqlite file
-// --------
+// ------
 if ( !empty($_GET['sqlite']) ) try {
 
   $arr['QDB_DATABASE'] = $_GET['sqlite'];
@@ -45,9 +44,9 @@ if ( !empty($_GET['sqlite']) ) try {
 echo '<form method="post" name="install" action="setup_1.php">
 ';
 
-// --------
+// ------
 // SUBMITTED connect
-// --------
+// ------
 if ( isset($_POST['ok']) ) try {
 
   $arr['QDB_SYSTEM']   = trim($_POST['db_system']);
@@ -107,10 +106,9 @@ if ( isset($_POST['ok']) ) try {
 
 }
 
-// --------
+// ------
 // FORM
-// --------
-
+// ------
 echo '<h1>'.L('Connection_db').'</h1>
 <table class="t-conn">
 ';
@@ -180,10 +178,9 @@ echo '<tr id="db-host"',($arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']
 
 $aside = L('Help_1');
 
-// --------
+// ------
 // HTML END
-// --------
-
+// ------
 echo '<script type="text/javascript">
 function toggleHostLogin(str) {
 let d = document.getElementById("db-host");

@@ -14,10 +14,9 @@ $oH->selfurl = APP.'_adm_index.php';
 $oH->selfname = L('Board_status');
 $oH->selfparent = L('Board_info');
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) && isset($_POST['offline']) ) try {
 
   // check admin email and forum url
@@ -39,10 +38,9 @@ if ( isset($_POST['ok']) && isset($_POST['offline']) ) try {
 
 }
 
-// --------
+// ------
 // OTHER SUBMIT
-// --------
-
+// ------
 if ( isset($_GET['cmd']) && $_GET['cmd']==='decrypt' && !empty($_GET['file']) ) {
 
   if ( is_dir($_GET['file']) && rename($_GET['file'],'install') ) {
@@ -64,10 +62,9 @@ function qtEncrypt(string $key=APP, string $str='install')
   // to decrypt use: return openssl_decrypt(base64_decode($str), 'AES-256-CBC', $key, 0, $iv);
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_adm_inc_hd.php';
 
 // Stats

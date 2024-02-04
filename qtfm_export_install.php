@@ -52,9 +52,9 @@ if ( empty($oH->error) )
 }
 
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<h2>Checking components</h2>';
@@ -83,6 +83,6 @@ if ( !$bStep3 )
 echo '<p>Ok</p>';
 echo '<h2>Installation completed</h2>';
 
-// --------
+// ------
 // Html end
-// --------
+// ------

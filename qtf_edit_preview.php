@@ -39,10 +39,9 @@ $oP->modifuser = (int)$_POST['userid']; // can be onbehalf
 $oP->modifname = $_POST['username'];
 if ( empty($oP->modifname) ) { $oP->modifuser = SUser::id(); $oP->modifname = SUser::id(); }
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 try {
 
   // For New post (or Reply or Quote) creator=modifuser, while creator don't change when editing existing post
@@ -105,10 +104,9 @@ $oP->userloca = $row['location'];
 $oP->usersign = $row['signature'];
 $oP->userrole = $row['role'];
 
-// --------
+// ------
 // HTML PART
-// --------
-
+// ------
 echo '<h2>'.L('Preview').'</h2>
 ';
 if ( !empty($oH->error) ) echo '<p><span class="error">'.$oH->error.'</span></p>';

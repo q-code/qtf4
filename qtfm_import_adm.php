@@ -130,10 +130,9 @@ $oH->exiturl = $oH->selfurl;
 $oH->exitname = $oH->selfname;
 $oH->selfversion = L('Import_Version').' 4.0';
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) ) try {
 
   // check file
@@ -186,10 +185,9 @@ if ( isset($_POST['ok']) ) try {
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 if ( isset($_SESSION['m_import_xml']['dest']) )      $intDest   = $_SESSION['m_import_xml']['dest'];

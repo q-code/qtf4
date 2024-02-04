@@ -20,10 +20,9 @@ $oH->selfparent = L('Board_content');
 $oH->exiturl = APP.'_adm_users.php';
 $oH->exitname = '&laquo; '.L('Users');
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) ) try {
 
   // Check uploaded document
@@ -81,10 +80,9 @@ if ( isset($_POST['ok']) ) try {
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_adm_inc_hd.php';
 
 echo '<h2 class="config">'.L('File').'</h2>

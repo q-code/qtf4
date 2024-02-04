@@ -42,10 +42,9 @@ span.nok {color:#ff0000; background-color:inherit}
 <div class="body">
 ';
 
-// --------
+// ------
 // 1 CONFIG
-// --------
-
+// ------
 echo '<p style="text-align:right">'.THISAPPNAME.' 4.0 build:20230618</p>';
 
 echo '<p style="text-align:right"><a href="setup.php">Install...</a>';
@@ -131,10 +130,9 @@ $error = '';
 
   echo '<p class="endcheck">Configuration tests completed successfully.</p>';
 
-// --------
+// ------
 // 2 DATABASE
-// --------
-
+// ------
 $error = '';
 
 echo '
@@ -188,10 +186,9 @@ echo '
 
   echo '<p class="endcheck">Database tests completed successfully.</p>';
 
-// --------
+// ------
 // 3 LANGUAGE AND SKIN
-// --------
-
+// ------
 $error = '';
 
 echo '
@@ -241,10 +238,9 @@ echo '
 
   echo '<p class="endcheck">Language and skin files tested.</p>';
 
-// --------
+// ------
 // 4 ADMINISTRATION TIPS
-// --------
-
+// ------
 $error = '';
 
 echo '
@@ -328,10 +324,9 @@ echo '
 
 echo '<p class="endcheck">Administration tips completed.</p>';
 
-// --------
+// ------
 // 5 END
-// --------
-
+// ------
 echo '
 <h1>Result</h1>
 <p class="tool_check">The checker did not found blocking issues in your configuration.<br>';
@@ -345,10 +340,9 @@ echo '</p><p>';
 if ( is_dir($root.'install') ) echo '<a href="setup_9.php">Secure your installation...</a> | ';
 echo '<a href="'.$root.'qtf_index.php">Go to '.THISAPPNAME.'</a></p>';
 
-// --------
+// ------
 // HTML END
-// --------
-
+// ------
 echo '
 </div>
 

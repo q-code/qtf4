@@ -13,10 +13,9 @@ $urlPrev = 'setup_1.php';
 $urlNext = 'setup_3.php';
 $tools = ''; if ( file_exists('tool_tables.php') ) $tools = '<p class="tools"><a href="tool_tables.php">Tool tables...</a></p>';
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'setup_hd.php';
 
 if ( isset($_POST['ok']) ) {
@@ -97,10 +96,9 @@ else
 }
 $aside = L('Help_2');
 
-// --------
+// ------
 // HTML END
-// --------
-
+// ------
 echo '<script type="text/javascript">
 const msgWait = "Installing...";
 function showWait(){

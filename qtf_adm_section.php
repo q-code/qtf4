@@ -14,7 +14,7 @@ include translate('lg_adm.php');
 $s = -1; // Section id
 $pan = 1; // TAB 1:definition, 2:display or 3:translation
 qtArgs('int:s! int:pan');
-if ( $pan<1 || $pan>3) $pan=1;
+if ( $pan<1 || $pan>3) $pan = 1;
 
 $oH->selfurl = 'qtf_adm_section.php';
 $oH->selfname = L('Section_upd');
@@ -26,10 +26,9 @@ $arrDomains = CDomain::getTitles();
 $arrStaff = getUsers('S');
 $oS = new CSection($s);
 
-// --------
+// ------
 // SUBMITTED pan 1
-// --------
-
+// ------
 if ( isset($_POST['ok']) && $pan===1 ) try {
 
   // CHECK MANDATORY VALUE
@@ -67,31 +66,37 @@ if ( isset($_POST['ok']) && $pan===1 ) try {
 
 } catch (Exception $e) {
 
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
   $oH->error = $e->getMessage();
-  $_SESSION[QT.'splash'] = 'E|'.$oH->error;
 
 }
 
-// --------
+// ------
 // SUBMITTED pan 2
-// --------
+// ------
+if ( isset($_POST['ok']) && $pan===2 ) try {
 
-if ( isset($_POST['ok']) && $pan===2 )
-{
   $oS->setMF('options', 'order', $_POST['dfltorder'], false);
   $oS->setMF('options', 'last', $_POST['lastcolumn'], false);
   $oS->setMF('options', 'logo', $_POST['sectionlogo'], false);
   $oS->updateMF('options');
   SMem::clear('_Sections'); // clear only _Sections
   $_SESSION[QT.'splash'] = L('S_save');
+
+} catch (Exception $e) {
+
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
+
 }
 
-// --------
+// ------
 // SUBMITTED pan 3
-// --------
+// ------
+if ( isset($_POST['ok']) && $pan===3 ) try {
 
-if ( isset($_POST['ok']) && $pan===3 )
-{
   // Translations (cache unchanged)
   SLang::delete('sec,secdesc','s'.$oS->id);
   foreach($_POST as $k=>$posted) {
@@ -101,12 +106,18 @@ if ( isset($_POST['ok']) && $pan===3 )
   }
   memFlushLang(); // Clear cache
   $_SESSION[QT.'splash'] = L('S_save');
+
+} catch (Exception $e) {
+
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
+
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 $arrDest = $arrDomains;
@@ -128,8 +139,7 @@ echo '<div class="pan">
 
 // FORM 1
 
-if ( $pan==1 )
-{
+if ( $pan===1 ) {
 
 echo '<form method="post" action="'.$oH->self().'">
 <h2 class="subconfig">'.L('Definition').'</h2>

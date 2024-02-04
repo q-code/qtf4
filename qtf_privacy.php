@@ -13,10 +13,9 @@ $oH->selfurl = APP.'_privacy.php';
 $oH->selfname = L('Legal');
 if ( !isset($_SESSION[QT]['admin_phone']) ) $_SESSION[QT]['admin_phone'] = '';
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_inc_hd.php';
 
 CHtml::msgBox($oH->selfname);
@@ -48,8 +47,7 @@ foreach($files as $file){
 
 CHtml::msgBox('/');
 
-// --------
+// ------
 // HTML END
-// --------
-
+// ------
 include APP.'_inc_ft.php';

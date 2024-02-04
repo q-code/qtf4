@@ -39,10 +39,9 @@ $oH->exiturl = 'qtfm_gmap_adm.php';
 $oH->exitname = 'Gmap';
 $oH->selfversion = L('Gmap.Version').' 4.0<br>';
 
-// --------
+// ------
 // SUBMITTED for cancel
-// --------
-
+// ------
 if ( isset($_POST['cancel']) )
 {
   $_SESSION[QT]['m_gmap_symbols'] = '0';
@@ -51,10 +50,9 @@ if ( isset($_POST['cancel']) )
   $_SESSION[QT.'splash'] = empty($oH->error) ? L('S_save') : 'E|'.$oH->error;
 }
 
-// --------
+// ------
 // SUBMITTED for save
-// --------
-
+// ------
 if ( isset($_POST['ok']) )
 {
   $arrSymbols = [];
@@ -68,10 +66,9 @@ if ( isset($_POST['ok']) )
   $_SESSION[QT.'splash'] = empty($oH->error) ? L('S_save') : 'E|'.$oH->error;
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 // read symbols values
 if ( empty($_SESSION[QT]['m_gmap_symbols']) ) $_SESSION[QT]['m_gmap_symbols']='U=0;M=0;A=0'; // empty, not set or false
 $arrSymbols = qtExplode($_SESSION[QT]['m_gmap_symbols']);

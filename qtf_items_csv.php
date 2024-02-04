@@ -11,10 +11,9 @@ require 'bin/init.php';
 $oH->selfurl = 'qtf_items_csv.php';
 if ( !SUser::canView('V2') ) exitPage(11,'user-lock.svg'); //...
 
-// ---------
+// ------
 // INITIALISE
-// ---------
-
+// ------
 // Check size arguments
 $size     = isset($_GET['size']) ? strip_tags($_GET['size']) : 'all'; // all | pages p{n} | thousands m{1|2|5|10}
 $intCount = (int)$_GET['n'];
@@ -133,10 +132,9 @@ if ( ($q==='s' && $oS->type!=='2') || ( $q==='s' && SUser::isStaff()) ) {
 }
 $intCount = $oH->items - $oH->itemsHidden;
 
-// --------
+// ------
 // OUPUT
-// --------
-
+// ------
 $t = new TabTable();
 $t->arrTh['type'] = new TabHead(L('Type'));
 $t->arrTh['numid'] = new TabHead(L('Ref'));

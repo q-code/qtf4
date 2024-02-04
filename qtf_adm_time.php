@@ -23,10 +23,9 @@ $oH->exitname = qtSVG('angle-left').' '.L('Board_region');
 
 if ( !isset($_SESSION[QT]['defaulttimezone']) ) $_SESSION[QT]['defaulttimezone']=date_default_timezone_get();
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) ) try {
 
   $tzi = qtAttr($_POST['tzi']);
@@ -43,14 +42,15 @@ if ( isset($_POST['ok']) ) try {
 
 } catch (Exception $e) {
 
-  $_SESSION[QT.'splash'] = 'E|'.$e->getMessage();
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 $arrTZI = [];
 $groups = array('AFRICA'=>'Africa','ANTARCTICA'=>'Antarctica','ARCTIC'=>'Arctic','AMERICA'=>'America','ASIA'=>'Asia','ATLANTIC'=>'Atlantic','AUSTRALIA'=>'Australia','EUROPE'=>'Europe','INDIAN'=>'Indian','PACIFIC'=>'Pacific','OTHERS'=>'Universal & others');
 $group = 'EUROPE';

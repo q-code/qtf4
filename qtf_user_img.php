@@ -26,10 +26,9 @@ if ( SUser::id()!=$id && !SUser::isStaff() ) die('Access denied');
 include 'bin/class/class.phpmailer.php';
 include translate('lg_reg.php');
 
-// --------
+// ------
 // INITIALISE
-// --------
-
+// ------
 $oH->selfurl = APP.'_user_img.php';
 $oH->selfname = L('Change_picture');
 $oH->exiturl = APP.'_user.php?id='.$id;
@@ -47,14 +46,14 @@ if ( SUser::id()!==$id && $row['role']==='A' && SUser::role()==='M' ) {
 if ( !is_dir(QT_DIR_PIC) ) die('Invalid directory: Administrator must create the repository '.QT_DIR_PIC);
 if ( !is_readable(QT_DIR_PIC) || !is_writable(QT_DIR_PIC) ) die('Invalid directory: Administrator must make the repository '.QT_DIR_PIC.' writable');
 
-// --------
+// ------
 // SUBMITTED for Exit
-// --------
+// ------
 if ( isset($_POST['exit']) ) $oH->redirect('exit');
 
-// --------
+// ------
 // INITIALISE image and repository
-// --------
+// ------
 $currentImg = SUser::getPicture($id , 'id=userimg'); // img tag (with user.gif if image does not exist)
 $currentExists = strpos($currentImg,'user.gif')===false;
 $upload_path = qtDirData(QT_DIR_PIC,$id); // The path to where the image will be saved (is checked in qtx_upload_img.php)
@@ -69,9 +68,9 @@ $strMimetypes = 'image/jpeg,image/jpg';
 if ( strpos($_SESSION[QT]['formatpicture'],'gif')!==FALSE) $strMimetypes.=',image/gif';
 if ( strpos($_SESSION[QT]['formatpicture'],'png')!==FALSE) $strMimetypes.=',image/png,image/x-png';
 
-// --------
+// ------
 // SUBMITTED for Delete
-// --------
+// ------
 if ( isset($_POST['del']) && $_POST['del']=='del' )
 {
   unset($_SESSION['temp_key']);
@@ -79,10 +78,9 @@ if ( isset($_POST['del']) && $_POST['del']=='del' )
   $oH->redirect($oH->selfurl.'?id='.$id);
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 if ( SUser::id()!==$id ) $oH->warning = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 
 include APP.'_upload_img.php';

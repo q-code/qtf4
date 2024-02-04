@@ -22,10 +22,9 @@ function SqlDrop(string $table, string $constrain='')
 
 include 'lg_install.php';
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'setup_hd.php'; // this will show $oH->error
 
 echo '<p>1. <span class="bold">Opening database connection</span>... ';
@@ -113,7 +112,7 @@ echo '<br><p><a href="setup.php">Install...</a>';
 if ( file_exists('tool_check.php') ) echo ' | <a href="tool_check.php">Check installation...</a>';
 echo '</p>';
 
-// --------
+// ------
 // HTML END
-// --------
+// ------
 include 'setup_ft.php'; // this will show $oH->error

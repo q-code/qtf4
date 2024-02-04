@@ -17,11 +17,12 @@ $oH->selfparent = L('Settings');
 $oH->exiturl = $oH->selfurl;
 $oH->exitname = $oH->selfname;
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) ) try {
+
+  $oDB->debug = true;//!!!
 
   $_SESSION[QT]['show_time_zone'] = qtDb($_POST['show_time_zone']); // 0=no, 1=time, 2=time+gmt
   $oDB->updSetting('show_time_zone');
@@ -59,14 +60,15 @@ if ( isset($_POST['ok']) ) try {
 
 } catch (Exception $e) {
 
-  $_SESSION[QT.'splash'] = 'E|'.$e->getMessage();
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_adm_inc_hd.php';
 
 // Check language subdirectories

@@ -36,9 +36,9 @@ $oDB->exec( 'DELETE FROM TABSETTING WHERE param="module_import"');
 unset($_SESSION[QT]['m_import']);
 SMem::set('settingsage',time());
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<h2>Removing database settings</h2>

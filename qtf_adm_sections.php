@@ -32,12 +32,12 @@ $oH->selfurl = APP.'_adm_sections.php';
 $oH->selfname = L('Section+');
 $oH->selfparent = L('Board_content');
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 // REODER DOMAINS/SECTIONS 'neworder' contains a csv list of s{id} or d{id} created by java drag and drop events
-if ( isset($_POST['neworder']) ) {
+if ( isset($_POST['neworder']) ) try {
+
   if ( substr($_POST['neworder'],0,1)==='d' ) {
     foreach(explode(';',$_POST['neworder']) as $k=>$id) {
       $oDB->exec( 'UPDATE TABDOMAIN SET titleorder='.$k.' WHERE id='.substr($id,1) );
@@ -50,6 +50,13 @@ if ( isset($_POST['neworder']) ) {
     }
     SMem::clear('_Sections');
   }
+
+} catch (Exception $e) {
+
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
+
 }
 
 // ADD DOMAIN
@@ -62,8 +69,9 @@ if ( isset($_POST['add_dom']) ) try {
 
 } catch (Exception $e) {
 
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
   $oH->error = $e->getMessage();
-  $_SESSION[QT.'splash'] = 'E|'.$oH->error;
 
 }
 
@@ -78,17 +86,17 @@ if ( isset($_POST['add_sec']) ) try {
 
 } catch (Exception $e) {
 
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
   $oH->error = $e->getMessage();
-  $_SESSION[QT.'splash'] = 'E|'.$oH->error;
 
 }
 
 // Move domain/section
-if ( !empty($a) )
-{
+if ( !empty($a) ) try {
+
   $arr = [];
-  if ( $a==='d_up' || $a==='d_down' )
-  {
+  if ( $a==='d_up' || $a==='d_down' ) {
     $oDB->query( "SELECT id FROM TABDOMAIN ORDER BY titleorder" );
     while($row=$oDB->getRow()) $arr[] = (int)$row['id'];
     $arr = arrShift($arr, $d, $a==='d_up' ? -1 : 1);
@@ -96,8 +104,7 @@ if ( !empty($a) )
     // Clear cache
     SMem::clear('_Domains');
   }
-  if ( $a==='s_up' || $a==='s_down' )
-  {
+  if ( $a==='s_up' || $a==='s_down' ) {
     $oDB->query( "SELECT id FROM TABSECTION WHERE domainid=$d ORDER BY titleorder" );
     while($row=$oDB->getRow()) $arr[] = (int)$row['id'];
     $arr = arrShift($arr, $s, $a==='s_up' ? -1 : 1);
@@ -105,22 +112,27 @@ if ( !empty($a) )
     // Clear cache
     SMem::clear('_Sections');
   }
+
+} catch (Exception $e) {
+
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
+
 }
 
-// --------
+// ------
 // INITIALISE (no cache)
-// --------
-
+// ------
 $arrDomains = CDomain::getTitles(); // titles translated
 $arrSections = CSection::getSections('A',-2); // titles not translated, optimisation: get all sections at once (grouped by domain)
 if ( count($arrDomains)>12 ) { $oH->warning .= 'You have a lot of domains. Try to remove unused domains. '; $_SESSION[QT.'splash'] = 'W|'.$oH->warning; }
 if ( count($arrSections,COUNT_RECURSIVE)>120 ) { $oH->warning .= 'You have a lot of sections. Try to remove unused sections. '; $_SESSION[QT.'splash'] = 'W|'.$oH->warning; }
 if ( !empty($oH->warning) ) $oH->warning = qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.$oH->warning;
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_adm_inc_hd.php';
 
 // Add domain/section

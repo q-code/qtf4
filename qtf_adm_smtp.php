@@ -19,10 +19,9 @@ if ( isset($_GET['p']) ) $_SESSION[QT]['smtp_port'] = qtDb($_GET['p']);
 if ( isset($_GET['u']) ) $_SESSION[QT]['smtp_username'] = qtDb($_GET['u']);
 if ( isset($_GET['w']) ) $_SESSION[QT]['smtp_password'] = qtDb($_GET['w']);
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) )
 {
   // register value used
@@ -41,10 +40,9 @@ if ( isset($_POST['ok']) )
   $oH->pageMessage('', 'Process completed...<br><br>If you have changed the smtp settings during the test, go to the Administration page and SAVE your new settings!', 'admin');
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 const HIDE_MENU_TOC=true;
 
 $oH->links['cssIcons']=''; // remove webicons

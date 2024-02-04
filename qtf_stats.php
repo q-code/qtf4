@@ -53,10 +53,9 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
   }
 }
 
-// --------
+// ------
 // INITIALISE
-// --------
-
+// ------
 include 'bin/lib_qt_stat.php';
 include translate('lg_stat.php');
 
@@ -73,9 +72,9 @@ qtArgs('pan bt int:s int:y int:y0 tag');
 $sqlSection='';
 $sqlTags = '';
 
-// --------
+// ------
 // Check and Initialise
-// --------
+// ------
 if ( $s>=0 ) $sqlSection = 'forum='.$s.' AND '; // int to avoid injection
 if ( $y0>=$y ) $y0=$y-1;
 if ( !empty($tag) )
@@ -117,10 +116,9 @@ $intEndmonth = intval(date('n'));
 $colorFade = ['96,96,255', '241,184,255', '0,231,183', '200,200,200', '255,100,100'];
 $colorBase = ['0,0,102', '153,0,153', '0,153,153', '150,150,150', '200,0,0'];
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 $oH->links[] = '<link rel="stylesheet" type="text/css" href="bin/js/chart.css"/>';
 $oH->scripts[] = '<script type="text/javascript" src="bin/js/chart.js"></script>';
 $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_chart.js"></script>';
@@ -172,10 +170,10 @@ echo '</p>
 ';
 
 // Statistic computation
-//----------------------
+//------
 $arrSeries = $pan==='d' || $pan==='dt' ? array('T','N','C','Z','ATT') : array('T','R','U');
 include 'qtf_stats_inc.php';
-//----------------------
+//------
 
 // DISPLAY title & option
 $href = $oH->selfurl.'?'.qtURI('bt'); // remove argument &bt=
@@ -194,9 +192,9 @@ echo '<div id="nav-blocktime">'.$m->build('bt-'.$bt, 'tag=span|addclass=actif').
 switch($pan)
 {
 
-//--------
+//------
 case 'g':
-//--------
+//------
 
 // Table
 $arrC[$y] = array_combine($arrSeries,array_slice($colorBase,0,count($arrSeries)));
@@ -273,9 +271,9 @@ makeChart([1,2,3,4]);';
 
 break;
 
-//--------
+//------
 case 'gt':
-//--------
+//------
 
 // Table
 $arrC[$y0] = array_combine($arrSeries,array_slice($colorFade,0,count($arrSeries)));
@@ -354,9 +352,9 @@ makeChart([1,2,3,4]);';
 
 break;
 
-//--------
+//------
 case 'd':
-//--------
+//------
 
 // Table
 $arrSeries=array('N','C','Z','ATT');
@@ -440,9 +438,9 @@ makeChart([3,4]);';
 
 break;
 
-//--------
+//------
 case 'dt':
-//--------
+//------
 
 // Table
 $arrSeries=array('N','C','Z','ATT');
@@ -536,9 +534,9 @@ makeChart([3,4]);';
 
 break;
 
-//--------
+//------
 default: die('Invalid tab');
-//--------
+//------
 }
 
 echo '
@@ -550,10 +548,9 @@ if ( file_exists('qtf_stats_csv.php') ) {
   echo '<p class="right table-ui-export"><a class="csv" href="qtf_stats_csv.php?'.parse_url($_SERVER['REQUEST_URI'],PHP_URL_QUERY).'" title="'.L('H_Csv').'">'.L('Csv').'</a></p>';
 }
 
-// --------
+// ------
 // HTML END
-// --------
-
+// ------
 if ( $_SESSION[QT]['tags']!='0' )
 $oH->scripts['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script>
 <script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';

@@ -53,9 +53,9 @@ if ( empty($oH->error) )
   SMem::set('settingsage',time());
 }
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<h2>Checking components</h2>';
@@ -81,6 +81,6 @@ if ( substr($_SESSION[QT]['version'],0,1)==='2' )
   echo '<p class="error">Your database version is 2.x. We recommend you to upgrade to 3.0 (use the installation wizard of QuickTalk).</p>';
 }
 
-// --------
+// ------
 // Html end
-// --------
+// ------

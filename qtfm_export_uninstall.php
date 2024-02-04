@@ -38,9 +38,9 @@ unset($_SESSION[QT]['m_export']);
 unset($_SESSION[QT]['m_export_conf']);
 SMem::set('settingsage',time());
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '

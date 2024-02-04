@@ -127,10 +127,9 @@ if ( $row['setting']=='3.0' )
   $oDB->exec( "ALTER TABLE ".QDB_PREFIX."qtasetting DROP COLUMN loaded" );
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'setup_hd.php';
 
 if ( !empty($strMessage) ) echo $strMessage;
@@ -182,10 +181,9 @@ $str = $_SESSION['setup_lang'];
 $_SESSION = [];
 $_SESSION['setup_lang']=$str;
 
-// --------
+// ------
 // HTML END
-// --------
-
+// ------
 echo '<p>';
 if ( file_exists('tool_check.php') ) echo '<a href="tool_check.php">',L('Check_install'),'...</a>';
 echo '</p>';

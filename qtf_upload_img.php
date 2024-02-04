@@ -25,10 +25,9 @@ if ( !is_readable($upload_path) || !is_writable($upload_path) ) die('Invalid dir
 if ( !isset($currentImg) ) die('Invalid setting: currentImg not defined.');
 if ( !isset($output_max) ) $output_max = 1000;
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 $oH->links[] = '<link rel="stylesheet" type="text/css" href="bin/js/imagecrop.min.css"/>';
 
 $oH->head();

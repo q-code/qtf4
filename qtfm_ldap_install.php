@@ -61,9 +61,9 @@ if ( empty($oH->error) )
   if ( !function_exists('ldap_connect') ) $oH->error = 'LDAP function not found. It seems that module LDAP is not activated on your webserver';
 }
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<h2>Checking components</h2>';

@@ -11,19 +11,20 @@ include translate('lg_adm.php');
 if ( SUser::role()!=='A' ) die('Access denied');
 
 // INITIALISE
-
 $oH->selfurl = 'qtf_adm_skin.php';
 $oH->selfname = L('Board_layout');
 $oH->selfparent = L('Settings');
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) ) try {
 
   // check skin style exists
-  if ( !file_exists('skin/'.$_POST['skin'].'/qtf_styles.css') ) throw new Exception( L('Section_skin').' '.L('invalid').' (qtf_styles.css not found)' );
+  if ( !file_exists('skin/'.$_POST['skin'].'/'.APP.'_styles.css') ) {
+    $_POST['skin'] = 'default';
+    throw new Exception( L('Section_skin').' '.L('invalid').' ('.APP.'_styles.css not found). Use default.' );
+  }
 
   // read submitted
   $_SESSION[QT]['skin_dir'] = 'skin/'.$_POST['skin'].'/';
@@ -47,9 +48,7 @@ if ( isset($_POST['ok']) ) try {
   }
 
   // Save values
-  foreach(['skin_dir','show_welcome','show_banner','show_legend','home_menu','home_name','home_url','items_per_page','replies_per_page','item_firstline','news_on_top','show_quick_reply','bbc'] as $param) {
-    $oDB->updSetting($param);
-  }
+  $oDB->updSetting(['skin_dir','show_welcome','show_banner','show_legend','home_menu','home_name','home_url','items_per_page','replies_per_page','item_firstline','news_on_top','show_quick_reply','bbc']);
 
   // Successfull end
   SMem::set('settingsage',time());
@@ -57,15 +56,15 @@ if ( isset($_POST['ok']) ) try {
 
 } catch (Exception $e) {
 
-  $_SESSION[QT]['skin_dir'] = 'skin/default/';
-  $_SESSION[QT.'splash'] = 'E|'.$e->getMessage();
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 // Get skin subfolders (without /)

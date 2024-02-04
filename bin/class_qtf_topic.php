@@ -80,8 +80,14 @@ public function setFrom($ref=null)
 }
 public function viewsIncrement(int $userid=-1) {
   // +1 when user is not the creator himself
-  if ( $userid>=0 && $userid!=$this->firstpostuser ) { global $oDB; $oDB->exec( "UPDATE TABTOPIC SET views=views+1 WHERE id=$this->id" ); }
-  // TIPS: this method is not called in __construct, but is called by the display page (after page access is granted)
+  // Method is not called in __construct, but is called by the display page (after page access is granted)
+  if ( $userid>=0 && $userid!=$this->firstpostuser ) {
+    try {
+      global $oDB; $oDB->exec( "UPDATE TABTOPIC SET views=views+1 WHERE id=$this->id" ); }
+    catch (Exception $e) {
+      global $oH; $oH->error = '<p class="debug red"><strong>Database error</strong>: '.$e->getMessage().'</p>';
+    }
+  }
 }
 
 /**

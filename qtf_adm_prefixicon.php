@@ -18,9 +18,9 @@ $oH->exiturl = APP.'_adm_sections.php';
 $oH->selfname = L('Item_prefix');
 $oH->exitname = L('Section+');
 
-// --------
+// ------
 // HTML BEGIN
-// --------
+// ------
 const HIDE_MENU_TOC=true;
 const HIDE_MENU_LANG=true;
 

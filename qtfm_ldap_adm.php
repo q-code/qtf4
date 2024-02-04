@@ -32,10 +32,9 @@ if ( $pan<0 || $pan>2) $pan=0;
 if ( !isset($_SESSION[QT]['m_ldap']) ) $_SESSION[QT]['m_ldap']='0';
 if ( !isset($_SESSION[QT]['login_addon']) ) $_SESSION[QT]['login_addon']='0';
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) && $pan==0 )
 {
   $oDB->exec( "DELETE FROM TABSETTING WHERE param='m_ldap' OR param='m_ldap_users'" );
@@ -169,10 +168,9 @@ if ( isset($_POST['ok']) && $pan>0 )
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 if ( !isset($_SESSION[QT]['m_ldap_host']) ) $_SESSION[QT]['m_ldap_host']='';
 if ( !isset($_SESSION[QT]['m_ldap_login_dn']) ) $_SESSION[QT]['m_ldap_login_dn']='';
 if ( !isset($_SESSION[QT]['m_ldap_bind']) ) $_SESSION[QT]['m_ldap_bind']='a';

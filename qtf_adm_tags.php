@@ -17,10 +17,9 @@ $oH->selfurl = APP.'_adm_tags.php';
 $oH->selfname = L('Tags');
 $oH->selfparent = L('Board_content');
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include APP.'_adm_inc_hd.php';
 
 if ( $_SESSION[QT]['tags']==='0' )

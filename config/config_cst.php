@@ -3,9 +3,9 @@
 // WARNING: requires config/config_db.php
 // WARNING: requires php 5.6.x or next (uses scalar expression const)
 
-// -----------------
+// ------
 // System constants (CANNOT be changed by webmasters)
-// -----------------
+// ------
 const APP = 'qtf'; // application file prefix
 const APPNAME = 'QuickTalk forum';
 define('QT', APP.(defined('QDB_INSTALL') ? substr(QDB_INSTALL,-1) : '')); // memory namespace "qtf{n}"
@@ -26,9 +26,9 @@ const QSEPARATOR = ';'; // Values separator in search queries (used as jQuery au
 //   check that QDB_INSTALL values are different in each config_db.php files (ex: qtf1 and qtf2)
 const BAN_DAYS = [0,1,7,15,30,90,365]; // Index 0..6 correspond to ban duration 0...365 days
 
-// -----------------
+// ------
 // Interface constants (can be changed by webmasters)
-// -----------------
+// ------
 const QT_COLOR_SCHEME = 'light dark'; // meta color-schemes for the browser
 const QT_LOGIN_WITH_EMAIL = true; // allow login with email (false to use only username)
 const QT_MENU_CONTRAST = true; // allow user to change css mode: contrast/normal
@@ -64,16 +64,16 @@ const QT_URLREWRITE = false;
 // Rewriting url requires that your server is configured with following rule for your quicktalk folder: RewriteRule ^(.+)\.html(.*) qtf_$1.php$2 [L]
 // This can NOT be activated if your quicktalk folder contains html pages (they will not be accessible anymore when urlrewriting is acticated)
 
-// -----------------
+// ------
 // MEMCACHE (this can be changed by webmaster)
-// -----------------
+// ------
 // If memcache is not available on your server use MEMCACHE_HOST = false;
 // otherwise define your host name. Ex: const MEMCACHE_HOST = 'localhost';
 const MEMCACHE_HOST = 'localhost'; // Memcache allows storing frequently used values in memcache server (instead of runnning sql requests)
 const MEMCACHE_PORT = 11211; // memcache port (integer). Default port is 11211.
 const MEMCACHE_TIMEOUT = 9999; // default memcache timeout in seconds (0=no timeout)
 
-// -----------------
+// ------
 // OTHER
-// -----------------
+// ------
 if ( !defined('PHP_VERSION_ID') ) { $arr=explode('.',PHP_VERSION); define('PHP_VERSION_ID',($arr[0]*10000+$arr[1]*100+$arr[2])); }

@@ -42,10 +42,9 @@ $oH->exiturl = 'qtf_adm_tags.php';
 $oH->exitname = L('Tags');
 $oH->selfparent = L('Board_content');
 
-// --------
+// ------
 // SUBMITTED FOR UPLOAD
-// --------
-
+// ------
 if ( isset($_POST['ok']) )
 {
   // Check uploaded document
@@ -62,11 +61,9 @@ if ( isset($_POST['ok']) )
   }
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 CHtml::msgBox(L('Add').' CSV '.L('file'));

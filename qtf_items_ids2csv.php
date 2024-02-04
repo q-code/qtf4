@@ -11,10 +11,9 @@ require 'bin/init.php';
 $oH->selfurl = 'qtf_items_ids2csv.php';
 if ( !SUser::canView('V2') ) exitPage(11,'user-lock.svg'); //...
 
-// ---------
+// ------
 // INITIALISE
-// ---------
-
+// ------
 // check search arguments
 $q = ''; // type of search (if missing will use $q='s')
 $s = ''; // section $s can be '*' or [int] (after argument checking only [int] is allowed)
@@ -69,10 +68,9 @@ $sqlFields = 'SELECT t.*,p.title,p.icon,p.id as postid,p.type as posttype,p.text
 $sqlFrom = ' FROM TABTOPIC t INNER JOIN TABPOST p ON t.firstpostid=p.id'; // warning: include only firstpostid (not the replies)
 $sqlWhere = ' WHERE t.id IN ('.$ids.')';
 
-// --------
+// ------
 // OUPUT
-// --------
-
+// ------
 $t = new TabTable();
 $t->arrTh['type'] = new TabHead(L('Type'));
 $t->arrTh['numid'] = new TabHead(L('Ref'));

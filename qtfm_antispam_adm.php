@@ -21,10 +21,9 @@ $oH->exiturl = $oH->selfurl;
 $oH->exitname = $oH->selfname;
 $oH->selfversion = $L['Antispam']['Version'].' 4.0<br>';
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) )
 {
   // read settings
@@ -58,10 +57,9 @@ if ( isset($_GET['a']) )
   if ( $_GET['a']==='default' ) $_SESSION[QT]['m_antispam_conf'] = '1112110000';
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 // read values

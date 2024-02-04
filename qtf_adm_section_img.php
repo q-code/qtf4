@@ -22,24 +22,23 @@ if ( SUser::role()!=='A' ) die('Access denied');
 $id = -1;
 qtArgs('int:id!'); if ( $id<0 ) die('Missing parameter id...');
 
-// --------
+// ------
 // INITIALISE
-// --------
-
+// ------
 include translate('lg_reg.php');
 
 $oH->selfurl = APP.'_adm_section_img.php';
 $oH->selfname = L('Change_picture');
 $oH->exiturl = APP.'_adm_section.php?pan=2&s='.$id.'&up='.(empty($_POST['up']) ? '0' : '1'); // extra arg to indicate image is updated
 
-// --------
+// ------
 // SUBMITTED for Exit
-// --------
+// ------
 if ( isset($_POST['exit']) ) $oH->redirect('exit');
 
-// --------
+// ------
 // INITIALISE image and repository
-// --------
+// ------
 $currentImg = CSection::getImage($id , 'id=userimg', ''); // returns '' if image doesn't exist
 $currentExists = $currentImg!=='';
 $upload_path = QT_DIR_DOC.'section/';
@@ -52,18 +51,18 @@ $thumb_height    = defined('QT_SECTIONLOGO_HEIGHT') ? QT_SECTIONLOGO_HEIGHT : 50
 $strMimetypes    = 'image/pjpeg,image/jpeg,image/jpg,image/gif,image/png,image/x-png';
 //Check to see if any images with the same name already exist
 
-// --------
+// ------
 // SUBMITTED FOR DELETE
-// --------
+// ------
 if ( isset($_POST['del']) && $_POST['del']=='del' )
 {
   CSection::deleteImage($id);
   $oH->redirect($oH->selfurl.'?id='.$id);
 }
 
-// --------
+// ------
 // PAGE
-// --------
+// ------
 $oH->links = [];
 $oH->links[] = '<link rel="shortcut icon" href="bin/css/'.APP.'_icon.ico"/>';
 $oH->links[] = '<link rel="stylesheet" type="text/css" href="bin/css/qt_core.css"/>';

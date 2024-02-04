@@ -43,9 +43,9 @@ function __construct($ref=null, bool $translate=false)
     $this->lastpostname = isset($GLOBALS['_SectionsStats'][$this->id]['lastpostname']) ? $GLOBALS['_SectionsStats'][$this->id]['lastpostname'] : '';
   }
 }
-// --------
+// ------
 // IContainer methods
-// --------
+// ------
 public function setFrom($ref=null)
 {
   // $ref can be [null|int|array|obj-class], otherwhise die
@@ -145,9 +145,9 @@ public static function getSections(string $role='V', int $domain=-1, array $reje
   }
   return $arrSections;
 }
-// --------
+// ------
 // Other methods
-// --------
+// ------
 public function logo(string $alt='')
 {
   return CSection::makeLogo($this->getMF('options','logo',$alt), $this->type, $this->status);
@@ -458,9 +458,9 @@ public function updEachItemReplies()
   $oDB->exec( "UPDATE TABTOPIC SET replies=(SELECT COUNT(*) FROM TABPOST WHERE TABTOPIC.id=TABPOST.topic AND TABPOST.type<>'P') WHERE forum=$this->id" );
 }
 
-// --------
+// ------
 // Multifield implementation
-// --------
+// ------
 /**
  * Read the multivalues-property $prop (or a ini-string) and return an array [key=>value]
  * @param string $prop name of the property (can also be a ini-string)

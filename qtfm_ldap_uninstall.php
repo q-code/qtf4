@@ -37,9 +37,9 @@ $oDB->exec( "DELETE FROM TABSETTING WHERE param='module_ldap' OR param='m_ldap:l
 unset($_SESSION[QT]['m_ldap']);
 SMem::set('settingsage',time());
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<h2>Removing database settings</h2>

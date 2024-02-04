@@ -42,10 +42,9 @@ $oH->exiturl = $oH->selfurl;
 $oH->exitname = $oH->selfname;
 $oH->selfversion = L('Export_Version').' 4.0';
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) )
 {
   // read and check mandatory
@@ -69,7 +68,6 @@ if ( isset($_POST['ok']) )
   // ------
   // EXPORT XML
   // ------
-
   if ( empty($oH->error) )
   {
     $oDB2 = new CDatabase();
@@ -142,10 +140,9 @@ if ( isset($_POST['ok']) )
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<form method="post" action="',$oH->selfurl,'">

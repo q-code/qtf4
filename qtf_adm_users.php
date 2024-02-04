@@ -12,10 +12,9 @@ if ( SUser::role()!=='A' ) die('Access denied');
 include translate('lg_adm.php');
 include translate('lg_reg.php');
 
-// ---------
+// ------
 // INITIALISE
-// ---------
-
+// ------
 $intUsers = $oDB->count( TABUSER.' WHERE id>0' ); // Count all users
 $oH->selfurl = 'qtf_adm_users.php';
 $oH->selfname = L('Users').' ('.$intUsers.')';
@@ -56,10 +55,9 @@ if ( isset($_GET['cid']) )  $intChecked = (int)strip_tags($_GET['cid']); // allo
 if ( isset($_POST['cid']) ) $intChecked = (int)strip_tags($_POST['cid']);
 if ( isset($_POST['checklast']) || isset($_GET['checklast']) ) $intChecked = $oDB->count( "SELECT max(id) as countid FROM TABUSER" ); // Find last id. This overrides the cid value !
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 // Global statistics
@@ -140,10 +138,9 @@ if ( !empty($formAddUser) ) echo '<a id="tgl-ctrl" href="javascript:void(0)" cla
 echo '<a href="qtf_adm_users_imp.php">'.L('Users_import_csv').'...</a> | <a href="qtf_adm_users_exp.php">'.L('Users_export_csv').'...</a></p>';
 if ( !empty($formAddUser) ) echo $formAddUser;
 
-// --------
+// ------
 // Category subform
-// --------
-
+// ------
 if ( $strCateg!='all' ) {
   $intCount = $intFalse;
   if ( $strCateg=='CH' ) $intCount = $intChild;
@@ -190,10 +187,9 @@ $strPaging = makePager("qtf_adm_users.php?cat=$strCateg&group=$pageGroup&order=$
 if ( !empty($strPaging) ) $strPaging = L('Page').$strPaging;
 if ( $intCount<$intUsers ) $strPaging = '<span class="small">'.L('user',$intCount).' '.L('from').' '.$intUsers.'</span>'.(empty($strPaging) ? '' : ' | '.$strPaging);
 
-// --------
+// ------
 // Memberlist
-// --------
-
+// ------
 $rowCommands = L('selection').': <a class="datasetcontrol" href="javascript:void(0)" data-action="usersrole">'.L('role').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersdel">'.L('delete').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersban">'.strtolower(L('Ban')).'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="userspic">'.L('picture').'</a>';
 echo PHP_EOL.'<form id="form-users" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-users-action" name="a" />'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
@@ -232,8 +228,7 @@ echo '<tbody>'.PHP_EOL;
 //-- LIMIT QUERY --
 $strState = 'id,name,closed,role,numpost,firstdate,lastdate,ip,picture FROM TABUSER WHERE id>0'.$sqlWhere;
 $oDB->query( sqlLimit($strState,$strOrder.' '.strtoupper($strDirec).($strOrder==='name' ? '' : $strOrder2),$intLimit,$ipp) );
-// --------
-
+// ------
 $arrRow=array(); // rendered row. To remove duplicate in seach result
 $intRow=0; // count row displayed
 $days = BAN_DAYS;

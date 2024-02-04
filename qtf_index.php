@@ -24,17 +24,15 @@ session_start();
  */
 require 'bin/init.php';
 
-// --------
+// ------
 // SECURITY
-// --------
-
+// ------
 if ( $_SESSION[QT]['board_offline'] ) exitPage(99,'tools.svg',false);
 if ( $_SESSION[QT]['visitor_right']<1 && SUser::role()==='V' ) exitPage(11,'user-lock.svg',false); //...
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_inc_hd.php';
 
 // Table definition

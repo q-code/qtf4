@@ -87,10 +87,9 @@ if ( empty($oH->error) )
   SMem::set('settingsage',time());
 }
 
-// --------
+// ------
 // Html start
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 if ( !$bStep0 )

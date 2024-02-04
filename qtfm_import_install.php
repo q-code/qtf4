@@ -51,9 +51,9 @@ if ( empty($oH->error) )
   SMem::set('settingsage',time());
 }
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<h2>Checking components</h2>';
