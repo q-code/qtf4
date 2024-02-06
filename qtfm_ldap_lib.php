@@ -60,11 +60,9 @@ function qt_ldap_search($username)
       $infos = $users[$i];
       $mail = isset($infos['mail'][0]) ? $infos['mail'][0] : '';
       if ( empty($mail) && isset($infos['email'][0]) ) $mail = $infos['email'][0];
-      if ( empty($mail) )
-      {
-        foreach($infos as $info)
-        {
-          if ( isset($info[0]) && qtIsMail($info[0]) ) { $mail = $info[0]; break; }
+      if ( empty($mail) ) {
+        foreach($infos as $info) {
+          if ( !empty($info[0]) ) { $mail = $info[0]; break; }
         }
       }
       if ( !empty($mail) ) break;

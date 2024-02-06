@@ -134,44 +134,28 @@ include 'setup_hd.php';
 
 if ( !empty($strMessage) ) echo $strMessage;
 
-if ( isset($_SESSION['qtfInstalled']) )
-{
-echo '<p>Database 4.0 in place.</p>';
-echo '<p>'.L('S_install_exit').'</p>';
-echo '<div style="width:350px; padding:10px; border-style:solid; border-color:#FF0000; border-width:1px; background-color:#EEEEEE">',L('End_message'),'<br>',L('User'),': <b>Admin</b><br>',L('Password'),': <b>Admin</b><br></div><br>';
-}
-else
-{
-echo '<h1>'.L('N_install').'</h1>';
+  if ( isset($_SESSION['qtfInstalled']) ) {
+  echo '<p>Database 4.0 in place.</p>';
+  echo '<p>'.L('S_install_exit').'</p>';
+  echo '<div style="width:350px; padding:10px; border-style:solid; border-color:#FF0000; border-width:1px; background-color:#EEEEEE">'.L('End_message').'<br>'.L('User').': <b>Admin</b><br>'.L('Password').': <b>Admin</b><br></div><br>';
+} else {
+  echo '<h1>'.L('N_install').'</h1>';
 }
 
 // document folders
-
 $error='';
-if ( !is_dir('upload') )
-{
+if ( !is_dir('upload') ) {
   $error .= '<font color=red>Directory <b>upload</b> not found.</font><br>Please create this directory and make it writeable (chmod 777) if you want to allow uploads<br>';
-}
-else
-{
+} else {
   if ( !is_readable('upload') ) $error .= '<font color=red>Directory <b>upload</b> is not readable.</font><br>Change permissions (chmod 777) if you want to allow uploads<br>';
   if ( !is_writable('upload') ) $error .= '<font color=red>Directory <b>upload</b> is not writable.</font><br>Change permissions (chmod 777) if you want to allow uploads<br>';
 }
 
-if ( empty($error) )
-{
+if ( empty($error) ) {
   $iY = intval(date('Y'));
-  for ($i=$iY;$i<=$iY+5;$i++)
-  {
-    if ( !is_dir('upload/'.$i) )
-    {
-      if ( mkdir('upload/'.$i) )
-      {
-        for ($j=1;$j<=12;$j++)
-        {
-        mkdir('upload/'.$i.'/'.($i*100+$j));
-        }
-      }
+  for ($i=$iY;$i<=$iY+5;$i++) {
+    if ( !is_dir('upload/'.$i) ) {
+      if ( mkdir('upload/'.$i) ) for ($j=1;$j<=12;$j++) mkdir('upload/'.$i.'/'.($i*100+$j));
     }
   }
 }
@@ -185,7 +169,7 @@ $_SESSION['setup_lang']=$str;
 // HTML END
 // ------
 echo '<p>';
-if ( file_exists('tool_check.php') ) echo '<a href="tool_check.php">',L('Check_install'),'...</a>';
+if ( file_exists('tool_check.php') ) echo '<a href="tool_check.php">'.L('Check_install').'...</a>';
 echo '</p>';
 
 include 'setup_ft.php';

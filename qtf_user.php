@@ -55,11 +55,11 @@ if ( qtModule('gmap') )
 // ------
 if ( isset($_POST['ok']) ) try {
 
-    // check form
+  // check form
   $strLoca = qtDb(trim($_POST['location']));
-  $strMail = str_replace([' ',';'],',',$_POST['mail']);
-  $strMail = implode(',',qtCleanArray($strMail));
-  if ( !empty($strMail) && !qtIsMail($strMail) ) throw new Exception( L('Email').' '.$strMail.' '.L('invalid') );
+  $strMail = trim($_POST['mail']); // html support multiple emails with ','
+  if ( empty($strMail) ) throw new Exception( L('Email').' '.L('invalid') );
+  if ( substr_count($strMail,',')>4 ) throw new Exception( '5 '.L('emails').' '.L('maximum') );
   if ( empty($_POST['birth_y']) || empty($_POST['birth_d']) || empty($_POST['birth_d']) ) {
     $strBirth = '0';
   } else {
@@ -67,14 +67,13 @@ if ( isset($_POST['ok']) ) try {
     if ( !qtIsValiddate($i,true,false,false) ) throw new Exception( L('Birthday').' ('.$_POST['birth_y'].'-'.$_POST['birth_m'].'-'.$_POST['birth_d'].') '.L('invalid') );
     $strBirth = $i;
   }
-
   if ( isset($_POST['child']) ) { $strChild = substr($_POST['child'],0,1); } else { $strChild = '0'; }
   if ( $id==1 && $strChild!='0' ) throw new Exception( 'user id[1] is admin and child status cannot be changed...' );
   if ( $id==0 && $strChild!='0' ) throw new Exception( 'user id[0] is visitor and child status cannot be changed...' );
-
-  if ( isset($_POST['parentmail']) ) { $strParentmail = trim($_POST['parentmail']); } else { $strParentmail=''; }
-  if ( !empty($strParentmail) && !qtIsMail($strParentmail) ) throw new Exception( L('Parent_mail').' '.L('invalid') );
-
+  if ( isset($_POST['parentmail']) ) {
+     $strParentmail = trim($_POST['parentmail']);
+     if ( !empty($strParentmail) ) throw new Exception( L('Parent_mail').' '.L('invalid') );
+  }
   $strWww = qtAttr($_POST['www']);
   if ( !empty($strWww) && substr($strWww,0,4)!=='http' ) throw new Exception( L('Website').' '.L('invalid') );
   if ( empty($strWww) || $strWww=='http://' || $strWww=='https://' ) $strWww='';

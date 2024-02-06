@@ -11,7 +11,6 @@ $oH->selfurl = APP.'_adm_tags_help.php';
 
 const HIDE_MENU_TOC=true;
 
-$oH->links['cssIcons']=''; // remove webicons
 
 include APP.'_adm_inc_hd.php';
 

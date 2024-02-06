@@ -24,7 +24,7 @@ if ( isset($_GET['a']) && $_GET['a']==='out' ) {
 // ------
 // INITIALISE
 // ------
-$oH->selfurl = 'qtf_login.php';
+$oH->selfurl = APP.'_login.php';
 $oH->selfname = L('Login');
 $strName = isset($_GET['dfltname']) ? qtAttr($_GET['dfltname']) : '';
 $certificate = makeFormCertificate('9db03580c02d0ac85d9d2d6611098fac');
@@ -66,8 +66,9 @@ if ( isset($_POST['ok']) ) try {
 
 } catch (Exception $e) {
 
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
   $oH->error = $e->getMessage();
-  $_SESSION[QT.'splash'] = 'E|'.$oH->error;
 
 }
 

@@ -20,24 +20,30 @@ if ( isset($_GET['u']) ) $_SESSION[QT]['smtp_username'] = qtDb($_GET['u']);
 if ( isset($_GET['w']) ) $_SESSION[QT]['smtp_password'] = qtDb($_GET['w']);
 
 // ------
-// SUBMITTED
+// SUBMITTED for send test
 // ------
-if ( isset($_POST['ok']) )
-{
+if ( isset($_POST['ok']) ) try {
+
   // register value used
   $_SESSION[QT]['smtp_host'] = qtDb($_POST['smtphost']);
   $_SESSION[QT]['smtp_port'] = qtDb($_POST['smtpport']);
   $_SESSION[QT]['smtp_username'] = qtDb($_POST['smtpusr']);
   $_SESSION[QT]['smtp_password'] = qtDb($_POST['smtppwd']);
-  if ( !qtIsMail($_POST['mailto']) ) die(L('Email').' '.L('invalid'));
 
   // send mail
-  qtMail($_POST['mailto'],$_POST['subject'],$_POST['message'],'iso-8859-1','1');
+  qtMail($_POST['mailto'], $_POST['subject'], $_POST['message'], 'iso-8859-1', '1');
 
   // exit
   $oH->exiturl = APP.'_adm_smtp.php';
   $oH->exitname = 'SMTP test';
   $oH->pageMessage('', 'Process completed...<br><br>If you have changed the smtp settings during the test, go to the Administration page and SAVE your new settings!', 'admin');
+
+} catch (Exception $e) {
+
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
+
 }
 
 // ------
@@ -45,7 +51,6 @@ if ( isset($_POST['ok']) )
 // ------
 const HIDE_MENU_TOC=true;
 
-$oH->links['cssIcons']=''; // remove webicons
 include APP.'_adm_inc_hd.php';
 
 // CONTENT
@@ -77,7 +82,7 @@ echo '<br>
 </tr>
 </table>
 ';
-echo '<h2 class="config">Test ',L('Email'),'</h2>
+echo '<h2 class="config">Test '.L('Email').'</h2>
 <table class="t-conf">
 <tr>
 <th><label for="mailto">SEND TO</label></th>
@@ -85,7 +90,7 @@ echo '<h2 class="config">Test ',L('Email'),'</h2>
 </tr>
 <tr>
 <th>From</th>
-<td>',$_SESSION[QT]['admin_email'],'</td>
+<td>'.$_SESSION[QT]['admin_email'].'</td>
 </tr>
 <tr>
 <th><label for="subject">Subject</label></th>
@@ -97,7 +102,7 @@ echo '<h2 class="config">Test ',L('Email'),'</h2>
 </tr>
 </table>
 ';
-echo '<p class="submit"><button type="submit" name="ok" value="send">',L('Send'),'</button></p>
+echo '<p class="submit"><button type="submit" name="ok" value="send">'.L('Send').'</button></p>
 </form>
 ';
 

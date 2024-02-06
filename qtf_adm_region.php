@@ -22,8 +22,6 @@ $oH->exitname = $oH->selfname;
 // ------
 if ( isset($_POST['ok']) ) try {
 
-  $oDB->debug = true;//!!!
-
   $_SESSION[QT]['show_time_zone'] = qtDb($_POST['show_time_zone']); // 0=no, 1=time, 2=time+gmt
   $oDB->updSetting('show_time_zone');
 

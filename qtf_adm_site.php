@@ -39,10 +39,8 @@ if ( isset($_POST['ok']) ) try {
   if ( empty($str) ) throw new Exception( L('Name_of_index').' '.L('invalid') );
   $_SESSION[QT]['index_name'] = $str;
 
-  // check adminemail
-  $str = qtDb(trim($_POST['admin_mail']));
-  if ( !qtIsMail($str) ) throw new Exception( L('Adm_e_mail').' '.L('invalid') );
-  $_SESSION[QT]['admin_email'] = $str;
+  // check admin email (no multiple, required)
+  $_SESSION[QT]['admin_email'] = trim($_POST['admin_mail']);
 
   // check smtp
   $_SESSION[QT]['use_smtp'] = substr($_POST['use_smtp'],0,1);
@@ -96,7 +94,6 @@ if ( strlen($_SESSION[QT]['site_url'])<10 || !preg_match('/^(http:\/\/|https:\/\
 $str = parse_url($_SESSION[QT]['site_url']); $str = empty($str['path']) ? '' : $str['path']; // site url
 $cur = parse_url($_SERVER['REQUEST_URI']); $cur = empty($cur['path']) ? '' : $cur['path']; // current url
 if ( strpos($cur,$str)===false ) $oH->warning .= 'Url do not match with current site url';
-if ( !qtIsMail($_SESSION[QT]['admin_email']) ) $oH->warning .= L('Adm_e_mail').' '.L('invalid').'<br>';
 if ( $strHelper ) $oH->warning .= $strHelper;
 if ( !empty($oH->warning) ) $oH->warning = qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.$oH->warning;
 

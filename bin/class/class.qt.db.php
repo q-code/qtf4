@@ -45,10 +45,10 @@ public function getHost(){ return $this->type==='pdo.sqlite' || $this->type==='s
 public function startStats(){ $this->stats = ['num'=>0, 'start'=>gettimeofday(true), 'rows'=>0]; }
 
 // ERROR handler
-private function halt($e, string $sql='')
+private function halt($e, string $sql='', bool $addErrorCode=false)
 {
-  if ( is_a($e,'PDOException') ) { $msg = $e->getCode().' '.$e->getMessage(); }
-  elseif ( is_a($e,'Exception') ) { $msg = $e->getMessage().' '.$this->addErrorInfo(); }
+  if ( is_a($e,'PDOException') ) { $msg = $e->getMessage().($addErrorCode ? ' '.$e->getCode() : ''); }
+  elseif ( is_a($e,'Exception') ) { $msg = $e->getMessage().($addErrorCode ? ' '.$this->addErrorInfo() : ''); }
   else { $msg = (string)$e; }
   if ( $this->userrole==='A' ) $msg .= '<br>'.$sql;
   $this->error = '<p class="debug red"><strong>Database error</strong>: '.$msg.'</p>'; // Error required to allow rollback

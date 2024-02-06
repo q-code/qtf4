@@ -115,7 +115,7 @@ if ( isset($_POST['ok']) ) try {
   if ( $is = SUser::isUsedName($oDB,$_POST['username']) ) throw new Exception($is); // use = (not compare)
   // check mail
   $_POST['mail'] = trim($_POST['mail']);
-  if ( !qtIsMail($_POST['mail'])) throw new Exception( L('Email').' '.L('invalid') );
+  if ( empty($_POST['mail']) ) throw new Exception( L('Email').' '.L('invalid') );
   // check password
   if ( $_SESSION[QT]['register_mode']=='direct' ) {
     if ( !qtIsPwd($_POST['pwd']) || !qtIsPwd($_POST['conpwd']) || $_POST['conpwd']!=$_POST['pwd'] ) throw new Exception( L('Password').' '.L('invalid') );
@@ -154,14 +154,12 @@ if ( isset($_POST['ok']) ) try {
   $_POST['secret_a'] = qtAttr($_POST['secret_a']);
   if ( empty($_POST['secret_a']) ) throw new Exception( L('Secret_question').' '.L('invalid') );
   // check parentmail
+  if ( !isset($_POST['parentmail']) ) $_POST['parentmail'] = '';
   if ( $_SESSION[QT]['register_coppa']=='1' && $strChild!='0' ) {
     $_POST['parentmail'] = trim($_POST['parentmail']);
-    if ( !qtIsMail($_POST['parentmail']) ) throw new Exception( L('Parent_mail').' '.L('Invalid') );
+    if ( empty($_POST['parentmail']) ) throw new Exception( L('Parent_mail').' '.L('Invalid') );
   }
-  if ( !isset($_POST['parentmail']) ) $_POST['parentmail'] = '';
-
   // Register user
-
   if ( $_SESSION[QT]['register_mode']==='backoffice' ) {
     // Send email
     $strSubject = $_SESSION[QT]['site_name'].' - Registration request';

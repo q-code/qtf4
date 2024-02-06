@@ -30,7 +30,6 @@ $oH->selfurl = 'qtf_form_coppa.php';
 // ------
 const HIDE_MENU_TOC=true;
 
-$oH->links['cssIcons']=''; // remove webicons
 include 'qtf_adm_inc_hd.php';
 
 echo <<<END

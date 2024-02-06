@@ -13,22 +13,14 @@ $self = 'setup_3';
 $urlPrev = 'setup_2.php';
 $urlNext = 'setup_4.php';
 
-function qtIsEmail($str)
-{
-  if ( !is_string($str) ) die('qtIsEmail: arg #1 must be a string');
-  if ( $str!=trim($str) ) return false;
-  if ( $str!=strip_tags($str) ) return false;
-  if ( !preg_match("/^[A-Z0-9._%-]+@[A-Z0-9][A-Z0-9.-]{0,61}[A-Z0-9]\.[A-Z]{2,6}$/i",$str) ) return false;
-  return true;
-}
-
 // Read admin_email setting
-$oDB = new CDatabase();
-$oDB->query( "SELECT param,setting FROM TABSETTING WHERE param='admin_email'" );
-while ($row = $oDB->getRow())
-{
-$_SESSION[QT][$row['param']]=strval($row['setting']);
+try {
+  $oDB = new CDatabase();
+  $oDB->query( "SELECT param,setting FROM TABSETTING WHERE param='admin_email'" );
+} catch (Exception $e) {
+  $error = $e->getMessage(); //...
 }
+while ($row = $oDB->getRow()) $_SESSION[QT][$row['param']] = (string)$row['setting'];
 if ( !isset($_SESSION[QT]['admin_email']) ) $_SESSION[QT]['admin_email']='';
 
 // ------
@@ -37,23 +29,20 @@ if ( !isset($_SESSION[QT]['admin_email']) ) $_SESSION[QT]['admin_email']='';
 include 'setup_hd.php';
 
 // Submitted
+if ( !empty($_POST['admin_email']) ) try {
 
-if ( !empty($_POST['admin_email']) ) {
-  if ( qtIsEmail($_POST['admin_email']) ) {
-    $_SESSION[QT]['admin_email'] = $_POST['admin_email'];
-    $oDB->updSetting('admin_email',null,true);
-    if ( empty($oDB->error) ) {
-    echo '<p class="is_ok">'.L('S_save').'</p>';
-    } else {
-      echo '<p class="is_err">'.sprintf (L('E_connect'),QDB_DATABASE,QDB_HOST).'</p>';
-    }
-  } else {
-    echo '<p class="is_err">Invalid e-mail</p>';
-  }
+  $_SESSION[QT]['admin_email'] = $_POST['admin_email'];
+  $oDB->updSetting('admin_email',null,true);
   // save the url
   $strURL = 'http'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on' ? 's' : '').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
   $strURL = substr($strURL,0,-24);
   $oDB->updSetting('site_url',$strURL,true);
+  echo '<p class="is_ok">'.L('S_save').'</p>';
+
+} catch (Exception $e) {
+
+  echo '<p class="is_err">'.$e->getMessage().'</p>';
+
 }
 
 // Form

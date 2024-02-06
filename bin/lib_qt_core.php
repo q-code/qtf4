@@ -427,13 +427,7 @@ function qtMail(string $strTo, string $strSubject, string $strMessage, string $s
     $mail->Subject = $strSubject;
     $mail->Body    = $strMessage;
     $mail->AltBody = $strMessage;
-    if ( !$mail->Send() ) {
-      echo '<br>Message could not be sent.';
-      echo '<br>Mailer Error: ' . $mail->ErrorInfo;
-      echo '<br>Subject: '.$mail->Subject;
-      echo '<br>Message: '.$mail->Body;
-      exit;
-    }
+    if ( !$mail->Send() ) throw new Exception( 'Message could not be sent: '.$mail->ErrorInfo.'<br>Subject: '.$mail->Subject.'<br>Message: '.$mail->Body );
     break;
   default:
     $strHeaders = 'Content-Type: text/plain; charset='.$strCharset;
@@ -724,16 +718,6 @@ function qtIsPwd(string $str, int $intMin=4, int $intMax=50, bool $trim=false)
   if ( $trim && $str!=trim($str) ) return false;
   if ( isset($str[$intMax]) ) return false; //length > $intMax
   if ( !isset($str[$intMin-1]) ) return false; //length < $intMin
-  return true;
-}
-function qtIsMail($mails, bool $multiple=true)
-{
-  // Works recursively on array
-  if ( is_array($mails) ) { foreach($mails as $k=>$item) if ( !qtIsMail($item,$multiple) ) return false; return true; }
-  // string (or csv)
-  if ( !is_string($mails) || empty($mails) || $mails!==trim($mails) ) return false;
-  $mails = $multiple && strpos($mails,',')!==false ? qtCleanArray($mails,',') : [$mails];
-  foreach ($mails as $mail) if ( !preg_match("/^[A-Z0-9._%-]+@[A-Z0-9][A-Z0-9.-]{0,61}[A-Z0-9]\.[A-Z]{2,6}$/i",$mail) ) return false;
   return true;
 }
 function qtIsBetween($n, $min=0, $max=99999)
