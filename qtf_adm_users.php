@@ -47,8 +47,8 @@ if ( isset($_GET['ipp']) && in_array($_GET['ipp'],['25','50','100']) ) {
 
 $intLimit = ($intPage-1)*25;
 
-// User menu (POST submitted and FORM $formAddUser)
-include 'qtf_adm_users_add.php';
+// Defines FORM $formAddUser and handles POST
+include APP.'_inc_adduser.php';
 
 // Prepare to check the last created user
 if ( isset($_GET['cid']) )  $intChecked = (int)strip_tags($_GET['cid']); // allow checking an id. Note checklast overridres this id

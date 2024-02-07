@@ -62,8 +62,8 @@ if ( count($arrGroup)===1 ) {
 $intTotal = $oDB->count( TABUSER." WHERE id>0" );
 $intCount = $pageGroup=='all' ? $intTotal : $oDB->count( TABUSER." WHERE id>0".$sqlWhere);
 
-// User menu (POST submitted and FORM $formAddUser)
-if ( SUser::isStaff() ) include 'qtf_adm_users_add.php';
+// Defines FORM $formAddUser and handles POST
+if ( SUser::isStaff() ) include APP.'_inc_adduser.php';
 
 // ------
 // HTML BEGIN
