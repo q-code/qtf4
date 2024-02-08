@@ -9,7 +9,7 @@ echo '<!DOCTYPE html>
 <meta name="keywords" content="quickalk,users management,qt-cute,OpenSource" />
 <meta name="author" content="qt-cute.org" />
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5" />
-<link rel="shortcut icon" href="'.APP.'_icon.ico" />
+<link rel="shortcut icon" href="qt.ico" />
 <link rel="stylesheet" type="text/css" href="../bin/css/qt_core.css" />
 <link rel="stylesheet" type="text/css" href="setup.css" />
 </head>

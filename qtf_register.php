@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618 allows app impersonation [qt f|i|e]
+<?php // v4.0 build:20240207 allows app impersonation [qt f|i|e]
 
 /*
 Handles all ui and bi regarding user's profile
@@ -25,8 +25,8 @@ session_start();
 */
 require 'bin/init.php';
 
-if ( $_SESSION[QT]['board_offline'] && SUser::role()!=='A' ) die('Board is under maintenance, please wait...');
-if ( !isset($_SESSION[QT]['register_coppa']) ) $_SESSION[QT]['register_coppa']='0'; // if coppa disabled
+if ( $_SESSION[QT]['board_offline'] && SUser::role()!=='A' ) die('<h1>Board is under maintenance</h1><p>Please wait...</p>');
+if ( !isset($_SESSION[QT]['register_coppa']) ) $_SESSION[QT]['register_coppa'] = '0'; // if coppa disabled
 
 $a = empty($_GET['a']) ? 'rules' : $_GET['a']; if ( !empty($_POST['a']) ) $a = $_POST['a']; // a and id  can come from get or post
 if ( empty($a) ) die('Missing argument');
@@ -42,9 +42,9 @@ $frm_hd = '';
 $frm = [];
 $frm_ft = '';
 
-//=======
+//======
 switch($a) {
-//=======
+//======
 
 //------
 case 'rules':
@@ -59,11 +59,16 @@ if ( !empty($_POST['m']) ) $intM = (int)trim($_POST['m']);
 if ( !empty($_POST['d']) ) $intD = (int)trim($_POST['d']);
 
 // SUBMIT
-if ( isset($_POST['ok']) ) {
-  if ( !isset($_POST['agreed']) ) $oH->pageMessage($oH->selfname, L('Rules_not_agreed')); //...
-  if ( $_SESSION[QT]['register_coppa'] && !qtIsValiddate($intY*10000+$intM*100+$intD,true,false) ) $oH->error = L('Birthday').' '.L('invalid');
-  if ( empty($oH->error) ) $oH->redirect(APP.'_register.php?a=in'.($_SESSION[QT]['register_coppa'] ? '&y='.$intY.'&m='.$intM.'&d='.$intD : '')); //... registration form
-  $_SESSION[QT.'splash'] = 'E|'.$oH->error;
+if ( isset($_POST['ok']) ) try {
+
+  if ( !isset($_POST['agreed']) ) throw new Exception( L('Rules_not_agreed'));
+  if ( $_SESSION[QT]['register_coppa'] && !qtIsValiddate($intY*10000+$intM*100+$intD,true,false) ) throw new Exception( L('Birthday').' '.L('invalid') );
+  $oH->redirect(APP.'_register.php?a=in'.($_SESSION[QT]['register_coppa'] ? '&y='.$intY.'&m='.$intM.'&d='.$intD : '')); //...
+
+} catch (Exception $e) {
+
+  $_SESSION[QT.'splash'] = 'E|'.$e->getMessage();
+
 }
 
 // FORM
@@ -98,15 +103,14 @@ if ( !empty($_POST['birthday']) ) {
 }
 $strChild = (int)date('Ymd',strtotime('now')) > ($intY+13)*10000+$intM*100+$intD ? '0' : '2';
 $birthday = (string)($intY*10000+$intM*100+$intD);
-
 $certificate = makeFormCertificate('2b174f48ab4d9704934dda56c6997b3a');
-if ( isset($_POST['ok']) && $_POST['ok']!==$certificate ) die('Unable to check certificate');
 
 // SUBMITTED
 if ( isset($_POST['ok']) ) try {
 
   // pre-checks
-  if ( empty($_POST['mail']) ) throw new Exception( L('Email').' '.L('invalid') );
+  if ( $_POST['ok']!==$certificate ) throw new Exception( 'Unable to check certificate' );
+  if ( empty($_POST['email']) ) throw new Exception( L('Email').' '.L('invalid') );
   if ( empty($_POST['username']) ) throw new Exception( L('Username').' '.L('invalid') );
   if ( $_SESSION[QT]['register_safe']==='text' || $_SESSION[QT]['register_safe']==='image' ) {
     if ( trim($_POST['code'])==='' || strlen($_POST['code'])!=6 ) throw new Exception( L('Type_code') );
@@ -114,15 +118,15 @@ if ( isset($_POST['ok']) ) try {
   // check name & unique
   if ( $is = SUser::isUsedName($oDB,$_POST['username']) ) throw new Exception($is); // use = (not compare)
   // check mail
-  $_POST['mail'] = trim($_POST['mail']);
-  if ( empty($_POST['mail']) ) throw new Exception( L('Email').' '.L('invalid') );
+  $_POST['email'] = trim($_POST['email']);
+  if ( empty($_POST['email']) ) throw new Exception( L('Email').' '.L('invalid') );
   // check password
-  if ( $_SESSION[QT]['register_mode']=='direct' ) {
+  if ( $_SESSION[QT]['register_mode']==='direct' ) {
     if ( !qtIsPwd($_POST['pwd']) || !qtIsPwd($_POST['conpwd']) || $_POST['conpwd']!=$_POST['pwd'] ) throw new Exception( L('Password').' '.L('invalid') );
   }
   // check role
-  if ( isset($_POST['role']) ) { $_POST['role']=substr(strtoupper($_POST['role']),0,1); } else { $_POST['role']='U'; }
-  if ( !in_array($_POST['role'],array('A','M','U')) ) $_POST['role']='U';
+  if ( isset($_POST['role']) ) { $_POST['role'] = substr(strtoupper($_POST['role']),0,1); } else { $_POST['role'] = 'U'; }
+  if ( !in_array($_POST['role'],array('A','M','U')) ) $_POST['role'] = 'U';
   // check code text/image/reCAPTCHA
   switch($_SESSION[QT]['register_safe']) {
   case 'text':
@@ -166,14 +170,14 @@ if ( isset($_POST['ok']) ) try {
     $strMessage = "This user request access to the board {$_SESSION[QT]['site_name']}.\nUsername: %s\nEmail: %s";
     $strFile = qtDirLang().'mail_request.php';
     if ( file_exists($strFile) ) include $strFile;
-    $strMessage = sprintf($strMessage,$_POST['username'],$_POST['mail']);
+    $strMessage = sprintf($strMessage,$_POST['username'],$_POST['email']);
     qtMail($_SESSION[QT]['admin_email'],$strSubject,$strMessage,QT_HTML_CHAR);
     $oH->pageMessage('', '<h2>'.L('Request_completed').'</h2><p>'.L('Reg_mail').'</p><p><a href="'.url($oH->exiturl).'">'.$oH->exitname.'</a></p>');
   } else {
     // email code
     if ( $_SESSION[QT]['register_mode']==='email' ) $_POST['pwd'] = 'QT'.rand(0,9).rand(0,9).rand(0,9).rand(0,9);
 
-    $id = SUser::addUser($_POST['username'],$_POST['pwd'],$_POST['mail'],$_POST['role'],$strChild,$_POST['parentmail'],$_POST['secret_q'],$_POST['secret_a'],$birthday); // unset _NewUser
+    $id = SUser::addUser($_POST['username'],$_POST['pwd'],$_POST['email'],$_POST['role'],$strChild,$_POST['parentmail'],$_POST['secret_q'],$_POST['secret_a'],$birthday); // unset _NewUser
     // note: username is db-encoded, pwd is sha, while sql query
 
     // send email
@@ -182,7 +186,7 @@ if ( isset($_POST['ok']) ) try {
     $strFile = qtDirLang().'mail_registred.php';
     if ( file_exists($strFile) ) include $strFile;
     $strMessage = sprintf($strMessage,$_POST['username'],$_POST['pwd']);
-    qtMail($_POST['mail'],$strSubject,$strMessage,QT_HTML_CHAR);
+    qtMail($_POST['email'],$strSubject,$strMessage,QT_HTML_CHAR);
 
     // parent mail
     if ( $_SESSION[QT]['register_coppa']=='1' && $strChild!='0' ) {
@@ -210,7 +214,7 @@ if ( isset($_POST['ok']) ) try {
 } catch (Exception $e) {
 
   $oH->error = $e->getMessage();
-  $_SESSION[QT.'splash'] = 'E|'.$oH->error;
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
 
 }
 
@@ -219,7 +223,7 @@ $frm_attr = 'class=msgbox formRegister';
 if ( !isset($_POST['username']) ) $_POST['username']='';
 if ( !isset($_POST['pwd']) ) $_POST['pwd']='';
 if ( !isset($_POST['conpwd']) ) $_POST['conpwd']='';
-if ( !isset($_POST['mail']) ) $_POST['mail']='';
+if ( !isset($_POST['email']) ) $_POST['email']='';
 if ( !isset($_POST['parentmail']) ) $_POST['parentmail']='';
 if ( !isset($_POST['secret_q']) ) $_POST['secret_q']='';
 if ( !isset($_POST['secret_a']) ) $_POST['secret_a']='';
@@ -270,7 +274,7 @@ if ( $_SESSION[QT]['register_mode']==='direct' ) {
 }
 $frm[] = '</fieldset>';
 $frm[] = '<fieldset class="register"><legend>'.L('Email').'</legend>';
-$frm[] = qtSVG('envelope','class=svg-label').'&nbsp;<input type="email" name="mail" size="25" maxlength="64" value="'.$_POST['mail'].'" placeholder="'.L('Your_mail').'"/><span id="mail_err" class="error"></span><br>';
+$frm[] = qtSVG('envelope','class=svg-label').'&nbsp;<input type="email" name="email" size="25" maxlength="64" value="'.$_POST['email'].'" placeholder="'.L('Your_mail').'"/><span id="mail_err" class="error"></span><br>';
 if ( $_SESSION[QT]['register_coppa']=='1' && $strChild!='0' )
 $frm[] = qtSVG('envelope','class=svg-label').'&nbsp;<input type="email" name="parentmail" size="32" maxlength="64" value="'.$_POST['parentmail'].'" placeholder="'.L('Parent_mail').'"/><br>';
 $frm[] = '</fieldset>';
@@ -407,7 +411,6 @@ $frm[] = '<p class="right input-pwd">'.L('New_password').'&nbsp;<input required 
 $frm[] = '<p class="right input-pwd">'.L('Confirm_password').'&nbsp;<input required id="pwd-3" type="password" name="conpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(3)|title='.L('Show')).'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '<input type="hidden" name="name" value="'.$row['name'].'"/>';
-$frm[] = '<input type="hidden" name="mail" value="'.$row['mail'].'"/>';
 $frm[] = '<input type="hidden" name="child" value="'.$row['children'].'"/>';
 $frm[] = '<input type="hidden" name="parentmail" value="'.$row['parentmail'].'"/>';
 $frm[] = '</form>';
@@ -828,9 +831,9 @@ break;
 default: die('Unknown command');
 //------
 
-//=======
+//======
 }
-//=======
+//======
 
 // ------
 // HTML BEGIN

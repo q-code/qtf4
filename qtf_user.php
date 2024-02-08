@@ -57,7 +57,7 @@ if ( isset($_POST['ok']) ) try {
 
   // check form
   $strLoca = qtDb(trim($_POST['location']));
-  $strMail = trim($_POST['mail']); // html support multiple emails with ','
+  $strMail = trim($_POST['emails']); // html support multiple emails with ','
   if ( empty($strMail) ) throw new Exception( L('Email').' '.L('invalid') );
   if ( substr_count($strMail,',')>4 ) throw new Exception( '5 '.L('emails').' '.L('maximum') );
   if ( empty($_POST['birth_y']) || empty($_POST['birth_d']) || empty($_POST['birth_d']) ) {
@@ -202,7 +202,7 @@ echo '<form method="post" action="'.url('qtf_user.php').'?id='.$id.'">
 <tr><th>'.L('Username').'</th><td clss="c-name">'.$row['name'].'</td></tr>
 <tr><th>'.L('Role').'</th><td>'.L('Role_'.$row['role']).($row['role']==='A' ? ' <small>'.qtSVG('user-a', 'title='.L('Role_A')).'</small>' : '').'</td></tr>
 <tr><th>'.L('Location').'</th><td><input type="text" name="location" size="35" maxlength="24" value="'.$row['location'].'" onchange="qtFormSafe.not()"/></td></tr>
-<tr><th>'.L('Email').'</th><td><input type="email" name="mail" size="35" maxlength="64" value="'.$row['mail'].'" onchange="qtFormSafe.not()" multiple/></td></tr>
+<tr><th>'.L('Email').'</th><td><input required type="email" name="emails" size="35" maxlength="255" value="'.$row['mail'].'" onchange="qtFormSafe.not()" multiple/></td></tr>
 <tr><th>'.L('Website').'</th><td><input type="text" name="www" pattern="^(http://|https://).*" size="35" maxlength="64" value="'.(empty($row['www']) ? '' : $row['www']).'" title="'.L('H_Website').'" onchange="qtFormSafe.not()"/></td></tr>
 <tr><th>'.L('Birthday').'</th>
 ';

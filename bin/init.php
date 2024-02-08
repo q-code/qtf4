@@ -97,7 +97,7 @@ $oH->metas[] = '<meta charset="'.QT_HTML_CHAR.'"/>
 <meta name="description" content="QTF '.APPNAME.'"/>
 <meta name="keywords" content="QTF,Forum,qt-cute,OpenSource"/>
 <meta name="author" content="qt-cute.org"/>';
-$oH->links['ico'] = '<link rel="shortcut icon" href="'.QT_SKIN.'img/qtf_icon.ico"/>';
+$oH->links['ico'] = '<link rel="shortcut icon" href="'.QT_SKIN.'img/qt.ico"/>';
 $oH->links['cssCore'] = '<link rel="stylesheet" type="text/css" href="bin/css/qt_core.css"/>';
 $oH->links['css'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.'qtf_styles.css"/>';
 if ( file_exists(QT_SKIN.'custom.css') ) $oH->links['cssCustom'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.'custom.css"/>';
