@@ -233,8 +233,8 @@ echo '<h1>Administration tips</h1>';
   $oDB->query( 'SELECT pwd FROM '.QDB_PREFIX.'qtauser WHERE id=1');
   $row = $oDB->getRow();
   $strPwd = $row['pwd'];
-  if ( $strPwd==sha1('Admin') ) echo '<span class="nok">Administrator password is still the initial password. It\'s recommended to change it</span><br>';
-  if ( is_dir($root.'install') ) echo '<span class="nok">Install folder must be encrypted or removed to prevent other installation</span><br>';
+  if ( $strPwd==sha1('Admin') ) echo '<span class="nok">Administrator password is still the initial password. It\'s recommended to change it.</span><br>';
+  if ( is_dir($root.'install') ) echo '<span class="nok">Install folder must be encrypted or removed.</span><br>';
   echo '</p>';
 
 // 3 site url
