@@ -1,4 +1,4 @@
-<?php  //4.0 build:20230618 allows app impersonation [qt f|i ]
+<?php  //4.0 build:20240210 allows app impersonation [qt f|i ]
 
 session_start();
 /**
@@ -132,7 +132,7 @@ foreach(LANGUAGES as $k=>$values)
 echo '</div></td>
 </tr>
 <tr>
-<td colspan="2" class="void asterix">* '.L('E_no_translation').'<strong style="color:#1364B7">'.$_SESSION[QT]['index_name'].'</strong></td>
+<td colspan="2" class="asterix">* '.L('E_no_translation').'<strong style="color:#1364B7">'.$_SESSION[QT]['index_name'].'</strong></td>
 </tr>
 </table>
 ';

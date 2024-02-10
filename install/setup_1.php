@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618
+<?php // v4.0 build:20240210
 /**
  * @var string $strPrev
  * @var string $strNext
@@ -8,7 +8,7 @@
 session_start();
 include 'init.php';
 $self = 'setup_1';
-$tools = '<p class="tools"><a href="setup_1_tpl.php">Load from template...</a></p>';
+$tools = '<a href="setup_1_tpl.php">Load from template...</a>';
 
 // manipulate config values through $arr holding const defined in the file
 $arr = [];
@@ -32,12 +32,12 @@ if ( !empty($_GET['sqlite']) ) try {
   $oDB = new CDatabase($arr['QDB_SYSTEM'],'',$arr['QDB_DATABASE'],'','',true); // true to create sqlite file
   if ( !empty($oDB->error) ) throw new Exception( 'Unable to create SQLite database file: '.$arr['QDB_DATABASE'].'<br>'.$oDB->error );
   // end
-  echo '<p class="is_ok">'.L('S_connect').'</p>';
+  echo '<p class="result ok">'.L('S_connect').'</p>';
 
 } catch (Exception $e) {
 
   $error = $e->getMessage();
-  echo '<p class="is_err">Unable to create SQLite database file: '.$arr['QDB_DATABASE'].'<br>'.$error.'</p>';
+  echo '<p class="result err">Unable to create SQLite database file: '.$arr['QDB_DATABASE'].'<br>'.$error.'</p>';
 
 }
 
@@ -76,7 +76,7 @@ if ( isset($_POST['ok']) ) try {
   const QDB_INSTALL = "'.$date.' '.APP.substr($date,-1).'";'; // default memory namespace is "qtf{n}"
   $error = saveToFile('../config/config_db.php',$str); // SAVE TO FILE
   if ( !empty($error) ) throw new Exception( L('E_save').'<br>'.$error );
-  echo '<p class="is_ok">'.L('S_save').'</p>';
+  echo '<p class="result ok">'.L('S_save').'</p>';
 
   // Test Connection
   if ( $arr['QDB_SYSTEM']=='pdo.sqlite' || $arr['QDB_SYSTEM']=='sqlite' )
@@ -97,12 +97,12 @@ if ( isset($_POST['ok']) ) try {
     if ( !empty($oDB->error) ) throw new Exception( sprintf(L('E_connect'),$arr['QDB_DATABASE'],$arr['QDB_HOST']).'<br>'.$oDB->error );
   }
   // Test Result
-  echo '<p class="is_ok">'.L('S_connect').'</p>';
+  echo '<p class="result ok">'.L('S_connect').'</p>';
 
 } catch (Exception $e) {
 
   $error = $e->getMessage();
-  echo '<p class="is_err">'.$error.'</p>';
+  echo '<p class="result err">'.$error.'</p>';
 
 }
 

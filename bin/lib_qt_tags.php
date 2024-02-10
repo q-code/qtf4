@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618
+<?php // v4.0 build:20240210
 // Library not loaded by the init.php but by qtx_adm_tags, qtx_item, qtx_search, srv_query
 function readTagsFile(string $file, bool $lower=false)
 {

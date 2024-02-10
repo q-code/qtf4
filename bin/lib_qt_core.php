@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618
+<?php // v4.0 build:20240210
 
 /**
  * Convert qt-php-like url into html-like url when urlrewrite is active. Works only on the path-part of the url. Ex: 'qtx_login.php' becomes 'login.html'
@@ -554,13 +554,13 @@ function qtInline(string $str, int $max=255, string $end='...', bool $unbbc=true
 }
 function qtDateClean($d='now', int $size=14, string $e='?')
 {
+  if ( $d==='now' ) return substr(date('YmdHis'),0,$size);
   // Works recursively on array
   if ( is_array($d) ) { foreach($d as $k=>$item) $d[$k] = qtDateClean($item,$size,$e); return $d; }
   // Returns datetime [string] 'YYYYMMDD[HHMM[SS]]' from 'now'|integer|'YYYY-MM-DD HH:MM:SS'
   if ( is_int($d) && $d>0 ) $d = (string)$d;
   if ( !is_string($d) || $size<4 || $size>14 || strlen($d)<4 ) return $e;
   // Sanitize
-  if ( $d==='now' ) return substr(date('YmdHis'),0,$size);
   if ( $d===(string)(int)$d ) return substr($d,0,$size);
   $d = str_replace([' ','-','.','/',':'], '', $d);
   if ( $d===(string)(int)$d ) return substr($d,0,$size);

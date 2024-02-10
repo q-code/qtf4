@@ -1,6 +1,6 @@
 <?php
 
-// v4.0 build:20230618
+// v4.0 build:20240210
 // Script added in qtf_edit.php when rss is activated.
 
 function toXml($str)

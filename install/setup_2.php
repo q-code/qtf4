@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618
+<?php // v4.0 build:20240210
 /**
  * @var string $strPrev
  * @var string $strNext
@@ -11,7 +11,7 @@ $error = '';
 $self = 'setup_2';
 $urlPrev = 'setup_1.php';
 $urlNext = 'setup_3.php';
-$tools = ''; if ( file_exists('tool_tables.php') ) $tools = '<p class="tools"><a href="tool_tables.php">Tool tables...</a></p>';
+$tools = ''; if ( file_exists('tool_tables.php') ) $tools = '<a href="tool_tables.php">Tool tables...</a>';
 
 // ------
 // HTML BEGIN
@@ -66,7 +66,7 @@ if ( isset($_POST['ok']) ) {
     if ( !empty($oDB->error) ) throw new Exception( $oDB->error );
 
     echo '<p>'.$out.'</p>
-    <p class="is_ok">'.L('S_install').'</p>';
+    <p class="result ok">'.L('S_install').'</p>';
 
     $_SESSION['qtfInstalled'] = true;
     // save the url
@@ -77,7 +77,7 @@ if ( isset($_POST['ok']) ) {
   } catch (Exception $e) {
 
     $error = $e->getMessage();
-    echo '<p class="is_err">Problem to execute a query in database ['.QDB_DATABASE.'] on server ['.QDB_HOST.']<br>See the error message... '.$error.'</p>';
+    echo '<p class="result err">Problem to execute a query in database ['.QDB_DATABASE.'] on server ['.QDB_HOST.']<br>See the error message... '.$error.'</p>';
 
   }
 

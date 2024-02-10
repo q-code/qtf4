@@ -3,7 +3,7 @@
 /* ============
  * map_lib.php
  * ------
- * version: 4.0 build:20230618
+ * version: 4.0 build:20240210
  * This is a module library
  * ------
  * Class CMapPoint

@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618 allows app impersonation [qt f|i|e]
+<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e]
 
 session_start();
 /**
@@ -102,19 +102,19 @@ echo '
 <h2 class="config">Identifiers</h2>
 <table class="t-conf" style="border-spacing:10px">
 <tr>
-<td colspan="2" class="void">Find here after the list of possible time zone identifiers available on your server.<br>Copy one identifier and click Save to change your server time setting.</td>
+<td colspan="2">Find here after the list of possible time zone identifiers available on your server.<br>Copy one identifier and click Save to change your server time setting.</td>
 </tr>
 <tr>
-<td class="void right bold" style="width:40%">Search by zone</td>
-<td class="void bold">Time zone identifiers</td>
+<td class="right bold" style="width:40%">Search by zone</td>
+<td class="bold">Time zone identifiers</td>
 </tr>
 <tr>
-<td class="void right" style="vertical-align:top">
+<td class="right" style="vertical-align:top">
 ';
 foreach ($groups as $k=>$group) echo '<a href="'.APP.'_adm_time.php?group='.$k.'">'.$group.'</a><br>';
 echo '<br><a href="'.APP.'_adm_time.php?group=ALL">Show all</a>';
 echo '</td>
-<td class="void" style="vertical-align:top"><div class="scroll">'.implode('<br>',$arrTZI).'</div></td>
+<td style="vertical-align:top"><div class="scroll">'.implode('<br>',$arrTZI).'</div></td>
 </tr>
 </table>
 <p><a href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>';

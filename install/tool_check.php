@@ -1,4 +1,4 @@
-<?php // V4.0 build:20230618
+<?php // V4.0 build:20240210
 
 $root = '../';
 define('THISAPPNAME', 'QuickTalk forum');
@@ -33,7 +33,7 @@ p.endcheck {margin:5px 0 0 0; padding:5px; border:solid 1px #aaaaaa}
 // ------
 
 echo '<h1>Checking your configuration</h1>';
-echo '<p>'.THISAPPNAME.' 4.0 build:20230618</p>';
+echo '<p>'.THISAPPNAME.' 4.0 build:20240210</p>';
 
 $error = '';
 $result = true;

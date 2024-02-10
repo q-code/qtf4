@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618  allows app impersonation [qt f|i ]
+<?php // v4.0 build:20240210  allows app impersonation [qt f|i ]
 /**
  * @var string $strPrev
  * @var string $strNext
@@ -19,7 +19,7 @@ if ( isset($_POST['ok']) && !empty($_POST['template']) && file_exists('../config
   $copied = true;
   if ( $_POST['template']!=='config_db_backup.php' ) $copied = copy('../config/config_db.php', '../config/config_db_backup.php');
   $copied = copy('../config/'.$_POST['template'], '../config/config_db.php');
-  $result = $copied ? '<p class="is_ok">Backup created. Template successfully loaded.</p>' : '<p class="is_err">Fail to copy</p>';
+  $result = $copied ? '<p class="result ok">Backup created. Template successfully loaded.</p>' : '<p class="result err">Fail to copy</p>';
 }
 
 // ------

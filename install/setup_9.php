@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618
+<?php // v4.0 build:20240210
 /**
  * @var string $strPrev
  * @var string $strNext
@@ -13,10 +13,9 @@ $strNext = APPNAME;
 $urlPrev = 'setup_4.php';
 $urlNext = '../qtf_login.php?dfltname=Admin';
 $selfurl = 'setup_9.php';
-$tools = '<p class="tools">';
+$tools = '';
 if ( file_exists('tool_tables.php') ) $tools .= '<a href="tool_tables.php">Tool tables...</a>';
 if ( file_exists('tool_check.php') ) $tools .= ' | <a href="tool_check.php">Check installation...</a>';
-$tools .= '</p>';
 
 function redirect(string $u, string $s='Continue')
 {
@@ -85,7 +84,7 @@ if ( isset($_POST['method']) )
         $_SESSION[QT.'splash'] = 'Install deleted';
         redirect('../'.APP.'_index.php');
       } catch (Exception $e) {
-        echo '<p class="is_err">'.$e->getMessage().'</p>';
+        echo '<p class="result err">'.$e->getMessage().'</p>';
       }
       break;
   }

@@ -1,4 +1,4 @@
-<?php  // v4.0 build:20230618
+<?php  // v4.0 build:20240210
 
 session_start();
 /**
@@ -143,9 +143,7 @@ echo '<tr title="'.L('H_Home_website_name').'">
 </tr>
 ';
 echo '<tr id="home_url_help"'.($_SESSION[QT]['home_menu'] ? '': ' style="display:none"').'>
-<td colspan="2" class="void small">
-'.L('Use_|_add_attributes').' <span style="color:#1364B7">http://www.site.com | target=_blank</span>
-</td>
+<td colspan="2" class="asterix">'.L('Use_|_add_attributes').' <span style="color:#1364B7">http://www.site.com | target=_blank</span></td>
 </tr>
 ';
 echo '</table>

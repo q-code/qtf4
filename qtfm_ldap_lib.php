@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618 can be app impersonated {qt f|e|i}
+<?php // v4.0 build:20240210 can be app impersonated {qt f|e|i}
 
 // Returns true/false, in case of troubles $oH->error will include the ldap error message
 

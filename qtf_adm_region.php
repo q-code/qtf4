@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618 allows app impersonation [qt f|i|e|m]
+<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e|m]
 
 session_start();
 /**
@@ -130,10 +130,10 @@ echo '<h2 class="config">'.L('Preview').'</h2>
 <table class="t-conf" style="width:250px;">
 ';
 echo '<tr>
-<td class="void right">'.L('Date').'</td><td class="void">'.qtDate('now',$_SESSION[QT]['formatdate'],'',false).'</td>
+<td class="right">'.L('Date').'</td><td>'.qtDate('now',$_SESSION[QT]['formatdate'],'',false).'</td>
 </tr>
 <tr>
-<td class="void right">'.L('Clock').'</td><td class="void">';
+<td class="right">'.L('Clock').'</td><td>';
 echo gmdate($_SESSION[QT]['formattime'],time()+(3600*$_SESSION[QT]['time_zone']));
 if ( $_SESSION[QT]['show_time_zone']=='2' ) echo ' (gmt'.($_SESSION[QT]['time_zone']>0 ? '+' : '').($_SESSION[QT]['time_zone']==0 ? '' : $_SESSION[QT]['time_zone']).')';
 echo '</td>

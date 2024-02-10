@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618 allows app impersonation [qt f|i ]
+<?php // v4.0 build:20240210 allows app impersonation [qt f|i ]
 
 session_start();
 $intBack = rand(1, 2);

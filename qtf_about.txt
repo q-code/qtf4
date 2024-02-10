@@ -3,7 +3,7 @@
 * @package    QuickTalk
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2015 The PHP Group
-* @version    4.0 build:20230618
+* @version    4.0 build:20240210
 * PHP 7 LICENSE: This source file is subject to version 3 of the PHP license
 * that is available through the world-wide-web at the following URI:
 * http://www.php.net/license.

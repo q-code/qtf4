@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618
+<?php // v4.0 build:20240210
 
 session_start();
 /**
@@ -320,7 +320,7 @@ foreach(LANGUAGES as $k=>$values)
 echo '</div></td>
 </tr>
 <tr>
-<td colspan="2" class="void asterix">* '.L('E_no_translation').'<strong style="color:#1364B7">'.$oS->title.'</strong></td>
+<td colspan="2" class="asterix">* '.L('E_no_translation').'<strong style="color:#1364B7">'.$oS->title.'</strong></td>
 </tr>
 </table>
 ';

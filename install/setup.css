@@ -1,27 +1,27 @@
-body{color:#000;background-color:#EEE;font-family:Verdana,Arial,sans-serif}
-
-main{margin:1rem auto;padding:0;width:750px;border:1px solid #156AC2;box-shadow:3px 3px 5px #aaa;}
-@media screen and (min-width:1024px){main{width:850px}}
-
-header, nav{padding:0.5rem;color:white}
-header{background:#0C4C8C;background:linear-gradient(to bottom,#0C4C8C 20%,#156AC2)}
+body{margin:1rem auto;padding:0;width:90%;border:1px solid #156AC2;box-shadow:3px 3px 5px #aaa;color:#000;background-color:#EEE;font-family:system-ui,sans-serif}
+@media screen and (min-width:1024px){body{width:890px}}
+header, nav{display:flex;padding:0.5rem;justify-content:space-between;color:white}
+header{align-items:end;background:linear-gradient(to bottom,#0C4C8C 20%,#156AC2)}
 .tools{padding:0.5rem;text-align:right}
-nav{background:linear-gradient(to top,#0C4C8C 20%,#156AC2)}
-
-div.main{padding:1.5rem 0.5rem}
-.setup_1 .main,
-.setup_2 .main,
-.setup_3 .main{display:grid;gap:0.3rem;grid-template-columns:2fr 1fr}
-aside{padding-left:0.5rem;border-left:2px dotted #cccccc;font-size:0.8rem;color:#000099}
+nav{align-items:baseline;background:linear-gradient(to top,#0C4C8C 20%,#156AC2)}
+main{padding:1.5rem 1rem}
+.setup_1, .setup_2, .setup_3{display:grid;gap:0.3rem;grid-template-columns:2fr 1fr;padding-right:0.5rem}
+aside{padding-left:0.5rem;border:2px dotted #cccccc;border-width:0 0 0 2px;font-size:0.9rem;color:#000099}
+@media screen and (max-width:800px){
+  .setup_1, .setup_2, .setup_3{display:block}
+  aside{margin-top:1rem;padding:0.5rem 0 0 0;border-width:2px 0 0 0}
+}
 
 h1{margin-bottom:1rem;font-size:1.1rem}
 a{color:#0000FF;text-decoration:none}
 a:hover{text-decoration:underline}
-.is_ok{margin-bottom:1rem;padding:0.2rem 0.5rem;background-color:#CCFFCC;border:1px solid #99FF00}
-.is_err{margin-bottom:1rem;padding:0.2rem 0.5rem;background-color:#FFFFCC;border:1px solid #FF9900}
+.result{margin-bottom:1rem;padding:0.2rem 0.5rem;border-radius:5px}
+  .ok{background-color:#CCFFCC;border:1px solid #99FF00}
+  .err{background-color:#FFFFCC;border:1px solid #FF9900}
 input, select{padding:3px 5px;border:solid 1px #d0d0d0}
 button{padding:3px 8px;background-color:#1364B7;opacity:0.8;color:white;border:2px solid #1364B7;text-decoration:none;border-radius:3px}
 button:hover, button:focus{opacity:1}
-a.button{display:inline-block;margin:0 0 0 0.5rem;padding:7px 15px;border:1px solid #AAA;font-weight:bold;background:linear-gradient(to top,#FFF 3px,#d4d4d4)}
-a.button:hover{text-decoration:none}
-a.button:not(.disabled):hover{background:linear-gradient(to bottom,#FFF 3px,#d4d4d4)}
+
+nav .button{display:inline-block;margin:0 0 0 0.5rem;padding:0.4rem 0.8rem;border:1px solid #FFF;font-weight:bold;background:linear-gradient(to top,#FFF 3px,#d4d4d4)}
+nav .button:hover{text-decoration:none}
+nav .button:not(.disabled):hover{background:linear-gradient(to bottom,#FFF 3px,#d4d4d4)}

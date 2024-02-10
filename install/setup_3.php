@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618
+<?php // v4.0 build:20240210
 
 session_start();
 /**
@@ -37,11 +37,11 @@ if ( !empty($_POST['admin_email']) ) try {
   $strURL = 'http'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on' ? 's' : '').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
   $strURL = substr($strURL,0,-24);
   $oDB->updSetting('site_url',$strURL,true);
-  echo '<p class="is_ok">'.L('S_save').'</p>';
+  echo '<p class="result ok">'.L('S_save').'</p>';
 
 } catch (Exception $e) {
 
-  echo '<p class="is_err">'.$e->getMessage().'</p>';
+  echo '<p class="result err">'.$e->getMessage().'</p>';
 
 }
 
