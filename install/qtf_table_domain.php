@@ -58,7 +58,6 @@ default:
 
 }
 
-
-$b = $oDB->query($sql);
+$oDB->query($sql);
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtadomain (id,title,titleorder) VALUES (0,'Administration domain',0)" );
 $oDB->exec( "INSERT INTO ".QDB_PREFIX."qtadomain (id,title,titleorder) VALUES (1,'Public domain',1)" );

@@ -7,12 +7,13 @@
  */
 session_start();
 include 'init.php';
-$self = 'setup_1';
-$tools = '<a href="setup_1_tpl.php">Load from template...</a>';
+$main = 'setup_1';
+$tools = '<a href="setup_1_tpl.php">'.L('Load_from_template').'...</a>';
 
 // manipulate config values through $arr holding const defined in the file
 $arr = [];
-foreach(array('QDB_SYSTEM','QDB_HOST','QDB_DATABASE','QDB_PREFIX','QDB_USER','QDB_PWD','QDB_INSTALL') as $key) $arr[$key] = defined($key) ? constant($key) : '';
+foreach(['QDB_SYSTEM','QDB_HOST','QDB_DATABASE','QDB_PREFIX','QDB_USER','QDB_PWD','QDB_INSTALL'] as $key)
+  $arr[$key] = defined($key) ? constant($key) : '';
 $urlPrev = 'setup.php';
 $urlNext = 'setup_2.php';
 
@@ -30,14 +31,12 @@ if ( !empty($_GET['sqlite']) ) try {
   if ( strpos($arr['QDB_DATABASE'],'.')===false || strlen($arr['QDB_DATABASE'])<4 ) throw new Exception( 'SQLite file extension missing. Recommanded extension: .db .sqlite3' );
   // create sqlitefile (path return to root)
   $oDB = new CDatabase($arr['QDB_SYSTEM'],'',$arr['QDB_DATABASE'],'','',true); // true to create sqlite file
-  if ( !empty($oDB->error) ) throw new Exception( 'Unable to create SQLite database file: '.$arr['QDB_DATABASE'].'<br>'.$oDB->error );
   // end
   echo '<p class="result ok">'.L('S_connect').'</p>';
 
 } catch (Exception $e) {
 
-  $error = $e->getMessage();
-  echo '<p class="result err">Unable to create SQLite database file: '.$arr['QDB_DATABASE'].'<br>'.$error.'</p>';
+  echo '<p class="result err">Unable to create SQLite database file: '.$arr['QDB_DATABASE'].'<br>'.$e->getMessage().'</p>';
 
 }
 
@@ -101,8 +100,7 @@ if ( isset($_POST['ok']) ) try {
 
 } catch (Exception $e) {
 
-  $error = $e->getMessage();
-  echo '<p class="result err">'.$error.'</p>';
+  echo '<p class="result err">'.$e->getMessage().'</p>';
 
 }
 

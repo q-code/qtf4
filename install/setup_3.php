@@ -9,7 +9,7 @@ session_start();
  */
 include 'init.php';
 $error='';
-$self = 'setup_3';
+$main = 'setup_3';
 $urlPrev = 'setup_2.php';
 $urlNext = 'setup_4.php';
 
@@ -33,10 +33,6 @@ if ( !empty($_POST['admin_email']) ) try {
 
   $_SESSION[QT]['admin_email'] = $_POST['admin_email'];
   $oDB->updSetting('admin_email',null,true);
-  // save the url
-  $strURL = 'http'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on' ? 's' : '').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-  $strURL = substr($strURL,0,-24);
-  $oDB->updSetting('site_url',$strURL,true);
   echo '<p class="result ok">'.L('S_save').'</p>';
 
 } catch (Exception $e) {

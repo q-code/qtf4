@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618
+<?php // v4.0 build:20240210
 
 session_start();
 require 'bin/init.php';
@@ -34,17 +34,16 @@ foreach(['m_gmap_gkey','m_gmap_gcenter','m_gmap_gzoom','m_gmap_gfind','m_gmap_gs
 if ( !isset($_SESSION[QT]['m_gmap_gbuttons']) || strlen($_SESSION[QT]['m_gmap_gbuttons'])!==7 ) $_SESSION[QT]['m_gmap_gbuttons']='P011100';
 
 // Read png in directory (shadow is obsolete)
-$arrFiles = array();
+$arrFiles = [];
 foreach(glob('qtfm_gmap/*.png') as $file) {
   $file = substr($file,10,-4);
   if ( strpos($file,'_shadow') ) continue;
   $arrFiles[$file] = ucfirst(str_replace('_',' ',$file));
 }
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) )
 {
   // save gkey
@@ -73,10 +72,9 @@ if ( isset($_POST['ok']) )
   }
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 // prepare section settings
 
 $arrSections = explode(';',$_SESSION[QT]['m_gmap_sections']);
@@ -101,9 +99,9 @@ echo '
 </tr>
 ';
 
-//-----------
+//------
 if ( !empty($_SESSION[QT]['m_gmap_gkey']) ) {
-//-----------
+//------
 
 // current symbol
 $current = empty($_SESSION[QT]['m_gmap_gsymbol']) ? 'default' : $_SESSION[QT]['m_gmap_gsymbol'];
@@ -169,9 +167,9 @@ echo '<h2 class="config">'.L('Gmap.Mapping_config').'</h2>
 </tr>
 ';
 
-//-----------
+//------
 }
-//-----------
+//------
 
 echo '</table>
 <p style="text-align:center"><button type="submit" name="ok" value="ok">'.L('Save').'</button></p>
@@ -201,9 +199,9 @@ else
 if ( !empty($_SESSION[QT]['m_gmap_gkey']) )
 {
   $gmap_symbol = empty($_SESSION[QT]['m_gmap_gsymbol']) ? false : $_SESSION[QT]['m_gmap_gsymbol']; // false = no icon but default marker
-  $gmap_markers = array();
-  $gmap_events = array();
-  $gmap_functions = array();
+  $gmap_markers = [];
+  $gmap_events = [];
+  $gmap_functions = [];
 
   $gmap_markers[] = gmapMarker($_SESSION[QT]['m_gmap_gcenter'],true,$gmap_symbol,L('Gmap.Default_center'));
   $gmap_events[] = '

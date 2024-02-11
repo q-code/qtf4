@@ -1,7 +1,4 @@
 <?php
-/**
- * @var array $L
- */
 
 $L['Ok'] = 'Ok';
 $L['Save'] = 'Sauver';
@@ -9,7 +6,8 @@ $L['Done'] = 'Terminé';
 $L['Back'] = '&lt;&nbsp;Précédent';
 $L['Next'] = 'Suivant&nbsp;&gt;';
 $L['Finish'] = 'Terminer';
-$L['Restart'] = 'Redémarrer';
+
+$L['Load_from_template'] = 'Récupérer un modèle';
 $L['Board_email'] = 'E-mail administrateur';
 $L['User'] = 'Utilisateur';
 $L['Password'] = 'Mot de passe';

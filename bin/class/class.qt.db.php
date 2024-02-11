@@ -51,7 +51,7 @@ private function halt($e, string $sql='', bool $addErrorCode=false)
   elseif ( is_a($e,'Exception') ) { $msg = $e->getMessage().($addErrorCode ? ' '.$this->addErrorInfo() : ''); }
   else { $msg = (string)$e; }
   if ( $this->userrole==='A' ) $msg .= '<br>'.$sql;
-  $this->error = '<p class="debug red"><strong>Database error</strong>: '.$msg.'</p>'; // Error required to allow rollback
+  $this->error .= '<strong>Database error</strong>: '.$msg.' '; // Error required to allow rollback
   // No halt while in transaction. Commit while error exist triggers a rollback
   if ( !$this->transac ) throw new Exception( $msg );
 }

@@ -20,7 +20,7 @@ function SqlDrop(string $table, string $constrain='')
 
 // INITIALISATION
 
-include 'lg_install.php';
+include 'src/en/lg_install.php';
 
 // ------
 // HTML BEGIN

@@ -1,10 +1,10 @@
-<?php // v4.0 build:20230618 can be app impersonated {qt f|e|i}
+<?php // v4.0 build:20240210 can be app impersonated {qt f|e|i}
 
 /**
  * @package    QuickTalk
  * @author     Philippe Vandenberghe <info@qt-cute.org>
  * @copyright  2012 The PHP Group
- * @version    4.0 build:20230618
+ * @version    4.0 build:20240210
  */
 
 session_start();
@@ -32,10 +32,9 @@ if ( $pan<0 || $pan>2) $pan=0;
 if ( !isset($_SESSION[QT]['m_ldap']) ) $_SESSION[QT]['m_ldap']='0';
 if ( !isset($_SESSION[QT]['login_addon']) ) $_SESSION[QT]['login_addon']='0';
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) && $pan==0 )
 {
   $oDB->exec( "DELETE FROM TABSETTING WHERE param='m_ldap' OR param='m_ldap_users'" );
@@ -132,7 +131,7 @@ if ( isset($_POST['ok']) && $pan>0 )
     $test_find='<span style="color:green">'.$intEntries.' matching entry</span>';
     $users = ldap_get_entries($c, $s);
     $infos = explode(',',$_SESSION[QT]['m_ldap_s_info']);
-    $results = array();
+    $results = [];
     for($i=0;$i<$intEntries;$i++)
     {
       $results[$i] = '';
@@ -169,10 +168,9 @@ if ( isset($_POST['ok']) && $pan>0 )
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 if ( !isset($_SESSION[QT]['m_ldap_host']) ) $_SESSION[QT]['m_ldap_host']='';
 if ( !isset($_SESSION[QT]['m_ldap_login_dn']) ) $_SESSION[QT]['m_ldap_login_dn']='';
 if ( !isset($_SESSION[QT]['m_ldap_bind']) ) $_SESSION[QT]['m_ldap_bind']='a';
@@ -186,7 +184,7 @@ if ( !isset($_SESSION[QT]['m_ldap_users']) ) $_SESSION[QT]['m_ldap_users']='all'
 include APP.'_adm_inc_hd.php';
 
 // DISPLAY TABS
-$arrM = array();
+$arrM = [];
 foreach(['Authority','Settings','Test'] as $k=>$str)
 $arrM['pan-'.$k] = $str.'|href='.$oH->selfurl.'?pan='.$k.'|id=pan-'.$k.'|class=pan-tab';
 $m = new CMenu($arrM, '');

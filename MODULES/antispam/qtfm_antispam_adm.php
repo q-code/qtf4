@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618
+<?php // v4.0 build:20240210
 
 session_start();
 require 'bin/init.php';
@@ -21,10 +21,9 @@ $oH->exiturl = $oH->selfurl;
 $oH->exitname = $oH->selfname;
 $oH->selfversion = $L['Antispam']['Version'].' 4.0<br>';
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) )
 {
   // read settings
@@ -58,10 +57,9 @@ if ( isset($_GET['a']) )
   if ( $_GET['a']==='default' ) $_SESSION[QT]['m_antispam_conf'] = '1112110000';
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 // read values
@@ -72,7 +70,7 @@ if ( !isset($_SESSION[QT]['m_antispam_conf']) )
 }
 
 $file = QT_DIR_DOC.'qtfm_spamip.txt';
-$arrIp = array();
+$arrIp = [];
 if ( file_exists($file) ) {
   $arrIp = explode("\n", file_get_contents($file));
 }

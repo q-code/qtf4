@@ -12,7 +12,7 @@
 * @package    QuickTalk
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2012 The PHP Group
-* @version    4.0 build:20230618
+* @version    4.0 build:20240210
 */
 
 session_start();
@@ -37,10 +37,9 @@ $oDB->exec( "DELETE FROM TABSETTING WHERE param='module_rss' OR param='m_rss' OR
 unset($_SESSION[QT]['module_rss']);
 SMem::set('settingsage',time());
 
-// --------
+// ------
 // Html start
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<h2>Removing database settings</h2>

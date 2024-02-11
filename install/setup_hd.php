@@ -9,20 +9,20 @@ echo '<!DOCTYPE html>
 <meta name="keywords" content="qt-cute,OpenSource,installation" />
 <meta name="author" content="qt-cute.org" />
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5" />
-<link rel="shortcut icon" href="qt.ico" />
+<link rel="shortcut icon" href="src/qt.ico" />
 <link rel="stylesheet" type="text/css" href="../bin/css/qt_core.css" />
-<link rel="stylesheet" type="text/css" href="setup.css" />
+<link rel="stylesheet" type="text/css" href="src/setup.css" />
 </head>
 <body>
 ';
 echo '<header>
-  <img id="logo" src="'.APP.'_logo.gif" alt="'.APPNAME.'" title="'.APPNAME.'" />
+  <img id="logo" src="src/'.APP.'_logo.gif" alt="'.APPNAME.'" title="'.APPNAME.'" />
   <p class="small">'.L('Installation').' '.APPNAME.' v'.VERSION.' '.BUILD.'</p>
 </header>
 ';
 if ( !empty($tools) ) echo '<div class="tools">'.$tools.'</div>
 ';
-echo '<main'.(empty($self) ? '' : ' class="'.$self.'"').'>
+echo '<main'.(empty($main) ? '' : ' class="'.$main.'"').'>
 <div class="content">
 ';
 

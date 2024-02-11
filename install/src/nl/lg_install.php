@@ -8,7 +8,8 @@ $L['Done'] = 'Gemaakt';
 $L['Back'] = '&lt;&nbsp;Vorige';
 $L['Next'] = 'Volgende&nbsp;&gt;';
 $L['Finish'] = 'Eind';
-$L['Restart'] = 'Nieuw begin';
+
+$L['Load_from_template'] = 'Ophalen uit een model';
 $L['Board_email'] = 'Systeem beheer e-mail';
 $L['User'] = 'Gebruiker';
 $L['Password'] = 'Watchwoord';

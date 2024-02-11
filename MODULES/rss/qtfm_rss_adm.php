@@ -12,7 +12,7 @@
 * @package    QuickTalk
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2012 The PHP Group
-* @version    4.0 build:20230618
+* @version    4.0 build:20240210
 */
 
 session_start();
@@ -33,10 +33,9 @@ $oH->selfurl = 'qtfm_rss_adm.php';
 $oH->selfname = $L['rss']['Admin'];
 $oH->selfversion = $L['Version'].' 4.0';
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) )
 {
   // check others
@@ -56,10 +55,9 @@ if ( isset($_POST['ok']) )
   }
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 // read values
@@ -133,21 +131,17 @@ echo '<p class="submit"><button type="submit" name="ok" value="ok">'.L('Save').'
 ';
 
 $strRssUrl = $_SESSION[QT]['site_url'].'/rss';
-$arrSections = getSections('V');
-$arrRss = array();
-foreach(array_keys($arrSections) as $s)
-{
-if ( file_exists('rss/qtf_'.$strForm.'_'.$s.'.xml') ) $arrRss[$s]=$strRssUrl.'/qtf_'.$strForm.'_'.$s.'.xml';
+$arrRss = [];
+foreach(array_keys($_SectionsTitle) as $s) {
+  if ( file_exists('rss/qtf_'.$strForm.'_'.$s.'.xml') ) $arrRss[$s]=$strRssUrl.'/qtf_'.$strForm.'_'.$s.'.xml';
 }
 
-if ( count($arrRss)>0 )
-{
+if ( count($arrRss)>0 ) {
   echo '<h2 class="config">'.L('Preview').'</h2>'.PHP_EOL;
   echo '<div class="scroll">'.PHP_EOL;
   echo '<table class="data_t">'.PHP_EOL;
-  foreach($arrRss as $s=>$strRss)
-  {
-  echo '<tr class="data_t hover"><td >'.$arrSections[$s]['title'].'</td><td ><a class="small" href="'.$strRss.'" target="_blank">'.$strRss,'</a></td></tr>';
+  foreach($arrRss as $s=>$strRss) {
+    echo '<tr class="data_t hover"><td >'.$_SectionsTitle[$s].'</td><td ><a class="small" href="'.$strRss.'" target="_blank">'.$strRss.'</a></td></tr>';
   }
   echo '</table></div>';
   echo '<p class="minor">'.qtSVG('info').' The feeds remain accessible when the module is off-line.</p>';

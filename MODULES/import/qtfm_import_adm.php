@@ -12,7 +12,7 @@
 * @package    QuickTalk
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2012 The PHP Group
-* @version    4.0 build:20230618
+* @version    4.0 build:20240210
 */
 
 session_start();
@@ -130,10 +130,9 @@ $oH->exiturl = $oH->selfurl;
 $oH->exitname = $oH->selfname;
 $oH->selfversion = L('Import_Version').' 4.0';
 
-// --------
+// ------
 // SUBMITTED
-// --------
-
+// ------
 if ( isset($_POST['ok']) ) try {
 
   // check file
@@ -152,8 +151,8 @@ if ( isset($_POST['ok']) ) try {
   if ( $_FILES['title']['type']!=='text/xml' ) throw new Exception(L('Import_E_format'));
 
   // import xml
-  $arrTopic = array();
-  $arrPosts = array();
+  $arrTopic = [];
+  $arrPosts = [];
   $t = 0;
   $p = 0;
   $strValue = '';
@@ -186,10 +185,9 @@ if ( isset($_POST['ok']) ) try {
 
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 if ( isset($_SESSION['m_import_xml']['dest']) )      $intDest   = $_SESSION['m_import_xml']['dest'];

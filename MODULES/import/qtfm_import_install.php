@@ -12,7 +12,7 @@
  * @package    QuickTalk
  * @author     Philippe Vandenberghe <info@qt-cute.org>
  * @copyright  2012 The PHP Group
- * @version    4.0 build:20230618
+ * @version    4.0 build:20240210
  */
 
 session_start();
@@ -51,9 +51,9 @@ if ( empty($oH->error) )
   SMem::set('settingsage',time());
 }
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<h2>Checking components</h2>';

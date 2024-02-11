@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618
+<?php // v4.0 build:20240210
 
 session_start();
 require 'bin/init.php'; /**
@@ -22,9 +22,9 @@ $oDB->exec( "DELETE FROM TABSETTING WHERE param='module_gmap' OR param LIKE 'm_g
 unset($_SESSION[QT]['module_gmap']);
 SMem::set('settingsage',time());
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<h2>Removing database settings</h2>

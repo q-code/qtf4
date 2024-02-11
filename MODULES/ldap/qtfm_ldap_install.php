@@ -12,7 +12,7 @@
 * @package    QTF
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2008-2012 The PHP Group
-* @version    1.0 build:20230618
+* @version    1.0 build:20240210
 */
 
 session_start();
@@ -61,9 +61,9 @@ if ( empty($oH->error) )
   if ( !function_exists('ldap_connect') ) $oH->error = 'LDAP function not found. It seems that module LDAP is not activated on your webserver';
 }
 
-// --------
+// ------
 // Html start
-// --------
+// ------
 include 'qtf_adm_inc_hd.php';
 
 echo '<h2>Checking components</h2>';

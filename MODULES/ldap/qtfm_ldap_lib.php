@@ -1,4 +1,4 @@
-<?php // v4.0 build:20230618 can be app impersonated {qt f|e|i}
+<?php // v4.0 build:20240210 can be app impersonated {qt f|e|i}
 
 // Returns true/false, in case of troubles $oH->error will include the ldap error message
 
@@ -60,11 +60,9 @@ function qt_ldap_search($username)
       $infos = $users[$i];
       $mail = isset($infos['mail'][0]) ? $infos['mail'][0] : '';
       if ( empty($mail) && isset($infos['email'][0]) ) $mail = $infos['email'][0];
-      if ( empty($mail) )
-      {
-        foreach($infos as $info)
-        {
-          if ( isset($info[0]) && qtIsMail($info[0]) ) { $mail = $info[0]; break; }
+      if ( empty($mail) ) {
+        foreach($infos as $info) {
+          if ( !empty($info[0]) ) { $mail = $info[0]; break; }
         }
       }
       if ( !empty($mail) ) break;

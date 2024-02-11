@@ -12,7 +12,7 @@
  * @package    QuickTalk
  * @author     Philippe Vandenberghe <info@qt-cute.org>
  * @copyright  2012 The PHP Group
- * @version    4.0 build:20230618
+ * @version    4.0 build:20240210
  */
 
 session_start();
@@ -69,10 +69,9 @@ if ( empty($oH->error) )
   SMem::set('settingsage',time());
 }
 
-// --------
+// ------
 // Html start
-// --------
-
+// ------
 include 'qtf_adm_inc_hd.php';
 
 if ( !$bStep0 )
@@ -98,8 +97,7 @@ echo '<h2>Installation completed</h2>';
 
 echo '<p style="margin:10px 0"><a href="qtfm_antispam_adm.php">Configure...</a></p>';
 
-// --------
+// ------
 // Html end
-// --------
-
+// ------
 include 'qtf_adm_inc_ft.php';

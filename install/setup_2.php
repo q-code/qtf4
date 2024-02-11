@@ -8,7 +8,7 @@
 session_start();
 include 'init.php';
 $error = '';
-$self = 'setup_2';
+$main = 'setup_2'; // main class (setup_hd)
 $urlPrev = 'setup_1.php';
 $urlNext = 'setup_3.php';
 $tools = ''; if ( file_exists('tool_tables.php') ) $tools = '<a href="tool_tables.php">Tool tables...</a>';
@@ -31,59 +31,45 @@ if ( isset($_POST['ok']) ) {
       $pwd = QDB_PWD;
     }
     $oDB = new CDatabase(QDB_SYSTEM,QDB_HOST,QDB_DATABASE,$user,$pwd);
-    if ( !empty($oDB->error) ) throw new Exception( $oDB->error );
 
     // Install the tables
-    $out = '';
-    $table = TABSETTING;
-    $out .= 'A) '.L('Installation').' '.$table.'... ';
+    $out = 'A) '.L('Installation').' '.TABSETTING.'... ';
     include 'qtf_table_setting.php';
     $out .= L('Done').', '.L('Default_setting').'<br>';
-    $table = TABDOMAIN;
-    $out .= 'B) '.L('Installation').' '.$table.'... ';
+    $out .= 'B) '.L('Installation').' '.TABDOMAIN.'... ';
     include 'qtf_table_domain.php';
     $out .= L('Done').', '.L('Default_domain').'<br>';
-    $table = TABSECTION;
-    $out .= 'C) '.L('Installation').' '.$table.'... ';
+    $out .= 'C) '.L('Installation').' '.TABSECTION.'... ';
     include 'qtf_table_section.php';
     $out .= L('Done').', '.L('Default_section').'<br>';
-    $table = TABTOPIC;
-    $out .= 'D) '.L('Installation').' '.$table.'... ';
+    $out .= 'D) '.L('Installation').' '.TABTOPIC.'... ';
     include 'qtf_table_topic.php';
     $out .= L('Done').'<br>';
-    $table = TABPOST;
-    $out .= 'E) '.L('Installation').' '.$table.'... ';
+    $out .= 'E) '.L('Installation').' '.TABPOST.'... ';
     include 'qtf_table_post.php';
     $out .= L('Done').'<br>';
-    $table = TABUSER;
-    $out .= 'F) '.L('Installation').' '.$table.'... ';
+    $out .= 'F) '.L('Installation').' '.TABUSER.'... ';
     include 'qtf_table_user.php';
     $out .= L('Done').', '.L('Default_user').'<br>';
-    $table = TABLANG;
-    $out .= 'G) '.L('Installation').' '.$table.'... ';
+    $out .= 'G) '.L('Installation').' '.TABLANG.'... ';
     include 'qtf_table_lang.php';
     $out .= L('Done');
-    if ( !empty($oDB->error) ) throw new Exception( $oDB->error );
-
-    echo '<p>'.$out.'</p>
-    <p class="result ok">'.L('S_install').'</p>';
-
+    echo '<p class="result">'.$out.'</p><p class="result ok">'.L('S_install').'</p>';
     $_SESSION['qtfInstalled'] = true;
+
     // save the url
-    $strURL = ( empty($_SERVER['SERVER_HTTPS']) ? "http://" : "https://" ).$_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-    $strURL = substr($strURL,0,-24);
-    $oDB->exec( 'UPDATE TABSETTING SET setting="'.$strURL.'" WHERE param="site_url"');
+    $strURL = ( empty($_SERVER['SERVER_HTTPS']) ? "http://" : "https://" ).$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    $strURL = substr($strURL,0,-20);
+    $oDB->updSetting('site_url',$strURL,true);
 
   } catch (Exception $e) {
 
     $error = $e->getMessage();
-    echo '<p class="result err">Problem to execute a query in database ['.QDB_DATABASE.'] on server ['.QDB_HOST.']<br>See the error message... '.$error.'</p>';
+    echo '<p class="result err">Problem to execute a query in database ['.QDB_DATABASE.'] on server ['.QDB_HOST.']<br>'.$error.'</p>';
 
   }
 
-}
-else
-{
+} else {
 
   echo '<form method="post" name="install" action="setup_2.php" onsubmit="showWait()">
   <h1>'.L('Install_db').'</h1>

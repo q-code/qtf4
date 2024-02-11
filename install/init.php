@@ -75,8 +75,8 @@ if ( isset($_GET['lang']) ) $_SESSION['setup_lang']=$_GET['lang'];
 if ( !isset($_SESSION['setup_lang']) ) $_SESSION['setup_lang']='en';
 
 // load language
-if ( file_exists('../language/'.$_SESSION['setup_lang'].'/'.'lg_install.php') ) {
-  include '../language/'.$_SESSION['setup_lang'].'/'.'lg_install.php';
+if ( file_exists('src/'.$_SESSION['setup_lang'].'/'.'lg_install.php') ) {
+  include 'src/'.$_SESSION['setup_lang'].'/'.'lg_install.php';
 } else {
-  include 'lg_install.php'; // fallback language
+  include 'src/en/lg_install.php'; // fallback language
 }

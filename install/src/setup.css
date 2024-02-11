@@ -4,7 +4,7 @@ header, nav{display:flex;padding:0.5rem;justify-content:space-between;color:whit
 header{align-items:end;background:linear-gradient(to bottom,#0C4C8C 20%,#156AC2)}
 .tools{padding:0.5rem;text-align:right}
 nav{align-items:baseline;background:linear-gradient(to top,#0C4C8C 20%,#156AC2)}
-main{padding:1.5rem 1rem}
+main{padding:1.5rem 1rem;min-height:200px}
 .setup_1, .setup_2, .setup_3{display:grid;gap:0.3rem;grid-template-columns:2fr 1fr;padding-right:0.5rem}
 aside{padding-left:0.5rem;border:2px dotted #cccccc;border-width:0 0 0 2px;font-size:0.9rem;color:#000099}
 @media screen and (max-width:800px){

@@ -12,7 +12,7 @@
 * @package    QuickTalk
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2012 The PHP Group
-* @version    4.0 build:20230618
+* @version    4.0 build:20240210
 */
 
 session_start();
@@ -39,10 +39,9 @@ $oH->exiturl = 'qtfm_gmap_adm.php';
 $oH->exitname = 'Gmap';
 $oH->selfversion = L('Gmap.Version').' 4.0<br>';
 
-// --------
+// ------
 // SUBMITTED for cancel
-// --------
-
+// ------
 if ( isset($_POST['cancel']) )
 {
   $_SESSION[QT]['m_gmap_symbols'] = '0';
@@ -51,13 +50,12 @@ if ( isset($_POST['cancel']) )
   $_SESSION[QT.'splash'] = empty($oH->error) ? L('S_save') : 'E|'.$oH->error;
 }
 
-// --------
+// ------
 // SUBMITTED for save
-// --------
-
+// ------
 if ( isset($_POST['ok']) )
 {
-  $arrSymbols = array();
+  $arrSymbols = [];
   foreach(array('U','M','A') as $key)
   {
   if ( isset($_POST['symbol_'.$key]) ) $arrSymbols[$key]=$_POST['symbol_'.$key];
@@ -68,10 +66,9 @@ if ( isset($_POST['ok']) )
   $_SESSION[QT.'splash'] = empty($oH->error) ? L('S_save') : 'E|'.$oH->error;
 }
 
-// --------
+// ------
 // HTML BEGIN
-// --------
-
+// ------
 // read symbols values
 if ( empty($_SESSION[QT]['m_gmap_symbols']) ) $_SESSION[QT]['m_gmap_symbols']='U=0;M=0;A=0'; // empty, not set or false
 $arrSymbols = qtExplode($_SESSION[QT]['m_gmap_symbols']);
@@ -93,7 +90,7 @@ echo '
 ';
 
 // Read png in directory (shadow is obsolete)
-$arrFiles = array();
+$arrFiles = [];
 foreach(glob('qtfm_gmap/*.png') as $file) {
   $file = substr($file,10,-4);
   if ( strpos($file,'_shadow') ) continue;
