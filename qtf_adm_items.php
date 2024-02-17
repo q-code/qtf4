@@ -78,7 +78,7 @@ foreach($arrDomains as $idDom=>$strDomtitle) {
     $intU = $oDB->count( CSection::sqlCountItems($s,'unreplied','','','',$d) );
     echo '<tr class="hover">';
     echo '<td class="c-icon">'.asImg( $oS->logo(), 'title='.L('Ico_section_'.$oS->type.'_'.$oS->status) ).'</td>';
-    echo '<td class="c-section"><span class="sectionname">'.$oS->title.'</span><br><span class="small">'.L('Section_type.'.$oS->type).($oS->status==='1' ? ', '.L('Section_status.1') : '').'</span></td>';
+    echo '<td class="c-section"><span class="sectionname">'.$oS->title.'</span><br><small>'.L('Section_type.'.$oS->type).($oS->status==='1' ? ', '.L('Section_status.1') : '').'</small></td>';
     echo '<td class="c-data ellipsis">'.$stats[$s]['items'].'</td>';
     echo '<td class="c-data ellipsis">'.$stats[$s]['replies'].'</td>';
     echo '<td class="c-data ellipsis">'.$intU.'</td>';

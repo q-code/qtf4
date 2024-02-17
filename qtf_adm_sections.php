@@ -230,7 +230,7 @@ foreach($arrDomains as $idDomain=>$domain) {
       echo '<tr class="hover"'.($isSortable ? ' data-dragid="s'.$oS->id.'"' : '').'>';
       echo '<td class="handler">'.($isSortable ? '<span class="draghandler" title="'.L('Move').'" draggable="true">'.qtSVG('arrows-v').'</span>' : '').'</td>'.PHP_EOL;
       echo '<td class="c-icon">'.asImg( CSection::makeLogo(qtExplodeGet($oS->options,'logo',''),$oS->type,$oS->status), 'title='.L('Ico_section_'.$oS->type.'_'.$oS->status) ).'</td>';
-      echo '<td class="c-section"><a class="sectionname" href="'.APP.'_adm_section.php?s='.$oS->id.'">'.$oS->title.'</a><br><span class="small">'.L('Section_type.'.$oS->type).($oS->status==='1' ? ', '.L('Section_status.1') : '').'</span></td>';
+      echo '<td class="c-section"><a class="sectionname" href="'.APP.'_adm_section.php?s='.$oS->id.'">'.$oS->title.'</a><br><small>'.L('Section_type.'.$oS->type).($oS->status==='1' ? ', '.L('Section_status.1') : '').'</small></td>';
       echo '<td class="c-data ellipsis">'.( $oS->numfield==='N' ? '<span class="disabled">'.L('N').'</span>' : sprintf($oS->numfield,1) ).'</td>';
       echo '<td class="c-moderator ellipsis">'.$oS->ownername.'</td>';
       echo '<td class="c-action"><a href="'.APP.'_adm_section.php?s='.$oS->id.'" title="'.L('Edit').'">'.qtSVG('pen-square').'</a>';

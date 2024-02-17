@@ -155,8 +155,8 @@ echo '
 if ( isset($oS) && $oS->id>=0 ) { // $oS->id=-1 in case of 'void'-section
   if ( QT_SHOW_DOMAIN ) echo QT_CRUMBTRAIL.CDomain::translate($oS->pid);
   echo QT_CRUMBTRAIL.'<a href="'.url('qtf_items.php').'?s='.$s.'">'.CSection::translate($s).'</a>';
-  if ( $oS->type==='2' && !SUser::isStaff() ) echo QT_CRUMBTRAIL.'<span class="small">'.L('all_my_items').'</span>';
-  if ( $oH->selfurl===APP.'_item.php' && $oS->numfield!=='N' && $oS->numfield!=='' ) echo QT_CRUMBTRAIL.'<span class="small">'.sprintf($oS->numfield,$oT->numid).'</span>';
+  if ( $oS->type==='2' && !SUser::isStaff() ) echo QT_CRUMBTRAIL.'<small>'.L('all_my_items').'</small>';
+  if ( $oH->selfurl===APP.'_item.php' && $oS->numfield!=='N' && $oS->numfield!=='' ) echo QT_CRUMBTRAIL.'<small>'.sprintf($oS->numfield,$oT->numid).'</small>';
 }
 if ( $oH->selfurl===APP.'_user.php' ) echo QT_CRUMBTRAIL.L('Profile');
 if ( $oH->selfurl===APP.'_stats.php' ) echo QT_CRUMBTRAIL.L('Statistics');

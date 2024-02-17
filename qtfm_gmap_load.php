@@ -9,10 +9,11 @@ if ( !isset($gmap_markers) ) $gmap_markers = [];
 if ( !isset($gmap_events) ) $gmap_events = [];
 if ( !isset($gmap_functions) ) $gmap_functions = [];
 
-$oH->scripts[] = 'var map, mapOptions, geocoder, infowindow;
+$oH->scripts[] = 'let map, mapOptions, geocoder, infowindow;
 var markers = [];
-function gmapInitialize()
+async function gmapInitialize()
 {
+  const {Map} = await google.maps.importLibrary("maps");
   infowindow = new google.maps.InfoWindow({maxWidth: 220});
   geocoder = '.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? 'new google.maps.Geocoder()' : 'false').';
   mapOptions = {
@@ -25,7 +26,7 @@ function gmapInitialize()
     fullscreenControl:'.(substr($_SESSION[QT]['m_gmap_gbuttons'],4,1)==='1' ? 'true' : 'false' ).',
     scrollwheel:'.(substr($_SESSION[QT]['m_gmap_gbuttons'],5,1)==='1' ? 'true' : 'false' ).'
     };
-  map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+  map = new Map(document.getElementById("map_canvas"), mapOptions);
   var marker;
 '.implode(PHP_EOL,$gmap_markers).'
 '.implode(PHP_EOL,$gmap_events).'
@@ -54,4 +55,5 @@ function gmapYXfield(id,marker){
   }
 }
 '.implode(PHP_EOL,$gmap_functions);
+
 $oH->scripts[] = gmapApi($_SESSION[QT]['m_gmap_gkey']);

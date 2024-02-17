@@ -64,8 +64,8 @@ p.list{margin-bottom:2px}
 @media screen and (max-width:1024px){.indent{margin-left:0.6rem} .indent2{margin-left:1.2rem}}
 .ellipsis{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .ellipsis20{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:20ch}
-.small{font-size:0.9rem}
-.minor{font-size:0.9rem;color:#888}
+small, .small, .minor, .error, .warning{font-size:0.85rem}
+.minor{color:#888}
 .error{color:#ff0000;font-weight:bold;text-shadow:-1px 0 #ffeaea,0 1px #ffeaea,1px 0 #ffeaea,0 -1px #ffeaea}
 .warning{color:#888;font-weight:bold;font-style:italic}
 .disabled{color:#aaa}

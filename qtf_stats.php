@@ -200,7 +200,7 @@ case 'g':
 $arrC[$y] = array_combine($arrSeries,array_slice($colorBase,0,count($arrSeries)));
 $titles = array('T'=>L('Item+'),'R'=>L('Reply+'),'U'=>L('Users').'*');
 renderTables($arrYears,$bt,$titles,$arrD,$arrS,$strTendaysago,$arrC);
-echo '<p>* <span class="small">'.L('Distinct_users').'</span></p>';
+echo '<p>* <small>'.L('Distinct_users').'</span></p>';
 
 // Add cumulative to series
 $arrSeries[] = 'CT';

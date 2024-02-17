@@ -141,7 +141,7 @@ if ( isset($_POST['ok']) && $pan>0 )
       }
       if ( $i>=1 ) { $results[]='...'; break; }
     }
-    if ( $intEntries>0 ) $test_find .= '<br><span class="small">&gt; '.implode('<br>&gt; ',$results).'</span>';
+    if ( $intEntries>0 ) $test_find .= '<br><small>&gt; '.implode('<br>&gt; ',$results).'</span>';
 
     // bind test user
     $b = qt_ldap_bind($username,$password);
@@ -152,7 +152,7 @@ if ( isset($_POST['ok']) && $pan>0 )
     else
     {
       $test_login='<span style="color:red">denied</span>';
-      $test_login.='<br><span class="small" style="color:red">&gt; '.$oH->error.'<br>&gt; Possible cause: '.($intEntries==0 ? 'the username does not exists (or is not in the group specied by the login DN)' : 'username exists but the password is invalid') .'</span>';
+      $test_login.='<br><small style="color:red">&gt; '.$oH->error.'<br>&gt; Possible cause: '.($intEntries==0 ? 'the username does not exists (or is not in the group specied by the login DN)' : 'username exists but the password is invalid') .'</span>';
     }
 
     // Successfull end
@@ -254,12 +254,12 @@ echo '<form method="post" action="'.url($oH->selfurl).'">
 <tr>
 <th>Host</th>
 <td><input type="text" id="m_ldap_host" name="m_ldap_host" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_host'].'"/><br>
-<span class="small">Host and port. Ex.: </span><span class="small" style="color:#4444ff">ldap://localhost:10389</span></td>
+<small>Host and port. Ex.: </small><small style="color:#4444ff">ldap://localhost:10389</small></td>
 </tr>
 <tr>
 <th>Login DN</th>
 <td><input type="text" id="m_ldap_login_dn" name="m_ldap_login_dn" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_login_dn'].'"/><br>
-<span class="small">Use $username as placeholder. Ex.: </span><span class="small" style="color:#4444ff">cn=$username,ou=users,o=mycompany</span></td>
+<small>Use $username as placeholder. Ex.: </span><small style="color:#4444ff">cn=$username,ou=users,o=mycompany</small></td>
 </tr>
 </table>
 ';
@@ -278,17 +278,17 @@ echo '<h2 class="subconfig">Search configuration (to create new user)</h2>
 <tr>
 <th>Search RDN</th>
 <td><input type="text" id="m_ldap_s_rdn" name="m_ldap_s_rdn" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_s_rdn'].'"/><br>
-<span class="small">dn or rdn (search basis)</span></td>
+<small>dn or rdn (search basis)</small></td>
 </tr>
 <tr>
 <th>Search filter</th>
 <td><input type="text" id="m_ldap_s_filter" name="m_ldap_s_filter" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_s_filter'].'"/><br>
-<span class="small">Use $username as placeholder. Ex.: </span><span class="small" style="color:#4444ff">(cn=$username)</span><span class="small"> allows searching the username specified in the login panel</span></td>
+<small>Use $username as placeholder. Ex.: </small><small style="color:#4444ff">(cn=$username)</small><small> allows searching the username specified in the login panel</small></td>
 </tr>
 <tr>
 <th>Requested info</th>
 <td><input type="text" id="m_ldap_s_info" name="m_ldap_s_info" size="30" maxlength="64" value="'.$_SESSION[QT]['m_ldap_s_info'].'"/><br>
-<span class="small">At least the mail is recommended. This is usefull when a user performs his very first login (the application will create a new profile with the same e-mail as in ldap).</span></td>
+<small>At least the mail is recommended. This is usefull when a user performs his very first login (the application will create a new profile with the same e-mail as in ldap).</small></td>
 </tr>
 </table>
 ';

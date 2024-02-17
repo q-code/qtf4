@@ -315,7 +315,7 @@ echo '<tr title="'.L('H_Allow_upload').'">
 <td>
 <select id="upload" name="upload" onchange="toggleParams(this.id,this.value); qtFormSafe.not();">
 '.qtTags($arr,$_SESSION[QT]['upload']).'
-</select> <div id="upload-params" style="display:'.($_SESSION[QT]['upload']=='0' ? 'none' : 'inline-block').'">Max.<input required type="number" id="uploadsize" name="uploadsize" min="1" max="'.QT_UPLOAD_MAXSIZE.'" value="'.$i.'" onchange="qtFormSafe.not();"/>Mb<span class="small"> (server limit '.(function_exists('ini_get') ? max_fileuploadbytes().'Mb' : 'unknown').')</span></div>
+</select> <div id="upload-params" style="display:'.($_SESSION[QT]['upload']=='0' ? 'none' : 'inline-block').'">Max.<input required type="number" id="uploadsize" name="uploadsize" min="1" max="'.QT_UPLOAD_MAXSIZE.'" value="'.$i.'" onchange="qtFormSafe.not();"/>Mb<small> (server limit '.(function_exists('ini_get') ? max_fileuploadbytes().'Mb' : 'unknown').')</small></div>
 </td>
 </tr>
 ';

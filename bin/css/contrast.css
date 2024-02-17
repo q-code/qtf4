@@ -19,7 +19,7 @@ body{background:revert;background-image:none;background-color:#222}
 #site,main{background-color:transparent;border:none}
 #main-hd,#main-ct,#main-ft{padding:1vw 0}
 
-input, button, textarea, select, option, #rules{background-color:#222;color:#ffffcc}
+input, button, textarea, select, option, .rules{background-color:#222;color:#ffffcc}
 input:focus, button:focus, textarea:focus, select:focus{outline:none; border:1px solid #ffff00}
 optgroup{background-color:#000;color:#ffff55}
 a{text-decoration:none}

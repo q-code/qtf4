@@ -37,7 +37,6 @@ function qtEncrypt(string $key=APP, string $str='install')
   $output = openssl_encrypt($str, 'AES-256-CBC', $key, 0, $iv);
   return base64_encode($output);
   // no need to decrypt (just check that encrypted folder exists)
-  // to decrypt use; return openssl_decrypt(base64_decode($str), 'AES-256-CBC', $key, 0, $iv);
 }
 function deleteDir(string $dirPath) {
   if ( ! is_dir($dirPath)) {

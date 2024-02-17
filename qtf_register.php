@@ -73,7 +73,7 @@ if ( isset($_POST['ok']) ) try {
 
 // FORM
 $frm_hd = file_get_contents(qtDirLang().'app_rules.txt'); if ( $frm_hd===false ) $frm_hd = 'Unable to read file app_rules.txt';
-$frm_hd = '<div id="rules">'.$frm_hd.'</div>';
+$frm_hd = '<div class="rules article">'.$frm_hd.'</div>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p class="bold"><span class="cblabel"><input required type="checkbox" id="agreed" name="agreed"'.(isset($_POST['agreed']) ? 'checked' : '').'/><label for="agreed">&nbsp;'.L('Agree').'</label><span></p>';
 if ( $_SESSION[QT]['register_coppa'] ){
@@ -252,7 +252,7 @@ if ( $_SESSION[QT]['register_safe']==='recaptcha3' ) {
 
 if ( $_SESSION[QT]['register_coppa']=='1' &&  $strChild!='0' ) {
   $frm_hd = file_get_contents(qtDirLang().'app_rules_coppa.txt'); if ( $frm_hd===false ) $frm_hd = 'Unable to read file app_rules_coppa.txt';
-  $frm_hd = '<div id="rules">'.$frm_hd.'</div>';
+  $frm_hd = '<div class="rules article">'.$frm_hd.'</div>';
 }
 
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';

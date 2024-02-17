@@ -101,13 +101,13 @@ foreach($arrDomains as $idDom=>$strDomtitle)
     echo '<tr class="hover">';
     echo '<td class="c-icon">'.asImg( CSection::makeLogo(qtExplodeGet($oS->options,'logo',''),$oS->type,$oS->status),
       'title='.L('Ico_section_'.$oS->type.'_'.$oS->status), APP.'_adm_section.php?d='.$idDom.'&s='.$oS->id ).'</td>';
-    echo '<td class="c-section"><span class="bold">'.$oS->title.'</span><br><span class="small">id '.$intSecid;
+    echo '<td class="c-section"><span class="bold">'.$oS->title.'</span><br><small>id '.$intSecid;
     if ( $oDB->count(CSection::sqlCountItems($intSecid,'tags')) ) {
     echo ' &middot; <a href="'.APP.'_adm_tags.php?pan='.$pan.'&s='.$intSecid.'&a=used">'.L('Find_used_tags').'</a>';
     } else {
     echo ' &middot; '.L('E_no_tag');
     }
-    echo '</span></td>';
+    echo '</small></td>';
     echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&s='.$oS->id.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
     echo '<td class="c-action">';
 

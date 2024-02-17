@@ -119,7 +119,7 @@ echo '<h2 class="config">'.L('Clock').'</h2>
 </tr>
 <tr>
 <th>'.L('Clock_setting').'</th>
-<td><select name="time_zone" onchange="qtFormSafe.not();">'.qtTags( L('tz.*'),'gmt'.$_SESSION[QT]['time_zone'] ).'</select><span class="small">&nbsp;</span></td>
+<td><select name="time_zone" onchange="qtFormSafe.not();">'.qtTags( L('tz.*'),'gmt'.$_SESSION[QT]['time_zone'] ).'</select><small>&nbsp;</small></td>
 </tr>
 </table>
 ';

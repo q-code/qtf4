@@ -63,7 +63,7 @@ echo '<br>
 <th><label for="smtphost">Smtp host</label></th>
 <td>
 <input type="text" id="smtphost" name="smtphost" size="30" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_host']).'"/>
-<br><span class="small">Use prefix to activate SSL or TLS connection e.g.</span> <span class="small" style="color:#4444ff">ssl://smtp.domain.com</span>
+<br><small>Use prefix to activate SSL or TLS connection e.g.</small> <small style="color:#4444ff">ssl://smtp.domain.com</small>
 </td>
 </tr>
 <tr>
@@ -116,7 +116,7 @@ Port <span style="color:#4444ff">587</span><br>
 Username <span style="color:#4444ff">yourusername@gmail.com</span><br>
 Password <span style="color:#4444ff">your google account password</span><br>
 <br>
-<span class="small">Note: using ssl or tls requires that your webhost opens these transport sockets in the php configuration. When this is not possible or if the test failed, you can use standard mail function (in the administration page Site & contact, don`t use external smtp server).</span>
+<small>Note: using ssl or tls requires that your webhost opens these transport sockets in the php configuration. When this is not possible or if the test failed, you can use standard mail function (in the administration page Site & contact, don`t use external smtp server).</small>
 </p>
 ';
 echo '<p class="bold">Example for pop3 instead of smtp</p>

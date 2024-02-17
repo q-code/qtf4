@@ -185,7 +185,7 @@ if ( $intCount==0 ) {
 // Build paging
 $strPaging = makePager("qtf_adm_users.php?cat=$strCateg&group=$pageGroup&order=$strOrder&dir=$strDirec",$intCount,$ipp,$intPage);
 if ( !empty($strPaging) ) $strPaging = L('Page').$strPaging;
-if ( $intCount<$intUsers ) $strPaging = '<span class="small">'.L('user',$intCount).' '.L('from').' '.$intUsers.'</span>'.(empty($strPaging) ? '' : ' | '.$strPaging);
+if ( $intCount<$intUsers ) $strPaging = '<small>'.L('user',$intCount).' '.L('from').' '.$intUsers.'</small>'.(empty($strPaging) ? '' : ' | '.$strPaging);
 
 // ------
 // Memberlist
@@ -255,7 +255,7 @@ while($row=$oDB->getRow())
   }
   else
   {
-  $t->arrTd['lastdate']->content = (empty($row['lastdate']) ? '' : qtDate($row['lastdate'],'$','',true)) . (empty($row['ip']) ? '' : '<br><span class="small">('.$row['ip'].')</span>');
+  $t->arrTd['lastdate']->content = (empty($row['lastdate']) ? '' : qtDate($row['lastdate'],'$','',true)) . (empty($row['ip']) ? '' : '<br><small>('.$row['ip'].')</small>');
   }
   $t->arrTd['closed']->content = $strLock;
   $t->arrTd['id']->content = $row['id'];

@@ -145,25 +145,25 @@ echo '<h2 class="config">'.L('Gmap.Mapping_config').'</h2>
 <table class="t-conf">
 <tr>
 <th style="width:150px;">'.L('Gmap.Center').'</th>
-<td style="width:310px;"><input type="text" id="m_gmap_gcenter" name="m_gmap_gcenter" size="26" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gcenter'].'" onchange="qtFormSafe.not();"/><span class="small"> '.L('Gmap.Latlng').'</span></td>
-<td><span class="small">'.L('Gmap.H_Center').'</span></td>
+<td style="width:310px;"><input type="text" id="m_gmap_gcenter" name="m_gmap_gcenter" size="26" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gcenter'].'" onchange="qtFormSafe.not();"/><small> '.L('Gmap.Latlng').'</small></td>
+<td><small>'.L('Gmap.H_Center').'</small></td>
 </tr>
 <tr>
 <th style="width:150px;">'.L('Gmap.Zoom').'</th>
 <td>
 <input type="text" id="m_gmap_gzoom" name="m_gmap_gzoom" size="2" maxlength="2" value="'.$_SESSION[QT]['m_gmap_gzoom'].'" onchange="qtFormSafe.not();"/></td>
-<td><span class="small">'.L('Gmap.H_Zoom').'</span></td>
+<td><small>'.L('Gmap.H_Zoom').'</small></td>
 </tr>
 <tr>
 <th style="width:150px;">'.L('Gmap.Background').'</th>
 <td><select id="maptype" name="maptype" size="1" onchange="qtFormSafe.not();">'.qtTags(L('Gmap.Back.*'),substr($_SESSION[QT]['m_gmap_gbuttons'],0,1)).'</select></td>
-<td><span class="small">'.L('Gmap.H_Background').'</span></td>
+<td><small>'.L('Gmap.H_Background').'</small></td>
 </tr>
 <tr>
 <th style="width:150px;"><label for="m_gmap_gfind">'.L('Gmap.Address_sample').'</label></th>
 <td>
 <input'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? '' : 'disabled').' type="text" id="m_gmap_gfind" name="m_gmap_gfind" size="20" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gfind'].'" onchange="qtFormSafe.not();"/></td>
-<td><span class="small">'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? L('Gmap.H_Address_sample') : L('Gmap.Ctrl.Geocode').' (off)').'</span></td>
+<td><small>'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? L('Gmap.H_Address_sample') : L('Gmap.Ctrl.Geocode').' (off)').'</small></td>
 </tr>
 ';
 

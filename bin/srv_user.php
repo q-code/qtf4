@@ -57,14 +57,14 @@ switch($q)
     $oDB->query( "SELECT u.name,u.role,u.location,birthday FROM TABUSER u WHERE u.id=$id" );
     $row = $oDB->getRow();
     //output the response
-    $data .= '<p><small>'.substr($row['birthday'],0,4).'-'.substr($row['birthday'],4,2).'-'.substr($row['birthday'],6,2).'</small></p>';
+    $data .= '<p class="small">'.substr($row['birthday'],0,4).'-'.substr($row['birthday'],4,2).'-'.substr($row['birthday'],6,2).'</p>';
     $data .= getUserImg('../'.$dir, $id, $alt); // output to page without "../"
     $data .= '<p class="ellipsis">'.$row['name'].'</p>';
     switch($row['role']) {
       case 'A':  $data .= '<p><span data-role="A" onmouseover="titleRole(this);">'.getSimpleSVG('user-a').'</span></p>'; break;
       case 'M':  $data .= '<p><span data-role="M" onmouseover="titleRole(this);">'.getSimpleSVG('user-m').'</span></p>'; break;
     }
-    if ( !empty($row['location']) ) $data .= '<p class="ellipsis"><small>('.$row['location'].')</small></p>';
+    if ( !empty($row['location']) ) $data .= '<p class="ellipsis small">('.$row['location'].')</p>';
     break;
   default:
     echo 'invalid argument';

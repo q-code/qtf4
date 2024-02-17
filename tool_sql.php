@@ -33,8 +33,8 @@ echo '<style>
 
 echo '
 <h1>'.$oH->selfname.' '.qtSVG('user-a', 'title=Administrator only').'</h1>
-<p><small>As tablename can have prefix in your database, use following alias to query the correct table:<br>
-TABSETTING TABDOMAIN TABSECTION TABTOPIC TABPOST TABUSER TABLANG</small></p>
+<p class="small">As tablename can have prefix in your database, use following alias to query the correct table:<br>
+TABSETTING TABDOMAIN TABSECTION TABTOPIC TABPOST TABUSER TABLANG</p>
 
 <form id="form_q" method="post" action="tool_sql.php">
 <textarea id="q" name="q" cols="100">'.$q.'</textarea>
@@ -73,11 +73,11 @@ if ( isset($_POST['ok']) )
     }
     echo '</table>';
     // warning
-    if ( $bText ) echo '<p><small>For the field textmsg, the content is compacted in one line of 200 characters</small></p>';
+    if ( $bText ) echo '<p class="small">For the field textmsg, the content is compacted in one line of 200 characters</p>';
     // update stats
     if ( isset($oDB->stats['rows']) ) $oDB->stats['rows'] = ($i>250 ? '>250' : $i);
   } else {
-    echo '<p><small>Insert/Update/Delete query done</p>';
+    echo '<p class="small">Insert/Update/Delete query done</p>';
   }
 }
 

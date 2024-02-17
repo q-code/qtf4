@@ -197,12 +197,12 @@ echo '<h2 class="subconfig">'.L('Specific_fields').'</h2>
 ';
 echo '<tr>
 <th style="text-align: right; width:150px"><span class="texthead"><label for="numfield">'.L('Show_item_id').'</label></span></th>
-<td><input type="text" id="numfield" size="10" maxlength="24" name="numfield" value="'.($oS->numfield=='N' ? '' : qtAttr($oS->numfield)).'" onchange="qtFormSafe.not();"/>&nbsp;<span class="small">'.L('H_Show_item_id').'</span></td>
+<td><input type="text" id="numfield" size="10" maxlength="24" name="numfield" value="'.($oS->numfield=='N' ? '' : qtAttr($oS->numfield)).'" onchange="qtFormSafe.not();"/>&nbsp;<small>'.L('H_Show_item_id').'</small></td>
 </tr>
 ';
 echo '<tr>
 <th style="text-align: right; width:150px"><span class="texthead"><label for="titlefield">'.L('Show_item_title').'</label></span></th>
-<td><select id="titlefield" name="titlefield" onchange="qtFormSafe.not();">'.qtTags(L('Item_title.*'),$oS->titlefield).'</select>&nbsp;<span class="small">'.L('H_Show_item_title').'</span></td>
+<td><select id="titlefield" name="titlefield" onchange="qtFormSafe.not();">'.qtTags(L('Item_title.*'),$oS->titlefield).'</select>&nbsp;<small>'.L('H_Show_item_title').'</span></td>
 </tr>
 ';
 echo '<tr title="'.L('H_Item_prefix').'">
@@ -303,7 +303,7 @@ foreach(LANGUAGES as $k=>$values)
 {
   $arr = explode(' ',$values,2); if ( empty($arr[1]) ) $arr[1]=$arr[0];
   $str = empty($arrTrans[$k]) ? '' : $arrTrans[$k];
-  echo '<p class="iso" title="'.L('Name_of_index').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="tr-'.$k.'" maxlength="64" value="'.$str.'" placeholder="'.$oS->title.'" onchange="qtFormSafe.not();"/>'.(strpos($str,'&amp;') ?  ' <span class="small">'.$arrTrans[$k].'</span>' : '').'</p>'.PHP_EOL;
+  echo '<p class="iso" title="'.L('Name_of_index').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="tr-'.$k.'" maxlength="64" value="'.$str.'" placeholder="'.$oS->title.'" onchange="qtFormSafe.not();"/>'.(strpos($str,'&amp;') ?  ' <small>'.$arrTrans[$k].'</small>' : '').'</p>'.PHP_EOL;
 }
 echo '</div></td>
 </tr>
