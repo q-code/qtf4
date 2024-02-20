@@ -36,17 +36,15 @@ $oH->selfname = L('Profile');
 // MAP MODULE
 
 $bMap=false;
-$arrMapData=array();
-if ( qtModule('gmap') )
-{
+$arrMapData = [];
+if ( qtModule('gmap') ) {
   include translate(APP.'m_gmap.php');
   include 'qtfm_gmap_lib.php';
   if ( gmapCan('U') ) $bMap=true;
-  if ( $bMap )
-  {
-  $oH->links[]=  '<link rel="stylesheet" type="text/css" href="qtfm_gmap.css"/>';
-  if ( !isset($_SESSION[QT]['m_gmap_symbols']) ) $_SESSION[QT]['m_gmap_symbols']='0';
-  $arrSymbolByRole = empty($_SESSION[QT]['m_gmap_symbols']) ? array() : qtExplode($_SESSION[QT]['m_gmap_symbols']);
+  if ( $bMap ) {
+    $oH->links[]=  '<link rel="stylesheet" type="text/css" href="qtfm_gmap.css"/>';
+    if ( !isset($_SESSION[QT]['m_gmap_symbols']) ) $_SESSION[QT]['m_gmap_symbols']='0';
+    $arrSymbolByRole = empty($_SESSION[QT]['m_gmap_symbols']) ? array() : qtExplode($_SESSION[QT]['m_gmap_symbols']);
   }
 }
 
@@ -251,11 +249,9 @@ echo '<tr>
 </tr>
 ';
 
-if ( $bMap )
-{
+if ( $bMap ) {
   $strPosition  = '<p class="small commands" style="margin:2px 0 4px 2px;text-align:right">'.$L['Gmap']['cancreate'];
-  if ( !empty($row['x']) && !empty($row['y']) )
-  {
+  if ( !empty($row['x']) && !empty($row['y']) ) {
     $_SESSION[QT]['m_gmap_gcenter'] = $strYX;
     $strPosition  = '<p class="small commands" style="margin:2px 0 4px 2px;text-align:right">'.$L['Gmap']['canmove'];
   }
@@ -279,16 +275,6 @@ echo '<tr>
 <th><input type="hidden" name="id" value="'.$id.'"/><input type="hidden" name="name" value="'.$row['name'].'"/></th>
 <td><button type="submit" name="ok" value="ok">'.L('Save').'</button>'.( !empty($oH->error) ? ' <span class="error">'.$oH->error.'</span>' : '' ).'</td>
 </tr>
-';
-
-if ( $bMap ) {
-  echo '<tr>
-<td colspan="2" id="gmapcontainer">'.$strPosition.'</td>
-</tr>
-';
-}
-
-echo '
 </table>
 </form>
 ';
@@ -296,6 +282,7 @@ echo '
 // ------
 } else {
 // ------
+
 $strParticip = '';
 if ( $items>0 ) {
   $strParticip .= '<a href="'.url('qtf_items.php').'?q=user&v2='.$id.'&v='.urlencode($row['name']).'">'.L('Item',$items).'</a>, ';
@@ -324,22 +311,25 @@ if ( $bMap ) {
   $strPlink = '<a href="http://maps.google.com?q='.$row['y'].','.$row['x'].'" class="small" title="'.$L['Gmap']['In_google'].'" target="_blank">[G]</a>';
   $strPosition = '<div id="map_canvas"></div>';
   echo '<tr><th>'.L('Coord').'</th><td class="fix-sp"><span>'.$strCoord.' '.$strPlink.'</span><span>'.$strPriv.'</span></td></tr>'.PHP_EOL;
-  echo '<tr><td colspan="2" id="gmapcontainer">'.$strPosition.'</td></tr>'.PHP_EOL;
 }
 
 echo '</table>
 ';
 
+if ( SUser::id()===$id || SUser::isStaff() ) {
+  echo '<p class="right small" style="margin:1rem 0">';
+  echo $strPriv.' '.L('Privacy_visible_'.$row['privacy']);
+  $intBan = empty($row['closed']) ? 0 : (int)$row['closed'];
+  $days = BAN_DAYS;
+  if ( $intBan && array_key_exists($intBan,$days) ) echo ' &middot; '.qtSVG('ban').' '.$row['name'].' '.strtolower(sprintf(L('Is_banned_since'),L('day',$days[$intBan])));
+  echo '</p>';
+}
+
 // ------
 }
 // ------
-if ( !$_SESSION[QT]['editing'] ) {
-if ( SUser::id()==$id || SUser::isStaff() ) {
-  echo '<p class="right small">'.$strPriv.' '.L('Privacy_visible_'.$row['privacy']).'</p>';
-  $intBan = empty($row['closed']) ? 0 : (int)$row['closed'];
-  $days = BAN_DAYS;
-  if ( $intBan && array_key_exists($intBan,$days) ) echo '<p class="right small">'.qtSVG('ban').' '.$row['name'].' '.strtolower(sprintf(L('Is_banned_since'),L('day',$days[$intBan]))).'</p>';
-}}
+
+if ( $bMap ) echo $strPosition;
 
 echo '</div>
 ';
@@ -349,8 +339,8 @@ echo '</div>
 // ------
 // MAP MODULE
 
-if ( $bMap )
-{
+if ( $bMap ) {
+
   /**
   * @var array $gmap_markers
   * @var array $gmap_events
@@ -392,15 +382,12 @@ if ( $bMap )
 	});';
   }
   $gmap_functions[] = '
-  function showLocation(address,title)
-  {
+  function showLocation(address,title) {
     if ( infowindow ) infowindow.close();
     geocoder.geocode( { "address": address}, function(results, status) {
-      if ( status == google.maps.GeocoderStatus.OK)
-      {
+      if ( status == google.maps.GeocoderStatus.OK) {
         map.setCenter(results[0].geometry.location);
-        if ( markers[0] )
-        {
+        if ( markers[0] ) {
           markers[0].setPosition(results[0].geometry.location);
         } else {
           markers[0] = new google.maps.Marker({map: map, position: results[0].geometry.location, draggable: true, animation: google.maps.Animation.DROP, title: title});
@@ -411,8 +398,7 @@ if ( $bMap )
       }
     });
   }
-  function createMarker()
-  {
+  function createMarker() {
     if ( !map ) return;
     if ( infowindow) infowindow.close();
     deleteMarker();
@@ -421,13 +407,9 @@ if ( $bMap )
     google.maps.event.addListener(markers[0], "position_changed", function() { gmapYXfield("yx",markers[0]); });
     google.maps.event.addListener(markers[0], "dragend", function() { map.panTo(markers[0].getPosition()); });
   }
-  function deleteMarker()
-  {
+  function deleteMarker() {
     if ( infowindow) infowindow.close();
-    for(var i=markers.length-1;i>=0;i--)
-    {
-      markers[i].setMap(null);
-    }
+    for(var i=markers.length-1;i>=0;i--) markers[i].setMap(null);
     gmapYXfield("yx",null);
     markers=[];
   }

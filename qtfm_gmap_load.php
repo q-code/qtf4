@@ -11,8 +11,7 @@ if ( !isset($gmap_functions) ) $gmap_functions = [];
 
 $oH->scripts[] = 'let map, mapOptions, geocoder, infowindow;
 var markers = [];
-async function gmapInitialize()
-{
+async function gmapInitialize() {
   const {Map} = await google.maps.importLibrary("maps");
   infowindow = new google.maps.InfoWindow({maxWidth: 220});
   geocoder = '.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? 'new google.maps.Geocoder()' : 'false').';
@@ -31,24 +30,23 @@ async function gmapInitialize()
 '.implode(PHP_EOL,$gmap_markers).'
 '.implode(PHP_EOL,$gmap_events).'
 }
-function gmapInfo(marker,info){
+function gmapInfo(marker,info) {
   if ( !marker || !info || info=="" ) return;
   google.maps.event.addListener(marker, "click", function() { infowindow.setContent(info); infowindow.open(map,marker); });
 }
-function gmapPan(latlng){
+function gmapPan(latlng) {
   if ( !latlng ) return;
   if ( latlng.length==0 ) return;
   if ( infowindow ) infowindow.close();
   var yx = latlng.split(",");
   map.panTo(new google.maps.LatLng(parseFloat(yx[0]),parseFloat(yx[1])));
 }
-function gmapRound(num){
+function gmapRound(num) {
   return Math.round(num*Math.pow(10,11))/Math.pow(10,11);
 }
-function gmapYXfield(id,marker){
-  if ( !document.getElementById(id)) return;
-  if ( marker )
-  {
+function gmapYXfield(id,marker) {
+  if ( !document.getElementById(id) ) return;
+  if ( marker ) {
     document.getElementById(id).value = gmapRound(marker.getPosition().lat()) + "," + gmapRound(marker.getPosition().lng());
   } else {
     document.getElementById(id).value = "";
