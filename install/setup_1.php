@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210
+<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e|n]
 /**
  * @var string $strPrev
  * @var string $strNext
@@ -111,64 +111,64 @@ echo '<h1>'.L('Connection_db').'</h1>
 <table class="t-conn">
 ';
 echo '<tr>
-<td>',L('Database_type'),'</td>
+<td>'.L('Database_type').'</td>
 <td><select name="db_system" onchange="toggleHostLogin(this.value)">
 <optgroup label="PDO connectors">
-<option value="pdo.mysql"',($arr['QDB_SYSTEM']==='pdo.mysql' ? ' selected' : ''),'>MariaDb/MySQL (5 or next)</option>
-<option value="pdo.sqlsrv"',($arr['QDB_SYSTEM']==='pdo.sqlsrv' ? ' selected' : ''),'>SQL sever (or Express)</option>
-<option value="pdo.pg"',($arr['QDB_SYSTEM']==='pdo.pg' ? ' selected' : ''),'>PostgreSQL</option>
-<option value="pdo.sqlite"',($arr['QDB_SYSTEM']==='pdo.sqlite' ? ' selected' : ''),'>SQLite</option>
-<option value="pdo.oci"',($arr['QDB_SYSTEM']==='pdo.oci' ? ' selected' : ''),'>Oracle</option>
+<option value="pdo.mysql"'.($arr['QDB_SYSTEM']==='pdo.mysql' ? ' selected' : '').'>MariaDb/MySQL (5 or next)</option>
+<option value="pdo.sqlsrv"'.($arr['QDB_SYSTEM']==='pdo.sqlsrv' ? ' selected' : '').'>SQL sever (or Express)</option>
+<option value="pdo.pg"'.($arr['QDB_SYSTEM']==='pdo.pg' ? ' selected' : '').'>PostgreSQL</option>
+<option value="pdo.sqlite"'.($arr['QDB_SYSTEM']==='pdo.sqlite' ? ' selected' : '').'>SQLite</option>
+<option value="pdo.oci"'.($arr['QDB_SYSTEM']==='pdo.oci' ? ' selected' : '').'>Oracle</option>
 </optgroup>
 <optgroup label="Legacy connectors">
-<option value="mysql"',($arr['QDB_SYSTEM']==='mysql' ? ' selected' : ''),'>MySQL 5 or next</option>
-<option value="sqlsrv"',($arr['QDB_SYSTEM']==='sqlsrv' ? ' selected' : ''),'>SQL server (or Express)</option>
-<option value="pg"'.($arr['QDB_SYSTEM']==='pg' ? ' selected' : ''),'>PostgreSQL</option>
-<option value="sqlite"'.($arr['QDB_SYSTEM']==='sqlite' ? ' selected' : ''),'>SQLite</option>
-<option value="oci"',($arr['QDB_SYSTEM']==='oci' ? ' selected' : ''),'>Oracle</option>
+<option value="mysql"'.($arr['QDB_SYSTEM']==='mysql' ? ' selected' : '').'>MySQL 5 or next</option>
+<option value="sqlsrv"'.($arr['QDB_SYSTEM']==='sqlsrv' ? ' selected' : '').'>SQL server (or Express)</option>
+<option value="pg"'.($arr['QDB_SYSTEM']==='pg' ? ' selected' : '').'>PostgreSQL</option>
+<option value="sqlite"'.($arr['QDB_SYSTEM']==='sqlite' ? ' selected' : '').'>SQLite</option>
+<option value="oci"'.($arr['QDB_SYSTEM']==='oci' ? ' selected' : '').'>Oracle</option>
 </optgroup>
 </select></td>
 </tr>
 ';
 // explode host and port if port exists
 if ( strpos($arr['QDB_HOST'],';port=')!==false ) { $parts = explode(';port=',$arr['QDB_HOST'],2); $arr['QDB_HOST']=$parts[0]; $arr['QDB_PORT']=$parts[1];}
-echo '<tr id="db-host"',($arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']==='sqlite' ? ' style="display:none"' : ''),'>
-<td>',L('Database_host'),'</td>
+echo '<tr id="db-host"'.($arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']==='sqlite' ? ' style="display:none"' : '').'>
+<td>'.L('Database_host').'</td>
 <td>
-<input type="text" name="db_host" value="',$arr['QDB_HOST'],'" size="26" maxlength="255" placeholder="localhost"/>
-<input type="text" name="db_port" value="',(empty($arr['QDB_PORT']) ? '' : $arr['QDB_PORT']),'" size="4" maxlength="255" placeholder="port"/>
+<input type="text" name="db_host" value="'.$arr['QDB_HOST'].'" size="26" maxlength="255" placeholder="localhost"/>
+<input type="text" name="db_port" value="'.(empty($arr['QDB_PORT']) ? '' : $arr['QDB_PORT']).'" size="4" maxlength="255" placeholder="port"/>
 </td>
 </tr>
 <tr>
-<td>',L('Database_name'),'</td>
-<td><input type="text" name="db_database" value="',$arr['QDB_DATABASE'],'" size="15" maxlength="255"/></td>
+<td>'.L('Database_name').'</td>
+<td><input type="text" name="db_database" value="'.$arr['QDB_DATABASE'].'" size="15" maxlength="255"/></td>
 </tr>
 <tr>
-<td>',L('Table_prefix'),'</td>
-<td><input type="text" name="db_prefix" value="',$arr['QDB_PREFIX'],'" size="15" maxlength="100"/></td>
+<td>'.L('Table_prefix').'</td>
+<td><input type="text" name="db_prefix" value="'.$arr['QDB_PREFIX'].'" size="15" maxlength="100"/></td>
 </tr>
-<tr id="user-login"',($arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']==='sqlite' ? ' style="display:none"' : ''),'>
+<tr id="user-login"'.($arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']==='sqlite' ? ' style="display:none"' : '').'>
 <td>Database user/password</td>
 <td>
-<input type="text" name="db_user" value="',$arr['QDB_USER'],'" size="15" maxlength="255" placeholder="username"/>
-<input type="text" name="db_pwd" value="',$arr['QDB_PWD'],'" size="15" maxlength="255" placeholder="password"/>
+<input type="text" name="db_user" value="'.$arr['QDB_USER'].'" size="15" maxlength="255" placeholder="username"/>
+<input type="text" name="db_pwd" value="'.$arr['QDB_PWD'].'" size="15" maxlength="255" placeholder="password"/>
 </td>
 </tr>
-<tr id="dbo-login-info"',($arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']==='sqlite' ? ' style="display:none"' : ''),'>
-<td colspan="2" style="background-color:#ddd">',L('Htablecreator'),'</td>
+<tr id="dbo-login-info"'.($arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']==='sqlite' ? ' style="display:none"' : '').'>
+<td colspan="2" style="background-color:#ddd">'.L('Htablecreator').'</td>
 </tr>
-<tr id="dbo-login"',($arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']==='sqlite' ? ' style="display:none"' : ''),'>
+<tr id="dbo-login"'.($arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']==='sqlite' ? ' style="display:none"' : '').'>
 <td style="background-color:#ddd">Table creator/password</td>
 <td style="background-color:#ddd">
-<input type="text" name="qtf_dbouser" value="',(isset($_SESSION['qtf_dbouser']) ? $_SESSION['qtf_dbouser'] : ''),'" size="15" maxlength="255" placeholder="username"/>
-<input type="text" name="qtf_dbopwd" value="',(isset($_SESSION['qtf_dbopwd']) ? $_SESSION['qtf_dbopwd'] : ''),'" size="15" maxlength="255" placeholder="password"/>
+<input type="text" name="qtf_dbouser" value="'.(isset($_SESSION['qtf_dbouser']) ? $_SESSION['qtf_dbouser'] : '').'" size="15" maxlength="255" placeholder="username"/>
+<input type="text" name="qtf_dbopwd" value="'.(isset($_SESSION['qtf_dbopwd']) ? $_SESSION['qtf_dbopwd'] : '').'" size="15" maxlength="255" placeholder="password"/>
 </td>
 </tr>
 <tr>
 <td colspan="2">&nbsp;</td>
 </tr>
 <tr>
-<td colspan="2" style="text-align:center"><button type="submit" name="ok" value="save">',L('Save'),'</button></td>
+<td colspan="2" style="text-align:center"><button type="submit" name="ok" value="save">'.L('Save').'</button></td>
 </tr>
 </table>
 </form>

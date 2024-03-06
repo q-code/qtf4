@@ -99,14 +99,14 @@ echo '<h2 class="config">'.L('Board_status').'</h2>
 // INFO
 echo '<h2 class="config">'.L('Info').'</h2>'.PHP_EOL;
 echo '<table class="t-conf">'.PHP_EOL;
-echo '<tr><th>'.L('Domains').'/'.L('Section+').'</th><td>'.L('Domain',$intDomain).', '.L('Section',$intSection).' <span  class="small">('.L('hidden',$intHidden).')</span>, <a href="'.APP.'_adm_sections.php?add=1">'.L('Add').' '.L('domain').'/'.L('section').'...</a></td></tr>'.PHP_EOL;
+echo '<tr><th>'.L('Domains').'/'.L('Section+').'</th><td>'.L('Domain',$intDomain).', '.L('Section',$intSection).' <small>('.L('hidden',$intHidden).')</small>, <a href="'.APP.'_adm_sections.php?add=1">'.L('Add').' '.L('domain').'/'.L('section').'...</a></td></tr>'.PHP_EOL;
 if ( !empty($arrItems['startdate']) ) echo '<tr><th>'.L('Board_start_date').'</th><td>'.$arrItems['startdate'].', <a href="'.APP.'_stats.php">'.L('Statistics').'...</a></td></tr>'.PHP_EOL;
 
 $intUser = $oDB->count( TABUSER );
 $intAdmin = $oDB->count( TABUSER." WHERE role='A'" );
 $intMod = $oDB->count( TABUSER." WHERE role='M'" );
 
-echo '<tr><th>'.L('Users').'</th><td>'.L('User',$intUser).' <span  class="small">('.L('Role_A',$intAdmin).', '.L('Role_M',$intMod).', '.L('Role_U',$intUser-$intAdmin-$intMod).')</span></td></tr>'.PHP_EOL;
+echo '<tr><th>'.L('Users').'</th><td>'.L('User',$intUser).' <small>('.L('Role_A',$intAdmin).', '.L('Role_M',$intMod).', '.L('Role_U',$intUser-$intAdmin-$intMod).')</small></td></tr>'.PHP_EOL;
 if ( !empty($arrItems['content']) ) echo '<tr><th>'.L('Content').'</th><td>'.$arrItems['content'].'</td></tr>';
 echo '</table>
 ';

@@ -71,8 +71,8 @@ include '../bin/class/class.qt.db.php'; if ( strpos(QDB_SYSTEM,'sqlite') ) defin
 $error = '';
 
 // Language (GET from url, otherwise use session)
-if ( isset($_GET['lang']) ) $_SESSION['setup_lang']=$_GET['lang'];
-if ( !isset($_SESSION['setup_lang']) ) $_SESSION['setup_lang']='en';
+if ( isset($_GET['lang']) ) $_SESSION['setup_lang'] = $_GET['lang'];
+if ( !isset($_SESSION['setup_lang']) ) $_SESSION['setup_lang'] = 'en';
 
 // load language
 if ( file_exists('src/'.$_SESSION['setup_lang'].'/'.'lg_install.php') ) {

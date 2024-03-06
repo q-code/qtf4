@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210  allows app impersonation [qt f|i ]
+<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e|n]
 /**
  * @var string $strPrev
  * @var string $strNext

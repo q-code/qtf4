@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210
+<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e|n]
 /**
  * @var string $strPrev
  * @var string $strNext
@@ -11,7 +11,7 @@ $error = '';
 $strPrev = L('Back');
 $strNext = APPNAME;
 $urlPrev = 'setup_4.php';
-$urlNext = '../qtf_login.php?dfltname=Admin';
+$urlNext = '../'.APP.'_login.php?dfltname=Admin';
 $selfurl = 'setup_9.php';
 $tools = '';
 if ( file_exists('tool_tables.php') ) $tools .= '<a href="tool_tables.php">Tool tables...</a>';
@@ -20,12 +20,9 @@ if ( file_exists('tool_check.php') ) $tools .= ' | <a href="tool_check.php">Chec
 function redirect(string $u, string $s='Continue')
 {
   if ( empty($u) ) die('CHtml::redirect arg must be string');
-  if ( headers_sent() )
-  {
-    echo '<a href="'.$u.'">',$s,'</a><meta http-equiv="REFRESH" content="0;url='.$u.'">';
-  }
-  else
-  {
+  if ( headers_sent() ) {
+    echo '<a href="'.$u.'">'.$s.'</a><meta http-equiv="REFRESH" content="0;url='.$u.'">';
+  } else {
     header('Location: '.$u);
   }
   exit;
@@ -111,4 +108,4 @@ include 'setup_ft.php'; // this will show $error
 // DISCONNECT to reload new variables (keep same language)
 $str = $_SESSION['setup_lang'];
 $_SESSION = [];
-$_SESSION['setup_lang']=$str;
+$_SESSION['setup_lang'] = $str;

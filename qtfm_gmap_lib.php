@@ -128,26 +128,38 @@ function gmapMarker($centerLatLng='',$draggable=false,$gsymbol=false,$title='',$
 		});
 		markers.push(marker); '.PHP_EOL.(empty($info) ? '' : '	gmapInfo(marker,`'.$info.'`);');
 }
+function gmapMarkerNEW($centerLatLng='',$draggable=false,$gsymbol=false,$title='',$info='')
+{
+  if ( $centerLatLng==='' || $centerLatLng==='0,0' ) return 'marker = null;';
+  if ( $centerLatLng=='map' ) {
+    $centerLatLng = 'map.getCenter()';
+  } else {
+    $centerLatLng = 'new google.maps.LatLng('.$centerLatLng.')';
+  }
+  if ( $draggable=='1' || $draggable==='true' || $draggable===true ) {
+  	$draggable = 'draggable:true,';
+  } else {
+  	$draggable = 'draggable:false,';
+  }
+  return '	marker = new google.maps.marker.AdvancedMarkerElement({
+		position: '.$centerLatLng.',
+		map: map,
+		' . $draggable . gmapMarkerIcon($gsymbol) . '
+		title: "'.$title.'"
+		});
+		markers.push(marker); '.PHP_EOL.(empty($info) ? '' : '	gmapInfo(marker,`'.$info.'`);');
+}
 function gmapMarkerIcon($gsymbol=false)
 {
   // returns the google.maps.Marker.icon argument
   if ( empty($gsymbol) ) return ''; // no icon source means that the default symbol is used
-  $str = '';
   // icons are 32x32 pixels and the anchor depends on the name: (10,32) for puhspin, (16,32) for point, center form others
   $arr = explode('_',$gsymbol);
-  switch($arr[0])
-  {
-    case 'pushpin':
-      $str = 'icon: new google.maps.MarkerImage("qtfm_gmap/'.$gsymbol.'.png",new google.maps.Size(32,32),new google.maps.Point(0,0),new google.maps.Point(10,32)),';
-      break;
-    case 'point':
-     $str = 'icon: new google.maps.MarkerImage("qtfm_gmap/'.$gsymbol.'.png",new google.maps.Size(32,32),new google.maps.Point(0,0),new google.maps.Point(16,32)),';
-     break;
-    default:
-     $str = 'icon: new google.maps.MarkerImage("qtfm_gmap/'.$gsymbol.'.png",new google.maps.Size(32,32),new google.maps.Point(0,0),new google.maps.Point(16,16)),';
-     break;
+  switch($arr[0]) {
+    case 'pushpin': return 'icon: new google.maps.MarkerImage("qtfm_gmap/'.$gsymbol.'.png",new google.maps.Size(32,32),new google.maps.Point(0,0),new google.maps.Point(10,32)),';
+    case 'point': return 'icon: new google.maps.MarkerImage("qtfm_gmap/'.$gsymbol.'.png",new google.maps.Size(32,32),new google.maps.Point(0,0),new google.maps.Point(16,32)),';
+    default: return 'icon: new google.maps.MarkerImage("qtfm_gmap/'.$gsymbol.'.png",new google.maps.Size(32,32),new google.maps.Point(0,0),new google.maps.Point(16,16)),';
   }
-  return $str;
 }
 function gmapMarkerMapTypeId($gbuttons)
 {

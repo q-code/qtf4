@@ -1,6 +1,4 @@
-<?php
-
-// QuickTalk forum 4.0 build:20240210
+<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e|n]
 
 session_start();
 include 'init.php';

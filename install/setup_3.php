@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210
+<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e|n]
 
 session_start();
 /**
@@ -8,7 +8,7 @@ session_start();
  * @var string $urlNext
  */
 include 'init.php';
-$error='';
+$error = '';
 $main = 'setup_3';
 $urlPrev = 'setup_2.php';
 $urlNext = 'setup_4.php';
@@ -21,7 +21,7 @@ try {
   $error = $e->getMessage(); //...
 }
 while ($row = $oDB->getRow()) $_SESSION[QT][$row['param']] = (string)$row['setting'];
-if ( !isset($_SESSION[QT]['admin_email']) ) $_SESSION[QT]['admin_email']='';
+if ( !isset($_SESSION[QT]['admin_email']) ) $_SESSION[QT]['admin_email'] = '';
 
 // ------
 // HTML BEGIN

@@ -18,7 +18,7 @@ INSTALLATION of QuickTalk v4.0
 BEFORE starting the installation procedure, make sure you know:
 - The type of database you will use (MySQL/MariaDB, SQLserver, PostgreSQL, Oracle or SQLite).
 - Your database host (the name of your database server, ex: "localhost" when using web- and database-server on the same computer)
-- The name of your database (where the QuickTalk can install the tables).
+- The name of your database (where the QuickTalk can create the tables).
 - The user name for this database (having the right to create table).
 - The user password for this database.
 
