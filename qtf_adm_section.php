@@ -179,7 +179,7 @@ if ( count($arrStaff)>15 )
 {
 echo 'input type="hidden" id="usr-t" value="M"/>
 <input type="hidden" name="ownernameold" value="'.$oS->ownername.'" onchange="qtFormSafe.not();"/>
-<div id="ac-wrapper-user" class="ac-wrapper">
+<div id="ac-wrapper-user">
 <input name="ownername" id="user" maxlength="24" value="'.$oS->ownername.'" onchange="qtFormSafe.not();" size="32"/>
 </div>';
 }

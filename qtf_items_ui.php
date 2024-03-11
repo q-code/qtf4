@@ -38,11 +38,9 @@ if ( SUser::isStaff() ) {
   $ui .= '</select>'.PHP_EOL;
   $ui .= '<input type="hidden" id="toggleedit" name="toggleedit" value="0"/>'.PHP_EOL;
   $ui .= '</form>'.PHP_EOL;
-
   if ( $intCount>0 ) {
     $ui .= '<button class="nostyle square32" onclick="tglEditState(this);" id="showeditor-ctrl" data-state="'.$_SESSION['EditByRows'].'" title="'.L('Edit_start').'">'.qtSVG('edit').'</button>'.PHP_EOL;
     $oH->scripts[] = 'function tglEditState(obj){ document.getElementById("toggleedit").setAttribute("value","1"); doSubmit("modaction"); }';
   }
-
 }
 $ui .= '</div>'.PHP_EOL;

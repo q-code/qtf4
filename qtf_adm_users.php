@@ -199,7 +199,7 @@ echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 // Table definition
 $t = new TabTable('id=t1|class=t-item|data-content=users|data-cbe',$intCount);
 $t->activecol = $strOrder;
-$t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order='.$strOrder.'&dir='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down')).'';
+$t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order='.$strOrder.'&dir='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
 // TH
 $t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" data-target="t1-cb[]"/>', 'class=c-checkbox');
 $t->arrTh['name'] = new TabHead(L('User'), 'class=c-name', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=name&dir=asc">%s</a>');

@@ -79,7 +79,6 @@ if ( isset($_POST['tag-ok']) && isset($_POST['tag-edit']) ) {
 include 'qtf_inc_hd.php';
 
 // -- Title and staff commands --
-
 echo '<div id="title-top" class="flex-sp top">
 <div id="title-top-l">';
 if ( QT_SHOW_PARENT_DESCR && $oT->numid>=0 && $oS->numfield!='N' )
@@ -120,7 +119,7 @@ if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) ) {
     echo '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/><input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
     echo '<input type="hidden" id="tag-saved" value="'.qtAttr($oT->descr).'"/>';
     echo '<input type="hidden" id="tag-new" name="tag-new" maxlength="255" value="'.qtAttr($oT->descr).'"/>';
-    echo '<div id="ac-wrapper-tag-edit" class="ac-wrapper">';
+    echo '<div id="ac-wrapper-tag-edit">';
     echo '<input required type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/><button type="reset" class="tag-btn" title="'.L('Reset').'">'.qtSVG('backspace').'</button>&nbsp;<button type="submit" class="tag-btn" title="'.L('Add').'" onclick="tagAdd(); asyncSaveTag('.$t.'); return false;">'.qtSVG('plus').'</button><button type="submit" class="tag-btn"  title="'.L('Delete_tags').'" onclick="tagDel(); asyncSaveTag('.$t.'); return false;">'.qtSVG('minus').'</button>';
     echo '</div></form></div>';
   } else {

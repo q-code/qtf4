@@ -57,7 +57,7 @@ function acCreateDropdown(responses) {
 
 let focusInput = null;
 let multiInput = false;
-document.querySelectorAll('.ac-wrapper').forEach( (wrapper) => {
+document.querySelectorAll('div[id^="ac-wrapper"]').forEach( (wrapper) => {
   const id = wrapper.id.substring(11);
   const input = document.getElementById(id);
   if ( input ) {

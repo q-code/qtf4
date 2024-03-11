@@ -149,11 +149,11 @@ function qtK(int $n, string $unit='k', string $unit2='M')
   // Millions: 2 decimals
   return round($n/1000000,2).$unit2;
 }
-function qtSVG(string $id='info', string $attr='', string $wrapper='', bool $addSvgClass=false)
+function qtSVG(string $ref='info', string $attr='', string $wrapper='', bool $addSvgClass=false)
 {
-  if ( !file_exists('bin/svg/'.$id.'.svg') ) return '#';
-  $svg = file_get_contents('bin/svg/'.$id.'.svg');
-  if ( $addSvgClass) $svg = '<svg class="svg-'.$id.'" '.substr($svg,4);
+  if ( !file_exists('bin/svg/'.$ref.'.svg') ) return '#';
+  $svg = file_get_contents('bin/svg/'.$ref.'.svg');
+  if ( $addSvgClass) $svg = '<svg class="svg-'.$ref.'" '.substr($svg,4);
   if ( !empty($attr) && empty($wrapper) ) $wrapper = 'span'; // force span when attribute exists
   if ( !empty($wrapper) ) $svg = '<'.$wrapper.attrRender($attr).'>'. $svg.'</'.$wrapper.'>';
   return $svg;

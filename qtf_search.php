@@ -97,7 +97,7 @@ if ( !empty($criteriaError) ) echo '<p class="error">'.$criteriaError.'</p>';
 echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
 '.qtSVG('search', 'class=filigrane').'
-<div>'.L('Keywords').' <div id="ac-wrapper-kw" class="ac-wrapper"><input required type="text" id="kw" name="v" size="40" maxlength="64" value="'.($q=='kw' ? qtAttr($v,0,'&quot;') : '').'" data-multi="1"/></div>*</div>
+<div>'.L('Keywords').' <div id="ac-wrapper-kw"><input required type="text" id="kw" name="v" size="40" maxlength="64" value="'.($q=='kw' ? qtAttr($v,0,'&quot;') : '').'" data-multi="1"/></div>*</div>
 <div><span class="cblabel"><input type="checkbox" id="to" name="to"'.($to ? ' checked' : '').' value="1"/> <label for="to">'.L('In_title_only').'</label></span></div>
 <div style="flex-grow:1;text-align:right">
 <input type="hidden" name="q" value="kw"/>
@@ -111,17 +111,15 @@ echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 
 // SEARCH BY REF
 $refExists=false;
-foreach($_Sections as $mSec)
-{
+foreach($_Sections as $mSec) {
   if ( $mSec['type']=='1' && !SUser::isStaff() ) continue;
   if ( $mSec['numfield']!=='N' ) { $refExists=true; break; }
 }
-if ( $refExists )
-{
+if ( $refExists ) {
 echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
 '.qtSVG('search', 'class=filigrane').'
-<div>'.L('Ref').' <div id="ac-wrapper-ref" class="ac-wrapper"><input required type="text" id="ref" name="v" size="5" minlength="1" maxlength="10" value="'.($q=='ref' ? qtAttr($v,0,'&quot;') : '').'"/>&nbsp;'.L('H_Reference').'</div></div>
+<div>'.L('Ref').' <div id="ac-wrapper-ref"><input required type="text" id="ref" name="v" size="5" minlength="1" maxlength="10" value="'.($q=='ref' ? qtAttr($v,0,'&quot;') : '').'"/>&nbsp;'.L('H_Reference').'</div></div>
 <div style="flex-grow:1;text-align:right">
 <input type="hidden" name="q" value="ref"/>
 <input type="hidden" id="ref-s" name="s" value="'.$s.'"/>
@@ -145,7 +143,7 @@ echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 '.qtTags(L('dateMMM.*'),(int)$v2).'
 </select><input type="hidden" id="y" name="y" value="'.date('Y').'"/>
 </div>';
-if ( $_SESSION[QT]['tags']!='0' ) echo '<div>'.L('With_tag').' <div id="ac-wrapper-tag-edit" class="ac-wrapper"><input type="text" id="tag-edit" name="v" size="30" value="'.($q==='adv' ? qtAttr($v) : '').'" data-multi="1"/></div>*</div>';
+if ( $_SESSION[QT]['tags']!='0' ) echo '<div>'.L('With_tag').' <div id="ac-wrapper-tag-edit"><input type="text" id="tag-edit" name="v" size="30" value="'.($q==='adv' ? qtAttr($v) : '').'" data-multi="1"/></div>*</div>';
 echo '<div style="flex-grow:1;text-align:right">
 <input type="hidden" name="q" value="adv"/>
 <input type="hidden" id="tag-s" name="s" value="'.$s.'"/>
@@ -161,7 +159,7 @@ echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
 '.qtSVG('search', 'class=filigrane').'
 <div><select name="q" size="1">'.qtTags( ['user'=>L('Item').' '.L('author'),'userm'=>L('Item').'/'.L('reply').' '.L('author')], $q ).'
-</select> <div id="ac-wrapper-user" class="ac-wrapper"><input type="hidden" id="userid" type="text" name="v2" value="'.$v2.'"/><input required id="user" type="text" name="v" value="'.(empty($v) || substr($q,0,4)!=='user' ? '' : qtAttr($v,0,'&quot;')).'" size="32" maxlenght="64"/></div></div>
+</select> <div id="ac-wrapper-user"><input type="hidden" id="userid" type="text" name="v2" value="'.$v2.'"/><input required id="user" type="text" name="v" value="'.(empty($v) || substr($q,0,4)!=='user' ? '' : qtAttr($v,0,'&quot;')).'" size="32" maxlenght="64"/></div></div>
 <div style="flex-grow:1;text-align:right">
 <input type="hidden" id="user-s" name="s" value="'.$s.'"/>
 <button type="submit" name="ok" value="'.$certificate.'">'.L('Search').'</button>

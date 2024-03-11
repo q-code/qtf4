@@ -142,7 +142,7 @@ echo '<div class="flex-sp top">
 <tr>
 <td><input type="hidden" name="pan" value="'.$pan.'"/><select name="y" id="y" onchange="checkY0(this.value);">'.qtTags($arrY,(int)$y).'</select></td>
 <td>'.(count($_Sections)>0 ? '<select name="s" id="s">'.sectionsAsOption($s,[],[],L('In_all_sections')).'</select>' : '&nbsp;').'</td>
-<td>'.( $_SESSION[QT]['tags']=='0' ? '&nbsp;' : '<div id="ac-wrapper-tag-edit" class="ac-wrapper"><input type="text" id="tag-edit" name="tag" size="18" value="'.$tag.'"/></div>').'</td>
+<td>'.( $_SESSION[QT]['tags']=='0' ? '&nbsp;' : '<div id="ac-wrapper-tag-edit"><input type="text" id="tag-edit" name="tag" size="18" value="'.$tag.'"/></div>').'</td>
 <td><button type="submit" name="ok" value="ok">'.L('Ok').'</button></td>
 </tr>
 </table>

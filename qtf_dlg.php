@@ -166,7 +166,7 @@ case 'itemsTags':
   $frm[] = '</article>';
   $frm[] = '<article>';
   $frm[] = '<p class="row-confirm">'.L('Change').' '.L('item',count($ids)).':</p>';
-  $frm[] = '<div id="ac-wrapper-tag-edit" class="ac-wrapper">';
+  $frm[] = '<div id="ac-wrapper-tag-edit">';
   $frm[] = '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/>';
   $frm[] = '<input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
   $frm[] = '<input required type="text" id="tag-edit" name="tag-edit" size="15" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/><button type="reset" class="tag-btn" title="'.L('Reset').'" onclick="qtFocus(`tag-edit`)">'.qtSVG('backspace').'</button>&nbsp;<button type="submit" name="tag-ok" class="tag-btn" value="addtag" title="'.L('Add').'">'.qtSVG('plus').'</button><button type="submit" name="tag-ok" class="tag-btn" value="deltag" title="'.L('Delete_tags').'">'.qtSVG('minus').'</button>';
