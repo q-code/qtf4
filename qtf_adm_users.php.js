@@ -1,4 +1,4 @@
-function datasetcontrol_click(checkboxname,action)
+function clickRowCmd(checkboxname,action)
 {
   const checkboxes = document.getElementsByName(checkboxname);
   let n = 0;
@@ -13,7 +13,7 @@ function datasetcontrol_click(checkboxname,action)
 }
 for (const el of document.getElementsByClassName("checkboxcmds")) {
   el.addEventListener("click", (e)=>{
-    if ( e.target.tagName==="A" ) datasetcontrol_click("t1-cb[]", e.target.dataset.action);
+    if ( e.target.tagName==="A" ) clickRowCmd("t1-cb[]", e.target.dataset.action);
   });
 }
 qtHideAfterTable("tablebot");

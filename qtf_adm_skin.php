@@ -103,19 +103,21 @@ echo '</select><span id="welcome-txt">'.(empty($welcomeTxt) ? '' : ' ('.L('edit'
 echo '<h2 class="config">'.L('Layout').'</h2>
 <table class="t-conf">
 ';
-$arr = array('n10'=>'10 / '.strtolower(L('Page')),'n25'=>'25 / '.strtolower(L('Page')),'n50'=>'50 / '.strtolower(L('Page')),'n100'=>'100 / '.strtolower(L('Page')));
-if ( $_SESSION[QT]['items_per_page']==='20' || $_SESSION[QT]['items_per_page']==='30' || $_SESSION[QT]['items_per_page']==='40' ) $_SESSION[QT]['items_per_page']='25'; //upgrade version 2.x to 3.0
-if ( $_SESSION[QT]['replies_per_page']==='20' || $_SESSION[QT]['replies_per_page']==='30' || $_SESSION[QT]['replies_per_page']==='40' ) $_SESSION[QT]['replies_per_page']='25'; //upgrade version 2.x to 3.0
+$ipp = (int)$_SESSION[QT]['items_per_page']; if ( !in_array($ipp, PAGE_SIZES) ) $ipp = PAGE_SIZES[0]; // auto-adjust if config changed
+$arr = array_combine(PAGE_SIZES, array_map(function($size){return $size.' / '.L('page');}, PAGE_SIZES));
 echo '<tr title="'.L('H_Items_per_section_page').'">
 <th><label for="items_per_page">'.L('Items_per_section_page').'</label></th>
 <td><select id="items_per_page" name="items_per_page" onchange="qtFormSafe.not();">
-'.qtTags($arr,'n'.$_SESSION[QT]['items_per_page']).'
+'.qtTags($arr,$ipp).'
 </select></td>
 </tr>
-<tr title="'.L('H_Replies_per_item_page').'">
+';
+$ipp = (int)$_SESSION[QT]['replies_per_page']; if ( !in_array($ipp, PAGE_SIZES) ) $ipp = PAGE_SIZES[0]; // auto-adjust if config changed
+$arr = array_combine(PAGE_SIZES, array_map(function($size){return $size.' / '.L('page');}, PAGE_SIZES));
+echo '<tr title="'.L('H_Replies_per_item_page').'">
 <th><label for="replies_per_page">'.L('Replies_per_item_page').'</label></th>
 <td><select id="replies_per_page" name="replies_per_page" onchange="qtFormSafe.not();">
-'.qtTags($arr,'n'.$_SESSION[QT]['replies_per_page']).'
+'.qtTags($arr,$ipp).'
 </select></td>
 </tr>
 ';

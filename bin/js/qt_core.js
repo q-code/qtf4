@@ -166,9 +166,28 @@ function qtBbc(bbc, id='text-area') {
  */
 function qtHideEmptyColumn(selectTD='#t1 td.c-numid', selectTR='#t1 th.c-numid') {
   let nodes = document.querySelectorAll(selectTD); if ( nodes.length===0 ) return;
-  for(const node of nodes) if ( node.innerHTML!=='' ) return;
-  // Hide td-cells (all empty) then th-cells (even if not empty)
+  for(const node of nodes) { if ( node.innerHTML!=='' ) return; }
+  // Hide empty td-cells then th-cells (even if not empty)
   nodes.forEach( node => { node.style.display = 'none'; } );
   nodes = document.querySelectorAll(selectTR); if ( nodes.length===0 ) return;
   nodes.forEach( node => { node.style.display = 'none'; } );
+}
+function qtPost(href, params, sep='&')
+{
+  const form = document.createElement('form');
+  form.action = href;
+  form.method = 'post';
+  for (let param of params.split(sep)) {
+    if ( param.length===0 ) continue;
+    const field = document.createElement('input');
+    field.type = 'hidden';
+    param = param.split('=');
+    field.name = param[0];
+    param.shift(); // after first '=', joins others
+    field.value = param.join('=');
+    form.appendChild(field);
+  }
+  document.body.appendChild(form);
+  form.submit();
+  return false; // preventdefault
 }

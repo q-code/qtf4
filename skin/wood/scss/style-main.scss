@@ -8,8 +8,8 @@ a.button:focus{outline:1px solid red !important}
 
 /* PAGING and ROWCOMMANDS */
 p.paging{padding:0.5rem 0;text-align:right}
-.rowcommands{color:var(--bgadmin);text-decoration:none}
-a.rowcommands:hover{color:var(--bgadmin);text-decoration:underline}
+.rowcmd{color:var(--bgadmin);text-decoration:none}
+a.rowcmd:hover{color:var(--bgadmin);text-decoration:underline}
 a.page{padding:0 3px;border:solid 1px #ddd;text-decoration:none}
 a.page.current{background-color:#eee;color:var(--c);cursor:default}
 a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
