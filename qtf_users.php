@@ -185,9 +185,9 @@ while($row=$oDB->getRow()) {
 		if ( !empty($arrSymbolByRole[$row['role']]) ) $oMapPoint->icon = $arrSymbolByRole[$row['role']];
 		$arrMapData[(int)$row['id']] = $oMapPoint;
 		if ( $_SESSION[QT]['m_gmap_hidelist'] ) {
-		  $t->arrTd['userlocation']->content .= ' <svg class="svg-symbol"><use href="#symbol-map-marker-alt" xlink:href="#symbol-map-marker-alt"></use></svg>';
+		  $t->arrTd['userlocation']->content .= ' <svg class="svg-symbol"><use href="#symbol-map-marker-alt" xlink:href="#symbol-map-marker-alt"/></svg>';
 		} else {
-		  $t->arrTd['userlocation']->content .= ' <span class="clickable" data-coord="'.$y.','.$x.'" onclick="gmapPan(this.dataset.coord)" title="'.L('Show').'"><svg class="svg-symbol"><use href="#symbol-map-marker-alt" xlink:href="#symbol-map-marker-alt"></use></svg></span>';
+		  $t->arrTd['userlocation']->content .= ' <span class="clickable" data-coord="'.$y.','.$x.'" onclick="gmapPan(this.dataset.coord)" title="'.L('Show').'"><svg class="svg-symbol"><use href="#symbol-map-marker-alt" xlink:href="#symbol-map-marker-alt"/></svg></span>';
 		}
 	}
 

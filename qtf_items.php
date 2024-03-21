@@ -14,6 +14,7 @@ if ( !SUser::canView('V2') ) exitPage(11, 'user-lock.svg'); //...
 // ------
 // INITIALISE
 // ------
+
 // check arguments
 $q = ''; // Search type (not required, use 's' if missing)
 $s = -1; // [int]
@@ -23,7 +24,7 @@ $v2 = ''; // timeframe [string] or userid
 qtArgs('q int:s st v v2');
 if ( empty($q) ) $q = 's';
 if ( $q==='s' && $s<0 ) die(__FILE__.' Missing argument $s');
-$v = qtCleanArray($v);
+$v = qtCleanArray($v); // [array]
 
 // initialise section or void-section and check specific access right
 if ( $q==='s' ) {
@@ -385,9 +386,11 @@ echo '<div id="t1-nav-bot" class="nav-bot">'.$navCommands.'</div>'.PHP_EOL;
 // TAGS FILTRING
 if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && count($arrTags)>0 ) {
   sort($arrTags);
-  echo '<div class="tag-box"><p><svg class="svg-symbol svg-125"><use href="#symbol-tags" xlink:href="#symbol-tags"></use></svg> '.L('Show_only_tag').'</p>';
+  echo '<div class="tag-box"><p><svg class="svg-symbol svg-125"><use href="#symbol-tags" xlink:href="#symbol-tags"/></svg> '.L('Show_only_tag').'</p>';
+
   foreach($arrTags as $strTag)
-    echo '<a class="tag" href="'.url('qtf_items.php').'?s='.$s.'&q=adv&v2=*&v='.urlencode($strTag).'" title="..." data-tagdesc="'.$strTag.'">'.$strTag.'</a>';
+    //echo '<a class="tag" href="'.url('qtf_items.php').'?s='.$s.'&q=adv&v2=*&v='.urlencode($strTag).'" title="..." data-tagdesc="'.$strTag.'">'.$strTag.'</a>';
+    echo '<a class="tag" href="javascript:void(0)" title="..." data-tagdesc="'.$strTag.'" onclick="return qtPost(`qtf_items.php`,`s='.$s.'&q=adv&v2=*&v='.$strTag.'`);">'.$strTag.'</a>';
   echo qtSVG('search','','',true).'</div>';
   $oH->scripts['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" id="tagdesc" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
 }

@@ -368,11 +368,12 @@ function qtExplodeGet(string $str, string $key, $alt='', string $sep=';')
 /**
  * Implode an array[key=>values] into a multifield string "key1=value1&key2=value2"
  */
-function qtImplode(array $arr, string $sep='&', bool $skipNull=true)
+function qtImplode(array $arr, string $sep='&', bool $skipNull=true, bool $skipVoid=true)
 {
   $str = '';
   foreach($arr as $k=>$value) {
     if ( $skipNull && is_null($value) ) continue;
+    if ( $skipVoid && $value==='' ) continue;
     $str .= (isset($str[0]) ? $sep : '').$k.'='.$value;
   }
   return $str;

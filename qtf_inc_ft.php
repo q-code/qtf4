@@ -106,7 +106,7 @@ if ( $oH->selfurl==='qtf_index.php' ) {
   echo asImg( QT_SKIN.'img/section_0_1.gif', 'title='.L('Ico_section_0_1') ) . ' ' . L('Ico_section_0_1') . '<br>';
 } else {
   echo asImg( QT_SKIN.'img/topic_a_0.gif', 'alt=N|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_a_0');
-  if ( QT_LIST_ME && $oH->selfurl!=='qtf_item.php' ) echo ' &nbsp;<svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"></use></svg>'.' '.L('You_reply');
+  if ( QT_LIST_ME && $oH->selfurl!=='qtf_item.php' ) echo ' &nbsp;<svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"/></svg>'.' '.L('You_reply');
   echo '<br>';
   echo asImg( QT_SKIN.'img/topic_t_0.gif', 'alt=T|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_t_0').' &nbsp;';
   echo asImg( QT_SKIN.'img/topic_t_0_h.gif', 'alt=T|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_t_0_h');
