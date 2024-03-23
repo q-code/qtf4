@@ -14,6 +14,7 @@ a.page{padding:0 3px;border:solid 1px #ddd;text-decoration:none}
 a.page.current{background-color:#eee;color:var(--c);cursor:default}
 a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
 a.page.last{border-radius:0 3px 3px 0}
+@media screen and (max-width:840px){ .rowcmd.secondary + .sepcmd{display:none !important} }
 
 /* SPECIFIC */
 .strongbox{padding:0.6rem;background-color:#666;color:#fff;background:linear-gradient(to bottom,#90765e 10%,var(--bgbanner) 80%,var(--bgbanner) 10%);color:#FFF;border:3px solid #b69c84;border-radius:5px}

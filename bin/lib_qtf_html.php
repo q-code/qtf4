@@ -33,13 +33,13 @@ function getPostedValues(string $post='t1-cb', bool $asInt=true)
   return $asInt ? array_map('intval', $arr) : $arr;
   // NOTE intval allows string|float|boolean|array but numeric is rounded-down, array/boolean become 0|1, text become 0
 }
-function htmlCsvLink($strUrl,$intCount=20,$intPage=1)
+function htmlCsvLink($strUrl,$intCount=20,$pn=1)
 {
   if ( empty($strUrl) ) return '';
   if ( $intCount<=$_SESSION[QT]['items_per_page'] ) {
     return '<a href="'.$strUrl.'&size=all&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').'</a>';
   } else {
-    $strCsv = '<a href="'.$strUrl.'&page='.$intPage.'&size=p'.$intPage.'&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' ('.strtolower(L('Page')).')</a>';
+    $strCsv = '<a href="'.$strUrl.'&pn='.$pn.'&size=p'.$pn.'&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' ('.strtolower(L('Page')).')</a>';
     if ( $intCount<=1000 ) $strCsv .= ' &middot; <a href="'.$strUrl.'&size=all&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' ('.strtolower(L('All')).')</a>';
     if ( $intCount>1000 && $intCount<=2000 ) $strCsv .= ' &middot; <a href="'.$strUrl.'&size=m1&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' (1-1000)</a> &middot; <a href="'.$strUrl.'&size=m2&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' (1000-'.$intCount.')</a>';
     if ( $intCount>2000 && $intCount<=5000 ) $strCsv .= ' &middot; <a href="'.$strUrl.'&size=m5&n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' (1-5000)</a>';
@@ -60,10 +60,10 @@ function htmlLettres(string $baseFile, string $current='ALL', string $all='All',
     case 3: $arr = explode('.','A|B|C.D|E|F.G|H|I.J|K|L.M|N|O.P|Q|R.S|T|U.V|W.X|Y|Z.~'); break;
     case 4: $arr = explode('.','A|B|C|D.E|F|G|H.I|J|K|L.M|N|O|P.Q|R|S|T.U|V|W.X|Y|Z.~'); break;
   }
-  $str = '<a '.($current==='ALL' ? ' class="active"' : '').' href="'.($current==='ALL' ? 'javascript:void(0)' : $baseFile.$and.'group=all').'">'.$all.'</a>';
+  $str = '<a '.($current==='ALL' ? ' class="active"' : '').' href="'.($current==='ALL' ? 'javascript:void(0)' : $baseFile.$and.'fg=all').'">'.$all.'</a>';
   foreach($arr as $g) {
     $title = $title.($g==='~' ? L('other_char') : str_replace('|',' '.L('or').' ',$g));
-    $str .= '<a'.($current===$g ? ' class="active"' : '').' href="'.($current===$g ? 'javascript:void(0)' : $baseFile.$and.'group='.$g).'"'.(empty($title) ? '' : ' title="'.qtAttr($title).'"').'>'.str_replace('|','',$g).'</a>';
+    $str .= '<a'.($current===$g ? ' class="active"' : '').' href="'.($current===$g ? 'javascript:void(0)' : $baseFile.$and.'fg='.$g).'"'.(empty($title) ? '' : ' title="'.qtAttr($title).'"').'>'.str_replace('|','',$g).'</a>';
   }
   $group  = '<div class="'.$class.'">';
   $group .= L('Show').' '.$str;

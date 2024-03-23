@@ -11,6 +11,7 @@ a.page{padding:0 0.2rem;border:solid 1px #ddd}
 a.page.current{background-color:#eee;color:var(--c);text-decoration:none;cursor:default}
 a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
 a.page.last{border-radius:0 3px 3px 0}
+@media screen and (max-width:840px){ .rowcmd.secondary + .sepcmd{display:none !important} }
 
 /* SPECIFIC */
 .strongbox{padding:0.6rem;background-color:#666;color:#EEE;box-shadow:-2px 2px 5px #BBB}

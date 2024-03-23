@@ -188,7 +188,7 @@ $oH->scripts[] = 'function toggleSmtp(status){
   document.getElementById("smtp_password").disabled = status==="0";
 }
 function addArgs(ancor){
-  ancor.href = "'.APP.'_adm_smtp.php?h=" + document.getElementById("smtp_host").value + "&p=" + document.getElementById("smtp_port").value + "&u=" + encodeURI(document.getElementById("smtp_username").value) + "&w=" + encodeURI(document.getElementById("smtp_password").value);
+  ancor.href = "'.APP.'_adm_smtp.php?h=" + document.getElementById("smtp_host").value + "&p=" + document.getElementById("smtp_port").value + "&u=" + encodeURI(document.getElementById("smtp_username").value) + "&fw=" + encodeURI(document.getElementById("smtp_password").value);
 }';
 
 include APP.'_adm_inc_ft.php';

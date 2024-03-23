@@ -4,7 +4,7 @@
 // Perform async queries on request from web pages (ex: using ajax) with GET method
 // Ouput (echo) results as string or json string object {rItem,rInfo}
 
-if ( empty($_GET['q']) || !in_array($_GET['q'],['T','R','attach','unreplied']) ) { echo json_encode(array(array('rItem'=>'','rInfo'=>'configuration error'))); return; }
+if ( empty($_GET['fq']) || !in_array($_GET['fq'],['T','R','attach','unreplied']) ) { echo json_encode(array(array('rItem'=>'','rInfo'=>'configuration error'))); return; }
 
 // INITIALIZE
 
@@ -108,7 +108,7 @@ function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate
 
 // SERVICE ARGUMENTS {T|R|attach|unreplied} topics, replies, attachments or unreplied
 
-$q = $_GET['q'];
+$fq = $_GET['fq'];
 
 // errors
 $L = []; include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
@@ -119,7 +119,7 @@ $e2 = empty($L['E_try_without_options']) ? 'Try without options' : $L['E_try_wit
 // options
 $s = isset($_GET['s']) ? $_GET['s'] : '*'; // section {*|id}
 $t = isset($_GET['t']) ? $_GET['t'] : '*'; // item type {*|A|T|...} or user type {*|A|M|U}
-$st = isset($_GET['st']) ? $_GET['st'] : '*'; // status {*|0|1}, 1=closed
+$fst = isset($_GET['fst']) ? $_GET['fst'] : '*'; // status {*|0|1}, 1=closed
 $y = isset($_GET['y']) ? $_GET['y'] : '*'; // year
 $tf = isset($_GET['tf']) ? $_GET['tf'] : '*'; // timeframe
 $ids = isset($_GET['ids']) ? $_GET['ids'] : ''; // list of topic id
@@ -127,7 +127,7 @@ $ids = isset($_GET['ids']) ? $_GET['ids'] : ''; // list of topic id
 // defaults (1 char to avail injection)
 if ( strlen($s)>1 || $s==='' || $s==='-1' ) $s='*';
 if ( strlen($t)>1 || empty($t) ) $t='*';
-if ( strlen($st)>1 || $st==='-1' ) $st='*';
+if ( strlen($fst)>1 || $fst==='-1' ) $fst='*';
 if ( empty($y) || !qtCtype_digit($y) ) $y='*'; // if not a year, use '*' (note: case tag-y uses current year)
 
 // INITIALIZE
@@ -138,12 +138,12 @@ $oDB = new CDatabase();
 $where = 't.id>=0';
 if ( $s!=='*' ) $where .= " AND t.forum=$s";
 if ( $t!=='*' ) $where .= " AND t.type='$t'";
-if ( $st!=='*' ) $where .= " AND t.status='$st'"; // '1'=closed
+if ( $fst!=='*' ) $where .= " AND t.status='$fst'"; // '1'=closed
 if ( !empty($ids) ) $where .= " AND t.id IN ($ids)";
 
 // PROCESSES
 
-switch($q)
+switch($fq)
 {
 case 'T': // topics
   if ( $tf!=='*' ) $where .= getSqlTimeframe($oDB->type, $tf);
@@ -173,4 +173,4 @@ default: // posts
 
 // RESPONSE FAILED
 
-echo json_encode( array(array('rItem'=>'', 'rInfo'=>$e0.', '.($s.$t.$st==='***' ? $e1 : $e2))) );
+echo json_encode( array(array('rItem'=>'', 'rInfo'=>$e0.', '.($s.$t.$fst==='***' ? $e1 : $e2))) );

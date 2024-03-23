@@ -246,7 +246,7 @@ function unConfirm() {
   document.getElementById("submit-sum").innerHTML = "...";
 }
 function updateCounts(q) {
-  fetch( `bin/srv_count.php?q=${q}&s='.$s.'&st=${inStatus.value}&t=${inType.value}&tf=${inTF.value}` )
+  fetch( `bin/srv_count.php?fq=${fq}&s='.$s.'&fst=${inStatus.value}&t=${inType.value}&tf=${inTF.value}` )
   .then( response => response.json() )
   .then( data => { submitSum(data); } )
   .catch( err => console.log(err) );
@@ -319,7 +319,7 @@ function unConfirm() {
   document.getElementById("submit-sum").innerHTML = "...";
 }
 function updateCounts(q) {
-  fetch( `bin/srv_count.php?q=${q}&s='.$s.'&d=${inDay.value}&t=${inType.value}&st=0` )
+  fetch( `bin/srv_count.php?fq=${fq}&s='.$s.'&d=${inDay.value}&t=${inType.value}&fst=0` )
   .then( response => response.json() )
   .then( data => { submitSum(data); } )
   .catch( err => console.log(err) );
@@ -413,7 +413,7 @@ function unConfirm() {
   document.getElementById("submit-sum").innerHTML = "...";
 }
 function updateCounts(q) {
-  fetch( `bin/srv_count.php?q=${q}&s='.$s.'&st=${inStatus.value}&t=${inType.value}&tf=${inTF.value}` )
+  fetch( `bin/srv_count.php?fq=${fq}&s='.$s.'&fst=${inStatus.value}&t=${inType.value}&tf=${inTF.value}` )
   .then( response => response.json() )
   .then( data => { submitSum(data); } )
   .catch( err => console.log(err) );

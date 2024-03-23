@@ -1,7 +1,7 @@
 <?php // v4.0 build:20240210
 
 /**
- * Convert qt-php-like url into html-like url when urlrewrite is active. Works only on the path-part of the url. Ex: 'qtx_login.php' becomes 'login.html'
+ * Convert qt-php-like url into html-like url when urlrewrite is active. Works only on the path-part of the url. Ex: 'qtx_login.php?x=y' becomes 'login.html?x=y'
  * @param string $url
  * @param string $ext extension (with dot)
  * @param boolean $hidePrefix file prefix (true for the default)
@@ -11,7 +11,6 @@ function url(string $url='', string $ext='.html', bool $hidePrefix=true)
 {
   if ( !QT_URLREWRITE ) return $url;
   if ( empty($url) ) die(__FUNCTION__.' url empty');
-  // Ex: 'qtx_login.php?a=1' becomes 'login.html?a=1'
   if ( $hidePrefix ) {
     $i = strlen(APP.'_');
     if ( substr($url,0,$i)===APP.'_' ) $url = substr($url,$i);
@@ -202,15 +201,14 @@ function qtCtype_digit(string $str)
 function qtArgs(string $def, bool $inGet=true, bool $inPost=true, bool $trim=true, bool $striptags=true)
 {
   // NOTES:
-  // Initializing the variables before using qtArgs is recommended.
-  // When a user try to url-inject other variables, they are skipped (only variables in $def are parsed).
-  // Supported types are [integer,float,boolean,string]. Can be noted 'int:', 'flo:', 'boo:', 'str:'
-  // With type boolean, the variable is set to TRUE when GET/POST is '1' or 'true'. For ALL OTHER values, FALSE is assigned.
-  // For required variable (suffix !), script stops if the variable is not in GET/POST (or if get/post as an empty string).
-  // When values are not in the Http GET/POST (and not marked as required), the initial variable remains unchanged (can be a new variable with NULL value if the variable was not initialised).
-  // When values are red from both GET and POST, the POST values are assigned after. POST-values overwrite GET-values, and POST can include other variables (in addition to those already assigned from GET)
-  // For required variable, the script stops if the variable is declared in GET but as an empty string (even if the variable is also declared in POST)
-  // GET/POST values are urldecoded (build-in php)
+  // Initializing the variables before using qtArgs is recommended. GET/POST values are urldecoded (build-in php)
+  // Only variables in $def are parsed. Other (url-injected) variables are skipped.
+  // Supported types are [integer,float,boolean,string] noted 'int:', 'flo:', 'boo:', 'str:' in the $def
+  // For boolean, TRUE is set when GET/POST is '1' or 'true'. For ALL OTHER string FALSE is set.
+  // For required variable (suffix !), script stops if the variable is not in GET/POST or is an empty string.
+  // When values are not in the GET/POST (and not marked as required), the initial variable remains unchanged (can be a new variable with NULL value if the variable was not initialized).
+  // When both GET and POST are used, the POST-values overwrite GET-values, and POST can include other variables (in addition to those already assigned from GET)
+  // For required variable, the script stops if the variable is declared as empty in GET (even if the variable is also declared in POST)
   $def = array_filter(explode(' ',$def));
   foreach($def as $typedvar) {
     if ( strpos($typedvar,':')===false ) $typedvar = 'str:'.$typedvar; // default str: when no type
@@ -248,7 +246,7 @@ function qtArgs(string $def, bool $inGet=true, bool $inPost=true, bool $trim=tru
       }
     }
     // Still required, if required but is not in GET nor in POST
-    if ( $required ) die(__FUNCTION__.'Required argument ['.$var.'] is missing');
+    if ( $required ) die(__FUNCTION__.' Required argument ['.$var.'] is missing');
   }
 }
 /**
@@ -447,37 +445,37 @@ function qtBasename(string $file, bool $chgUnderscore=true)
 /**
  * Quote a string (works recursively in case of array)
  * @param string|int|float|array $txt
- * @param string $q1 openquote (&' &" &< to get curved ' " <<)
- * @param string $q2 closequote (if empty, uses mirror curved symbol or openquote)
+ * @param string $beg openquote (&' &" &< to get curved ' " <<)
+ * @param string $end closequote (if empty, uses mirror curved symbol or openquote)
  * @param bool $keepnumeric int/float are returned as int/float (not quoted)
  * @return string|array (with array, index and non-string element remain unchanged)
  */
-function qtQuote($txt, string $q1='"', string $q2='', bool $keepNum=false)
+function qtQuote($txt, string $beg='"', string $end='', bool $keepNum=false)
 {
   // Works recursively on array
-  if ( is_array($txt) ) { foreach($txt as $k=>$item) $txt[$k] = qtQuote($item,$q1,$q2,$keepNum); return $txt; }
+  if ( is_array($txt) ) { foreach($txt as $k=>$item) $txt[$k] = qtQuote($item,$beg,$end,$keepNum); return $txt; }
   // Returns a quoted string (except int/float with $keepNum=true)
   if ( $keepNum && (is_int($txt) || is_float($txt)) ) return $txt;
-  if ( empty($q2) ) {
+  if ( empty($end) ) {
     // use well known open/closing symbols
-    switch(strtolower($q1)) {
+    switch(strtolower($beg)) {
       case "&'":
       case '&#8216;':
       case '&#x2018;':
-      case '&lsquo;': $q1 = '&lsquo;'; $q2 = '&rsquo;'; break;
+      case '&lsquo;': $beg = '&lsquo;'; $end = '&rsquo;'; break;
       case '&"':
       case '&#8220;':
       case '&#x201c;':
-      case '&ldquo;': $q1 = '&ldquo;'; $q2 = '&rdquo;'; break;
+      case '&ldquo;': $beg = '&ldquo;'; $end = '&rdquo;'; break;
       case '&<':
       case '&#171;':
       case '&#xab;':
-      case '&laquo;': $q1 = '&laquo;'; $q2 = '&raquo;'; break;
-      default: $q2 = $q1;
+      case '&laquo;': $beg = '&laquo;'; $end = '&raquo;'; break;
+      default: $end = $beg;
     }
   }
-  if ( empty($q1) && empty($q2) ) throw new Exception(__FUNCTION__.' invalid argument q');
-  if ( is_string($txt) || is_int($txt) || is_float($txt) ) return $q1.$txt.$q2;
+  if ( empty($beg) && empty($end) ) throw new Exception(__FUNCTION__.' invalid argument q');
+  if ( is_string($txt) || is_int($txt) || is_float($txt) ) return $beg.$txt.$end;
   throw new Exception(__FUNCTION__.' invalid argument');
 }
 /**

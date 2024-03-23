@@ -14,7 +14,7 @@ optionsEl.addEventListener("change", (e)=>{
 function iconSpin() {
   const icon = document.getElementById("opt-icon");
   icon.classList.remove("spinning");
-  if (document.getElementById("opt-s").value!=="*" || document.getElementById("opt-st").value!=="*") icon.classList.add("spinning");
+  if (document.getElementById("opt-s").value!=="-1" || document.getElementById("pot-fst").value!=="") icon.classList.add("spinning");
 }
 function broadcastOption(option,value) {
   ["ref-","id-","kw-","tag-","user-"].forEach( id => {
@@ -25,9 +25,9 @@ function broadcastOption(option,value) {
   });
   iconSpin();
 }
-function addHrefArg(d, args) {
+function addHrefData(d, args) {
   for(const arg of args) {
-    if ( d.dataset[arg]==="*" || d.dataset[arg]==="" || d.dataset[arg]===undefined ) continue;
+    if ( d.dataset[arg]==="" || d.dataset[arg]===undefined ) continue;
     d.href += "&"+arg+"="+d.dataset[arg];
   }
 }

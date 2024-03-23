@@ -51,7 +51,7 @@ function ArraySwap($arr,$n=1)
 // INITIALISE
 // ------
 $s = -1;
-$v = 'birthday';
+$fv = 'birthday';
 qtArgs('int:s');
 
 $intYear   = date('Y');  if ( isset($_GET['y']) ) $intYear = intval($_GET['y']);
@@ -95,13 +95,13 @@ switch($oDB->type)
 case 'pdo.mysql':
 case 'mysql':
 case 'pdo.sqlsrv':
-case 'sqlsrv': $oDB->query( "SELECT id,name,role,$v FROM TABUSER WHERE SUBSTRING($v,5,2)=? OR SUBSTRING($v,5,2)=?", [$strMonth,$strMonthN] ); break;
+case 'sqlsrv': $oDB->query( "SELECT id,name,role,$fv FROM TABUSER WHERE SUBSTRING($v,5,2)=? OR SUBSTRING($v,5,2)=?", [$strMonth,$strMonthN] ); break;
 case 'pdo.pg':
-case 'pg': $oDB->query( "SELECT id,name,role,$v FROM TABUSER WHERE SUBSTRING($v FROM 5 FOR 2)=? OR SUBSTRING($v FROM 5 FOR 2)=?", [$strMonth,$strMonthN] ); break;
+case 'pg': $oDB->query( "SELECT id,name,role,$fv FROM TABUSER WHERE SUBSTRING($fv FROM 5 FOR 2)=? OR SUBSTRING($fv FROM 5 FOR 2)=?", [$strMonth,$strMonthN] ); break;
 case 'pdo.sqlite':
-case 'sqlite': $oDB->query( "SELECT id,name,role,$v FROM TABUSER WHERE SUBSTR($v,5,2)=? OR SUBSTR($v,5,2)=?", [$strMonth,$strMonthN] ); break;
+case 'sqlite': $oDB->query( "SELECT id,name,role,$fv FROM TABUSER WHERE SUBSTR($v,5,2)=? OR SUBSTR($v,5,2)=?", [$strMonth,$strMonthN] ); break;
 case 'pdo.oci':
-case 'oci':$oDB->query( "SELECT id,name,role,$v FROM TABUSER WHERE SUBSTR($v,5,2)=? OR SUBSTR($v,5,2)=?", [$strMonth,$strMonthN] ); break;
+case 'oci':$oDB->query( "SELECT id,name,role,$fv FROM TABUSER WHERE SUBSTR($v,5,2)=? OR SUBSTR($v,5,2)=?", [$strMonth,$strMonthN] ); break;
 default: die('Unknown db type '.$oDB->type);
 }
 $i=0;
@@ -326,7 +326,7 @@ const titleRole = function(d) {
 }
 const elements = document.querySelectorAll(".ajaxmouseover");
 elements.forEach( el => el.addEventListener("mouseover", (e) => {
-  fetch( `bin/srv_user.php?q=u&id=${el.id.substring(1)}&dir=${dir}` )
+  fetch( `bin/srv_user.php?fq=u&id=${el.id.substring(1)}&pd=${dir}` )
   .then( response => {
     return response.text()
     .then( text => { document.getElementById("previewcontainer").innerHTML = text; } )

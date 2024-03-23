@@ -15,19 +15,22 @@ if ( !SUser::canView('V2') ) exitPage(11, 'user-lock.svg'); //...
 // INITIALISE
 // ------
 
-// check arguments
-$q = ''; // Search type (not required, use 's' if missing)
+// init args
 $s = -1; // [int]
-$st = '*'; // Status [string] {'*'|status-key}, caution: can be '0'
-$v = ''; // Searched [string] text (converted to array of strings)
-$v2 = ''; // timeframe [string] or userid
-qtArgs('q int:s st v v2');
-if ( empty($q) ) $q = 's';
-if ( $q==='s' && $s<0 ) die(__FILE__.' Missing argument $s');
-$v = qtCleanArray($v); // [array]
+$fq = ''; // Search type (not required, use 's' if missing)
+$fst = ''; // Status [string] {''|status-key}, caution: can be '0'
+$fv = ''; // Searched [string] text (converted to array of strings)
+$fw = ''; // timeframe [string] or userid
+$pn = 1; $po = 'lastpostdate'; $pd = 'desc'; // page number,order,direction
+qtArgs('int:s fq fst fv fw int:pn po pd');
+
+// check args
+if ( empty($fq) ) $fq = 's';
+if ( $fq==='s' && $s<0 ) die(__FILE__.' Missing argument $s');
+$fv = qtCleanArray($fv); // [array]
 
 // initialise section or void-section and check specific access right
-if ( $q==='s' ) {
+if ( $fq==='s' ) {
   $oS = new CSection($_Sections[$s]); // new CSection($s)
   if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U') ) {
     $oH->selfname = L('Section');
@@ -46,15 +49,8 @@ if ( $q==='s' ) {
 }
 
 // initialise others
-$oH->selfuri = qtURI('page|order|dir');
-$strOrder = 'lastpostdate';
-$strDirec = 'desc';
+$oH->selfuri = qtURI('pn|po|pd');
 $strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)==='none' ) $strLastcol='0';
-$intPage = 1;
-$intLimit = 0;
-if ( isset($_GET['page']) ) { $intPage = (int)$_GET['page']; $intLimit = ($intPage-1)*$_SESSION[QT]['items_per_page']; }
-if ( isset($_GET['order']) ) $strOrder = $_GET['order'];
-if ( isset($_GET['dir']) ) $strDirec = strtolower(substr($_GET['dir'], 0, 4));
 if ( !isset($_SESSION['EditByRows']) || !SUser::isStaff() ) $_SESSION['EditByRows'] = 0;
 if ( !isset($_SESSION[QT]['lastcolumn']) || $_SESSION[QT]['lastcolumn']==='none' ) $_SESSION[QT]['lastcolumn'] = 'default';
 $navCommands = '';
@@ -81,24 +77,25 @@ if ( $_SESSION[QT]['lastcolumn']!=='default' ) $strLastcol = $_SESSION[QT]['last
 // -----
 // QUERY
 // -----
+$sqlStart = ($pn-1)*$_SESSION[QT]['items_per_page'];
 $sqlFields = ($_SESSION[QT]['news_on_top'] ? "CASE WHEN t.type='A' AND t.status='0' THEN 'A' ELSE 'Z' END as typea," : '');
 $sqlFields .= 't.*,p.title,p.icon,p.id as postid,p.type as posttype,p.textmsg,p.issuedate,p.username,p.attach';
 $sqlFrom = ' FROM TABTOPIC t INNER JOIN TABPOST p ON t.firstpostid=p.id'; // warning: include only firstpostid (not the replies)
-$sqlWhere = ' WHERE t.forum'.($q==='s' ? '='.$s : '>=0');
+$sqlWhere = ' WHERE t.forum'.($fq==='s' ? '='.$s : '>=0');
   // In private section, show topics created by user himself
-  if ( $q==='s' && $oS->type==='2' && !SUser::isStaff() ) $sqlWhere .= " AND (t.firstpostuser=".SUser::id()." OR (t.type='A' AND t.status='0'))";
+  if ( $fq==='s' && $oS->type==='2' && !SUser::isStaff() ) $sqlWhere .= " AND (t.firstpostuser=".SUser::id()." OR (t.type='A' AND t.status='0'))";
 $sqlValues = []; // list of values for the prepared-statements
 $sqlCount = "SELECT count(*) as countid FROM TABTOPIC t ".$sqlWhere;
 $sqlCountAlt='';
-if ( $q!=='s' ) {
+if ( $fq!=='s' ) {
   include 'bin/lib_qtf_query.php';  // warning: this changes $sqlFrom to include any post (also replies)
   $oH->warning = sqlQueryParts($sqlFrom,$sqlWhere,$sqlValues,$sqlCount,$sqlCountAlt,$oH->selfuri); //selfuri is not urldecoded
-  if ( $q==='adv' && !empty($v) ) $strLastcol = 'tags'; // forces display column tags
+  if ( $fq==='adv' && !empty($fv) ) $strLastcol = 'tags'; // forces display column tags
 }
-$forceShowClosed = $_SESSION[QT]['show_closed']==='0' && $st==='1';
+$forceShowClosed = $_SESSION[QT]['show_closed']==='0' && $fst==='1';
 $sqlHideClosed = $_SESSION[QT]['show_closed']==='0' && !$forceShowClosed ? " AND t.status<>'1'" : ''; // User preference, hide closed items (not for advanced query having status specified)
 // Count topics & visible for current user ONLY
-if ( ($q=='s' && $oS->type!==2) || ( $q==='s' && SUser::isStaff()) ) {
+if ( ($fq=='s' && $oS->type!==2) || ( $fq==='s' && SUser::isStaff()) ) {
   // Using stats info ($_SectionsStats)
   $info = isset($_SectionsStats) ? $_SectionsStats : SMem::get('_SectionsStats');
   if ( !$forceShowClosed && !isset($info[$s]['itemsZ']) ) $info[$s]['itemsZ'] = $oDB->count(CSection::sqlCountItems($s,'items','1'));
@@ -118,7 +115,7 @@ $intCount = $oH->items - $oH->itemsHidden;
 include APP.'_items_ui.php'; // $ui
 
 // BUTTON LINE AND PAGER
-if ( $q==='s' ) {
+if ( $fq==='s' ) {
   $def = 'href="'.url('qtf_edit.php').'?s='.$oS->id.'&a=nt|class=button btn-cmd';
   if ( $oS->status==='1' || (SUser::role()==='V' && $_SESSION[QT]['visitor_right']<7) ) {
     $def .= ' disabled|href=javascript:void(0)|tabindex=-1|title='.($oS->status==='1' ? L('E_section_closed') : L('R_member')); // class=button btn-cmd disabled
@@ -127,7 +124,7 @@ if ( $q==='s' ) {
 }
 $navCommands .= '<a class="button btn-search" href="'.url('qtf_search.php').'?'.$oH->selfuri.'" title="'.L('Search').'">'.qtSVG('search').'</a>';
 
-$strPaging = makePager( url($oH->selfurl).'?'.$oH->selfuri, $intCount, (int)$_SESSION[QT]['items_per_page'], $intPage);
+$strPaging = makePager( url($oH->selfurl).'?'.$oH->selfuri, $intCount, (int)$_SESSION[QT]['items_per_page'], $pn);
 if ( $strPaging!='' ) $strPaging = L('Page').$strPaging;
 
 // MAP
@@ -137,52 +134,52 @@ $bMap = false; // map is only used for user's location
 $pageTitle ='';
 $navCommandsRefine = '';
 
-switch($q) {
+switch($fq) {
   case 's': if ( QT_SHOW_PARENT_DESCR ) $pageTitle = CSection::translate($s,'secdesc'); break;
-  case 'ref': $pageTitle .= sprintf( L('Search_results_ref'), $v[0] ); break;
+  case 'ref': $pageTitle .= sprintf( L('Search_results_ref'), $fv[0] ); break;
   case 'qkw':
   case 'kw':
-    $arrVlbl = qtQuote($v,"&'");
+    $arrVlbl = qtQuote($fv,"&'");
     $to = isset($_GET['to']) ? $_GET['to'] : '0';
     $pageTitle .= sprintf( L('Search_results_keyword'), strtolower(implode(' '.L('or').' ',$arrVlbl)) );
-    // for refine search detection: trim and remove quote on $v to avoid trailing quote be interpreted as a 2d word
-    if ( count($v)==1 && strpos(qtAttr($v[0]),' ')!==false ) $navCommandsRefine = '<a class="button" href="'.$oH->selfurl.'?q=kw&to='.$to.'&v='.urlencode(str_replace(' ',QSEPARATOR,$v[0])).'"><small>'.L('Search_by_words').'</small></a>';
-    if ( count($v)==1 && strpos($v[0],QSEPARATOR)!==false ) $navCommandsRefine = '<a class="button" href="'.$oH->selfurl.'?q=kw&to='.$to.'&v='.urlencode(str_replace(QSEPARATOR,' ',$v[0])).'"><small>'.L('Search_exact_words').' &lsquo;'.str_replace(QSEPARATOR,' ',$v).'&rsquo;</small></a>';
+    // for refine search detection: trim and remove quote on $fv to avoid trailing quote be interpreted as a 2d word
+    if ( count($fv)==1 && strpos(qtAttr($fv[0]),' ')!==false ) $navCommandsRefine = '<a class="button" href="'.$oH->selfurl.'?fq=kw&to='.$to.'&fv='.urlencode(str_replace(' ',QSEPARATOR,$fv[0])).'"><small>'.L('Search_by_words').'</small></a>';
+    if ( count($fv)==1 && strpos($fv[0],QSEPARATOR)!==false ) $navCommandsRefine = '<a class="button" href="'.$oH->selfurl.'?fq=kw&to='.$to.'&fv='.urlencode(str_replace(QSEPARATOR,' ',$fv[0])).'"><small>'.L('Search_exact_words').' &lsquo;'.str_replace(QSEPARATOR,' ',$fv).'&rsquo;</small></a>';
     if ( $to=='1' ) $pageTitle .= ' '. L('in_title_only');
     break;
   case 'user':
-    $pageTitle .= sprintf(L('Search_results_user'), implode(' '.L('or').' ',$v));
-    $navCommandsRefine = '<a class="button" href="'.url('qtf_items.php').'?q=userm&'.qtUri('q').'"><small>'.L('Search').': '.L('item+').' '.L('and').' '.L('reply+').'</small></a>';
+    $pageTitle .= sprintf(L('Search_results_user'), implode(' '.L('or').' ',$fv));
+    $navCommandsRefine = '<a class="button" href="'.url('qtf_items.php').'?fq=userm&'.qtUri('q').'"><small>'.L('Search').': '.L('item+').' '.L('and').' '.L('reply+').'</small></a>';
    break;
   case 'userm':
-    $pageTitle .= sprintf(L('Search_results_user_m'), implode(' '.L('or').' ',$v));
-    $navCommandsRefine = '<a class="button" href="'.url('qtf_items.php').'?q=user&'.qtUri('q').'"><small>'.L('Search').': '.L('item+').' '.L('only').'</small></a>';
+    $pageTitle .= sprintf(L('Search_results_user_m'), implode(' '.L('or').' ',$fv));
+    $navCommandsRefine = '<a class="button" href="'.url('qtf_items.php').'?fq=user&'.qtUri('q').'"><small>'.L('Search').': '.L('item+').' '.L('only').'</small></a>';
      break;
-  case 'actor': $pageTitle .= sprintf(L('Search_results_actor'), implode(' '.L('or').' ',$v) ); break;
+  case 'actor': $pageTitle .= sprintf(L('Search_results_actor'), implode(' '.L('or').' ',$fv) ); break;
   case 'last': $pageTitle .= L('Search_results_last'); break;
   case 'news': $pageTitle .= L('Search_results_news'); break;
   case 'adv':
-    $arrVlbl = qtQuote($v,"&'");
+    $arrVlbl = qtQuote($fv,"&'");
     $pageTitle .= sprintf( L(empty($arrVlbl) ? 'Search_results' : 'Search_results_tags'), strtolower(implode(' '.L('or').' ',$arrVlbl)) );
-    if ( $v2!=='*' ) {
-      switch($v2){
+    if ( $fw!=='*' ) {
+      switch($fw){
         case 'y': $pageTitle .= ' '.L('this_year'); break;
         case 'm': $pageTitle .= ' '.L('this_month'); break;
         case 'w': $pageTitle .= ' '.L('this_week'); break;
-        default: $pageTitle .= ', '.L('dateMMM.'.$v2);
+        default: $pageTitle .= ', '.L('dateMMM.'.$fw);
       }
     }
     break;
   default:
-    $arrVlbl = $v;
+    $arrVlbl = $fv;
     $pageTitle .= empty($arrVlbl) ? L('Item+',$oS->items) : sprintf( L('Search_results'), $oS->items, implode(' '.L('or').' ',$arrVlbl) );
 }
 
 // search options subtitle
 $pageSubtitle = '';
-if ( $q!=='s' ) {
+if ( $fq!=='s' ) {
   if ( $s>=0 ) $pageSubtitle = L('only_in_section').' &lsquo;'.CSection::translate($s).'&rsquo;';
-  if ( $st!=='*' ) $pageSubtitle .= (empty($pageSubtitle) ? '' : ', ').L('status').' '.CTopic::getStatus($st);
+  if ( $fst!=='' ) $pageSubtitle .= (empty($pageSubtitle) ? '' : ', ').L('status').' '.CTopic::getStatus($fst);
 }
 // full title
 if ( !empty($pageTitle) ) $pageTitle = '<p class="pg-title">'.$pageTitle.'</p>'.(empty($pageSubtitle) ? '' : '<p class="pg-title pg-subtitle">'.$pageSubtitle.'</p>');
@@ -214,9 +211,9 @@ if ( $intCount===0 ) {
   if ( $oS->type==='2' && !SUser::isStaff() ) echo '<p class="center">'.L('Only_your_items').'</p>';
   if ( $intCount ) echo '<p class="center">'.qtSVG('exclamation-triangle').' '.L('Closed_item', $intCount).'. '.L('Closed_hidden_by_pref').' (<a href="javascript:void(0)" onclick="let d=document.getElementById(`pref`); if ( d) {d.value=`toggleclosed`;doSubmit(`formPref`);}">'.L('show').' '.L('closed_items').'</a>).</p>';
   // alternate query
-  if ( $s>=0 || $st!=='*' ) {
-    $arg = 'q='.$q;
-    if ( $q==='user' || $q==='kw' || $q==='adv' ) $arg .= '&v='.implode(';',$v).'&v2='.urlencode($v2);
+  if ( $s>=0 || $fst!=='' ) {
+    $arg = 'q='.$fq;
+    if ( $fq==='user' || $fq==='kw' || $fq==='adv' ) $arg .= '&fv='.implode(';',$fv).'&fw='.urlencode($fw);
     echo '<p class="center"><a href="'.url('qtf_items.php').'?'.$arg.'">'.L('Try_without_options').'</a></p>';
   }
   include 'qtf_inc_ft.php';
@@ -227,24 +224,24 @@ if ( $intCount===0 ) {
 $useNewsOnTop = $_SESSION[QT]['news_on_top'];
 // selfuri contains arguments WITHOUT order,dir
 $t = new TabTable('id=t1|class=t-item|data-cbe', $intCount);
-  $t->activecol = $strOrder;
-  $t->activelink = '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order='.$strOrder.'&dir='.($strDirec==='asc' ? 'desc' : 'asc').'">%s</a> '.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
+  $t->activecol = $po;
+  $t->activelink = '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po='.$po.'&pd='.($pd==='asc' ? 'desc' : 'asc').'">%s</a> '.qtSVG('caret-'.($pd==='asc' ? 'up' : 'down'));
   $t->thead();
   $t->tbody('data-dataset='.($useNewsOnTop ? 'newsontop' : 'items'));
 // TH (note: class are defined after)
 if ( $_SESSION['EditByRows'] )
 $t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" data-target="t1-cb[]"/>');
-$t->arrTh['icon'] = new TabHead('&bull;', '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=icon&dir=asc">%s</a>');
-if ( $q!=='s' || ( $q==='s' && $oS->numfield!=='N' && $oS->numfield!=='' ) )
-$t->arrTh['numid'] = new TabHead(L('Ref'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=numid&dir=desc">%s</a>');
-$t->arrTh['title'] = new TabHead(L('Item+'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=title&dir=asc">%s</a>');
-if ( !empty($q) && $s<0 )
-$t->arrTh['section'] = new TabHead(L('Section'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=section&dir=asc">%s</a>');
-$t->arrTh['firstpostname'] = new TabHead(L('Author'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=firstpostname&dir=asc">%s</a>');
-$t->arrTh['lastpostdate'] = new TabHead(L('Last_message'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=lastpostdate&dir=desc">%s</a>');
-$t->arrTh['replies'] = new TabHead(L('Reply+'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order=replies&dir=desc">%s</a>');
+$t->arrTh['icon'] = new TabHead('&bull;', '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=icon&pd=asc">%s</a>');
+if ( $fq!=='s' || ( $fq==='s' && $oS->numfield!=='N' && $oS->numfield!=='' ) )
+$t->arrTh['numid'] = new TabHead(L('Ref'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=numid&pd=desc">%s</a>');
+$t->arrTh['title'] = new TabHead(L('Item+'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=title&pd=asc">%s</a>');
+if ( !empty($fq) && $s<0 )
+$t->arrTh['section'] = new TabHead(L('Section'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=section&pd=asc">%s</a>');
+$t->arrTh['firstpostname'] = new TabHead(L('Author'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=firstpostname&pd=asc">%s</a>');
+$t->arrTh['lastpostdate'] = new TabHead(L('Last_message'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=lastpostdate&pd=desc">%s</a>');
+$t->arrTh['replies'] = new TabHead(L('Reply+'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=replies&pd=desc">%s</a>');
 if ( in_array($strLastcol,['id','views','status','tags']) )
-$t->arrTh[$strLastcol] = new TabHead(L(ucfirst($strLastcol)), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&order='.$strLastcol.'&dir=desc">%s</a>');
+$t->arrTh[$strLastcol] = new TabHead(L(ucfirst($strLastcol)), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po='.$strLastcol.'&pd=desc">%s</a>');
 // add default class {c-$k}
 foreach(array_keys($t->arrTh) as $k) $t->arrTh[$k]->add('class', 'c-'.$k);
 // append class secondary
@@ -311,13 +308,13 @@ echo $t->thead->end();
 echo $t->tbody->start();
 
 // ========
-$sqlOrder = $strOrder==='title' ? 'p.title' : 't.'.$strOrder;
+$sqlOrder = $po==='title' ? 'p.title' : 't.'.$po;
 if ( $sqlOrder==='t.section' ) $sqlOrder = 't.forum';
 if ( $sqlOrder==='t.icon' ) $sqlOrder='t.status';
 $oDB->query(sqlLimit(
   $sqlFields.$sqlFrom.$sqlWhere.$sqlHideClosed,
-  ($_SESSION[QT]['news_on_top'] ? 'typea ASC, ' : '').$sqlOrder.' '.strtoupper($strDirec),
-  $intLimit,
+  ($_SESSION[QT]['news_on_top'] ? 'typea ASC, ' : '').$sqlOrder.' '.strtoupper($pd),
+  $sqlStart,
   $_SESSION[QT]['items_per_page'],
   $intCount
   ), $sqlValues);
@@ -376,7 +373,7 @@ if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) echo '</form>'.PHP_EO
 // BUTTON LINE AND PAGER
 $strCsv = '';
 if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) $strCsv .= '<a id="cmd-export-selected" class="csv" href="javascript:void(0)" title="'.L('H_Csv').' ('.L('selected').')">'.L('Export').qtSVG('check-square').'</a> &middot; ';
-$strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(url('qtf_items_csv.php').'?'.$oH->selfuri, $intCount, $intPage);
+$strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(url('qtf_items_csv.php').'?'.$oH->selfuri, $intCount, $pn);
 echo '<div id="tablebot" class="table-ui bot">';
 echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.qtSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
@@ -389,8 +386,7 @@ if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && count($arrTags)>0 ) {
   echo '<div class="tag-box"><p><svg class="svg-symbol svg-125"><use href="#symbol-tags" xlink:href="#symbol-tags"/></svg> '.L('Show_only_tag').'</p>';
 
   foreach($arrTags as $strTag)
-    //echo '<a class="tag" href="'.url('qtf_items.php').'?s='.$s.'&q=adv&v2=*&v='.urlencode($strTag).'" title="..." data-tagdesc="'.$strTag.'">'.$strTag.'</a>';
-    echo '<a class="tag" href="javascript:void(0)" title="..." data-tagdesc="'.$strTag.'" onclick="return qtPost(`qtf_items.php`,`s='.$s.'&q=adv&v2=*&v='.$strTag.'`);">'.$strTag.'</a>';
+  echo '<a class="tag" href="'.url('qtf_items.php').'?s='.$s.'&fq=adv&fw=*&fv='.urlencode($strTag).'" title="..." data-tagdesc="'.$strTag.'">'.$strTag.'</a>';
   echo qtSVG('search','','',true).'</div>';
   $oH->scripts['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" id="tagdesc" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
 }
@@ -416,7 +412,7 @@ addIRe("t1",['.implode(',', array_keys($arr)).'],['.implode(',', $arr).'],"'.L('
 // HTML END
 // ------
 // hide href column if empty
-if ( $q!=='s' ) $oH->scripts[] = 'qtHideEmptyColumn();';
+if ( $fq!=='s' ) $oH->scripts[] = 'qtHideEmptyColumn();';
 // hide table-ui-bottom-controls if less than 5 table rows
 $oH->scripts[] = 'qtHideAfterTable("t1-nav-bot");qtHideAfterTable("tablebot");';
 

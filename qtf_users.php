@@ -17,22 +17,15 @@ if ( !SUser::canAccess('show_memberlist') ) exitPage(11,'user-lock.svg'); //...
 if ( isset($_GET['view'])) $_SESSION[QT]['viewmode'] = substr($_GET['view'],0,1);
 
 // INITIALISE
-$pageGroup = 'all';
-$pageOrder = 'name';
-$pageDirec = 'asc';
-$intLimit = 0; // starting limit for subset of rows {0|page*ipp}
-$intPage = 1; // page number (start at 1)
-if ( isset($_GET['group']) ) $pageGroup = substr($_GET['group'],0,7); // protection against injection (widest is "A|B|C|D")
-if ( isset($_GET['page']) )  { $intPage = (int)$_GET['page']; $intLimit = ($intPage-1)*$_SESSION[QT]['items_per_page']; }
-if ( isset($_GET['order']) ) $pageOrder = strip_tags(substr($_GET['order'],0,15)); // protection against injection
-if ( isset($_GET['dir']) ) $pageDirec = strtolower(substr($_GET['dir'],0,4));
 $oH->selfname = L('Memberlist');
+$pn = 1; $po = 'name'; $pd = 'asc'; // page number,order,direction
+$fg = 'all'; // filter by group
+qtArgs('int:pn po pd fg', true, false);
 
 // MAP MODULE
 $bMap=false;
 $arrMapData = [];
-if ( qtModule('gmap') )
-{
+if ( qtModule('gmap') ) {
   include translate(APP.'m_gmap.php');
   include 'qtfm_gmap_lib.php';
   if ( gmapCan('U') ) $bMap=true;
@@ -45,12 +38,12 @@ if ( qtModule('gmap') )
 }
 
 // Query by lettre
-$arrGroup = array_filter(explode('|',$pageGroup)); // filter to remove empty
+$arrGroup = array_filter(explode('|',$fg)); // filter to remove empty
 if ( count($arrGroup)===1 ) {
-  switch((string)$pageGroup) {
+  switch((string)$fg) {
     case 'all': $sqlWhere = ''; break;
     case '~':   $sqlWhere = ' AND '.sqlFirstChar('name','~'); break;
-    default:    $sqlWhere = ' AND '.sqlFirstChar('name','u',strlen($pageGroup)).'="'.strtoupper($pageGroup).'"'; break;
+    default:    $sqlWhere = ' AND '.sqlFirstChar('name','u',strlen($fg)).'="'.strtoupper($fg).'"'; break;
   }
 } else {
   $arr = [];
@@ -60,7 +53,7 @@ if ( count($arrGroup)===1 ) {
 
 // COUNT
 $intTotal = $oDB->count( TABUSER." WHERE id>0" );
-$intCount = $pageGroup=='all' ? $intTotal : $oDB->count( TABUSER." WHERE id>0".$sqlWhere);
+$intCount = $fg=='all' ? $intTotal : $oDB->count( TABUSER." WHERE id>0".$sqlWhere );
 
 // Defines FORM $formAddUser and handles POST
 if ( SUser::isStaff() ) include APP.'_inc_adduser.php';
@@ -75,7 +68,7 @@ include 'qtf_inc_hd.php';
 // ------
 echo '<div id="ct-title" class="fix-sp top">
 <div><h2>'.$oH->selfname.'</h2>
-<p>'.( $pageGroup=='all' ? $intTotal.' '.L('Members') : $intCount.' / '.$intTotal.' '.L('Members') );
+<p>'.( $fg=='all' ? $intTotal.' '.L('Members') : $intCount.' / '.$intTotal.' '.L('Members') );
 if ( SUser::canAccess('show_calendar') )echo ' &middot; <a href="'.url('qtf_calendar.php').'" style="white-space:nowrap">'.L('Birthdays_calendar').'</a>';
 if ( !empty($formAddUser) ) echo ' &middot; <span style="white-space:nowrap">'.SUser::getStamp(SUser::role(), 'class=stamp08').' <a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle(`participants`,`block`,``);qtToggle();">'.L('User_add').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></span>';
 echo '</p>
@@ -87,8 +80,8 @@ echo '<div id="participants"'.(isset($_POST['title']) ? ' style="display:none"' 
 <table>
 ';
 // Top 5 participants
-$strState = 'name, id, numpost FROM TABUSER WHERE id>0';
-$oDB->query( sqlLimit($strState, 'numpost DESC', 0, $_SESSION[QT]['viewmode']==='C' ? 2 : 5) );
+$sqlState = 'name, id, numpost FROM TABUSER WHERE id>0';
+$oDB->query( sqlLimit($sqlState, 'numpost DESC', 0, $_SESSION[QT]['viewmode']==='C' ? 2 : 5) );
 while($row = $oDB->getRow()) {
   echo '<tr><td><a href="'.url('qtf_user.php').'?id='.$row['id'].'">'.$row['name'].'</a></td><td class="right">'.qtK((int)$row['numpost']).'</td></tr>';
 }
@@ -106,12 +99,12 @@ echo '</div>
 // Button line and paging
 // ------
 // -- build paging --
-$strPaging = makePager( url('qtf_users.php?group='.$pageGroup.'&order='.$pageOrder.'&dir='.$pageDirec), $intCount, (int)$_SESSION[QT]['items_per_page'], $intPage );
+$strPaging = makePager( url('qtf_users.php?fg='.$fg.'&po='.$po.'&pd='.$pd), $intCount, (int)$_SESSION[QT]['items_per_page'], $pn );
 if ( !empty($strPaging) ) $strPaging = L('Page').$strPaging;
 if ( $intCount<$intTotal ) $strPaging = L('user',$intCount).' '.L('from').' '.$intTotal.(empty($strPaging) ? '' : ' | '.$strPaging);
 
 // -- Display button line (if more that tpp users) and paging --
-if ( $intCount>$_SESSION[QT]['items_per_page'] || $pageGroup!=='all' ) echo htmlLettres(url($oH->selfurl),$pageGroup,L('All'),'lettres',L('Username_starting').' ', $intTotal>300 ? 1 : ($intTotal>2*$_SESSION[QT]['items_per_page'] ? 2 : 3)).PHP_EOL;
+if ( $intCount>$_SESSION[QT]['items_per_page'] || $fg!=='all' ) echo htmlLettres(url($oH->selfurl),$fg,L('All'),'lettres',L('Username_starting').' ', $intTotal>300 ? 1 : ($intTotal>2*$_SESSION[QT]['items_per_page'] ? 2 : 3)).PHP_EOL;
 
 if ( !empty($strPaging) ) echo '<p id="tabletop" class="paging">'.$strPaging.'</p>'.PHP_EOL;
 
@@ -132,16 +125,16 @@ if ( empty(qtExplodeGet($_SESSION[QT]['formatpicture'],'mime')) ||  $_SESSION[QT
 $t = new TabTable('id=t1|class=t-user',$intCount);
 $t->thead();
 $t->tbody();
-$t->activecol = 'user'.$pageOrder;
-$t->activelink = '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order='.$pageOrder.'&dir='.($pageDirec=='asc' ? 'desc' : 'asc').'&page=1">%s</a> '.qtSVG('caret-'.($pageDirec==='asc' ? 'down' : 'up'));
+$t->activecol = 'user'.$po;
+$t->activelink = '<a href="'.$oH->selfurl.'?fg='.$fg.'&po='.$po.'&pd='.($pd=='asc' ? 'desc' : 'asc').'">%s</a> '.qtSVG('caret-'.($pd==='asc' ? 'down' : 'up'));
 // TH
 if ( !$bCompact )
 $t->arrTh['userphoto'] = new TabHead(qtSVG('camera'), 'title='.L('Picture'));
-$t->arrTh['username'] = new TabHead(L('Username'), '', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=name&dir=asc&page=1">%s</a>');
-$t->arrTh['userrole'] = new TabHead(L('Role'), '', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=role&dir=asc&page=1">%s</a>');
+$t->arrTh['username'] = new TabHead(L('Username'), '', '<a href="'.$oH->selfurl.'?fg='.$fg.'&po=name&pd=asc">%s</a>');
+$t->arrTh['userrole'] = new TabHead(L('Role'), '', '<a href="'.$oH->selfurl.'?fg='.$fg.'&po=role&pd=asc">%s</a>');
 $t->arrTh['usercontact'] = new TabHead(L('Contact'));
-$t->arrTh['userlocation'] = new TabHead(L('Location'), '', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=location&dir=asc&page=1">%s</a>');
-$t->arrTh['usernumpost'] = new TabHead(qtSVG('comments'), 'title="'.L('Messages').'"', '<a href="'.$oH->selfurl.'?group='.$pageGroup.'&order=numpost&dir=desc&page=1">%s</a>');
+$t->arrTh['userlocation'] = new TabHead(L('Location'), '', '<a href="'.$oH->selfurl.'?fg='.$fg.'&po=location&pd=asc">%s</a>');
+$t->arrTh['usernumpost'] = new TabHead(qtSVG('comments'), 'title="'.L('Messages').'"', '<a href="'.$oH->selfurl.'?fg='.$fg.'&po=numpost&pd=desc">%s</a>');
 if ( SUser::isStaff() )
 $t->arrTh['userpriv'] = new TabHead(qtSVG('info'), 'title="'.L('Privacy').'"');
 foreach(array_keys($t->arrTh) as $key) $t->arrTh[$key]->append('class','c-'.$key);
@@ -156,7 +149,8 @@ echo $t->getTHrow();
 echo $t->thead->end();
 echo $t->tbody->start();
 
-$oDB->query( sqlLimit('* FROM TABUSER WHERE id>0'.$sqlWhere, $pageOrder.' '.strtoupper($pageDirec), $intLimit, $_SESSION[QT]['items_per_page'], $intCount) );
+$sqlStart = ($pn-1)*$_SESSION[QT]['items_per_page'];
+$oDB->query( sqlLimit('* FROM TABUSER WHERE id>0'.$sqlWhere, $po.' '.strtoupper($pd), $sqlStart, $_SESSION[QT]['items_per_page'], $intCount) );
 
 $intWhile=0;
 while($row=$oDB->getRow()) {

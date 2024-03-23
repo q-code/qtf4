@@ -320,7 +320,7 @@ function unConfirm() {
   document.getElementById("submit-sum").innerHTML = "...";
 }
 function updateCounts(q) {
-  fetch( `bin/srv_count.php?q=${q}&ids='.$strIds.'` )
+  fetch( `bin/srv_count.php?fq=${fq}&ids='.$strIds.'` )
   .then( response => response.json() )
   .then( data => { submitSum(data); } )
   .catch( err => console.log(err) );

@@ -29,10 +29,10 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 // INITIALISE
 
-$pan='en';
-$v = '';
-qtArgs('pan v');
-if ( empty($v) ) $oH->error = 'Missing file name';
+$pan = 'en';
+$dest = '';
+qtArgs('pan dest');
+if ( empty($dest) ) $oH->error = 'Missing file name';
 
 $intSize = 100;
 
@@ -72,8 +72,8 @@ echo '<form method="post" action="'.$oH->self().'" enctype="multipart/form-data"
 echo '<p style="text-align:right">'.PHP_EOL;
 echo L('File').': <input type="hidden" name="max_file_size" value="'.($intSize*1024).'"/>'.PHP_EOL;
 echo '<input required type="file" id="title" name="title" size="32"/><br><br><br><br>'.PHP_EOL;
-echo L('Destination').': upload/<input type="text" id="v" name="v" size="20" maxlength="20" value="'.$v.'" onkeyup="validateWarning(this.value);"/><br><br>'.PHP_EOL;
-echo '<span id="write-info" class="warning">'.(file_exists('upload/'.$v) ? L('Overwrite_file').' ['.$v.']' : '').'</span> ';
+echo L('Destination').': upload/<input type="text" id="dest" name="dest" size="20" maxlength="20" value="'.$dest.'" onkeyup="validateWarning(this.value);"/><br><br>'.PHP_EOL;
+echo '<span id="write-info" class="warning">'.(file_exists('upload/'.$dest) ? L('Overwrite_file').' ['.$dest.']' : '').'</span> ';
 echo '<input type="hidden" name="pan" value="'.$pan.'"/>'.PHP_EOL;
 echo '<a class="button" href="'.$oH->exiturl.'?pan='.$pan.'">'.L('Cancel').'</a> <button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>'.PHP_EOL;
 echo '</form>'.PHP_EOL;
@@ -81,7 +81,7 @@ echo '</form>'.PHP_EOL;
 CHtml::msgBox('/');
 
 $oH->scripts[] = 'function validateWarning(str){
-document.getElementById("write-info").style.display= str==="'.$v.'" ? "inline" : "none";
+document.getElementById("write-info").style.display= str==="'.$dest.'" ? "inline" : "none";
 }';
 
 // HTML END

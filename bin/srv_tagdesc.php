@@ -4,8 +4,8 @@
 // Perform async queries on request from web pages (ex: using ajax) with GET method
 // Ouput (echo) results as string (or 'no description')
 
-if ( empty($_GET['v']) || empty($_GET['src']) ) { echo '[missing data]'; exit; }
-$v = mb_strtolower($_GET['v']); // searched element (lowercase to be case insensitive), not encoded!
+if ( empty($_GET['fv']) || empty($_GET['src']) ) { echo '[missing data]'; exit; }
+$fv = mb_strtolower($_GET['fv']); // searched element (lowercase to be case insensitive), not encoded!
 $s = isset($_GET['s']) ? $_GET['s'] : '*'; if ( $s==='' || $s<0 ) $s = '*';
 include 'lib_qt_tags.php';
 

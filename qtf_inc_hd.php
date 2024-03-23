@@ -116,13 +116,13 @@ if ( QT_SIMPLESEARCH && $oH->selfurl!==APP.'_search.php' ) {
     echo L('E_11');
   } else {
     echo '<a href="'.url(APP.'_search.php').'">'.L('Advanced_search').'...</a>';
-    echo asImg( QT_SKIN.'img/topic_t_0.gif', 'alt=T|class=img|title='.L('Recent_items'), url(APP.'_items.php').'?q=last' );
-    echo asImg( QT_SKIN.'img/topic_a_0.gif', 'alt=T|class=img|title='.L('All_news'), url(APP.'_items.php').'?q=news' );
-    if ( SUser::role()!=='V' ) echo '<a href="'.url(APP.'_items.php').'?q=user&v2='.SUser::id().'&v='.urlencode(SUser::name()).'" title="'.L('All_my_items').'">'.qtSVG('user').'</a>';
+    echo asImg( QT_SKIN.'img/topic_t_0.gif', 'alt=T|class=img|title='.L('Recent_items'), url(APP.'_items.php').'?fq=last' );
+    echo asImg( QT_SKIN.'img/topic_a_0.gif', 'alt=T|class=img|title='.L('All_news'), url(APP.'_items.php').'?fq=news' );
+    if ( SUser::role()!=='V' ) echo '<a href="'.url(APP.'_items.php').'?fq=user&fw='.SUser::id().'&fv='.urlencode(SUser::name()).'" title="'.L('All_my_items').'">'.qtSVG('user').'</a>';
     echo '<form method="post" action="'.url(APP.'_search.php').'" style="display:inline">';
     echo '<button id="searchSubmit" type="submit" style="display:none" name="ok" value="'.makeFormCertificate('a2038e83fd6618a444a5de51bf2313de').'">ok</button>';
-    echo '<input type="hidden" name="q" value="qkw">';
-    echo '<div id="ac-wrapper-qkw"><input required id="qkw" name="v" type="text" size="25" placeholder="'.L('Number_or_keyword').'" autocomplete="off" /></div> <a class="btn-search" href="javascript:void(0)" title="'.L('Search').' '.L('in_all_sections').'" onclick="document.getElementById(`searchSubmit`).click();">'.qtSVG('search').'</a>';
+    echo '<input type="hidden" name="fq" value="qkw">';
+    echo '<div id="ac-wrapper-qkw"><input required id="qkw" name="fv" type="text" size="25" placeholder="'.L('Number_or_keyword').'" autocomplete="off" /></div> <a class="btn-search" href="javascript:void(0)" title="'.L('Search').' '.L('in_all_sections').'" onclick="document.getElementById(`searchSubmit`).click();">'.qtSVG('search').'</a>';
     echo '</form>';
     $oH->scripts['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/'.APP.'_config_ac.js"></script>';
     $oH->scripts[] = 'acOnClicks["qkw"] = function(focusInput,btn){ if ( focusInput.id=="qkw" && focusInput.value.substring(0,1)==="#" ) window.location="'.APP.'_item.php?t="+focusInput.value.substring(1); }';
@@ -179,9 +179,9 @@ case 'qtf_item.php':
   break;
 case 'qtf_items.php':
   if ( !empty($oH->items) ) {
-    if ( !isset($q) ) $q = 's';
-    $strCrumbtrail = $q!=='s' ? qtSVG('search').' ' : '';
-    $strCrumbtrail .= L( in_array($q,['qkw','kw','userm']) ? 'message' : 'item', $oH->items);
+    if ( !isset($fq) ) $fq = 's';
+    $strCrumbtrail = $fq!=='s' ? qtSVG('search').' ' : '';
+    $strCrumbtrail .= L( in_array($fq,['qkw','kw','userm']) ? 'message' : 'item', $oH->items);
     if ( !empty($oH->itemsHidden) ) $strCrumbtrail .= ' ('.L('hidden',$oH->itemsHidden).')';
     echo '<span id="crumbtrail-info">'.$strCrumbtrail.'</span>';
   }

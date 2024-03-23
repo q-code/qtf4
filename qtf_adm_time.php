@@ -54,7 +54,7 @@ if ( isset($_POST['ok']) ) try {
 $arrTZI = [];
 $groups = array('AFRICA'=>'Africa','ANTARCTICA'=>'Antarctica','ARCTIC'=>'Arctic','AMERICA'=>'America','ASIA'=>'Asia','ATLANTIC'=>'Atlantic','AUSTRALIA'=>'Australia','EUROPE'=>'Europe','INDIAN'=>'Indian','PACIFIC'=>'Pacific','OTHERS'=>'Universal & others');
 $group = 'EUROPE';
-qtArgs('group',true,false);
+qtArgs('fg',true,false);
 if ( !array_key_exists($group,$groups) ) $group = 'ALL';
 
 include APP.'_adm_inc_hd.php';
@@ -93,7 +93,7 @@ switch($group) {
     break;
   default:
     foreach (DateTimeZone::listIdentifiers() as $str) {
-      if ( $group==strtoupper(substr($str,0,strlen($group))) ) $arrTZI[]=$str;
+      if ( $fg==strtoupper(substr($str,0,strlen($group))) ) $arrTZI[]=$str;
     }
     break;
 }
@@ -111,8 +111,8 @@ echo '
 <tr>
 <td class="right" style="vertical-align:top">
 ';
-foreach ($groups as $k=>$group) echo '<a href="'.APP.'_adm_time.php?group='.$k.'">'.$group.'</a><br>';
-echo '<br><a href="'.APP.'_adm_time.php?group=ALL">Show all</a>';
+foreach ($groups as $k=>$group) echo '<a href="'.APP.'_adm_time.php?fg='.$k.'">'.$group.'</a><br>';
+echo '<br><a href="'.APP.'_adm_time.php?fg=ALL">Show all</a>';
 echo '</td>
 <td style="vertical-align:top"><div class="scroll">'.implode('<br>',$arrTZI).'</div></td>
 </tr>

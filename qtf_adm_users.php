@@ -21,17 +21,17 @@ $oH->selfname = L('Users').' ('.$intUsers.')';
 $oH->selfparent = L('Board_content');
 $oH->exiturl = 'qtf_adm_users.php';
 $oH->exitname = '&laquo; '.L('Users');
-$pageGroup = 'all';
-$intLimit = 0;
-$intPage  = 1;
+$fg = 'all';
+$sqlStart = 0;
+$pn  = 1;
 $strOrder = 'name';
 $strDirec = 'asc';
 $strOrder2 = ',name ASC';
 $strCateg = 'all';
 $intChecked = -1; // allow checking an id (-1 means no check)
 // security check 1
-if ( isset($_GET['group']) ) $pageGroup = substr($_GET['group'],0,7);
-if ( isset($_GET['page']) ) $intPage = (int)$_GET['page'];
+if ( isset($_GET['fg']) ) $fg = substr($_GET['fg'],0,7);
+if ( isset($_GET['page']) ) $pn = (int)$_GET['page'];
 if ( isset($_GET['order']) ) $strOrder = $_GET['order'];
 if ( isset($_GET['dir']) ) $strDirec = strtolower($_GET['dir']);
 if ( isset($_GET['cat']) ) $strCateg = $_GET['cat'];
@@ -45,7 +45,7 @@ if ( isset($_GET['ipp']) && in_array($_GET['ipp'],['25','50','100']) ) {
   if ( PHP_VERSION_ID<70300 ) { setcookie(QT.'_admusersipp', $ipp, time()+3600*24*100, '/'); } else { setcookie(QT.'_admusersipp', $ipp, ['expires'=>time()+3600*24*100,'path'=>'/','samesite'=>'Strict']); }
 }
 
-$intLimit = ($intPage-1)*25;
+$sqlStart = ($pn-1)*25;
 
 // Defines FORM $formAddUser and handles POST
 include APP.'_inc_adduser.php';
@@ -150,12 +150,12 @@ if ( $strCateg!='all' ) {
 }
 
 // Query by lettre
-$arrGroup = array_filter(explode('|',$pageGroup)); // filter to remove empty
+$arrGroup = array_filter(explode('|',$fg)); // filter to remove empty
 if ( count($arrGroup)===1 ) {
-  switch((string)$pageGroup) {
+  switch((string)$fg) {
     case 'all': $sqlWhere = ''; break;
     case '~':   $sqlWhere = ' AND '.sqlFirstChar('name','~'); break;
-    default:    $sqlWhere = ' AND '.sqlFirstChar('name','u',strlen($pageGroup)).'="'.strtoupper($pageGroup).'"'; break;
+    default:    $sqlWhere = ' AND '.sqlFirstChar('name','u',strlen($fg)).'="'.strtoupper($fg).'"'; break;
   }
 } else {
   $arr = [];
@@ -173,7 +173,7 @@ if ( $strCateg=='SC' ) $sqlWhere .= ' AND children="2"'; //sleeping children
 $intCount = $oDB->count( TABUSER.' WHERE id>0 '.$sqlWhere );
 
 // Lettres bar
-if ( $intCount>$ipp || $pageGroup!=='all' ) echo htmlLettres(url($oH->selfurl).'?'.qtURI('group|page'), $pageGroup, L('All'), 'lettres', L('Username_starting').' ', $intCount>300 ? 1 : ($intCount>$ipp*2 ? 2 : 3));
+if ( $intCount>$ipp || $fg!=='all' ) echo htmlLettres(url($oH->selfurl).'?'.qtURI('group|page'), $fg, L('All'), 'lettres', L('Username_starting').' ', $intCount>300 ? 1 : ($intCount>$ipp*2 ? 2 : 3));
 
 // End if no result
 if ( $intCount==0 ) {
@@ -183,7 +183,7 @@ if ( $intCount==0 ) {
 }
 
 // Build paging
-$strPaging = makePager("qtf_adm_users.php?cat=$strCateg&group=$pageGroup&order=$strOrder&dir=$strDirec",$intCount,$ipp,$intPage);
+$strPaging = makePager("qtf_adm_users.php?cat=$strCateg&fg=$fg&po=$strOrder&pd=$strDirec",$intCount,$ipp,$pn);
 if ( !empty($strPaging) ) $strPaging = L('Page').$strPaging;
 if ( $intCount<$intUsers ) $strPaging = '<small>'.L('user',$intCount).' '.L('from').' '.$intUsers.'</small>'.(empty($strPaging) ? '' : ' | '.$strPaging);
 
@@ -199,20 +199,20 @@ echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 // Table definition
 $t = new TabTable('id=t1|class=t-item|data-content=users|data-cbe',$intCount);
 $t->activecol = $strOrder;
-$t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order='.$strOrder.'&dir='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
+$t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po='.$strOrder.'&pd='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
 // TH
 $t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" data-target="t1-cb[]"/>', 'class=c-checkbox');
-$t->arrTh['name'] = new TabHead(L('User'), 'class=c-name', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=name&dir=asc">%s</a>');
+$t->arrTh['name'] = new TabHead(L('User'), 'class=c-name', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=name&pd=asc">%s</a>');
 $t->arrTh['pic'] = new TabHead(qtSVG('camera'), 'class=c-pic|title='.L('Picture'));
-$t->arrTh['role'] = new TabHead(L('Role'), 'class=c-role ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=role&dir=asc">%s</a>');
-$t->arrTh['numpost'] = new TabHead(qtSVG('comments'), 'class=c-numpost|title='.L('Messages'), '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=numpost&dir=desc">%s</a>');
+$t->arrTh['role'] = new TabHead(L('Role'), 'class=c-role ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=role&pd=asc">%s</a>');
+$t->arrTh['numpost'] = new TabHead(qtSVG('comments'), 'class=c-numpost|title='.L('Messages'), '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=numpost&pd=desc">%s</a>');
 if ( $strCateg=='FM' || $strCateg=='SC' ) {
-$t->arrTh['firstdate'] = new TabHead(L('Joined'), 'class=c-joined ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=firstdate&dir=desc">%s</a>');
+$t->arrTh['firstdate'] = new TabHead(L('Joined'), 'class=c-joined ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=firstdate&pd=desc">%s</a>');
 } else {
-$t->arrTh['lastdate'] = new TabHead(L('Last_message').' (ip)', 'class=c-lastdate ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=lastdate&dir=desc">%s</a>');
+$t->arrTh['lastdate'] = new TabHead(L('Last_message').' (ip)', 'class=c-lastdate ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=lastdate&pd=desc">%s</a>');
 }
-$t->arrTh['closed'] = new TabHead(qtSVG('ban'), 'class=c-ban', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=closed&dir=desc" title="'.L('Banned').'">%s</a>');
-$t->arrTh['id'] = new TabHead('Id', 'class=c-id', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&group='.$pageGroup.'&page=1&order=id&dir=asc">%s</a>');
+$t->arrTh['closed'] = new TabHead(qtSVG('ban'), 'class=c-ban', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=closed&pd=desc" title="'.L('Banned').'">%s</a>');
+$t->arrTh['id'] = new TabHead('Id', 'class=c-id', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=id&pd=asc">%s</a>');
 // TD
 $t->cloneThTd();
 
@@ -227,7 +227,7 @@ echo '<tbody>'.PHP_EOL;
 
 //-- LIMIT QUERY --
 $strState = 'id,name,closed,role,numpost,firstdate,lastdate,ip,picture FROM TABUSER WHERE id>0'.$sqlWhere;
-$oDB->query( sqlLimit($strState,$strOrder.' '.strtoupper($strDirec).($strOrder==='name' ? '' : $strOrder2),$intLimit,$ipp) );
+$oDB->query( sqlLimit($strState,$strOrder.' '.strtoupper($strDirec).($strOrder==='name' ? '' : $strOrder2),$sqlStart,$ipp) );
 // ------
 $arrRow=array(); // rendered row. To remove duplicate in seach result
 $intRow=0; // count row displayed
