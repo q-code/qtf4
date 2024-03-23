@@ -149,11 +149,11 @@ switch($fq) {
     break;
   case 'user':
     $pageTitle .= sprintf(L('Search_results_user'), implode(' '.L('or').' ',$fv));
-    $navCommandsRefine = '<a class="button" href="'.url('qtf_items.php').'?fq=userm&'.qtUri('q').'"><small>'.L('Search').': '.L('item+').' '.L('and').' '.L('reply+').'</small></a>';
+    $navCommandsRefine = '<a class="button" href="'.url('qtf_items.php').'?fq=userm&'.qtUri('fq').'"><small>'.L('Search').': '.L('item+').' '.L('and').' '.L('reply+').'</small></a>';
    break;
   case 'userm':
     $pageTitle .= sprintf(L('Search_results_user_m'), implode(' '.L('or').' ',$fv));
-    $navCommandsRefine = '<a class="button" href="'.url('qtf_items.php').'?fq=user&'.qtUri('q').'"><small>'.L('Search').': '.L('item+').' '.L('only').'</small></a>';
+    $navCommandsRefine = '<a class="button" href="'.url('qtf_items.php').'?fq=user&'.qtUri('fq').'"><small>'.L('Search').': '.L('item+').' '.L('only').'</small></a>';
      break;
   case 'actor': $pageTitle .= sprintf(L('Search_results_actor'), implode(' '.L('or').' ',$fv) ); break;
   case 'last': $pageTitle .= L('Search_results_last'); break;
@@ -211,8 +211,8 @@ if ( $intCount===0 ) {
   if ( $oS->type==='2' && !SUser::isStaff() ) echo '<p class="center">'.L('Only_your_items').'</p>';
   if ( $intCount ) echo '<p class="center">'.qtSVG('exclamation-triangle').' '.L('Closed_item', $intCount).'. '.L('Closed_hidden_by_pref').' (<a href="javascript:void(0)" onclick="let d=document.getElementById(`pref`); if ( d) {d.value=`toggleclosed`;doSubmit(`formPref`);}">'.L('show').' '.L('closed_items').'</a>).</p>';
   // alternate query
-  if ( $s>=0 || $fst!=='' ) {
-    $arg = 'q='.$fq;
+  if ( $fst!=='' ) {
+    $arg = 's=-1&fq='.$fq;
     if ( $fq==='user' || $fq==='kw' || $fq==='adv' ) $arg .= '&fv='.implode(';',$fv).'&fw='.urlencode($fw);
     echo '<p class="center"><a href="'.url('qtf_items.php').'?'.$arg.'">'.L('Try_without_options').'</a></p>';
   }

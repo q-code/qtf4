@@ -64,11 +64,8 @@ function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate
  * @return array or die if some arguments are missing or invalid
  * <p>Query arguments are:<br>q=type of query<br>s=section<br>v=searched-text<br>w=optional 2nd searched-text<br>y=optional year</p>
  */
-function validateQueryArguments($query,$trimV=true)
+function validateQueryArgs(array $args, bool $trimV=true)
 {
-  if ( !is_string($query) && !is_array($query) ) die(__FUNCTION__.' first argument must be string or array of strings');
-  $args = is_array($query) ? $query : array();
-  if ( is_string($query) ) parse_str($query,$args);
   // check
   if ( !isset($args['fq']) ) $args['fq']='s'; // if missing q, assume q=s
   if ( !empty($args['fv']) && strpos($args['fv'],'"')!==false ) $args['fv'] = qtDb(trim($args['fv']));
@@ -129,11 +126,11 @@ function validateQueryArguments($query,$trimV=true)
  * @param string $query
  * @return string '' or a result warning (string parts are updated by reference)
  */
-function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt,$query)
+function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt,string $argFilters)
 {
+  $args = []; parse_str($argFilters, $args); if ( count($args)===0 ) die(__FUNCTION__.' missing query argument');
+  $args = validateQueryArgs($args);
   $result = '';
-  $args = validateQueryArguments($query); // values are string and can be '*', except s that must be a numeric-string. arg[v|w] are slashed
-  if ( count($args)==0 ) die(__FUNCTION__.' missing query argument');
 
   // Assgin query arguments or set to default
   $s = isset($args['s']) && is_numeric($args['s']) && $args['s']>=0 ? (int)$args['s'] : -1;
