@@ -326,7 +326,7 @@ const titleRole = function(d) {
 }
 const elements = document.querySelectorAll(".ajaxmouseover");
 elements.forEach( el => el.addEventListener("mouseover", (e) => {
-  fetch( `bin/srv_user.php?fq=u&id=${el.id.substring(1)}&pd=${dir}` )
+  fetch( `bin/srv_user.php?q=u&id=${el.id.substring(1)}&pd=${dir}` )
   .then( response => {
     return response.text()
     .then( text => { document.getElementById("previewcontainer").innerHTML = text; } )

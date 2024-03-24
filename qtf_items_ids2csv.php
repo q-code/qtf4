@@ -16,22 +16,22 @@ if ( !SUser::canView('V2') ) exitPage(11,'user-lock.svg'); //...
 // ------
 // check search arguments
 $s = -1; // [int] section
-$fq = ''; // type of search (if missing will use $fq='s')
+$q = ''; // type of search (if missing will use $q='s')
 $fst = ''; // status $fst can be '' or [string]
 $fv = ''; // searched text [string] >> array of strings
 $fw = ''; // timeframe [string]
 $ids = '';
-qtArgs('int:s fq fst fv fw ids',true,false); // $_GET only
+qtArgs('int:s q fst fv fw ids',true,false); // $_GET only
 if ( empty($ids) ) die('Missing ids');
-if ( empty($fq)) $fq = 's';
+if ( empty($q)) $q = '';
 $fv = qtCleanArray($fv); // array of (unique) values trimmed (not empty)
 $intCount = count(explode(',',$ids));
 $sqlStart = 0;
 $intLen   = (int)$_SESSION[QT]['items_per_page'];
 
 // initialise section
-if ( $fq==='s' && $s<0 ) die('Missing argument $s');
-if ( $fq==='s' || $s>=0 ) {
+if ( $q==='' && $s<0 ) die('Missing argument $s');
+if ( $q==='' || $s>=0 ) {
   $oS = new CSection($_Sections[$s]); // new CSection($s)
   // exit if user role not granted
   if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U')) {
@@ -72,7 +72,7 @@ $t = new TabTable();
 $t->arrTh['type'] = new TabHead(L('Type'));
 $t->arrTh['numid'] = new TabHead(L('Ref'));
 $t->arrTh['title'] = new TabHead(L('Item'));
-if ( !empty($fq) && $s<0 )
+if ( !empty($q) && $s<0 )
 $t->arrTh['sectiontitle'] = new TabHead(L('Section'));
 $t->arrTh['firstpostname'] = new TabHead(L('Author'));
 $t->arrTh['firstpostdate'] = new TabHead(L('First_message'));

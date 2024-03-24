@@ -4,7 +4,7 @@
 // Perform async queries on request from web pages (ex: using ajax) with GET method
 // Ouput (echo) results as string or json string object {rItem,rInfo}
 
-if ( empty($_GET['fq']) || !in_array($_GET['fq'],['T','R','attach','unreplied']) ) { echo json_encode(array(array('rItem'=>'','rInfo'=>'configuration error'))); return; }
+if ( empty($_GET['q']) || !in_array($_GET['q'],['T','R','attach','unreplied']) ) { echo json_encode(array(array('rItem'=>'','rInfo'=>'configuration error'))); return; }
 
 // INITIALIZE
 
@@ -108,7 +108,7 @@ function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate
 
 // SERVICE ARGUMENTS {T|R|attach|unreplied} topics, replies, attachments or unreplied
 
-$fq = $_GET['fq'];
+$q = $_GET['q'];
 
 // errors
 $L = []; include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
@@ -143,7 +143,7 @@ if ( !empty($ids) ) $where .= " AND t.id IN ($ids)";
 
 // PROCESSES
 
-switch($fq)
+switch($q)
 {
 case 'T': // topics
   if ( $tf!=='*' ) $where .= getSqlTimeframe($oDB->type, $tf);

@@ -20,21 +20,21 @@ if ( isset($_POST['ok']) && $_POST['ok']===makeFormCertificate('a2038e83fd6618a4
 if ( isset($_POST['ok']) && $_POST['ok']!==$certificate ) die('Unable to check certificate');
 
 $s = -1; // [int]
-$fq = ''; // query model
+$q = ''; // query model
 $fv = ''; // keyword(s), tag(s), date1 or username
 $fw = ''; // timeframe, date2 or userid
+$fst = ''; // status
 $to = false; // title only
-$fst = '';
-qtArgs('int:s fq fv fw boo:to fst qkw');
+qtArgs('int:s q fv fw boo:to fst qkw');
 
 // ------
 // SUBMITTED
 // ------
-if ( isset($_POST['ok']) && !empty($fq) ) try {
+if ( isset($_POST['ok']) && !empty($q) ) try {
 
   $arg['s'] = $s<0 ? '' : $s;
-  $arg['fq'] = $fq;
-  switch($fq) {
+  $arg['q'] = $q;
+  switch($q) {
     case 'ref':
       if ( empty($fv) ) throw new Exception( L('Ref').' '.L('invalid') );
       // support direct open when #id is used as ref
@@ -64,7 +64,7 @@ if ( isset($_POST['ok']) && !empty($fq) ) try {
       $arg['fv'] = urlencode($fv);
       $arg['fw'] = $fw;
       break;
-    default: die( 'Unknown criteria '.$fq );
+    default: die( 'Unknown criteria '.$q );
   }
   // redirect
   $oH->redirect( APP.'_items.php?'.qtImplode($arg) );
@@ -87,7 +87,7 @@ echo '<h2>'.L('Search_option').'</h2>'.PHP_EOL;
 echo '<section class="search-box options" id="broadcasted-options">'.PHP_EOL;
 echo qtSVG('cog', 'id=opt-icon|class=filigrane'.($s<0 && $fst==='' ? '' : ' spinning'));
 echo '<div>'.L('Section').' <select id="opt-s" name="s" size="1" autocomplete="off">'.sectionsAsOption($s,[],[],L('In_all_sections')).'</select></div>';
-echo '<div>'.L('Status').'&nbsp;<select id="pot-fst" name="fst" size="1" autocomplete="off"><option value="*"'.($fst==='' ? ' selected' : '').'>'.L('Any_status').'</option>'.qtTags(CTopic::getStatuses(),$fst).'</select></div>'.PHP_EOL;
+echo '<div>'.L('Status').'&nbsp;<select id="pot-fst" name="fst" size="1" autocomplete="off"><option value=""'.($fst==='' ? ' selected' : '').'>'.L('Any_status').'</option>'.qtTags(CTopic::getStatuses(),$fst).'</select></div>'.PHP_EOL;
 echo '</section>'.PHP_EOL;
 
 // SEARCH CRITERIA
@@ -100,10 +100,10 @@ if ( !empty($criteriaError) ) echo '<p class="error">'.$criteriaError.'</p>';
 echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
 '.qtSVG('search', 'class=filigrane').'
-<div>'.L('Keywords').' <div id="ac-wrapper-kw"><input required type="text" id="kw" name="fv" size="40" maxlength="64" value="'.($fq=='kw' ? qtAttr($fv,0,'&quot;') : '').'" data-multi="1"/></div>*</div>
+<div>'.L('Keywords').' <div id="ac-wrapper-kw"><input required type="text" id="kw" name="fv" size="40" maxlength="64" value="'.($q=='kw' ? qtAttr($fv,0,'&quot;') : '').'" data-multi="1"/></div>*</div>
 <div><span class="cblabel"><input type="checkbox" id="to" name="to"'.($to ? ' checked' : '').' value="1"/> <label for="to">'.L('In_title_only').'</label></span></div>
 <div style="flex-grow:1;text-align:right">
-<input type="hidden" name="fq" value="kw"/>
+<input type="hidden" name="q" value="kw"/>
 <input type="hidden" id="kw-s" name="s" value="'.$s.'"/>
 <input type="hidden" id="kw-fst" name="fst" value="'.$fst.'"/>
 <button type="submit" name="ok" value="'.$certificate.'">'.L('Search').'</button>
@@ -122,9 +122,9 @@ if ( $refExists ) {
 echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
 '.qtSVG('search', 'class=filigrane').'
-<div>'.L('Ref').' <div id="ac-wrapper-ref"><input required type="text" id="ref" name="fv" size="5" minlength="1" maxlength="10" value="'.($fq=='ref' ? qtAttr($fv,0,'&quot;') : '').'"/>&nbsp;'.L('H_Reference').'</div></div>
+<div>'.L('Ref').' <div id="ac-wrapper-ref"><input required type="text" id="ref" name="fv" size="5" minlength="1" maxlength="10" value="'.($q=='ref' ? qtAttr($fv,0,'&quot;') : '').'"/>&nbsp;'.L('H_Reference').'</div></div>
 <div style="flex-grow:1;text-align:right">
-<input type="hidden" name="fq" value="ref"/>
+<input type="hidden" name="q" value="ref"/>
 <input type="hidden" id="ref-s" name="s" value="'.$s.'"/>
 <input type="hidden" id="ref-fst" name="fst" value="'.$fst.'"/>
 <button type="submit" name="ok" value="'.$certificate.'">'.L('Search').'</button>
@@ -146,9 +146,9 @@ echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 '.qtTags(L('dateMMM.*'),(int)$fw).'
 </select><input type="hidden" id="y" name="y" value="'.date('Y').'"/>
 </div>';
-if ( $_SESSION[QT]['tags']!='0' ) echo '<div>'.L('With_tag').' <div id="ac-wrapper-tag-edit"><input type="text" id="tag-edit" name="fv" size="30" value="'.($fq==='adv' ? qtAttr($fv) : '').'" data-multi="1"/></div>*</div>';
+if ( $_SESSION[QT]['tags']!='0' ) echo '<div>'.L('With_tag').' <div id="ac-wrapper-tag-edit"><input type="text" id="tag-edit" name="fv" size="30" value="'.($q==='adv' ? qtAttr($fv) : '').'" data-multi="1"/></div>*</div>';
 echo '<div style="flex-grow:1;text-align:right">
-<input type="hidden" name="fq" value="adv"/>
+<input type="hidden" name="q" value="adv"/>
 <input type="hidden" name="s" value="'.$s.'" id="adv-s"/>
 <input type="hidden" name="fst" value="'.$fst.'" id="adv-fst"/>
 <button type="submit" name="ok" value="'.$certificate.'">'.L('Search').'</button>
@@ -161,8 +161,8 @@ echo '<div style="flex-grow:1;text-align:right">
 echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <section class="search-box criteria">
 '.qtSVG('search', 'class=filigrane').'
-<div><select name="fq" size="1">'.qtTags( ['user'=>L('Item').' '.L('author'),'userm'=>L('Item').'/'.L('reply').' '.L('author')], $fq ).'
-</select> <div id="ac-wrapper-user"><input type="hidden" id="userid" type="text" name="fw" value="'.$fw.'"/><input required id="user" type="text" name="fv" value="'.(empty($fv) || substr($fq,0,4)!=='user' ? '' : qtAttr($fv,0,'&quot;')).'" size="32" maxlenght="64"/></div></div>
+<div><select name="q" size="1">'.qtTags( ['user'=>L('Item').' '.L('author'),'userm'=>L('Item').'/'.L('reply').' '.L('author')], $q ).'
+</select> <div id="ac-wrapper-user"><input type="hidden" id="userid" type="text" name="fw" value="'.$fw.'"/><input required id="user" type="text" name="fv" value="'.(empty($fv) || substr($q,0,4)!=='user' ? '' : qtAttr($fv,0,'&quot;')).'" size="32" maxlenght="64"/></div></div>
 <div style="flex-grow:1;text-align:right">
 <input type="hidden" name="s" value="'.$s.'" id="user-s"/>
 <button type="submit" name="ok" value="'.$certificate.'">'.L('Search').'</button>

@@ -102,7 +102,7 @@ function getSimpleSVG(string $id='info', bool $addClass=true) {
 
 if ( empty($_GET['fv']) ) { echo json_encode(array(array('rItem'=>'','rInfo'=>'configuration error'))); return; }
 $fv = CDatabase::sqlEncode(strtoupper($_GET['fv'])); // searched element (uppercase to be case insensitive)
-$fq = isset($_GET['fq']) ? $_GET['fq'] : 's'; // search type {s|qkw|tag|username|userexists}
+$q = isset($_GET['q']) ? $_GET['q'] : 's'; // search type {s|qkw|tag|username|userexists}
 
 // errors
 $L = []; include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
@@ -136,7 +136,7 @@ if ( $t!=='*' ) $where .= " AND t.type='$t'";
 if ( $fst!=='*' ) $where .= " AND t.status='$fst'"; // '1'=closed
 
 // PROCESSES
-switch($fq)
+switch($q)
 {
 
 case 'behalf':
@@ -304,7 +304,7 @@ case 'kw':
   break;
 
 default: // posts
-  echo json_encode(array(array('rItem'=>'','rInfo'=>'unkown query type '.$fq)));
+  echo json_encode(array(array('rItem'=>'','rInfo'=>'unkown query type '.$q)));
 }
 
 // RESPONSE

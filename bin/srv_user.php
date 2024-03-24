@@ -43,7 +43,7 @@ const TABTABLES = ['TABUSER'];
 // SERVICE ARGUMENTS
 $L = []; include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
 $e0 = empty($L['No_result']) ? 'No result' : $L['No_result'];
-$fq = isset($_GET['fq']) ? $_GET['fq'] : 'u';
+$q = isset($_GET['q']) ? $_GET['q'] : 'u';
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0; // 0 visitor
 $dir = isset($_GET['dir']) ? $_GET['dir'] : '';
 $alt = isset($_GET['alt']) ? $_GET['alt'] : 'bin/css/user.gif';
@@ -51,7 +51,7 @@ $oDB = new CDatabase();
 
 // PROCESSES
 $data = '';
-switch($fq)
+switch($q)
 {
   case 'u':
     $oDB->query( "SELECT u.name,u.role,u.location,birthday FROM TABUSER u WHERE u.id=$id" );

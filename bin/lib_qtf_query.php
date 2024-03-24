@@ -64,26 +64,25 @@ function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate
  * @return array or die if some arguments are missing or invalid
  * <p>Query arguments are:<br>q=type of query<br>s=section<br>v=searched-text<br>w=optional 2nd searched-text<br>y=optional year</p>
  */
-function validateQueryArgs(array $args, bool $trimV=true)
-{
-  // check
-  if ( !isset($args['fq']) ) $args['fq']='s'; // if missing q, assume q=s
+function validateQueryArgs(array $args, bool $trimV=true) {
+  // pre check
+  if ( !isset($args['q']) ) $args['q'] = ''; // if missing q, assume q=s
+  if ( !isset($args['s']) ) $args['s'] = '-1';
   if ( !empty($args['fv']) && strpos($args['fv'],'"')!==false ) $args['fv'] = qtDb(trim($args['fv']));
   if ( !empty($args['fw']) && strpos($args['fw'],'"')!==false ) $args['fw'] = qtDb(trim($args['fw']));
-  switch($args['fq'])
-  {
+  // validate by query type
+  switch($args['q']) {
     case 's':
-      if ( !isset($args['s']) || !is_numeric($args['s']) || $args['s']<0 ) $args['s'] = -1;
-      if ( count($args)!==2 ) die(__FUNCTION__.' Invalid arguments'); // For section-query, only q and s can be used
+    case '':
+      if ( count($args)!==2 || !is_numeric($args['s']) || (int)$args['s']<0 ) die(__FUNCTION__.' Invalid arguments');
       break;
     case 'ref':
     case 'kw':
     case 'qkw':
-      if ( empty($args['fv']) || strlen($args['fv'])>64 ) die(__FUNCTION__.' Invalid argument v');
+      if ( empty($args['fv']) || strlen($args['fv'])>64 ) die(__FUNCTION__.' Invalid argument fv');
       if ( $trimV ) $args['fv'] = trim($args['fv']);
       break;
-    case 'news':
-      break;
+    case 'news': break;
     case 'user':
     case 'userm':
       // search using userid [w] (search [w] from [v] if missing)
@@ -91,13 +90,17 @@ function validateQueryArgs(array $args, bool $trimV=true)
       if ( empty($args['fw']) || !is_numeric($args['fw']) || $args['fw']<0 ) die(__FUNCTION__.' Invalid argument w');
       break;
     case 'btw':
-      if ( empty($args['fv']) || empty($args['fw']) || $args['fv']<'19000101' || $args['fw']>'21000101' ) die(__FUNCTION__.' Invalid argument dates');
+      if ( !isset($args['fv']) ) $args['fv'] = '';
+      if ( !isset($args['fw']) ) $args['fw'] = '';
+      if ( $args['fv']==='' || $args['fw']==='' || $args['fv']<'19000101' || $args['fw']>'21000101' ) die(__FUNCTION__.' Invalid argument dates');
       $args['fv'] = qtDateClean($args['fv'],8); // Returns YYYYMMDD (no time) while browser should provide YYYY-MM-DD. Returns '' if format not supported. If $v='now', returns today
       $args['fw'] = qtDateClean($args['fw'],8);
       if ( $args['fv']>$args['fw'] ) die(__FUNCTION__.' Invalid date (date1 > date2)');
       break;
     case 'adv':
-      if ( empty($args['fv']) && $args['fw']==='*' ) die(__FUNCTION__.' Invalid argument date or tag');
+      if ( !isset($args['fv']) ) $args['fv'] = '';
+      if ( !isset($args['fw']) ) $args['fw'] = '';
+      if ( $args['fv'].$args['fw']==='' ) die(__FUNCTION__.' Invalid argument date or tag');
       if ( strlen($args['fv'])>128 ) die(__FUNCTION__.' Invalid argument tag');
       if ( strlen($args['fw'])>2 ) die(__FUNCTION__.' Invalid argument date');
       if ( $trimV ) $args['fv'] = trim($args['fv']);
@@ -108,7 +111,7 @@ function validateQueryArgs(array $args, bool $trimV=true)
     default: die(__FUNCTION__.' Invalid query argument q');
   }
   // check injection
-  if ( isset($args['s']) && $args['s']==='*' ) $args['s']='-1';
+  if ( isset($args['s']) && $args['s']==='' ) $args['s'] = -1;
   if ( isset($args['s']) && !is_numeric($args['s']) ) die(__FUNCTION__.' Invalid argument s');
   if ( isset($args['fw']) && ( strpos($args['fw'],'"')!==false || strpos($args['fw'],"'")!==false ) ) die(__FUNCTION__.' Invalid timeframe');
   if ( isset($args['fst']) && strlen($args['fst'])>1 ) die(__FUNCTION__.' Invalid status');
@@ -126,8 +129,7 @@ function validateQueryArgs(array $args, bool $trimV=true)
  * @param string $query
  * @return string '' or a result warning (string parts are updated by reference)
  */
-function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt,string $argFilters)
-{
+function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt,string $argFilters) {
   $args = []; parse_str($argFilters, $args); if ( count($args)===0 ) die(__FUNCTION__.' missing query argument');
   $args = validateQueryArgs($args);
   $result = '';
@@ -157,7 +159,7 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
   // status
   if ( $fst!=='' ) { $sqlWhere .= ' AND t.status=:status'; $sqlValues[':status'] = $fst; }
 
-  switch($args['fq']) {
+  switch($args['q']) {
 
     case 's': break;
     case 'qkw':
@@ -248,7 +250,7 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
     case 'user':
     case 'userm':
 
-      if ( $args['fq']==='user') $sqlWhere .= " AND p.type='P'";
+      if ( $args['q']==='user') $sqlWhere .= " AND p.type='P'";
       $sqlWhere .= " AND p.userid=$fw";
       $sqlCount  = "SELECT count(*) as countid $sqlFrom $sqlWhere"; // count all messages
       $sqlCountAlt = "SELECT count(*) as countid FROM TABTOPIC WHERE firstpostuser=$fw"; // count topic only
@@ -308,7 +310,7 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
       $sqlCount = "SELECT count(*) as countid".$sqlFrom.$sqlWhere;
       break;
 
-    default: die(__FUNCTION__.' invalid argument fq ['.$args['fq'].']' );
+    default: die(__FUNCTION__.' invalid argument q ['.$args['q'].']' );
   }
   return $result;
 }

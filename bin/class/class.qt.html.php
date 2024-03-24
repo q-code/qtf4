@@ -89,7 +89,7 @@ class CHtml
     if ( $u==='exit' ) $u = $this->exit();
     $u = url($u);
     if ( headers_sent() ) {
-      echo '<a href="'.$u.'">',$s,'</a><meta http-equiv="REFRESH" content="0;url='.$u.'">';
+      echo '<a href="'.$u.'">'.$s.'</a><meta http-equiv="REFRESH" content="0;url='.$u.'">';
     } else {
       header('Location: '.str_replace('&amp;','&',$u));
     }

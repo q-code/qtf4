@@ -156,7 +156,7 @@ if ( !empty($_GET['a']) && $_GET['a']==='view' )
     echo '<tr class="hover">'.PHP_EOL;
     echo '<td>'.$strKey.'</td>'.PHP_EOL;
     echo '<td>'.$strValue.'</td>'.PHP_EOL;
-    echo '<td><a class="small" href="'.APP.'_items.php?fq=adv&s='.$s.'&fw=*&v='.urlencode($strKey).'" title="'.L('Find_item_tag').'">'.L('Search').'</a></td>'.PHP_EOL;
+    echo '<td><a class="small" href="'.APP.'_items.php?q=adv&s='.$s.'&fw=*&v='.urlencode($strKey).'" title="'.L('Find_item_tag').'">'.L('Search').'</a></td>'.PHP_EOL;
     echo '</tr>';
     }
     echo '</table>'.PHP_EOL;
@@ -201,7 +201,7 @@ if ( !empty($_GET['a']) && $_GET['a']==='used' )
     echo '<tr class="hover">'.PHP_EOL;
     echo '<td>'.$strValue.'</td>'.PHP_EOL;
     echo '<td>'.(isset($arrTags[$strValue]) ? $arrTags[$strValue] : '&nbsp;').'</td>'.PHP_EOL;
-    echo '<td><a class="small" href="'.APP.'_items.php?fq=adv&s='.$s.'&fw=*&v='.$strValue.'" title="'.L('Find_item_tag').'">'.L('Search').'</a></td>'.PHP_EOL;
+    echo '<td><a class="small" href="'.APP.'_items.php?q=adv&s='.$s.'&fw=*&v='.$strValue.'" title="'.L('Find_item_tag').'">'.L('Search').'</a></td>'.PHP_EOL;
     echo '</tr>';
     }
     echo '</table>'.PHP_EOL;

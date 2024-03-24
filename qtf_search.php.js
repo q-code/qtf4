@@ -17,7 +17,7 @@ function iconSpin() {
   if (document.getElementById("opt-s").value!=="-1" || document.getElementById("pot-fst").value!=="") icon.classList.add("spinning");
 }
 function broadcastOption(option,value) {
-  ["ref-","id-","kw-","tag-","user-"].forEach( id => {
+  ["ref-","id-","kw-","adv-","user-"].forEach( id => {
      if ( document.getElementById(id+option) ) document.getElementById(id+option).setAttribute("value", value);
   });
   ["btn_recent","btn_news","btn_my"].forEach( id => {

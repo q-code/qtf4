@@ -285,10 +285,10 @@ echo '<tr>
 
 $strParticip = '';
 if ( $items>0 ) {
-  $strParticip .= '<a href="'.url('qtf_items.php').'?fq=user&fw='.$id.'&fv='.urlencode($row['name']).'">'.L('Item',$items).'</a>, ';
+  $strParticip .= '<a href="'.url('qtf_items.php').'?q=user&fw='.$id.'&fv='.urlencode($row['name']).'">'.L('Item',$items).'</a>, ';
 }
 if ( $countmessages>0 ) {
-  $strParticip .= '<a href="'.url('qtf_items.php').'?fq=userm&fw='.$id.'&fv='.urlencode($row['name']).'">'.L('Message',$countmessages).'</a>';
+  $strParticip .= '<a href="'.url('qtf_items.php').'?q=userm&fw='.$id.'&fv='.urlencode($row['name']).'">'.L('Message',$countmessages).'</a>';
   $strParticip .= ', '.strtolower($L['Last_message']).' '.qtDate($row['lastdate'],'$','$',true);
   $oDB->query( "SELECT p.id,p.topic,p.forum FROM TABPOST p WHERE p.userid=$id ORDER BY p.issuedate DESC" );
   $row2 = $oDB->getRow();
@@ -308,7 +308,7 @@ echo '
 
 if ( is_null($row['x']) || is_null($row['y']) ) $bMap = false;
 if ( $bMap ) {
-  $strPlink = '<a href="http://maps.google.com?fq='.$row['y'].','.$row['x'].'" class="small" title="'.$L['Gmap']['In_google'].'" target="_blank">[G]</a>';
+  $strPlink = '<a href="http://maps.google.com?q='.$row['y'].','.$row['x'].'" class="small" title="'.$L['Gmap']['In_google'].'" target="_blank">[G]</a>';
   $strPosition = '<div id="map_canvas"></div>';
   echo '<tr><th>'.L('Coord').'</th><td class="fix-sp"><span>'.$strCoord.' '.$strPlink.'</span><span>'.$strPriv.'</span></td></tr>'.PHP_EOL;
 }

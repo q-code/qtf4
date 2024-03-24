@@ -44,21 +44,21 @@ if ( substr($size,0,1)==='p' ) { $i = (int)substr($size,1); $sqlStart = ($i-1)*$
 
 // init args
 $s = -1; // [int]
-$fq = ''; // Search type (not required, use 's' if missing)
+$q = ''; // Search type (not required, use 's' if missing)
 $fst = ''; // Status [string] {'*'|status-key}, caution: can be '0'
 $fv = ''; // Searched [string] text (converted to array of strings)
 $fw = ''; // timeframe [string] or userid
 $pn = 1; $po = 'lastpostdate'; $pd = 'desc'; // page number,order,direction
-qtArgs('fq int:s fst fv fw int:pn po pd');
+qtArgs('q int:s fst fv fw int:pn po pd');
 
 // check args
-if ( empty($fq) ) $fq = 's';
-if ( $fq==='s' && $s<0 ) die(__FILE__.' Missing argument $s');
+if ( empty($q) ) $q = '';
+if ( $q==='' && $s<0 ) die(__FILE__.' Missing argument $s');
 $fv = qtCleanArray($fv); // [array]
 
 // initialise section
-if ( $fq==='s' && $s<0 ) die('Missing argument $s');
-if ( $fq==='s' || $s>=0 ) {
+if ( $q==='' && $s<0 ) die('Missing argument $s');
+if ( $q==='' || $s>=0 ) {
   $oS = new CSection($_Sections[$s]); // new CSection($s)
   // exit if user role not granted
   if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U')) {
@@ -97,24 +97,24 @@ $sqlStart = ($pn-1)*$_SESSION[QT]['items_per_page'];
 $sqlFields = ($_SESSION[QT]['news_on_top'] ? "CASE WHEN t.type='A' AND t.status='0' THEN 'A' ELSE 'Z' END as typea," : '');
 $sqlFields .= 't.*,p.title,p.icon,p.id as postid,p.type as posttype,p.textmsg,p.issuedate,p.username,p.attach';
 $sqlFrom = ' FROM TABTOPIC t INNER JOIN TABPOST p ON t.firstpostid=p.id'; // warning: include only firstpostid (not the replies)
-$sqlWhere = ' WHERE t.forum'.($fq==='s' ? '='.$s : '>=0');
+$sqlWhere = ' WHERE t.forum'.($q==='' ? '='.$s : '>=0');
   // In private section, show topics created by user himself
-  if ( $fq==='s' && $oS->type==='2' && !SUser::isStaff()) $sqlWhere .= " AND (t.firstpostuser=".SUser::id()." OR (t.type='A' AND t.status='0'))";
+  if ( $q==='' && $oS->type==='2' && !SUser::isStaff()) $sqlWhere .= " AND (t.firstpostuser=".SUser::id()." OR (t.type='A' AND t.status='0'))";
 $sqlValues = []; // list of values for the prepared-statements
 $sqlCount = "SELECT count(*) as countid FROM TABTOPIC t".$sqlWhere;
 $sqlCountAlt='';
-if ( $fq!=='s' ) {
+if ( $q!=='' ) {
   include 'bin/lib_qtf_query.php';
   $oH->error = sqlQueryParts($sqlFrom,$sqlWhere,$sqlValues,$sqlCount,$sqlCountAlt,$oH->selfuri); //selfuri is not urldecoded
   if ( !empty($oH->error) ) die($oH->error);
-  if ( $fq==='adv' && !empty($fv) ) $strLastcol = 'tags'; // forces display column tags
+  if ( $q==='adv' && !empty($fv) ) $strLastcol = 'tags'; // forces display column tags
 }
 
 $forceShowClosed = $_SESSION[QT]['show_closed']==='0' && $fst==='1';
 $sqlHideClosed = $_SESSION[QT]['show_closed']==='0' && !$forceShowClosed ? " AND t.status<>'1'" : ''; // User preference, hide closed items (not for advanced query having status specified)
 
 // Count items & visible for current user ONLY
-if ( ($fq==='s' && $oS->type!=='2') || ( $fq==='s' && SUser::isStaff()) ) {
+if ( ($q==='' && $oS->type!=='2') || ( $q==='' && SUser::isStaff()) ) {
   // Using stats ($_SectionsStats)
   $stats = isset($_SectionsStats) ? $_SectionsStats : SMem::get('_SectionsStats');
   if ( !$forceShowClosed && !isset($stats[$s]['itemsZ']) ) $stats[$s]['itemsZ'] = $oDB->count(CSection::sqlCountItems($s,'items','1'));
@@ -133,7 +133,7 @@ $t = new TabTable();
 $t->arrTh['type'] = new TabHead(L('Type'));
 $t->arrTh['numid'] = new TabHead(L('Ref'));
 $t->arrTh['title'] = new TabHead(L('Item'));
-if ( !empty($fq) && $s<0 )
+if ( !empty($q) && $s<0 )
 $t->arrTh['sectiontitle'] = new TabHead(L('Section'));
 $t->arrTh['firstpostname'] = new TabHead(L('Author'));
 $t->arrTh['firstpostdate'] = new TabHead(L('First_message'));
