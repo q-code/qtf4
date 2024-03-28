@@ -14,7 +14,7 @@ require 'bin/init.php';
 // Security and compliance
 
 $oH->selfurl = 'qtf_edit_preview.php';
-if ( !SUser::canView('V5') ) exitPage(11,'user-lock.svg'); //...
+if ( !SUser::canView('V5') ) $oH->voidPage('user-lock.svg',11,true); //...
 
 $a='';
 $s = -1;
@@ -70,7 +70,7 @@ try {
   // check maximum post per day (not for moderators)
   if ( !SUser::isStaff() && !postsTodayAcceptable((int)$_SESSION[QT]['posts_per_day']) ) {
     $oH->exiturl = 'qtf_items.php?s='.$s;
-    $oH->pageMessage('', L('E_too_much')); //###
+    $oH->voidPage('', L('E_too_much')); //###
   }
 
   // Module antispam

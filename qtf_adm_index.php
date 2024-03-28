@@ -33,7 +33,7 @@ if ( isset($_POST['ok']) && isset($_POST['offline']) ) try {
 
   $oH->exiturl = APP.'_adm_site.php';
   $oH->exitname = L('Board_general');
-  $oH->pageMessage(L('Settings'), '<p>Mandatory setting missing:<br>'.$e->getMessage().'</p>', 'admin');
+  $oH->voidPage(L('Settings'), '<p>Mandatory setting missing:<br>'.$e->getMessage().'</p>', 'admin');
   $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
 
 }

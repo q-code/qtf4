@@ -10,7 +10,8 @@ ob_start();
 $oH->links['ico'] = '<link rel="shortcut icon" href="bin/css/qt.ico"/>';
 unset($oH->links['cssContrast']);
 $oH->links['css'] = '<link rel="stylesheet" type="text/css" href="bin/css/admin.css"/>';
-if ( !isset($oH->scripts['e0']) ) $oH->scripts['e0'] = 'var e0 = '.(empty(L('E_editing')) ? 'Data not yet saved. Quit without saving?' : '"'.L('E_editing').'"').';';
+if ( !isset($oH->scripts['e0']) )
+$oH->scripts['e0'] = 'var e0 = "'.L('Quit_without_saving').'";';
 $oH->links['cssCustom'] = null;
 
 // Render
@@ -19,8 +20,7 @@ $oH->body();
 
 echo PHP_EOL.'<div class="pg-admin">'.PHP_EOL;
 
-if ( file_exists(translate($oH->selfurl.'.txt'))  )
-{
+if ( file_exists(translate($oH->selfurl.'.txt')) ) {
   echo '<div class="hlp-box">';
   echo '<div class="hlp-head">'.L('Help').'</div>';
   echo '<div class="hlp-body">';
@@ -32,8 +32,7 @@ echo '
 <div id="banner"><img id="logo" src="bin/css/'.APP.'_logo.gif" style="border-width:0" alt="'.APPNAME.'" title="'.APPNAME.'"/></div>
 ';
 
-if ( !defined('HIDE_MENU_LANG') || !HIDE_MENU_LANG )
-{
+if ( !defined('HIDE_MENU_LANG') || !HIDE_MENU_LANG ) {
   $langMenu = new CMenu();
   $langMenu->add('text='.qtSVG('caret-square-left').'|id=lang-exit|href='.APP.'_index.php|title='.L('Exit').'|onclick=return qtFormSafe.exit(e0);');
   // lang
@@ -55,8 +54,7 @@ if ( !defined('HIDE_MENU_LANG') || !HIDE_MENU_LANG )
 echo '<div id="pg-layout">
 ';
 
-if ( !defined('HIDE_MENU_TOC') || !HIDE_MENU_TOC )
-{
+if ( !defined('HIDE_MENU_TOC') || !HIDE_MENU_TOC ) {
   $navMenu = new CMenu(null,'');
   echo '<div id="toc">'.PHP_EOL;
   $navMenu->add(L('Info').          '|tag=p|class=group');
@@ -81,7 +79,7 @@ if ( !defined('HIDE_MENU_TOC') || !HIDE_MENU_TOC )
   // group modules
   $navMenu->menu = [];
   $navMenu->add(L('Board_modules'). '|tag=p|class=group');
-  if ( !isset($_SESSION[QT]['mModules']) ) $_SESSION[QT]['mModules'] = $oDB->getSettings('param LIKE "module%"'); // store list of modules in memory if not yet done
+  if ( !isset($_SESSION[QT]['mModules']) && isset($oDB) ) $_SESSION[QT]['mModules'] = $oDB->getSettings('param LIKE "module%"'); // store list of modules in memory if not yet done
   foreach($_SESSION[QT]['mModules'] as $k=>$module)
   {
     $k = str_replace('module_','',$k);
@@ -93,7 +91,7 @@ if ( !defined('HIDE_MENU_TOC') || !HIDE_MENU_TOC )
   echo '</div>'.PHP_EOL;
 }
 
-CHtml::getPage();
+echo CHtml::page();
 
 // Title (and error)
 echo '<h1 class="title"'.(isset($oH->selfparent) ? ' data-parent="'.$oH->selfparent.'"' : '').'>'.$oH->selfname.'</h1>';

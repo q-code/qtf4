@@ -172,7 +172,7 @@ if ( isset($_POST['ok']) ) try {
     if ( file_exists($strFile) ) include $strFile;
     $strMessage = sprintf($strMessage,$_POST['username'],$_POST['email']);
     qtMail($_SESSION[QT]['admin_email'],$strSubject,$strMessage,QT_HTML_CHAR);
-    $oH->pageMessage('', '<h2>'.L('Request_completed').'</h2><p>'.L('Reg_mail').'</p><p><a href="'.url($oH->exiturl).'">'.$oH->exitname.'</a></p>');
+    $oH->voidPage('', '<h2>'.L('Request_completed').'</h2><p>'.L('Reg_mail').'</p><p><a href="'.url($oH->exiturl).'">'.$oH->exitname.'</a></p>');
   } else {
     // email code
     if ( $_SESSION[QT]['register_mode']==='email' ) $_POST['pwd'] = 'QT'.rand(0,9).rand(0,9).rand(0,9).rand(0,9);
@@ -208,7 +208,7 @@ if ( isset($_POST['ok']) ) try {
       $oH->exiturl = APP.'_login.php?dfltname='.urlencode($_POST['username']);
       $oH->exitname = L('Login');
     }
-    $oH->pageMessage('', '<h2>'.L('S_registration').'</h2><p>'.L('Reg_mail').'</p>');
+    $oH->voidPage('', '<h2>'.L('S_registration').'</h2><p>'.L('Reg_mail').'</p>');
   }
 
 } catch (Exception $e) {
@@ -596,7 +596,7 @@ if ( isset($_POST['ok']) ) {
   }
   // exit
   $_SESSION[QT.'splash'] = L('S_update');
-  if ( SUser::role()==='A' ) $oH->pageMessage('','<p>'.$strMessage.'</p>'); //...
+  if ( SUser::role()==='A' ) $oH->voidPage('','<p>'.$strMessage.'</p>'); //...
   $oH->redirect('exit');
 }
 
@@ -661,11 +661,11 @@ if ( isset($_POST['ok']) && !empty($_POST['s']) ) {
       }
     }
     // exit
-    if ( SUser::role()==='A' ) $oH->pageMessage('', '<p>'.$strMessage.'</p>');
-    $oH->pageMessage('', L('Password_updated').'<br><br>');
+    if ( SUser::role()==='A' ) $oH->voidPage('', '<p>'.$strMessage.'</p>');
+    $oH->voidPage('', L('Password_updated').'<br><br>');
   }
   $oH->error = L('E_2');
-  if ( $_SESSION['try']>4 ) $oH->pageMessage('', 'Impossible to reset your password. Contact the administrator.');
+  if ( $_SESSION['try']>4 ) $oH->voidPage('', 'Impossible to reset your password. Contact the administrator.');
 
 }
 

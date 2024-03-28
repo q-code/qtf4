@@ -53,7 +53,7 @@ if ( isset($_POST['ok']) ) try {
     if ( isset($arrCoppa['children']) && $arrCoppa['children']=='2' ) {
       $oH->exitname = SLang::translate();
       SUser::unsetSession();
-      $oH->pageMessage('', '<h2>'.L('Welcome').' '.$strName.'</h2>'.L('E_10').'<br>'.L('No_parental_confirm')); //...
+      $oH->voidPage('', '<h2>'.L('Welcome').' '.$strName.'</h2>'.L('E_10').'<br>'.L('No_parental_confirm')); //...
     }
   }
 

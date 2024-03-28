@@ -15,7 +15,7 @@ session_start();
 require 'bin/init.php';
 
 $oH->selfurl = 'qtf_stats.php';
-if ( !SUser::canAccess('show_stats') ) exitPage(11,'user-lock.svg'); //...
+if ( !SUser::canAccess('show_stats') ) $oH->voidPage('user-lock.svg',11,true); //...
 
 // FUNCTION
 

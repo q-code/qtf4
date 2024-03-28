@@ -2,27 +2,16 @@
  * @constant {object} qtFormSafe - form initial value controller
  */
 const qtFormSafe = {
-  initial: true,
-  not: function(){ this.initial=false; },
-  exit: function(msg='Data not yet saved. Quit without saving?'){ if ( !this.initial && !confirm(msg) ) return false; return true; }
+  safe: true,
+  not: function(){ this.safe = false; },
+  exit: function(msg='Data not yet saved. Quit without saving?'){ return this.safe || confirm(msg); }
 };
-/**
- * @param {string} id
- */
 function qtFocus(id) {
-  const e = document.getElementById(id); if ( !e ) return;
-  e.focus();
+  const e = document.getElementById(id); if ( e ) e.focus();
 }
-/**
- * @param {string} id
- */
 function qtFocusOut(id) {
-  const e = document.getElementById(id); if ( !e ) return;
-  e.blur();
+  const e = document.getElementById(id); if ( e ) e.blur();
 }
-/**
- * @param {string} id
- */
 function qtFocusAfter(id) {
   const e = document.getElementById(id); if ( !e || e.value===undefined || e.value.length===0 ) return;
   // Focus the input and push cursor after the value to avoid having the value selected

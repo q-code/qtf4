@@ -70,7 +70,7 @@ if ( isset($_POST['ok']) ) try {
 
   if ( empty($oH->error) ) {
     unlink($_FILES['title']['tmp_name']);
-    $oH->pageMessage('', $intCountUser===0 ? 'No user inserted... Check the file and check that you don\'t have duplicate usernames.<br>' : L('User',$intCountUser).'<br>'.L('S_update').'<br>', 'admin');
+    $oH->voidPage('', $intCountUser===0 ? 'No user inserted... Check the file and check that you don\'t have duplicate usernames.<br>' : L('User',$intCountUser).'<br>'.L('S_update').'<br>', 'admin');
   }
 
 } catch (Exception $e) {

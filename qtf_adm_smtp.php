@@ -36,7 +36,7 @@ if ( isset($_POST['ok']) ) try {
   // exit
   $oH->exiturl = APP.'_adm_smtp.php';
   $oH->exitname = 'SMTP test';
-  $oH->pageMessage('', 'Process completed...<br><br>If you have changed the smtp settings during the test, go to the Administration page and SAVE your new settings!', 'admin');
+  $oH->voidPage('', 'Process completed...<br><br>If you have changed the smtp settings during the test, go to the Administration page and SAVE your new settings!', 'admin');
 
 } catch (Exception $e) {
 
@@ -49,7 +49,7 @@ if ( isset($_POST['ok']) ) try {
 // ------
 // HTML BEGIN
 // ------
-const HIDE_MENU_TOC=true;
+const HIDE_MENU_TOC = true;
 
 include APP.'_adm_inc_hd.php';
 

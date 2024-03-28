@@ -7,7 +7,7 @@ session_start();
  */
 require 'bin/init.php';
 $oH->selfurl = 'qtf_item.php';
-if ( !SUser::canView('V3') ) exitPage(11,'user-lock.svg'); //...
+if ( !SUser::canView('V3') ) $oH->voidPage('user-lock.svg',11,true); //...
 
 // ------
 // PRE-INITIALISE
@@ -42,17 +42,17 @@ $oS = new CSection($s);
 if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U') ) {
   $oH->selfname = L('Section');
   $oH->exitname = SLang::translate();
-  $oH->pageMessage('', L('R_staff')); //... exit
+  $oH->voidPage('', L('R_staff')); //... exit
 }
 if ( $oS->type==='2' && SUser::role()==='V' && $oT->type!=='A' ) {
   $oH->selfname = L('Section');
   $oH->exitname = SLang::translate();
-  $oH->pageMessage('', L('R_member')); //... exit
+  $oH->voidPage('', L('R_member')); //... exit
 }
 if ( $oS->type==='2' && SUser::role()==='U' && $oT->firstpostuser != SUser::id() && $oT->type!=='A' ) {
   $oH->selfname = L('Section');
   $oH->exitname = SLang::translate();
-  $oH->pageMessage('', L('R_member').'<br>'.L('E_item_private')); //... exit
+  $oH->voidPage('', L('R_member').'<br>'.L('E_item_private')); //... exit
 }
 
 // access granted

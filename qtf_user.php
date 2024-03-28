@@ -9,41 +9,36 @@ session_start();
 require 'bin/init.php';
 
 $oH->selfurl = 'qtf_user.php';
-if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) exitPage(99,'tools.svg',false); //...
-if ( SUser::role()==='V' ) exitPage(11,'user-lock.svg'); //...
+if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) $oH->voidPage('tools.svg',99,true,false); //...
+if ( SUser::role()==='V' ) $oH->voidPage('user-lock.svg',11,true); //...
 
 $id = -1;
-qtArgs('int:id!');
+$edit = false;
+qtArgs('int:id! boo:edit');
 if ( $id<0 ) die('Wrong id');
-
-if ( isset($_GET['edit']) ) $_SESSION[QT]['editing']=($_GET['edit']=='1' ? true : false);
-if ( isset($_POST['edit']) ) $_SESSION[QT]['editing']=($_POST['edit']=='1' ? true : false);
 
 // ------
 // INITIALISE
 // ------
 include 'bin/class/class.phpmailer.php';
 include translate('lg_reg.php');
-
 $canEdit = false;
-if ( SUser::id()==$id || SUser::role()==='A' ) $canEdit=true;
-if ( SUser::role()==='M' ) $canEdit=true;
-if ( $id==0 ) $canEdit=false;
-if ( !isset($_SESSION[QT]['editing']) || !$canEdit) $_SESSION[QT]['editing']=false;
-
+if ( SUser::id()===$id || SUser::role()==='A' ) $canEdit = true;
+if ( SUser::role()==='M' ) $canEdit = true;
+if ( $id==0 ) $canEdit = false;
+if ( !$canEdit ) $edit = false;
 $oH->selfname = L('Profile');
 
 // MAP MODULE
-
-$bMap=false;
+$useMap = false;
 $arrMapData = [];
 if ( qtModule('gmap') ) {
   include translate(APP.'m_gmap.php');
   include 'qtfm_gmap_lib.php';
-  if ( gmapCan('U') ) $bMap=true;
-  if ( $bMap ) {
-    $oH->links[]=  '<link rel="stylesheet" type="text/css" href="qtfm_gmap.css"/>';
-    if ( !isset($_SESSION[QT]['m_gmap_symbols']) ) $_SESSION[QT]['m_gmap_symbols']='0';
+  if ( gmapCan('U') ) $useMap = true;
+  if ( $useMap ) {
+    $oH->links[] = '<link rel="stylesheet" type="text/css" href="qtfm_gmap.css"/>';
+    if ( !isset($_SESSION[QT]['m_gmap_symbols']) ) $_SESSION[QT]['m_gmap_symbols'] = '0';
     $arrSymbolByRole = empty($_SESSION[QT]['m_gmap_symbols']) ? array() : qtExplode($_SESSION[QT]['m_gmap_symbols']);
   }
 }
@@ -65,13 +60,11 @@ if ( isset($_POST['ok']) ) try {
     if ( !qtIsValiddate($i,true,false,false) ) throw new Exception( L('Birthday').' ('.$_POST['birth_y'].'-'.$_POST['birth_m'].'-'.$_POST['birth_d'].') '.L('invalid') );
     $strBirth = $i;
   }
-  if ( isset($_POST['child']) ) { $strChild = substr($_POST['child'],0,1); } else { $strChild = '0'; }
-  if ( $id==1 && $strChild!='0' ) throw new Exception( 'user id[1] is admin and child status cannot be changed...' );
-  if ( $id==0 && $strChild!='0' ) throw new Exception( 'user id[0] is visitor and child status cannot be changed...' );
-  if ( isset($_POST['parentmail']) ) {
-     $strParentmail = trim($_POST['parentmail']);
-     if ( !empty($strParentmail) ) throw new Exception( L('Parent_mail').' '.L('invalid') );
-  }
+  $strChild = '0'; if ( isset($_POST['child']) ) $strChild = substr($_POST['child'],0,1);
+  $strParentmail = ''; if ( isset($_POST['parentmail']) ) $strParentmail = trim($_POST['parentmail']);
+  if ( $id==1 && $strChild!=='0' ) throw new Exception( 'user id[1] is admin and child status cannot be changed...' );
+  if ( $id==0 && $strChild!=='0' ) throw new Exception( 'user id[0] is visitor and child status cannot be changed...' );
+  if ( $_SESSION[QT]['register_coppa']==='1' && $strChild!=='0' && empty($strParentmail) ) throw new Exception( L('Parent_mail').' '.L('invalid') );
   $strWww = qtAttr($_POST['www']);
   if ( !empty($strWww) && substr($strWww,0,4)!=='http' ) throw new Exception( L('Website').' '.L('invalid') );
   if ( empty($strWww) || $strWww=='http://' || $strWww=='https://' ) $strWww='';
@@ -98,10 +91,7 @@ if ( isset($_POST['ok']) ) try {
   }
 
   // exit (if no error)
-  $oH->exiturl = 'qtf_user.php?id='.$id;
-  $oH->exitname = $L['Profile'];
   $_SESSION[QT.'splash'] = L('S_update');
-  $oH->redirect('exit');
 
 } catch (Exception $e) {
 
@@ -122,15 +112,15 @@ $row = $oDB->getRow();
 $row['privacy'] = (int)$row['privacy']; // int
 // check staff edit grants
 if ( SUser::role()==='M' && SUser::id()!==$id) {
-  if ( $row['role']=='U' && !QT_STAFFEDITUSER ) { $canEdit=false; $_SESSION[QT]['editing']=false; }
-  if ( $row['role']=='M' && !QT_STAFFEDITSTAFF ) { $canEdit=false; $_SESSION[QT]['editing']=false; }
-  if ( $row['role']=='A' && !QT_STAFFEDITADMIN ) { $canEdit=false; $_SESSION[QT]['editing']=false; }
+  if ( $row['role']==='U' && !QT_STAFFEDITUSER ) { $canEdit = false; $edit = false; }
+  if ( $row['role']==='M' && !QT_STAFFEDITSTAFF ) { $canEdit = false; $edit = false; }
+  if ( $row['role']==='A' && !QT_STAFFEDITADMIN ) { $canEdit = false; $edit = false; }
 }
 // check privacy
 if ( !SUser::canSeePrivate($row['privacy'],$id) ) { $row['y']=null; $row['x']=null; }
 
 // map settings
-if ( $bMap && !gmapEmpty($row['x']) && !gmapEmpty($row['y']) )
+if ( $useMap && !gmapEmpty($row['x']) && !gmapEmpty($row['y']) )
 {
   $y = (float)$row['y']; $x = (float)$row['x'];
   $strPname = $row['name'];
@@ -144,7 +134,7 @@ $strMail = '';  if ( !empty($row['mail']) && SUser::canSeePrivate($row['privacy'
 $strLocation = ''; if ( !empty($row['location']) && SUser::canSeePrivate($row['privacy'],$id) ) $strLocation = $row['location'];
 $strCoord = ''; // coordinates with visual units
 $strYX = ''; // coordinates in map unit [y,x]
-if ( $bMap && !empty($row['x']) && !empty($row['y']) && SUser::canSeePrivate($row['privacy'],$id) )
+if ( $useMap && !empty($row['x']) && !empty($row['y']) && SUser::canSeePrivate($row['privacy'],$id) )
 {
   $strYX = round((float)$row['y'],8).','.round((float)$row['x'],8);
   $strCoord = QTdd2dms((float)$row['y']).', '.QTdd2dms((float)$row['x']).' '.$L['Coord_latlon'].' <span class="small disabled">DD '.$strYX.'</span>';
@@ -189,13 +179,13 @@ echo '</div>
 ';
 
 // -- EDIT PROFILE --
-if ( $_SESSION[QT]['editing'] ) {
+if ( $edit ) {
 // -- EDIT PROFILE --
 
 if ( SUser::id()!==$id ) echo '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
-if ( !isset($oH->scripts['e0']) ) $oH->scripts['e0'] = 'var e0 = '.(empty(L('E_editing')) ? 'Data not yet saved. Quit without saving?' : '"'.L('E_editing').'"').';';
+if ( !isset($oH->scripts['e0']) ) $oH->scripts['e0'] = 'var e0 = "'.L('Quit_without_saving').'";';
 
-echo '<form method="post" action="'.url('qtf_user.php').'?id='.$id.'">
+echo '<form method="post" action="'.url(APP.'_user.php').'">
 <table class="t-profile">
 <tr><th>'.L('Username').'</th><td clss="c-name">'.$row['name'].'</td></tr>
 <tr><th>'.L('Role').'</th><td>'.L('Role_'.$row['role']).($row['role']==='A' ? ' <small>'.qtSVG('user-a', 'title='.L('Role_A')).'</small>' : '').'</td></tr>
@@ -234,14 +224,14 @@ if ( SUser::role()==='A' && $id>1 ) {
   echo '</tr>'.PHP_EOL;
   echo '<tr>';
   echo '<th>'.L('Parent_mail').'</th>';
-  echo '<td><input type="email" name="parentmail" size="32" maxlength="255ù" value="'.$row['parentmail'].'" onchange="qtFormSafe.not()" multiple/></td>';
+  echo '<td><input type="email" name="parentmail" size="32" maxlength="255" value="'.$row['parentmail'].'" onchange="qtFormSafe.not()" multiple/></td>';
   echo '</tr>'.PHP_EOL;
   }
 }
 
 echo '<tr>
 <th>'.L('Privacy').'</th>
-<td>'.L('Email').'/'.L('Location').($bMap ? '/'.$L['Gmap']['position'] : '').' <select size="1" name="privacy" onchange="qtFormSafe.not()">
+<td>'.L('Email').'/'.L('Location').($useMap ? '/'.$L['Gmap']['position'] : '').' <select size="1" name="privacy" onchange="qtFormSafe.not()">
 <option value="2"'.($row['privacy']===2 ? ' selected' : '').'>'.L('Privacy_visible_2').'</option>
 <option value="1"'.($row['privacy']===1 ? ' selected' : '').'>'.L('Privacy_visible_1').'</option>
 <option value="0"'.($row['privacy']===0 ? ' selected' : '').'>'.L('Privacy_visible_0').'</option>
@@ -249,7 +239,7 @@ echo '<tr>
 </tr>
 ';
 
-if ( $bMap ) {
+if ( $useMap ) {
   $strPosition  = '<p class="small commands" style="margin:2px 0 4px 2px;text-align:right">'.$L['Gmap']['cancreate'];
   if ( !empty($row['x']) && !empty($row['y']) ) {
     $_SESSION[QT]['m_gmap_gcenter'] = $strYX;
@@ -272,8 +262,14 @@ if ( $bMap ) {
 }
 
 echo '<tr>
-<th><input type="hidden" name="id" value="'.$id.'"/><input type="hidden" name="name" value="'.$row['name'].'"/></th>
-<td><button type="submit" name="ok" value="ok">'.L('Save').'</button>'.( !empty($oH->error) ? ' <span class="error">'.$oH->error.'</span>' : '' ).'</td>
+<th>
+</th>
+<td>
+<input type="hidden" name="edit" value="'.($edit ? 1 : 0).'"/>
+<input type="hidden" name="id" value="'.$id.'"/>
+<input type="hidden" name="name" value="'.$row['name'].'"/>
+<button type="submit" name="ok" value="ok">'.L('Save').'</button>'.( !empty($oH->error) ? ' <span class="error">'.$oH->error.'</span>' : '' ).'
+</td>
 </tr>
 </table>
 </form>
@@ -306,8 +302,8 @@ echo '
 <tr><th>'.L('Messages').'</th><td>'.$strParticip.'</td></tr>
 ';
 
-if ( is_null($row['x']) || is_null($row['y']) ) $bMap = false;
-if ( $bMap ) {
+if ( is_null($row['x']) || is_null($row['y']) ) $useMap = false;
+if ( $useMap ) {
   $strPlink = '<a href="http://maps.google.com?q='.$row['y'].','.$row['x'].'" class="small" title="'.$L['Gmap']['In_google'].'" target="_blank">[G]</a>';
   $strPosition = '<div id="map_canvas"></div>';
   echo '<tr><th>'.L('Coord').'</th><td class="fix-sp"><span>'.$strCoord.' '.$strPlink.'</span><span>'.$strPriv.'</span></td></tr>'.PHP_EOL;
@@ -329,7 +325,7 @@ if ( SUser::id()===$id || SUser::isStaff() ) {
 }
 // ------
 
-if ( $bMap ) echo $strPosition;
+if ( $useMap ) echo $strPosition;
 
 echo '</div>
 ';
@@ -339,7 +335,7 @@ echo '</div>
 // ------
 // MAP MODULE
 
-if ( $bMap ) {
+if ( $useMap ) {
 
   /**
   * @var array $gmap_markers

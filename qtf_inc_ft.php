@@ -1,12 +1,10 @@
 <?php // v4.0 build:20240210
 
 /**
- * @var string $strDetailLegend
  * @var CHtml $oH
  * @var array $L
- * @var CDatabase $oDB
- * @var CSection $oS
- * @var int $s
+ * @var CDatabase $oDB (always if isset)
+ * @var CSection $oS (always if isset)
  */
 
 // END MAIN CONTENT
@@ -66,16 +64,15 @@ echo '<div id="aside__info" class="article" style="display:none">'.PHP_EOL;
   echo '<h2>'.L('Information').'</h2>'.PHP_EOL;
   // section info
   echo '<p>';
-  if ( isset($oS) && is_a($oS,'CSection') && $oS->id>=0 )
-  {
-    $strStatusText = SLang::translate('sec', 's'.$s, $oS->title).': ';
+  if ( isset($oS) && is_a($oS,'CSection') && $oS->id>=0 ) {
+    $strStatusText = SLang::translate('sec', 's'.$oS->id, $oS->title).': ';
     echo $strStatusText.'<br>';
-    echo '&nbsp; '.L('item', $stats[$s]['items'], 'k w').', '.L('reply', $stats[$s]['replies'], 'k w').'<br>';
-    if ( !$_SESSION[QT]['show_closed'] ) {
-      $intTopicsZ = isset($stats[$s]['itemsZ']) ? $stats[$s]['itemsZ'] : $oDB->count( CSection::sqlCountItems($s,'items','1') );
+    echo '&nbsp; '.L('item', $stats[$oS->id]['items'], 'k w').', '.L('reply', $stats[$oS->id]['replies'], 'k w').'<br>';
+    if ( !$_SESSION[QT]['show_closed'] && isset($oDB) ) {
+      $intTopicsZ = isset($stats[$oS->id]['itemsZ']) ? $stats[$oS->id]['itemsZ'] : $oDB->count( CSection::sqlCountItems($oS->id,'items','1') );
       echo '&nbsp; '.L('closed_item', $intTopicsZ, 'k w').'<br>';
     }
-    $strStatusText .= L('item', $stats[$s]['items'], 'k w').(empty($intTopicsZ) ? '' : ' ('.L('closed_item',$intTopicsZ, 'k w').')').', '.L('reply', $stats[$s]['replies'], 'k w');
+    $strStatusText .= L('item', $stats[$oS->id]['items'], 'k w').(empty($intTopicsZ) ? '' : ' ('.L('closed_item',$intTopicsZ, 'k w').')').', '.L('reply', $stats[$oS->id]['replies'], 'k w');
   }
   echo '</p>';
   // application info
@@ -134,9 +131,7 @@ qtApplyStoredState("aside");';
 }}}
 
 // END PAGE SITE
-echo '
-</div>
-';
+echo CHtml::page('/');
 
 // ------
 // FOOTER

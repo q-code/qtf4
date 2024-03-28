@@ -8,8 +8,8 @@ session_start();
 require 'bin/init.php';
 
 $oH->selfurl = 'qtf_items.php';
-if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) exitPage(99,'tools.svg',false); //...
-if ( !SUser::canView('V2') ) exitPage(11, 'user-lock.svg'); //...
+if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) $oH->voidPage('tools.svg',99,true,false); //...
+if ( !SUser::canView('V2') ) $oH->voidPage('user-lock.svg',11); //...
 
 // ------
 // INITIALISE
@@ -32,13 +32,13 @@ if ( $q==='' ) {
   if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U') ) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
-    exitPage(12, 'user-lock.svg'); //...
+    $oH->voidPage('user-lock.svg',12,false); //...
   }
   if ( $oS->type==='2' && SUser::role()==='V' ) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
-    exitPage(11, 'user-lock.svg'); //...
-  }
+    $oH->voidPage('user-lock.svg',11,false); //...
+    }
   $oH->selfname = L('Section').': '.$oS->title;
 } else {
   $oS = new CSection();

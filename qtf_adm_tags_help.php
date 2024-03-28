@@ -9,7 +9,7 @@ require 'bin/init.php'; if ( SUser::role()!=='A' ) die('Access denied');
 include translate('lg_adm.php');
 $oH->selfurl = APP.'_adm_tags_help.php';
 
-const HIDE_MENU_TOC=true;
+const HIDE_MENU_TOC = true;
 
 
 include APP.'_adm_inc_hd.php';

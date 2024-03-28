@@ -180,7 +180,7 @@ public static function loginPostProc(CDatabase $oDB)
       $oH->exiturl = APP.'_login.php?dfltname='.$name;
       $oH->exitname = L('Login');
       self::unsetSession();
-      $oH->pageMessage('', '<p>'.L('Is_banned_nomore').'</p><p><a href="'.url($oH->exiturl).'">'.$oH->exitname.'</a></p>');
+      $oH->voidPage('', '<p>'.L('Is_banned_nomore').'</p><p><a href="'.url($oH->exiturl).'">'.$oH->exitname.'</a></p>');
     }
 
     // end ban control
@@ -199,12 +199,12 @@ public static function loginPostProc(CDatabase $oDB)
       $oH->exiturl = APP.'_login.php?dfltname='.$name;
       $oH->exitname = L('Login');
       self::unsetSession();
-      $oH->pageMessage('', '<p>'.L('Is_banned_nomore').'</p>');
+      $oH->voidPage('', '<p>'.L('Is_banned_nomore').'</p>');
     }
     else
     {
       self::unsetSession();
-      $oH->pageMessage('', '<p>'.L('E_10').'<br>'.$name.' '.strtolower(L('Is_banned')).'<br>'.L('Retry_tomorrow').'</p>');
+      $oH->voidPage('', '<p>'.L('E_10').'<br>'.$name.' '.strtolower(L('Is_banned')).'<br>'.L('Retry_tomorrow').'</p>');
     }
   }
 
@@ -215,7 +215,7 @@ public static function loginPostProc(CDatabase $oDB)
   {
     $oH->exiturl = APP.'_register.php?a=qa&id='.self::id();
     $oH->exitname = L('Secret_question').'...';
-    $oH->pageMessage('', '<h2>'.L('Welcome').' '.$name.'</h2><br><p/>'.L('Update_secret_question').'</p>');
+    $oH->voidPage('', '<h2>'.L('Welcome').' '.$name.'</h2><br><p/>'.L('Update_secret_question').'</p>');
   }
 }
 

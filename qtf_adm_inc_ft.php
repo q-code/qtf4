@@ -1,12 +1,11 @@
 <?php // v4.0 build:20240210
 /**
  * @var CHtml $oH
- * @var CDatabase $oDB
+ * @var CDatabase $oDB (always if isset)
  */
 
-echo '
-</div>
-';
+// END PAGE SITE
+echo CHtml::page('/');
 
 if ( isset($oDB->stats) ) {
   if ( empty($oDB->stats['end']) ) $oDB->stats['end'] = gettimeofday(true);

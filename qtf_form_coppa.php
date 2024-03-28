@@ -28,7 +28,7 @@ $oH->selfurl = 'qtf_form_coppa.php';
 // ------
 // HTML BEGIN
 // ------
-const HIDE_MENU_TOC=true;
+const HIDE_MENU_TOC = true;
 
 include 'qtf_adm_inc_hd.php';
 

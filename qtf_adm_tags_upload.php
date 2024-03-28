@@ -57,7 +57,7 @@ if ( isset($_POST['ok']) )
   {
     copy($_FILES['title']['tmp_name'],'upload/'.$v);
     unlink($_FILES['title']['tmp_name']);
-    $oH->pageMessage('', L('S_update'), 'admin', 2);
+    $oH->voidPage('', L('S_update').'<script type="text/javascript">setTimeout(()=>{window.location="'.url($oH->exiturl).'";}, 2000);</script>', 'admin');
   }
 }
 

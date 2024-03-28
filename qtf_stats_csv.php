@@ -15,7 +15,7 @@ session_start();
 require 'bin/init.php';
 
 $oH->selfurl = APP.'_stats.php';
-if ( !SUser::canAccess('show_stats') ) exitPage(11,'user-lock.svg'); //...
+if ( !SUser::canAccess('show_stats') ) $oH->voidPage('user-lock.svg',11,true); //...
 
 include translate('lg_stat.php');
 include 'bin/lib_qt_stat.php';

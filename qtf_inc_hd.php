@@ -1,12 +1,9 @@
 <?php // v4.0 build:20240210
 
 /**
- * @var bool $hideMenuLang
- * @var CDatabase $oDB
  * @var CHtml $oH
- * @var CSection $oS
- * @var CTopic $oT
- * @var int $s
+ * @var CSection $oS (always if isset)
+ * @var CTopic $oT (always if isset)
  */
 // Page log
 if ( $_SESSION[QT]['board_offline'] ) $oH->log[] = 'Warning: the board is offline. Only administrators can perform actions.'.(SUser::role()==='A' ? ' <a href="qtf_adm_index.php">Administration pages...</a>' : ' <a href="qtf_login.php">Sign in...</a>');
@@ -90,8 +87,7 @@ if ( !$hideMenuLang ) {
 $oH->title = (empty($oH->selfname) ? '' : $oH->selfname.' - ').$oH->title;
 $oH->head();
 $oH->body();
-
-CHtml::getPage('id=site|'.($_SESSION[QT]['viewmode']==='C' ? 'class=compact' : ''));
+echo CHtml::page('id=site|'.($_SESSION[QT]['viewmode']==='C' ? 'class=compact' : ''));
 
 // ------
 // HEADER shows BANNER LANG-MENU NAV
@@ -154,9 +150,9 @@ echo '
 <p id="crumbtrail"><a href="',url('qtf_index.php'),'"',($oH->selfurl==='qtf_index.php' ? ' onclick="return false;"' : ''),'>',SLang::translate(),'</a>';
 if ( isset($oS) && $oS->id>=0 ) { // $oS->id=-1 in case of 'void'-section
   if ( QT_SHOW_DOMAIN ) echo QT_CRUMBTRAIL.CDomain::translate($oS->pid);
-  echo QT_CRUMBTRAIL.'<a href="'.url('qtf_items.php').'?s='.$s.'">'.CSection::translate($s).'</a>';
+  echo QT_CRUMBTRAIL.'<a href="'.url('qtf_items.php').'?s='.$oS->id.'">'.CSection::translate($oS->id).'</a>';
   if ( $oS->type==='2' && !SUser::isStaff() ) echo QT_CRUMBTRAIL.'<small>'.L('all_my_items').'</small>';
-  if ( $oH->selfurl===APP.'_item.php' && $oS->numfield!=='N' && $oS->numfield!=='' ) echo QT_CRUMBTRAIL.'<small>'.sprintf($oS->numfield,$oT->numid).'</small>';
+  if ( $oH->selfurl===APP.'_item.php' && $oS->numfield!=='N' && $oS->numfield!=='' && isset($oT) ) echo QT_CRUMBTRAIL.'<small>'.sprintf($oS->numfield,$oT->numid).'</small>';
 }
 if ( $oH->selfurl===APP.'_user.php' ) echo QT_CRUMBTRAIL.L('Profile');
 if ( $oH->selfurl===APP.'_stats.php' ) echo QT_CRUMBTRAIL.L('Statistics');

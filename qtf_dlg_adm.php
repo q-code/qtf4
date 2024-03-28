@@ -427,7 +427,7 @@ default: die('Unknown command '.$a);
 }
 
 // DISPLAY PAGE
-const HIDE_MENU_TOC=true;
+const HIDE_MENU_TOC = true;
 const HIDE_MENU_LANG=true;
 include APP.'_adm_inc_hd.php';
 

@@ -95,6 +95,9 @@ small, .small, .minor, .error, .warning{font-size:0.85rem}
 
 /* MSGBOX */
 .msgboxbody article{margin-bottom:1.2rem}
+/* Msgbox in void page */
+body > .msgbox{margin:2vw auto}
+
 
 /* TABLE */
 tr.hover:hover{background-color:#F8F8F8}

@@ -99,7 +99,7 @@ $oH->metas[] = '<meta charset="'.QT_HTML_CHAR.'"/>
 <meta name="author" content="qt-cute.org"/>';
 $oH->links['ico'] = '<link rel="shortcut icon" href="'.QT_SKIN.'img/qt.ico"/>';
 $oH->links['cssCore'] = '<link rel="stylesheet" type="text/css" href="bin/css/qt_core.css"/>';
-$oH->links['css'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.'qtf_styles.css"/>';
+$oH->links['css'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.APP.'_styles.css"/>';
 if ( file_exists(QT_SKIN.'custom.css') ) $oH->links['cssCustom'] = '<link rel="stylesheet" type="text/css" href="'.QT_SKIN.'custom.css"/>';
 $oH->scripts_top['core'] = '<script type="text/javascript" src="bin/js/qt_core.js"></script>';
 $oH->scripts_top[] = 'const acOnClicks = [];'; /* const required before autocomplete api configuration */

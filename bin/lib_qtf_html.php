@@ -107,30 +107,6 @@ function icoPrefix(string $serie, int $i, string $src='config/prefix/')
     }
   }
 }
-function exitPage($content='Page not defined', string $title='!', bool $hideMenuLang=true)
-{
-  if ( !is_string($content) && !is_int($content) ) die('exitPage: invalid argument');
-  // title can be one svg icon (if ends with '.svg')
-  if ( substr($title,-4)==='.svg' ) $title = qtSVG(substr($title,0,-4));
-  global $oH;
-  $oH->exiturl = APP.'_index.php';
-  include APP.'_inc_hd.php'; // uses $hideMenuLang (true by default for error/exit pages)
-  CHtml::msgBox($title, 'class=msgbox');
-  if ( is_int($content) ) {
-    if ( $content===99 ) {
-      $content = translate('app_offline.txt',false);
-      if ( file_exists($content) ) { include $content; } else { echo L('E_99'); }
-    } else {
-      echo L('E_'.$content);
-      if ( !SUser::auth() ) echo '<p><a href="'.APP.'_login.php">'.L('Login').'...</a></p>';
-    }
-  } else {
-    echo $content;
-  }
-  CHtml::msgBox('/');
-  include APP.'_inc_ft.php';
-  exit; //...
-}
 function formatCsvRow($arrFLD,$row,$oS=null)
 {
   if ( !is_array($row) ) die('formatItemRow: Wrong argument #3');

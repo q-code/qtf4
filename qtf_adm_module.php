@@ -30,7 +30,7 @@ if ( isset($_POST['ok']) ) {
 
   if ( file_exists($strFile) ) {
     $oH->exiturl = '';
-    $oH->pageMessage('', '<p>'.L('Module').': '.$name.'</p><p>Script: '.$strFile.'</p><p class="submit"><a class="button" href="'.APP.'_adm_module.php">'.L('Cancel').'</a> <a class="button" href="'.$strFile.'">'.($a==='rem' ? L('Remove') : L('Add')).'</a></p>', 'admin');
+    $oH->voidPage('', '<p>'.L('Module').': '.$name.'</p><p>Script: '.$strFile.'</p><p class="submit"><a class="button" href="'.APP.'_adm_module.php">'.L('Cancel').'</a> <a class="button" href="'.$strFile.'">'.($a==='rem' ? L('Remove') : L('Add')).'</a></p>', 'admin');
   } else {
     $oH->error = 'Module not found... ('.$strFile.')<br><br>Possible cause: components of this module are not uploaded.';
     if ( $a==='rem' ) {
