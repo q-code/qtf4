@@ -172,16 +172,16 @@ $arr = array(
   'V'=>L('Role_V')
   );
 echo '
-<form method="post" action="'.$oH->self().'">
+<form class="formsafe" method="post" action="'.$oH->self().'">
 <h2 class="config">'.L('Public_access_level').'</h2>
 <table class="t-conf">
 <tr title="'.L('H_Visitors_can').'">
 <th>'.L('Visitors_can').'</th>
-<td><select name="pal" onchange="qtFormSafe.not();">'.qtTags(L('Pal.*'),(int)$_SESSION[QT]['visitor_right']).'</select></td>
+<td><select name="pal">'.qtTags(L('Pal.*'),(int)$_SESSION[QT]['visitor_right']).'</select></td>
 </tr>
 <tr>
 <th>'.L('View_memberlist').'</th>
-<td><select name="memberlist" onchange="qtFormSafe.not();">'.qtTags($arr,$_SESSION[QT]['show_memberlist']).'</select></td>
+<td><select name="memberlist">'.qtTags($arr,$_SESSION[QT]['show_memberlist']).'</select></td>
 </tr>
 </table>
 ';
@@ -198,7 +198,7 @@ foreach($oDB->getSettings('param LIKE "m_%:login"') as $param=>$alias)
   if ( isset($_SESSION[QT][$addon]) && $_SESSION[QT][$addon]!=='0' ) $arrAddons[$addon] = 'Module '.$alias;
 }
 // If several authorities are possible, show a selector, otherwise shows '0' the internale authority
-$strAuth = count($arrAddons)==1 ? $arrAddons['0'] :'<select id="login_addon" name="login_addon" onchange="qtFormSafe.not();">'.qtTags($arrAddons,$_SESSION[QT]['login_addon']).'</select>';
+$strAuth = count($arrAddons)==1 ? $arrAddons['0'] :'<select id="login_addon" name="login_addon">'.qtTags($arrAddons,$_SESSION[QT]['login_addon']).'</select>';
 
 echo '<h2 class="config">'.L('Registration').'</h2>
 <table class="t-conf">
@@ -209,7 +209,7 @@ echo '<h2 class="config">'.L('Registration').'</h2>
 <tr title="'.L('Reg_mode').'">
 <th>'.L('Reg_mode').'</th>
 <td>
-<select id="regmode" name="regmode" onchange="qtFormSafe.not();">
+<select id="regmode" name="regmode">
 '.qtTags(array('direct'=>'Online (direct)','email'=>'Online (with e-mail checking)','backoffice'=>'Back-office request'),$_SESSION[QT]['register_mode']).'
 </select>
 </tr>
@@ -234,23 +234,23 @@ echo '<tr>
 echo '<tr id="recaptcha2" style="display:'.($_SESSION[QT]['register_safe']==='recaptcha2' ? 'table-row' : 'none').'">
 <th>reCAPTCHA api keys</th>
 <td>
-<input type="text" id="api2pk" name="api2pk" size="24" maxlength="255" value="'.$_SESSION[QT]['recaptcha2pk'].'" onchange="qtFormSafe.not();" placeholder="reCAPTCHA v2 site key" title="reCAPTCHA v2 site key"/>
-<input type="text" id="api2sk" name="api2sk" size="24" maxlength="255" value="'.$_SESSION[QT]['recaptcha2sk'].'" onchange="qtFormSafe.not();" placeholder="reCAPTCHA v2 secret key" title="reCAPTCHA v2 secret key"/>
+<input type="text" id="api2pk" name="api2pk" size="24" maxlength="255" value="'.$_SESSION[QT]['recaptcha2pk'].'" placeholder="reCAPTCHA v2 site key" title="reCAPTCHA v2 site key"/>
+<input type="text" id="api2sk" name="api2sk" size="24" maxlength="255" value="'.$_SESSION[QT]['recaptcha2sk'].'" placeholder="reCAPTCHA v2 secret key" title="reCAPTCHA v2 secret key"/>
 </td>
 </tr>
 ';
 echo '<tr id="recaptcha3" style="display:'.($_SESSION[QT]['register_safe']==='recaptcha3' ? 'table-row' : 'none').'">
 <th>reCAPTCHA api keys</th>
 <td>
-<input type="text" id="api3pk" name="api3pk" size="24" maxlength="255" value="'.$_SESSION[QT]['recaptcha3pk'].'" onchange="qtFormSafe.not();" placeholder="reCAPTCHA v3 site key" title="reCAPTCHA v3 site key"/>
-<input type="text" id="api3sk" name="api3sk" size="24" maxlength="255" value="'.$_SESSION[QT]['recaptcha3sk'].'" onchange="qtFormSafe.not();" placeholder="reCAPTCHA v3 secret key" title="reCAPTCHA v3 secret key"/>
+<input type="text" id="api3pk" name="api3pk" size="24" maxlength="255" value="'.$_SESSION[QT]['recaptcha3pk'].'" placeholder="reCAPTCHA v3 site key" title="reCAPTCHA v3 site key"/>
+<input type="text" id="api3sk" name="api3sk" size="24" maxlength="255" value="'.$_SESSION[QT]['recaptcha3sk'].'" placeholder="reCAPTCHA v3 secret key" title="reCAPTCHA v3 secret key"/>
 </td>
 </tr>
 ';
 echo '<tr title="'.L('H_Register_coppa').'">
 <th>'.L('Register_coppa').'</th>
 <td>
-<select id="regcoppa" name="regcoppa" onchange="qtFormSafe.not();">
+<select id="regcoppa" name="regcoppa">
 <option value="0"'.($_SESSION[QT]['register_coppa']=='0' ? ' selected' : '').'>'.L('N').'</option>
 <option value="1"'.($_SESSION[QT]['register_coppa']=='1' ? ' selected' : '').'>'.L('Y').'</option>
 </select>
@@ -267,22 +267,22 @@ echo '<h2 class="config">'.L('Security_rules').'</h2>
 ';
 echo '<tr title="'.L('H_Max_replies_per_items').'">
 <th>'.L('Max_replies_per_items').'</th>
-<td><input required type="number" id="ppt" name="ppt" min="50" max="1000" step="50" value="'.$_SESSION[QT]['posts_per_item'].'" onchange="qtFormSafe.not();"/> / '.strtolower(L('Item')).'</td>
+<td><input required type="number" id="ppt" name="ppt" min="50" max="1000" step="50" value="'.$_SESSION[QT]['posts_per_item'].'"/> / '.strtolower(L('Item')).'</td>
 </tr>
 ';
 echo '<tr title="'.L('H_hacking_day').'">
 <th>'.L('Max_post_per_user').'</th>
-<td><input required type="number" id="ppd" name="ppd" min="50" max="1000" step="50" value="'.$_SESSION[QT]['posts_per_day'].'" onchange="qtFormSafe.not();"/> / '.strtolower(L('Day')).'</td>
+<td><input required type="number" id="ppd" name="ppd" min="50" max="1000" step="50" value="'.$_SESSION[QT]['posts_per_day'].'"/> / '.strtolower(L('Day')).'</td>
 </tr>
 ';
 echo '<tr title="'.L('H_Max_char_per_post').'">
 <th>'.L('Max_char_per_post').'</th>
-<td><input required type="number" id="cpp" name="cpp" min="1" max="'.MAX_K.'" value="'.($_SESSION[QT]['chars_per_post']/1000).'" onchange="qtFormSafe.not();"/> x 1000</td>
+<td><input required type="number" id="cpp" name="cpp" min="1" max="'.MAX_K.'" value="'.($_SESSION[QT]['chars_per_post']/1000).'"/> x 1000</td>
 </tr>
 ';
 echo '<tr title="'.L('H_Max_line_per_post').'">
 <th>'.L('Max_line_per_post').'</th>
-<td><input required type="number" id="lpp" name="lpp" min="50" max="1000" step="50" value="'.$_SESSION[QT]['lines_per_post'].'" onchange="qtFormSafe.not();"/></td>
+<td><input required type="number" id="lpp" name="lpp" min="50" max="1000" step="50" value="'.$_SESSION[QT]['lines_per_post'].'"/></td>
 </tr>
 </table>
 ';
@@ -299,7 +299,7 @@ echo '<h2 class="config">'.L('User_interface').'</h2>
 <option value="gif jpg jpeg png"'.($format['mime']=='gif jpg jpeg png' ? ' selected' : '').'>'.L('Y').' ('.L('Gif_jpg_png').')</option>
 </select>
 <div id="avatar-params" style="display:'.(empty($format['mime']) ? 'none' : 'inline-block').'">
-Max.<input required type="number" id="avatarwidth" name="maxw" min="20" max="200" step="10" value="'.$format['width'].'" onchange="qtFormSafe.not();" title="'.L('width').'"/>x<input required type="number" id="avatarheight" name="maxh" min="20" max="200" step="10" value="'.$format['height'].'" onchange="qtFormSafe.not();" title="'.L('height').'"/>px
+Max.<input required type="number" id="avatarwidth" name="maxw" min="20" max="200" step="10" value="'.$format['width'].'" title="'.L('width').'"/>x<input required type="number" id="avatarheight" name="maxh" min="20" max="200" step="10" value="'.$format['height'].'" title="'.L('height').'"/>px
 </div>
 </td>
 </tr>
@@ -315,14 +315,14 @@ echo '<tr title="'.L('H_Allow_upload').'">
 <td>
 <select id="upload" name="upload" onchange="toggleParams(this.id,this.value); qtFormSafe.not();">
 '.qtTags($arr,$_SESSION[QT]['upload']).'
-</select> <div id="upload-params" style="display:'.($_SESSION[QT]['upload']=='0' ? 'none' : 'inline-block').'">Max.<input required type="number" id="uploadsize" name="uploadsize" min="1" max="'.QT_UPLOAD_MAXSIZE.'" value="'.$i.'" onchange="qtFormSafe.not();"/>Mb<small> (server limit '.(function_exists('ini_get') ? max_fileuploadbytes().'Mb' : 'unknown').')</small></div>
+</select> <div id="upload-params" style="display:'.($_SESSION[QT]['upload']=='0' ? 'none' : 'inline-block').'">Max.<input required type="number" id="uploadsize" name="uploadsize" min="1" max="'.QT_UPLOAD_MAXSIZE.'" value="'.$i.'"/>Mb<small> (server limit '.(function_exists('ini_get') ? max_fileuploadbytes().'Mb' : 'unknown').')</small></div>
 </td>
 </tr>
 ';
 echo '<tr title="'.L('H_Show_calendar').'">
 <th>'.L('Show_calendar').'</th>
 <td>
-<select id="show_calendar" name="show_calendar" onchange="qtFormSafe.not();">'.qtTags($arr,$_SESSION[QT]['show_calendar']).'</select>
+<select id="show_calendar" name="show_calendar">'.qtTags($arr,$_SESSION[QT]['show_calendar']).'</select>
 </td>
 </tr>
 ';
@@ -334,7 +334,7 @@ $arr = array(
 echo '<tr title="'.L('H_Show_statistics').'">
 <th>'.L('Show_statistics').'</th>
 <td>
-<select name="show_stats" onchange="qtFormSafe.not();">'.qtTags($arr,$_SESSION[QT]['show_stats']).'</select>
+<select name="show_stats">'.qtTags($arr,$_SESSION[QT]['show_stats']).'</select>
 </td>
 </tr>
 ';

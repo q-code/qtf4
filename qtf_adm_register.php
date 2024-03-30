@@ -78,7 +78,7 @@ case 'usersrole':
 
   // FORM
   $frm_title = L('Change_role');
-  $frm[] = '<form method="post" action="'.$oH->selfuri.'">';
+  $frm[] = '<form class="formsafe" method="post" action="'.$oH->selfuri.'">';
   $frm[] = '<p>'.L('Users').':</p>';
   $frm[] = renderUsers($ids).'<br>';
   $frm[] = '<p>'.L('Role').' <select required name="role" size="1">
@@ -108,7 +108,7 @@ case 'usersdel':
 
   // FORM
   $frm_title = L('Delete').' '.L('users');
-  $frm[] = '<form method="post" action="'.$oH->selfuri.'">';
+  $frm[] = '<form class="formsafe" method="post" action="'.$oH->selfuri.'">';
   $frm[] = '<p>'.L('Users').':</p>';
   $frm[] = renderUsers($ids).'<br>';
   $frm[] = '<p class="row-confirm"><input required type="checkbox" id="confirm" name="confirm"/> <label for="confirm">'.L('Confirm').': '.L('Delete').' '.L('member',count($ids)).'<label></p>';
@@ -157,7 +157,7 @@ case 'catdel':
   // FORM
   $frm_title = L('Delete').' '.L('users');
   $str = isset($_GET['n']) ? $_GET['n'] : '!';
-  $frm[] = '<form method="post" action="'.$oH->selfuri.'">';
+  $frm[] = '<form class="formsafe" method="post" action="'.$oH->selfuri.'">';
   $frm[] = '<p><input required type="checkbox" id="confirm" name="confirm"/> <label for="confirm">'.L('Confirm').': '.L('Delete').' '.$str.' '.L('members_'.$cat).'<label></p>';
   $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exit().'`;">'.L('Cancel').'</button> &nbsp; <button type="submit" name="ok" value="delete">'.L('Delete').' ('.$str.')</button></p>';
   $frm[] = '<input type="hidden" name="cat" value="'.$cat.'"/>';
@@ -190,7 +190,7 @@ case 'usersban':
 
   // FORM
   $frm_title = L('Ban');
-  $frm[] = '<form method="post" action="'.$oH->selfuri.'">';
+  $frm[] = '<form class="formsafe" method="post" action="'.$oH->selfuri.'">';
   $frm[] = '<p>'.L('Users').':</p>';
   $frm[] = renderUsers($ids).'<br>';
   $frm[] = '<p>'.L('H_ban').':</p>';
@@ -226,7 +226,7 @@ case 'userspic':
 
   // FORM
   $frm_title = L('Pictures');
-  $frm[] = '<form method="post" action="'.$oH->selfuri.'">';
+  $frm[] = '<form class="formsafe" method="post" action="'.$oH->selfuri.'">';
   $frm[] = '<p>'.L('Users').':</p>';
   $frm[] = renderUsers($ids).'<br>';
   $frm[] = '<p class="row-confirm"><input required type="checkbox" id="confirm" name="confirm"/> <label for="confirm">'.L('Confirm').': '.L('Delete').' '.L('picture',count($ids)).'<label></p>';  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exit().'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' ('.count($ids).')</button></p>';
@@ -241,7 +241,7 @@ default: die('Unknown command');
 // DISPLAY PAGE
 
 const HIDE_MENU_TOC = true;
-const HIDE_MENU_LANG=true;
+const HIDE_MENU_LANG = true;
 include APP.'_adm_inc_hd.php';
 
 if ( !empty($frm_hd) ) echo $frm_hd.PHP_EOL;

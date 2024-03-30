@@ -191,7 +191,7 @@ if ( $intCount<$intUsers ) $strPaging = '<small>'.L('user',$intCount).' '.L('fro
 // Memberlist
 // ------
 $rowCommands = L('selection').': <a class="datasetcontrol" href="javascript:void(0)" data-action="usersrole">'.L('role').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersdel">'.L('delete').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersban">'.strtolower(L('Ban')).'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="userspic">'.L('picture').'</a>';
-echo PHP_EOL.'<form id="form-users" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-users-action" name="a" />'.PHP_EOL;
+echo PHP_EOL.'<form class="formsafe" id="form-users" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-users-action" name="a" />'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
 echo '<div id="t1-edits-top" class="left checkboxcmds">'.qtSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;

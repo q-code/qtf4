@@ -87,7 +87,7 @@ if ( !$hideMenuLang ) {
 $oH->title = (empty($oH->selfname) ? '' : $oH->selfname.' - ').$oH->title;
 $oH->head();
 $oH->body();
-echo CHtml::page('id=site|'.($_SESSION[QT]['viewmode']==='C' ? 'class=compact' : ''));
+echo CHtml::pageDIV('id=site|'.($_SESSION[QT]['viewmode']==='C' ? 'class=compact' : ''));
 
 // ------
 // HEADER shows BANNER LANG-MENU NAV

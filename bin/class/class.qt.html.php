@@ -60,7 +60,7 @@ public function end(bool $allowSplash=true)
   // output
   echo $log.PHP_EOL.implode(PHP_EOL,$this->scripts).$splash.PHP_EOL.'</body>'.PHP_EOL.'</html>';
 }
-public static function page(string $attr='id=site', string $info='id site')
+public static function pageDIV(string $attr='id=site', string $info='id site')
 {
   if ( $attr==='/' ) return PHP_EOL.'</div>'.PHP_EOL.'<!-- end '.$info.' -->'.PHP_EOL;
   return PHP_EOL.'<!-- start '.$info.' -->'.PHP_EOL.'<div'.attrRender($attr).'>'.PHP_EOL;

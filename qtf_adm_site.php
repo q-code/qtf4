@@ -100,24 +100,24 @@ if ( !empty($oH->warning) ) $oH->warning = qtSVG('flag', 'style=font-size:1.4rem
 include APP.'_adm_inc_hd.php';
 
 // FORM
-echo '<form method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->self().'">
 <h2 class="config">'.L('General_site').'</h2>
 <table class="t-conf input100">
 ';
 $str = $_SESSION[QT]['site_name'];
 echo '<tr title="'.L('H_Site_name').'">
 <th>'.L('Site_name').'</th>
-<td><input required type="text" name="site_name" maxlength="64" value="'.qtAttr($str).'" onchange="qtFormSafe.not();"/></td>
+<td><input required type="text" name="site_name" maxlength="64" value="'.qtAttr($str).'"/></td>
 </tr>
 ';
 echo '<tr title="'.L('H_Site_url').'">
 <th>'.L('Site_url').'</th>
-<td><input required type="text" name="site_url" pattern="^(http://|https://).*" maxlength="255" value="'.$_SESSION[QT]['site_url'].'" onchange="qtFormSafe.not();"/></td>
+<td><input required type="text" name="site_url" pattern="^(http://|https://).*" maxlength="255" value="'.$_SESSION[QT]['site_url'].'"/></td>
 </tr>
 ';
 echo '<tr title="'.L('H_Name_of_index').'">
 <th>'.L('Name_of_index').'</th>
-<td><input required type="text" name="index_name" maxlength="64" value="'.qtAttr($_SESSION[QT]['index_name']).'" style="background-color:#dbf4ff" onchange="qtFormSafe.not();"/></td>
+<td><input required type="text" name="index_name" maxlength="64" value="'.qtAttr($_SESSION[QT]['index_name']).'" style="background-color:#dbf4ff"/></td>
 </tr>
 <tr>
 <th>'.L('Name_of_index').'<br>'.L('Translations').' *</th>
@@ -127,7 +127,7 @@ $arrTrans = SLang::get('index','*','i'); // stripslashed
 foreach(LANGUAGES as $k=>$values)
 {
   $arr = explode(' ',$values,2); if ( empty($arr[1]) ) $arr[1]=$arr[0];
-  echo '<p class="iso" title="'.L('Name_of_index').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="tr-'.$k.'" maxlength="64" value="'.(empty($arrTrans[$k]) ? '' : qtAttr($arrTrans[$k])).'" placeholder="'.qtAttr($_SESSION[QT]['index_name']).'" onchange="qtFormSafe.not();"/></p>'.PHP_EOL;
+  echo '<p class="iso" title="'.L('Name_of_index').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="tr-'.$k.'" maxlength="64" value="'.(empty($arrTrans[$k]) ? '' : qtAttr($arrTrans[$k])).'" placeholder="'.qtAttr($_SESSION[QT]['index_name']).'"/></p>'.PHP_EOL;
 }
 echo '</div></td>
 </tr>
@@ -141,11 +141,11 @@ echo '<h2 class="config">'.L('Contact').'</h2>
 <table class="t-conf input100">
 ';
 echo '<tr title="'.L('H_Admin_e_mail').'">
-<th>'.L('Adm_e_mail').'</th><td><input required type="email" name="admin_mail" maxlength="255" value="'.qtAttr($_SESSION[QT]['admin_email']).'" onchange="qtFormSafe.not();"/></td></tr>
+<th>'.L('Adm_e_mail').'</th><td><input required type="email" name="admin_mail" maxlength="255" value="'.qtAttr($_SESSION[QT]['admin_email']).'"/></td></tr>
 ';
-if ( isset($_SESSION[QT]['admin_phone']) ) echo '<tr><th>'.L('Adm_phone').'</th><td><input type="text" name="admin_phone" maxlength="255" value="'.qtAttr($_SESSION[QT]['admin_phone']).'" onchange="qtFormSafe.not();"/></td></tr>'.PHP_EOL;
-if ( isset($_SESSION[QT]['admin_name']) ) echo '<tr><th>'.L('Adm_name').'</th><td><input type="text" name="admin_name" maxlength="255" value="'.qtAttr($_SESSION[QT]['admin_name']).'" onchange="qtFormSafe.not();"/></td></tr>'.PHP_EOL;
-if ( isset($_SESSION[QT]['admin_addr']) ) echo '<tr><th>'.L('Adm_addr').'</th><td><input type="text" name="admin_addr" maxlength="255" value="'.qtAttr($_SESSION[QT]['admin_addr']).'" onchange="qtFormSafe.not();"/></td></tr>'.PHP_EOL;
+if ( isset($_SESSION[QT]['admin_phone']) ) echo '<tr><th>'.L('Adm_phone').'</th><td><input type="text" name="admin_phone" maxlength="255" value="'.qtAttr($_SESSION[QT]['admin_phone']).'"/></td></tr>'.PHP_EOL;
+if ( isset($_SESSION[QT]['admin_name']) ) echo '<tr><th>'.L('Adm_name').'</th><td><input type="text" name="admin_name" maxlength="255" value="'.qtAttr($_SESSION[QT]['admin_name']).'"/></td></tr>'.PHP_EOL;
+if ( isset($_SESSION[QT]['admin_addr']) ) echo '<tr><th>'.L('Adm_addr').'</th><td><input type="text" name="admin_addr" maxlength="255" value="'.qtAttr($_SESSION[QT]['admin_addr']).'"/></td></tr>'.PHP_EOL;
 echo '</table>
 ';
 echo '<h2 class="config">'.L('Email_settings').'</h2>
@@ -159,19 +159,19 @@ echo '<tr title="'.L('H_Use_smtp').'">
 echo '<tr>
 <th>Smtp host</th>
 <td>
-<input type="text" id="smtp_host" name="smtp_host" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_host']).'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').' onchange="qtFormSafe.not();"/>
- port <input type="text" id="smtp_port" name="smtp_port" size="4" maxlength="6" value="'.(isset($_SESSION[QT]['smtp_port']) ? qtAttr($_SESSION[QT]['smtp_port']) : '25').'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').' onchange="qtFormSafe.not();"/>
+<input type="text" id="smtp_host" name="smtp_host" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_host']).'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').'/>
+ port <input type="text" id="smtp_port" name="smtp_port" size="4" maxlength="6" value="'.(isset($_SESSION[QT]['smtp_port']) ? qtAttr($_SESSION[QT]['smtp_port']) : '25').'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').'/>
 </td>
 </tr>
 ';
 echo '<tr>
 <th>Smtp username</th>
-<td><input type="text" id="smtp_username" name="smtp_username" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_username']).'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').' onchange="qtFormSafe.not();"/></td>
+<td><input type="text" id="smtp_username" name="smtp_username" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_username']).'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').'/></td>
 </tr>
 ';
 echo '<tr>
 <th>Smtp password</th>
-<td><input type="text" id="smtp_password" name="smtp_password" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_password']).'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').' onchange="qtFormSafe.not();"/> <a href="javascript:void(0)" onclick="addArgs(this);" target="_blank">test smtp</a></td>
+<td><input type="text" id="smtp_password" name="smtp_password" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_password']).'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').'/> <a href="javascript:void(0)" onclick="addArgs(this);" target="_blank">test smtp</a></td>
 </tr>
 </table>
 ';

@@ -68,7 +68,7 @@ include 'qtf_adm_inc_hd.php';
 
 CHtml::msgBox(L('Add').' CSV '.L('file'));
 
-echo '<form method="post" action="'.$oH->self().'" enctype="multipart/form-data">'.PHP_EOL;
+echo '<form class="formsafe" method="post" action="'.$oH->self().'" enctype="multipart/form-data">'.PHP_EOL;
 echo '<p style="text-align:right">'.PHP_EOL;
 echo L('File').': <input type="hidden" name="max_file_size" value="'.($intSize*1024).'"/>'.PHP_EOL;
 echo '<input required type="file" id="title" name="title" size="32"/><br><br><br><br>'.PHP_EOL;

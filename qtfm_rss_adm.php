@@ -80,7 +80,7 @@ $strSize = $arrConf[2];
 // FORM
 
 echo '
-<form method="post" action="'.$oH->self().'">
+<form class="formsafe" method="post" action="'.$oH->self().'">
 <h2 class="config">'.L('Status').'</h2>
 <table class="t-conf">
 <tr>

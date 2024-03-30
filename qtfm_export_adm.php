@@ -145,7 +145,7 @@ if ( isset($_POST['ok']) )
 // ------
 include 'qtf_adm_inc_hd.php';
 
-echo '<form method="post" action="',$oH->selfurl,'">
+echo '<form class="formsafe" method="post" action="',$oH->selfurl,'">
 <h2 class="config">',$L['Export_Content'],'</h2>
 <table class="t-conf">
 <tr>

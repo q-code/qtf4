@@ -51,7 +51,7 @@ if ( $rows<15 || $rows>40 ) $rows=15;
 // INITIALISE
 
 const HIDE_MENU_TOC = true;
-const HIDE_MENU_LANG=true;
+const HIDE_MENU_LANG = true;
 
 $oH->selfurl = 'tool_txt.php';
 $oH->selfname = empty($title) ? L('File') : $title;
@@ -137,7 +137,7 @@ if ( file_exists($file) )
   $str = file_get_contents($file);
 
   // editor
-  echo '<form method="post" action="'.$oH->self().'">'.PHP_EOL;
+  echo '<form  method="post" action="'.$oH->self().'">'.PHP_EOL;
   if ( !empty($exit) ) echo '<input type="hidden" name="exit" value="'.$oH->exiturl.'"/>'.PHP_EOL;
   if ( !empty($file) ) echo '<input type="hidden" name="file" value="'.$file.'"/>'.PHP_EOL;
   if ( !empty($help) ) echo '<input type="hidden" name="help" value="'.$help.'"/>'.PHP_EOL;

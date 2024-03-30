@@ -40,7 +40,7 @@ if ( !empty($_GET['sqlite']) ) try {
 
 }
 
-echo '<form method="post" name="install" action="setup_1.php">
+echo '<form  method="post" name="install" action="setup_1.php">
 ';
 
 // ------

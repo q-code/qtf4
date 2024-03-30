@@ -115,7 +115,7 @@ if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) ) {
     foreach($arrTags as $k=>$item) $tags .= empty($item) ? '' : '<span class="tag clickable" onclick="tagClick(this.innerHTML)" title="" data-tagdesc="'.$item.'">'.$item.'</span>';
     echo '<div id="tag-shown" style="display:inline-block">'.$tags.'</div>';
     echo ' &nbsp; <a href="javascript:void(0)" id="tag-ctrl" class="tgl-ctrl" onclick="qtToggle(`tag-container`,null,`tag-ctrl`)" title="'.L('Edit').'">'.qtSVG('pen').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>'.PHP_EOL;
-    echo '<div id="tag-container" style="display:none"><form method="post" action="'.url($oH->selfurl).'?s='.$s.'&t='.$t.'" onreset="qtFocus(`tag-edit`)">';
+    echo '<div id="tag-container" style="display:none"><form  method="post" action="'.url($oH->selfurl).'?s='.$s.'&t='.$t.'" onreset="qtFocus(`tag-edit`)">';
     echo '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/><input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
     echo '<input type="hidden" id="tag-saved" value="'.qtAttr($oT->descr).'"/>';
     echo '<input type="hidden" id="tag-new" name="tag-new" maxlength="255" value="'.qtAttr($oT->descr).'"/>';
@@ -165,7 +165,7 @@ if ( SUser::role()==='V' && $_SESSION[QT]['visitor_right']<7 ) {} else {
 $certificate = makeFormCertificate('ec8a0d9ab2cae03d0c7314491eb60d0b');
 echo '
 <div id="message-preview"></div>
-<form id="form-qr" method="post" action="'.url('qtf_edit.php').'?s='.$s.'&t='.$oT->id.'&a=re">
+<form  id="form-qr" method="post" action="'.url('qtf_edit.php').'?s='.$s.'&t='.$oT->id.'&a=re">
 <div class="quickreply">
 ';
 echo '<div class="g-qr-icon"><p class="i-container" title="'.L('Reply').'">'.qtSVG('comment-dots').'</p></div>

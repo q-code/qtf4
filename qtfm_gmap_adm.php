@@ -90,12 +90,12 @@ function previewMarker(src) { document.getElementById("previewmarker").src = src
 include 'qtf_adm_inc_hd.php';
 
 echo '
-<form method="post" action="'.url($oH->selfurl).'" onsubmit="return ValidateForm(this,enterkeyPressed);">
+<form class="formsafe" method="post" action="'.url($oH->selfurl).'" onsubmit="return ValidateForm(this,enterkeyPressed);">
 <h2 class="config">'.L('Gmap.Mapping_settings').'</h2>
 <table class="t-conf">
 <tr>
 <th style="width:150px"><label for="m_gmap_gkey">Google API key</label></th>
-<td><input id="m_gmap_gkey" name="m_gmap_gkey" size="40" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gkey'].'" onchange="qtFormSafe.not();"/></td>
+<td><input id="m_gmap_gkey" name="m_gmap_gkey" size="40" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gkey'].'"/></td>
 </tr>
 ';
 
@@ -109,15 +109,15 @@ $current = empty($_SESSION[QT]['m_gmap_gsymbol']) ? 'default' : $_SESSION[QT]['m
 echo '<tr>
 <th style="width:150px">'.L('Gmap.API_ctrl').'</th>
 <td>
-<input type="checkbox" id="map" name="map"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],2,1)==='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="map">'.L('Gmap.Ctrl.Background').'</label>
-&nbsp; <input type="checkbox" id="scale" name="scale"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],3,1)==='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="scale">'.L('Gmap.Ctrl.Scale').'</label>
-&nbsp; <input type="checkbox" id="fullscreen" name="fullscreen"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],4,1)==='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="fullscreen">'.L('Gmap.Ctrl.Fullscreen').'</label>
-&nbsp; <input type="checkbox" id="mousewheel" name="mousewheel"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],5,1)==='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="mousewheel">'.L('Gmap.Ctrl.Mousewheel').'</label>
+<input type="checkbox" id="map" name="map"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],2,1)==='1' ? 'checked' : '').'/> <label for="map">'.L('Gmap.Ctrl.Background').'</label>
+&nbsp; <input type="checkbox" id="scale" name="scale"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],3,1)==='1' ? 'checked' : '').'/> <label for="scale">'.L('Gmap.Ctrl.Scale').'</label>
+&nbsp; <input type="checkbox" id="fullscreen" name="fullscreen"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],4,1)==='1' ? 'checked' : '').'/> <label for="fullscreen">'.L('Gmap.Ctrl.Fullscreen').'</label>
+&nbsp; <input type="checkbox" id="mousewheel" name="mousewheel"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],5,1)==='1' ? 'checked' : '').'/> <label for="mousewheel">'.L('Gmap.Ctrl.Mousewheel').'</label>
 </td>
 </tr>
 <th style="width:150px">'.L('Gmap.API_services').'</th>
-<td><input type="checkbox" id="streetview" name="streetview"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],1,1)==='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="streetview">'.L('Gmap.Ctrl.Streetview').'</label>
-&nbsp; <input type="checkbox" id="geocode" name="geocode"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? 'checked' : '').' onchange="qtFormSafe.not();"/> <label for="geocode">'.L('Gmap.Ctrl.Geocode').'</label></td>
+<td><input type="checkbox" id="streetview" name="streetview"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],1,1)==='1' ? 'checked' : '').'/> <label for="streetview">'.L('Gmap.Ctrl.Streetview').'</label>
+&nbsp; <input type="checkbox" id="geocode" name="geocode"'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? 'checked' : '').'/> <label for="geocode">'.L('Gmap.Ctrl.Geocode').'</label></td>
 </tr>
 <tr>
 <th style="width:150px">'.L('Gmap.Default_symbol').'</th>
@@ -145,24 +145,24 @@ echo '<h2 class="config">'.L('Gmap.Mapping_config').'</h2>
 <table class="t-conf">
 <tr>
 <th style="width:150px;">'.L('Gmap.Center').'</th>
-<td style="width:310px;"><input type="text" id="m_gmap_gcenter" name="m_gmap_gcenter" size="26" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gcenter'].'" onchange="qtFormSafe.not();"/><small> '.L('Gmap.Latlng').'</small></td>
+<td style="width:310px;"><input type="text" id="m_gmap_gcenter" name="m_gmap_gcenter" size="26" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gcenter'].'"/><small> '.L('Gmap.Latlng').'</small></td>
 <td><small>'.L('Gmap.H_Center').'</small></td>
 </tr>
 <tr>
 <th style="width:150px;">'.L('Gmap.Zoom').'</th>
 <td>
-<input type="text" id="m_gmap_gzoom" name="m_gmap_gzoom" size="2" maxlength="2" value="'.$_SESSION[QT]['m_gmap_gzoom'].'" onchange="qtFormSafe.not();"/></td>
+<input type="text" id="m_gmap_gzoom" name="m_gmap_gzoom" size="2" maxlength="2" value="'.$_SESSION[QT]['m_gmap_gzoom'].'"/></td>
 <td><small>'.L('Gmap.H_Zoom').'</small></td>
 </tr>
 <tr>
 <th style="width:150px;">'.L('Gmap.Background').'</th>
-<td><select id="maptype" name="maptype" size="1" onchange="qtFormSafe.not();">'.qtTags(L('Gmap.Back.*'),substr($_SESSION[QT]['m_gmap_gbuttons'],0,1)).'</select></td>
+<td><select id="maptype" name="maptype" size="1">'.qtTags(L('Gmap.Back.*'),substr($_SESSION[QT]['m_gmap_gbuttons'],0,1)).'</select></td>
 <td><small>'.L('Gmap.H_Background').'</small></td>
 </tr>
 <tr>
 <th style="width:150px;"><label for="m_gmap_gfind">'.L('Gmap.Address_sample').'</label></th>
 <td>
-<input'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? '' : 'disabled').' type="text" id="m_gmap_gfind" name="m_gmap_gfind" size="20" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gfind'].'" onchange="qtFormSafe.not();"/></td>
+<input'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? '' : 'disabled').' type="text" id="m_gmap_gfind" name="m_gmap_gfind" size="20" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gfind'].'"/></td>
 <td><small>'.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? L('Gmap.H_Address_sample') : L('Gmap.Ctrl.Geocode').' (off)').'</small></td>
 </tr>
 ';
@@ -205,12 +205,8 @@ if ( !empty($_SESSION[QT]['m_gmap_gkey']) )
 
   $gmap_markers[] = gmapMarker($_SESSION[QT]['m_gmap_gcenter'],true,$gmap_symbol,L('Gmap.Default_center'));
   $gmap_events[] = '
-	google.maps.event.addListener(marker, "position_changed", function() {
-		if ( document.getElementById("m_gmap_gcenter")) {document.getElementById("m_gmap_gcenter").value = gmapRound(marker.getPosition().lat(),10) + "," + gmapRound(marker.getPosition().lng(),10);}
-	});
-	google.maps.event.addListener(marker, "dragend", function() {
-		map.panTo(marker.getPosition());
-	});';
+  markers[0].addListener("drag", ()=>{ document.getElementById("yx").value = gmapRound(markers[0].position.lat,10) + "," + gmapRound(markers[0].position.lng,10); });
+	google.maps.event.addListener(markers[0], "dragend", function() { map.panTo(markers[0].position);	});';
   $gmap_functions[] = '
   function undoChanges()
   {
@@ -219,20 +215,17 @@ if ( !empty($_SESSION[QT]['m_gmap_gkey']) )
   	if ( mapOptions) map.panTo(mapOptions.center);
   	return null;
   }
-  function showLocation(address,title)
-  {
+  function showLocation(address,title) {
     if ( infowindow ) infowindow.close();
     geocoder.geocode( { "address": address}, function(results, status) {
-      if ( status == google.maps.GeocoderStatus.OK)
-      {
+      if ( status == google.maps.GeocoderStatus.OK) {
         map.setCenter(results[0].geometry.location);
-        if ( markers[0] )
-        {
+        if ( markers[0] ) {
           markers[0].setPosition(results[0].geometry.location);
         } else {
-          markers[0] = new google.maps.Marker({map: map, position: results[0].geometry.location, draggable: true, animation: google.maps.Animation.DROP, title: title});
+          markers[0] = new google.maps.marker.AdvancedMarkerElement({map: map, position: results[0].geometry.location, draggable: true, title: title});
         }
-        gmapYXfield("qtf_gcenter",markers[0]);
+        gmapYXfield("yx",markers[0]);
       } else {
         alert("Geocode was not successful for the following reason: " + status);
       }

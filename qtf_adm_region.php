@@ -75,18 +75,18 @@ foreach(LANGUAGES as $k=>$values) if ( is_dir('language/'.$k) ) $arrFiles[$k] = 
 
 // FORM
 echo '
-<form method="post" action="'.$oH->self().'">
+<form class="formsafe" method="post" action="'.$oH->self().'">
 <h2 class="config">'.L('Language').'</h2>
 <table class="t-conf">
 ';
 echo '<tr>
 <th><label for="language">'.L('Dflt_language').'</label></th>
-<td><select id="language" name="language" onchange="qtFormSafe.not();">'.qtTags( $arrFiles, $_SESSION[QT]['language'] ).'</select><span class="small indent">'.(file_exists('language/readme.txt') ? '<a href="tool_txt.php?ro=1&exit=qtf_adm_region.php&file=language/readme.txt&title=How to add languages" onclick="return qtFormSafe.exit(e0);">How to add languages...</a>' :'').'</span></td>
+<td><select id="language" name="language">'.qtTags( $arrFiles, $_SESSION[QT]['language'] ).'</select><span class="small indent">'.(file_exists('language/readme.txt') ? '<a href="tool_txt.php?ro=1&exit=qtf_adm_region.php&file=language/readme.txt&title=How to add languages">How to add languages...</a>' :'').'</span></td>
 </tr>
 ';
 echo '<tr>
 <th><label for="userlang">'.L('User_language').'</label></th>
-<td><select id="userlang" name="userlang" onchange="qtFormSafe.not();">'.qtTags( [L('N'),L('Y')], (int)$_SESSION[QT]['userlang'] ).'</select><span class="small indent">'.L('H_User_language').'</span></td>
+<td><select id="userlang" name="userlang">'.qtTags( [L('N'),L('Y')], (int)$_SESSION[QT]['userlang'] ).'</select><span class="small indent">'.L('H_User_language').'</span></td>
 </tr>
 </table>
 ';
@@ -96,18 +96,18 @@ echo '<h2 class="config">'.L('Date_time').'</h2>
 if ( PHP_VERSION_ID>=50200 ) {
 echo '<tr>
 <th>Server time</th>
-<td><span>'.date('H:i').' (gmt '.gmdate('H:i').')</span><span class="small indent"><a href="'.APP.'_adm_time.php" onclick="return qtFormSafe.exit(e0);">'.L('Change_time').'...</a></span></td>
+<td><span>'.date('H:i').' (gmt '.gmdate('H:i').')</span><span class="small indent"><a href="'.APP.'_adm_time.php">'.L('Change_time').'...</a></span></td>
 </tr>
 ';
 }
 echo '<tr>
 <th>'.L('Date_format').'</th>
-<td><input type="text" name="formatdate" size="10" maxlength="24" value="'.qtAttr($_SESSION[QT]['formatdate']).'" onchange="qtFormSafe.not();"/><span class="small indent">'.L('H_Date_format').'</span></td>
+<td><input type="text" name="formatdate" size="10" maxlength="24" value="'.qtAttr($_SESSION[QT]['formatdate']).'"/><span class="small indent">'.L('H_Date_format').'</span></td>
 </tr>
 ';
 echo '<tr>
 <th>'.L('Time_format').'</th>
-<td><input type="text" name="formattime" size="10" maxlength="24" value="'.qtAttr($_SESSION[QT]['formattime']).'" onchange="qtFormSafe.not();"/><span class="small indent">'.L('H_Time_format').'</span></td>
+<td><input type="text" name="formattime" size="10" maxlength="24" value="'.qtAttr($_SESSION[QT]['formattime']).'"/><span class="small indent">'.L('H_Time_format').'</span></td>
 </tr>
 </table>
 ';
@@ -115,11 +115,11 @@ echo '<h2 class="config">'.L('Clock').'</h2>
 <table class="t-conf">
 <tr>
 <th>'.L('Show_time_zone').'</th>
-<td><select name="show_time_zone" onchange="qtFormSafe.not();">'.qtTags( [L('N'),L('Y'),L('Y').' (+gmt)'], (int)$_SESSION[QT]['show_time_zone'] ).'</select><span class="small indent">'.L('H_Show_time_zone').'</span></td>
+<td><select name="show_time_zone">'.qtTags( [L('N'),L('Y'),L('Y').' (+gmt)'], (int)$_SESSION[QT]['show_time_zone'] ).'</select><span class="small indent">'.L('H_Show_time_zone').'</span></td>
 </tr>
 <tr>
 <th>'.L('Clock_setting').'</th>
-<td><select name="time_zone" onchange="qtFormSafe.not();">'.qtTags( L('tz.*'),'gmt'.$_SESSION[QT]['time_zone'] ).'</select><small>&nbsp;</small></td>
+<td><select name="time_zone">'.qtTags( L('tz.*'),'gmt'.$_SESSION[QT]['time_zone'] ).'</select><small>&nbsp;</small></td>
 </tr>
 </table>
 ';

@@ -1,11 +1,3 @@
-/**
- * @constant {object} qtFormSafe - form initial value controller
- */
-const qtFormSafe = {
-  safe: true,
-  not: function(){ this.safe = false; },
-  exit: function(msg='Data not yet saved. Quit without saving?'){ return this.safe || confirm(msg); }
-};
 function qtFocus(id) {
   const e = document.getElementById(id); if ( e ) e.focus();
 }

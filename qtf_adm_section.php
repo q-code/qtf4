@@ -141,16 +141,16 @@ echo '<div class="pan">
 
 if ( $pan===1 ) {
 
-echo '<form method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->self().'">
 <h2 class="subconfig">'.L('Definition').'</h2>
 <table class="t-conf">
 <tr>
 <th style="width:150px; text-align:right"><span class="texthead"><label for="title">'.L('Title').'</label></span></th>
-<td><input required type="text" id="title" name="title" size="32" maxlength="64" value="'.qtAttr($oS->title).'" style="background-color:#dbf4ff;" onchange="qtFormSafe.not();"/></td>
+<td><input required type="text" id="title" name="title" size="32" maxlength="64" value="'.qtAttr($oS->title).'" style="background-color:#dbf4ff;"/></td>
 </tr>
 <tr>
 <th style="width:150px; text-align:right"><span class="texthead">'.L('Domain').'</span></th>
-<td><select name="domain" onchange="qtFormSafe.not();">
+<td><select name="domain">
 <option value="'.$oS->pid.'" selected>'.$arrDomains[$oS->pid].'</option>'.qtTags($arrDest).'</select></td>
 </tr>
 </table>
@@ -160,12 +160,12 @@ echo '<h2 class="subconfig">'.L('Properties').'</h2>
 <tr>
 <th style="text-align: right; width:150px"><span class="texthead"><label for="type">'.L('Type').'</label></span></th>
 <td>
-<select id="type" name="type" onchange="qtFormSafe.not();">
+<select id="type" name="type">
 <option value="1"'.($oS->type==='1' ? ' selected' : '').'>'.L('Section_type.1').'</option>
 <option value="0"'.($oS->type==='0' ? ' selected' : '').'>'.L('Section_type.0').'</option>
 <option value="2"'.($oS->type==='2' ? ' selected' : '').'>'.L('Section_type.2').'</option>
 </select>
- '.L('Status').' <select id="status" name="status" onchange="qtFormSafe.not();">
+ '.L('Status').' <select id="status" name="status">
 <option value="0"'.($oS->status==='0' ? ' selected' : '').'>'.L('Section_status.0').'</option>
 <option value="1"'.($oS->status==='1' ? ' selected' : '').'>'.L('Section_status.1').'</option>
 </select>
@@ -178,15 +178,15 @@ echo '</td>
 if ( count($arrStaff)>15 )
 {
 echo 'input type="hidden" id="usr-t" value="M"/>
-<input type="hidden" name="ownernameold" value="'.$oS->ownername.'" onchange="qtFormSafe.not();"/>
+<input type="hidden" name="ownernameold" value="'.$oS->ownername.'"/>
 <div id="ac-wrapper-user">
-<input name="ownername" id="user" maxlength="24" value="'.$oS->ownername.'" onchange="qtFormSafe.not();" size="32"/>
+<input name="ownername" id="user" maxlength="24" value="'.$oS->ownername.'" size="32"/>
 </div>';
 }
 else
 {
-echo '<input type="hidden" name="owneridold" value="'.$oS->ownerid.'" onchange="qtFormSafe.not();"/>
-<select id="ownerid" class="stamprole" name="ownerid" onchange="qtFormSafe.not();">'.qtTags($arrStaff, $oS->ownerid).'</select>';
+echo '<input type="hidden" name="owneridold" value="'.$oS->ownerid.'"/>
+<select id="ownerid" class="stamprole" name="ownerid">'.qtTags($arrStaff, $oS->ownerid).'</select>';
 }
 echo '</td>
 </tr>
@@ -197,18 +197,18 @@ echo '<h2 class="subconfig">'.L('Specific_fields').'</h2>
 ';
 echo '<tr>
 <th style="text-align: right; width:150px"><span class="texthead"><label for="numfield">'.L('Show_item_id').'</label></span></th>
-<td><input type="text" id="numfield" size="10" maxlength="24" name="numfield" value="'.($oS->numfield=='N' ? '' : qtAttr($oS->numfield)).'" onchange="qtFormSafe.not();"/>&nbsp;<small>'.L('H_Show_item_id').'</small></td>
+<td><input type="text" id="numfield" size="10" maxlength="24" name="numfield" value="'.($oS->numfield=='N' ? '' : qtAttr($oS->numfield)).'"/>&nbsp;<small>'.L('H_Show_item_id').'</small></td>
 </tr>
 ';
 echo '<tr>
 <th style="text-align: right; width:150px"><span class="texthead"><label for="titlefield">'.L('Show_item_title').'</label></span></th>
-<td><select id="titlefield" name="titlefield" onchange="qtFormSafe.not();">'.qtTags(L('Item_title.*'),$oS->titlefield).'</select>&nbsp;<small>'.L('H_Show_item_title').'</span></td>
+<td><select id="titlefield" name="titlefield">'.qtTags(L('Item_title.*'),$oS->titlefield).'</select>&nbsp;<small>'.L('H_Show_item_title').'</span></td>
 </tr>
 ';
 echo '<tr title="'.L('H_Item_prefix').'">
 <th style="text-align: right; width:150px"><span class="texthead"><label for="prefix">'.L('Item_prefix').'</label></span></th>
 <td>
-<select id="prefix" name="prefix" onchange="qtFormSafe.not();">
+<select id="prefix" name="prefix">
 '.qtTags(L('PrefixSerie.*'),$oS->prefix).'
 <option value="0"'.($oS->prefix=='0' ? ' selected' : '').'>'.L('None').'</option>
 </select>&nbsp;<a class="small" href="qtf_adm_prefixicon.php" target="_blank">'.L('Item_prefix_demo').'</a>
@@ -240,7 +240,7 @@ if ( !empty($strFile) ) {
   if ( !empty($_GET['up']) ) $oS->setMF('options','logo',$strFile,true); // save if uploaded
   $addOption = '<option value="'.$strFile.'"'.(empty($oS->getMF('options','logo')) ? '' : 'selected').'>'.L('Specific_image').'</option>';
 }
-echo '<form method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->self().'">
 <table class="t-conf">
 <tr>
 <th><span class="texthead">Logo</span></th>
@@ -257,7 +257,7 @@ $strOrder = $oS->getMF('options','order','lastpostdate');
 echo '<tr>
 <th><span class="texthead">'.L('Default_items_order').'</span></th>
 <td>
-<select name="dfltorder" onchange="qtFormSafe.not();">'.qtTags($arr,$strOrder).'</select>
+<select name="dfltorder">'.qtTags($arr,$strOrder).'</select>
 </td>
 </tr>
 ';
@@ -266,7 +266,7 @@ $arr = array('none'=>L('None'),'views'=>L('Views'),'status'=>L('Status'),'id'=>'
 $dflt_lastcol = $oS->getMF('options','last'); if  (strtolower($dflt_lastcol)==='n' || empty($dflt_lastcol) ) $dflt_lastcol='none';
 echo '<tr>
 <th><span class="texthead">'.L('Infofield').'</span></th>
-<td><select name="lastcolumn" onchange="qtFormSafe.not();">'.qtTags($arr,$dflt_lastcol).'</select></td>
+<td><select name="lastcolumn">'.qtTags($arr,$dflt_lastcol).'</select></td>
 </tr>
 </table>
 ';
@@ -291,7 +291,7 @@ $oH->scripts[] = 'function switchpreview(img){
 if ( $pan==3 )
 {
 
-echo '<form method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->self().'">
 <table class="t-conf input100">
 <tr>
 <th>'.L('Title').' *</th>
@@ -303,7 +303,7 @@ foreach(LANGUAGES as $k=>$values)
 {
   $arr = explode(' ',$values,2); if ( empty($arr[1]) ) $arr[1]=$arr[0];
   $str = empty($arrTrans[$k]) ? '' : $arrTrans[$k];
-  echo '<p class="iso" title="'.L('Name_of_index').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="tr-'.$k.'" maxlength="64" value="'.$str.'" placeholder="'.$oS->title.'" onchange="qtFormSafe.not();"/>'.(strpos($str,'&amp;') ?  ' <small>'.$arrTrans[$k].'</small>' : '').'</p>'.PHP_EOL;
+  echo '<p class="iso" title="'.L('Name_of_index').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="tr-'.$k.'" maxlength="64" value="'.$str.'" placeholder="'.$oS->title.'"/>'.(strpos($str,'&amp;') ?  ' <small>'.$arrTrans[$k].'</small>' : '').'</p>'.PHP_EOL;
 }
 echo '</div></td>
 </tr>
@@ -315,7 +315,7 @@ foreach(LANGUAGES as $k=>$values)
 {
   $arr = explode(' ',$values,2); if ( empty($arr[1]) ) $arr[1]=$arr[0];
   $str = empty($arrDescTrans[$k]) ? '' : $arrDescTrans[$k];
-  echo '<p class="iso" title="'.L('Description').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="desc-'.$k.'" maxlength="254" onchange="qtFormSafe.not();" value="'.$str.'"/></p>'.PHP_EOL;
+  echo '<p class="iso" title="'.L('Description').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="desc-'.$k.'" maxlength="254" value="'.$str.'"/></p>'.PHP_EOL;
 }
 echo '</div></td>
 </tr>

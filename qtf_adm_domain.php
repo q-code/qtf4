@@ -60,7 +60,7 @@ if ( isset($_POST['ok']) ) try {
 include APP.'_adm_inc_hd.php';
 
 echo '
-<form method="post" action="'.$oH->self().'">
+<form class="formsafe" method="post" action="'.$oH->self().'">
 <h2 class="config">'.L('Domain').'</h2>
 <table class="t-conf input100">
 ';
@@ -75,7 +75,7 @@ echo '<tr>
 ';
 foreach(LANGUAGES as $k=>$values) {
   $arr = explode(' ',$values,2); if ( empty($arr[1]) ) $arr[1]=$arr[0];
-  echo '<p class="iso" title="'.L('Domain').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="tr-'.$k.'" size="45" maxlength="64" value="'.(empty($arrTrans[$k]) ? '' : qtAttr($arrTrans[$k])).'" placeholder="'.qtAttr($row['title']).'" onchange="qtFormSafe.not();"/></p>'.PHP_EOL;
+  echo '<p class="iso" title="'.L('Domain').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="tr-'.$k.'" size="45" maxlength="64" value="'.(empty($arrTrans[$k]) ? '' : qtAttr($arrTrans[$k])).'" placeholder="'.qtAttr($row['title']).'"/></p>'.PHP_EOL;
 }
 echo '</div></td>
 </tr>

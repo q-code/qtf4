@@ -83,7 +83,7 @@ $oH->scripts[] = 'function previewMarker(id,src) { document.getElementById(id).s
 include 'qtf_adm_inc_hd.php';
 
 echo '
-<form method="post" action="',url($oH->selfurl),'">
+<form class="formsafe" method="post" action="',url($oH->selfurl),'">
 <h2 class="config">',L('Gmap.Symbol_by_role'),'</h2>
 <table class="t-conf">
 <tr><td colspan="3" class="right" style="background-color:transparent"><small>',L('Gmap.Click_to_change'),'</small></td></tr>

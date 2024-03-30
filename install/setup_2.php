@@ -71,7 +71,7 @@ if ( isset($_POST['ok']) ) {
 
 } else {
 
-  echo '<form method="post" name="install" action="setup_2.php" onsubmit="showWait()">
+  echo '<form  method="post" name="install" action="setup_2.php" onsubmit="showWait()">
   <h1>'.L('Install_db').'</h1>
   <p class="italic">'.L('Not_install_on_upgrade').'</p>
   <br>

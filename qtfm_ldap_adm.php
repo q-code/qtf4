@@ -206,7 +206,7 @@ if ( $_SESSION[QT]['login_addon']==='0')
 {
 echo '<p>Current authority is <span class="bold italic">Internal authority (default)</span>.<br>When module is on-line, change the authority in the page <a href="qtf_adm_secu.php" onclick="return qtFormSafe.exit(e0);">'.L('Board_security').'</a>.</p><br>';
 }
-echo '<form method="post" action="'.url($oH->selfurl).'">
+echo '<form class="formsafe" method="post" action="'.url($oH->selfurl).'">
 <h2 class="subconfig">Module status</h2>
 
 <table class="t-conf ldap">
@@ -215,7 +215,7 @@ echo '<form method="post" action="'.url($oH->selfurl).'">
 <td style="width:100px"><span style="display:inline-block;width:16px;background-color:'.( $_SESSION[QT]['m_ldap']==='1' ? 'green' : 'red').';border-radius:3px">&nbsp;</span>&nbsp;'.L(($_SESSION[QT]['m_ldap']==='1' ? 'On' : 'Off').'_line').'</td>
 ';
 echo '<td style="text-align:right">'.L('Change').'&nbsp;
-<select id="m_ldap" name="m_ldap" onchange="qtFormSafe.not();">
+<select id="m_ldap" name="m_ldap">
 <option value="1"'.($_SESSION[QT]['m_ldap']=='1' ? ' selected' : '').'>'.$L['On_line'].'</option>
 <option value="0"'.($_SESSION[QT]['m_ldap']=='0' ? ' selected' : '').'>'.$L['Off_line'].'</option>
 </select>
@@ -228,8 +228,8 @@ echo '<td style="text-align:right">'.L('Change').'&nbsp;
 <tr>
 <th>Login users</th>
 <td>
-<p class="cblabel"><input type="radio" id="log_all" name="m_ldap_users" value="all"'.($_SESSION[QT]['m_ldap_users']=='all' ? 'checked' : '').' onchange="qtFormSafe.not();"/><label for="log_all">Accept locally registered users AND ldap users</label></p>
-<p class="cblabel"><input type="radio" id="log_ldap" name="m_ldap_users" value="ldap"'.($_SESSION[QT]['m_ldap_users']=='ldap' ? 'checked' : '').' onchange="qtFormSafe.not();"/><label for="log_ldap">Accept ONLY valid ldap users</label></p>
+<p class="cblabel"><input type="radio" id="log_all" name="m_ldap_users" value="all"'.($_SESSION[QT]['m_ldap_users']=='all' ? 'checked' : '').'/><label for="log_all">Accept locally registered users AND ldap users</label></p>
+<p class="cblabel"><input type="radio" id="log_ldap" name="m_ldap_users" value="ldap"'.($_SESSION[QT]['m_ldap_users']=='ldap' ? 'checked' : '').'/><label for="log_ldap">Accept ONLY valid ldap users</label></p>
 </td>
 </tr>
 ';
@@ -248,7 +248,7 @@ echo '<tr>
 
 if ( $pan==1 || $pan==2 )
 {
-echo '<form method="post" action="'.url($oH->selfurl).'">
+echo '<form class="formsafe" method="post" action="'.url($oH->selfurl).'">
 <h2 class="subconfig">Connection and authentication</h2>
 <table class="t-conf ldap">
 <tr>

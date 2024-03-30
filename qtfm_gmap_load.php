@@ -13,11 +13,11 @@ $oH->scripts[] = 'let map, mapOptions, geocoder, infowindow;
 var markers = [];
 async function gmapInitialize() {
   const {Map} = await google.maps.importLibrary("maps");
-  /*const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");*/
+  const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
   infowindow = new google.maps.InfoWindow({maxWidth: 220});
   geocoder = '.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? 'new google.maps.Geocoder()' : 'false').';
   mapOptions = {
-    mapId: "DEMO_MAP_ID",
+    mapId: "'.strtoupper(APP.'_MAP').'",
     center: new google.maps.LatLng('.$_SESSION[QT]['m_gmap_gcenter'].'),
     mapTypeId: '.gmapMarkerMapTypeId(substr($_SESSION[QT]['m_gmap_gbuttons'],0,1)).',
     streetViewControl: '.(substr($_SESSION[QT]['m_gmap_gbuttons'],1,1)==='1' ? 'true' : 'false' ).',
@@ -49,7 +49,7 @@ function gmapRound(num) {
 function gmapYXfield(id,marker) {
   if ( !document.getElementById(id) ) return;
   if ( marker ) {
-    document.getElementById(id).value = gmapRound(marker.getPosition().lat()) + "," + gmapRound(marker.getPosition().lng());
+    document.getElementById(id).value = gmapRound(marker.position.lat) + "," + gmapRound(marker.position.lng);
   } else {
     document.getElementById(id).value = "";
   }

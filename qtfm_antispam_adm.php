@@ -90,7 +90,7 @@ $strIp       = substr($_SESSION[QT]['m_antispam_conf'],11,1);
 
 // FORM
 
-echo '<form method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->self().'">
 <h2 class="config">'.$L['Antispam']['Basic_rules'].'</h2>
 <table class="t-conf">
 <tr>

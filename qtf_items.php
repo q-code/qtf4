@@ -292,7 +292,7 @@ echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // TABLE START DISPLAY
 if ( $_SESSION['EditByRows']) {
-  echo '<form id="form-items" method="post" action="'.url('qtf_dlg.php').'">
+  echo '<form  id="form-items" method="post" action="'.url('qtf_dlg.php').'">
 <input type="hidden" id="form-items-action" name="a"/>
 <input type="hidden" name="s" value="'.$s.'"/>
 <input type="hidden" name="uri" value="'.$oH->selfuri.'"/>

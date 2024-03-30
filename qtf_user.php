@@ -183,9 +183,8 @@ if ( $edit ) {
 // -- EDIT PROFILE --
 
 if ( SUser::id()!==$id ) echo '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
-if ( !isset($oH->scripts['e0']) ) $oH->scripts['e0'] = 'var e0 = "'.L('Quit_without_saving').'";';
 
-echo '<form method="post" action="'.url(APP.'_user.php').'">
+echo '<form  method="post" action="'.url(APP.'_user.php').'">
 <table class="t-profile">
 <tr><th>'.L('Username').'</th><td clss="c-name">'.$row['name'].'</td></tr>
 <tr><th>'.L('Role').'</th><td>'.L('Role_'.$row['role']).($row['role']==='A' ? ' <small>'.qtSVG('user-a', 'title='.L('Role_A')).'</small>' : '').'</td></tr>
@@ -368,14 +367,10 @@ if ( $useMap ) {
   $gmap_events = [];
   $gmap_functions = [];
   if ( isset($arrMapData[$id]) && !empty($oMapPoint->y) && !empty($oMapPoint->x) ) {
-  $gmap_markers[] = gmapMarker($oMapPoint->y.','.$oMapPoint->x,true,$gmap_symbol,$row['name']);
+  $gmap_markers[] = gmapMarker($oMapPoint->y.','.$oMapPoint->x, $edit, $gmap_symbol, $row['name']);
   $gmap_events[] = '
-	google.maps.event.addListener(markers[0], "position_changed", function() {
-		if ( document.getElementById("yx")) {document.getElementById("yx").value = gmapRound(marker.getPosition().lat(),10) + "," + gmapRound(marker.getPosition().lng(),10);}
-	});
-	google.maps.event.addListener(markers[0], "dragend", function() {
-		map.panTo(marker.getPosition());
-	});';
+  markers[0].addListener("drag", ()=>{ document.getElementById("yx").value = gmapRound(markers[0].position.lat,10) + "," + gmapRound(markers[0].position.lng,10); });
+	google.maps.event.addListener(markers[0], "dragend", function() { map.panTo(markers[0].position);	});';
   }
   $gmap_functions[] = '
   function showLocation(address,title) {
@@ -386,7 +381,7 @@ if ( $useMap ) {
         if ( markers[0] ) {
           markers[0].setPosition(results[0].geometry.location);
         } else {
-          markers[0] = new google.maps.Marker({map: map, position: results[0].geometry.location, draggable: true, animation: google.maps.Animation.DROP, title: title});
+          markers[0] = new google.maps.markers[0].AdvancedMarkerElement({map: map, position: results[0].geometry.location, draggable: true, title: title});
         }
         gmapYXfield("yx",markers[0]);
       } else {
