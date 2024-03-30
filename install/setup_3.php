@@ -43,7 +43,7 @@ if ( !empty($_POST['admin_email']) ) try {
 
 // Form
 
-echo '<form  method="post" name="install" action="setup_3.php">
+echo '<form method="post" name="install" action="setup_3.php">
 <h1>'.L('Board_email').'</h1>
 <p><input required type="email" name="admin_email" value="'.$_SESSION[QT]['admin_email'].'" size="30" maxlength="100"/> <button type="submit" name="ok" value="ok">'.L('Save').'</button></p>
 </form>

@@ -184,13 +184,13 @@ if ( $edit ) {
 
 if ( SUser::id()!==$id ) echo '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 
-echo '<form  method="post" action="'.url(APP.'_user.php').'">
+echo '<form method="post" action="'.url(APP.'_user.php').'">
 <table class="t-profile">
 <tr><th>'.L('Username').'</th><td clss="c-name">'.$row['name'].'</td></tr>
 <tr><th>'.L('Role').'</th><td>'.L('Role_'.$row['role']).($row['role']==='A' ? ' <small>'.qtSVG('user-a', 'title='.L('Role_A')).'</small>' : '').'</td></tr>
-<tr><th>'.L('Location').'</th><td><input type="text" name="location" size="35" maxlength="24" value="'.$row['location'].'" onchange="qtFormSafe.not()"/></td></tr>
-<tr><th>'.L('Email').'</th><td><input required type="email" name="emails" size="35" maxlength="255" value="'.$row['mail'].'" onchange="qtFormSafe.not()" multiple/></td></tr>
-<tr><th>'.L('Website').'</th><td><input type="text" name="www" pattern="^(http://|https://).*" size="35" maxlength="64" value="'.(empty($row['www']) ? '' : $row['www']).'" title="'.L('H_Website').'" onchange="qtFormSafe.not()"/></td></tr>
+<tr><th>'.L('Location').'</th><td><input type="text" name="location" size="35" maxlength="24" value="'.$row['location'].'"/></td></tr>
+<tr><th>'.L('Email').'</th><td><input required type="email" name="emails" size="35" maxlength="255" value="'.$row['mail'].'" multiple/></td></tr>
+<tr><th>'.L('Website').'</th><td><input type="text" name="www" pattern="^(http://|https://).*" size="35" maxlength="64" value="'.(empty($row['www']) ? '' : $row['www']).'" title="'.L('H_Website').'"/></td></tr>
 <tr><th>'.L('Birthday').'</th>
 ';
 $strBrith_y = '';
@@ -201,10 +201,10 @@ if ( !empty($row['birthday']) ) {
   $strBrith_m = intval(substr(strval($row['birthday']),4,2));
   $strBrith_d = intval(substr(strval($row['birthday']),6,2));
 }
-echo '<td><select name="birth_d" size="1" onchange="qtFormSafe.not()">'.PHP_EOL;
+echo '<td><select name="birth_d" size="1">'.PHP_EOL;
 echo qtTags([0=>'',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],$strBrith_d);
 echo '</select>'.PHP_EOL;
-echo '<select name="birth_m" size="1" onchange="qtFormSafe.not()">'.PHP_EOL;
+echo '<select name="birth_m" size="1">'.PHP_EOL;
 echo '<option value="0"></option>'.qtTags(L('dateMMM.*'),$strBrith_m);
 echo '</select>'.PHP_EOL;
 echo '<input type="text" id="birth_y" name="birth_y" pattern="(19|20)[0-9]{2}" size="4" maxlength="4" value="'.$strBrith_y.'"/>';
@@ -214,7 +214,7 @@ if ( SUser::role()==='A' && $id>1 ) {
   echo '<tr>'.PHP_EOL;
   echo '<th>'.L('Child').'</th>';
   echo '<td>';
-  echo '<select size="1" name="child" onchange="qtFormSafe.not()">';
+  echo '<select size="1" name="child">';
   echo '<option value="0"'.($row['children']==='0' ? ' selected' : '').'>'.L('N').'</option>';
   echo '<option value="1"'.($row['children']==='1' ? ' selected' : '').'>'.L('Y').' '.L('With_parent_agree').'</option>';
   echo '<option value="2"'.($row['children']==='2' ? ' selected' : '').'>'.L('Y').' '.L('Without_parent_agree').'</option>';
@@ -223,14 +223,14 @@ if ( SUser::role()==='A' && $id>1 ) {
   echo '</tr>'.PHP_EOL;
   echo '<tr>';
   echo '<th>'.L('Parent_mail').'</th>';
-  echo '<td><input type="email" name="parentmail" size="32" maxlength="255" value="'.$row['parentmail'].'" onchange="qtFormSafe.not()" multiple/></td>';
+  echo '<td><input type="email" name="parentmail" size="32" maxlength="255" value="'.$row['parentmail'].'" multiple/></td>';
   echo '</tr>'.PHP_EOL;
   }
 }
 
 echo '<tr>
 <th>'.L('Privacy').'</th>
-<td>'.L('Email').'/'.L('Location').($useMap ? '/'.$L['Gmap']['position'] : '').' <select size="1" name="privacy" onchange="qtFormSafe.not()">
+<td>'.L('Email').'/'.L('Location').($useMap ? '/'.$L['Gmap']['position'] : '').' <select size="1" name="privacy">
 <option value="2"'.($row['privacy']===2 ? ' selected' : '').'>'.L('Privacy_visible_2').'</option>
 <option value="1"'.($row['privacy']===1 ? ' selected' : '').'>'.L('Privacy_visible_1').'</option>
 <option value="0"'.($row['privacy']===0 ? ' selected' : '').'>'.L('Privacy_visible_0').'</option>
@@ -332,8 +332,8 @@ echo '</div>
 // ------
 // HTML END
 // ------
-// MAP MODULE
 
+// MAP MODULE
 if ( $useMap ) {
 
   /**
@@ -413,5 +413,8 @@ echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL;
 echo qtSVG('symbol-key').PHP_EOL;
 echo qtSVG('symbol-door-open').PHP_EOL;
 echo '</svg>'.PHP_EOL;
+
+if ( $edit )
+$oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
 
 include 'qtf_inc_ft.php';

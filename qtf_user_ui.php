@@ -6,9 +6,9 @@
 * @var boolean $edit
 */
 if ( SUser::role()==='A' )
-echo '<form  id="modaction" method="get" action="'.url(APP.'_register.php').'"><div id="optionsbar">
+echo '<form id="modaction" method="get" action="'.url(APP.'_register.php').'"><div id="optionsbar">
 '.qtSVG('user-a', 'title='.L('Role_A')).'
-<select name="a" onchange="if ( this.value!=`` && qtFormSafe.exit(e0) ) document.getElementById(`modaction`).submit();">
+<select name="a" onchange="if ( this.value!=`` ) document.getElementById(`modaction`).submit();">
 <option value="" disabled selected hidden>'.L('Role_A').' '.L('commands').'</option>
 <option value="adm-reset">'.L('Reset_pwd').'...</option>
 <option value="role"'.($id<2 ? ' disabled' : '').'>'.L('Change_role').'...</option>
@@ -19,4 +19,4 @@ echo '<form  id="modaction" method="get" action="'.url(APP.'_register.php').'"><
 </div></form>&nbsp;';
 
 if ( $canEdit )
-echo '<a class="button" href="'.url($oH->selfurl).'?id='.$id.'&edit='.($edit ? 0 : 1).'" onclick="return qtFormSafe.exit(e0);">'.qtSVG('pen','class=btn-prefix').L($edit ? 'Edit_stop' : 'Edit_start').'</a>';
+echo '<a class="button" href="'.url($oH->selfurl).'?id='.$id.'&edit='.($edit ? 0 : 1).'">'.qtSVG('pen','class=btn-prefix').L($edit ? 'Edit_stop' : 'Edit_start').'</a>';

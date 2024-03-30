@@ -6,7 +6,7 @@
 * @var int $intCount
 */
 $ui = '<button id="optionsbar-ctrl" class="nostyle square42'.($_SESSION['EditByRows'] ? ' expanded' : '').'" onclick="qtToggle(`optionsbar`,`flex`,this.id);qtFocusOut(this.id);qtFocus(`pref`);" title="'.L('My_preferences').'">'.qtSVG('cog').'</button> '.PHP_EOL;
-$ui .= '<div id="optionsbar"'.($_SESSION['EditByRows'] ? '' : ' style="display:none"').'><form  method="post" action="'.url($oH->selfurl).'?'.qtURI('page').'" id="formPref">'.PHP_EOL;
+$ui .= '<div id="optionsbar"'.($_SESSION['EditByRows'] ? '' : ' style="display:none"').'><form method="post" action="'.url($oH->selfurl).'?'.qtURI('page').'" id="formPref">'.PHP_EOL;
 $ui .= '<select id="pref" name="pref" onchange="doSubmit(`formPref`);">'.PHP_EOL;
 $ui .= '<option value="-" selected disabled hidden>'.L('Show').'</option>';
 $ui .= '<option value="togglenewsontop">'.L('News_on_top').($_SESSION[QT]['news_on_top'] ? ' &#10004;' : ' &#10008;').'</option>';
@@ -24,7 +24,7 @@ let d = document.getElementById(idhide); if ( d ) d.style.display="none";
 d = document.getElementById(idhide+"-ctrl"); if ( d ) d.style.visibility="hidden";
 d = document.getElementById(idform); if ( d ) d.submit();}';
 if ( SUser::isStaff() ) {
-  $ui .= '<form  id="modaction" method="post" action="'.url($oH->selfurl).'?'.$oH->selfuri.'">'.PHP_EOL;
+  $ui .= '<form id="modaction" method="post" action="'.url($oH->selfurl).'?'.$oH->selfuri.'">'.PHP_EOL;
   $ui .= '<select name="modaction" onchange="doSubmit(`modaction`);">';
   $ui .= '<option disabled selected hidden>'.L('Add').'</option>';
   $ui .= '<optgroup label="'.L('Staff').' '.L('action').'">';

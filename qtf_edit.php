@@ -255,7 +255,7 @@ echo '<div id="message-preview"></div>
 
 // FORM START
 
-echo '<form  id="form-edit" method="post" action="'.url($oH->selfurl).'" enctype="multipart/form-data">
+echo '<form id="form-edit" method="post" action="'.url($oH->selfurl).'" enctype="multipart/form-data">
 <div class="flex-sp">
 <h2>'.$oH->selfname.'</h2>
 ';

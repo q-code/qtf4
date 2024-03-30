@@ -126,9 +126,9 @@ $arrDest = array_map(function($str){ return L('Move_to').': '.$str;}, $arrDest);
 
 // DISPLAY TABS
 $arrM = []; $str = $oH->selfurl.'?s='.$s.'&pan=';
-$arrM['pan-1'] = L('Settings').       '|href='.$str.'1|id=pan-1|class=pan-tab|onclick=return qtFormSafe.exit(e0);';
-$arrM['pan-2'] = L('Display_options').'|href='.$str.'2|id=pan-2|class=pan-tab|onclick=return qtFormSafe.exit(e0);';
-$arrM['pan-3'] = L('Translations').   '|href='.$str.'3|id=pan-3|class=pan-tab|onclick=return qtFormSafe.exit(e0);';
+$arrM['pan-1'] = L('Settings').       '|href='.$str.'1|id=pan-1|class=pan-tab';
+$arrM['pan-2'] = L('Display_options').'|href='.$str.'2|id=pan-2|class=pan-tab';
+$arrM['pan-3'] = L('Translations').   '|href='.$str.'3|id=pan-3|class=pan-tab';
 $m = new CMenu($arrM,'');
 echo '<div class="pan-tabs">'.$m->build('pan-'.$pan).'</div>';
 
@@ -244,7 +244,7 @@ echo '<form class="formsafe" method="post" action="'.$oH->self().'">
 <table class="t-conf">
 <tr>
 <th><span class="texthead">Logo</span></th>
-<td><select name="sectionlogo" onchange="qtFormSafe.not(); switchpreview(this.value);">
+<td><select name="sectionlogo" onchange="switchpreview(this.value);">
 <option value="">'.L('Default').'</option>
 '.$addOption.'
 </select> '.asImg($oS->logo(), 'id=previewlogo|title='.L('Ico_section_'.$oS->type.'_'.$oS->status)).' <a class="small" href="qtf_adm_section_img.php?id='.$s.'">'.L('Add').'/'.L('Remove').'</a>
@@ -338,7 +338,7 @@ echo '<p class="submit">
 
 echo '
 </div>
-<p>'.qtSVG('angle-left').' <a href="'.$oH->exiturl.'" onclick="return qtFormSafe.exit(e0);">'.$oH->exitname.'</a></p>
+<p>'.qtSVG('angle-left').' <a href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>
 ';
 
 // HTML END

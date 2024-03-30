@@ -42,7 +42,7 @@ foreach(LANGUAGES as $iso=>$lang) {
 asort($arrOptions);
 
 echo '<h1 class="center">Language ?</h1>
-<form  method="get" action="setup_1.php">
+<form method="get" action="setup_1.php">
 <p class="center"><select name="lang" size="1">';
 foreach($arrOptions as $iso=>$lang) echo '<option value="'.$iso.'"'.($_SESSION['setup_lang']===$iso ? ' selected' : '').'>'.$lang.'</option>';
 echo '</select>

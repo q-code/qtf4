@@ -35,7 +35,7 @@ include 'setup_hd.php'; // this will show $error
 
 echo $result;
 if ( count($arrFiles)>0 ) {
-  echo '<form  method="post" action="setup_1_tpl.php">';
+  echo '<form method="post" action="setup_1_tpl.php">';
   echo 'Template <select name="template">';
   foreach($arrFiles as $strFile) echo '<option value="'.qtAttr($strFile).'">'.$strFile.'</option>';
   echo '</select>';

@@ -40,7 +40,7 @@ if ( !empty($_GET['sqlite']) ) try {
 
 }
 
-echo '<form  method="post" name="install" action="setup_1.php">
+echo '<form method="post" name="install" action="setup_1.php">
 ';
 
 // ------
@@ -54,10 +54,10 @@ if ( isset($_POST['ok']) ) try {
   $arr['QDB_PREFIX']   = trim($_POST['db_prefix']);
   $arr['QDB_USER']     = trim($_POST['db_user']);
   $arr['QDB_PWD']      = trim($_POST['db_pwd']);
-  if ( $arr['QDB_SYSTEM']=='pdo.sqlite' || $arr['QDB_SYSTEM']=='sqlite' ) {
-    $arr['QDB_HOST']=''; // not used with SQLITE
-    $arr['QDB_USER']='';
-    $arr['QDB_PWD']='';
+  if ( $arr['QDB_SYSTEM']==='pdo.sqlite' || $arr['QDB_SYSTEM']==='sqlite' ) {
+    $arr['QDB_HOST'] = ''; // not used with SQLITE
+    $arr['QDB_USER'] = '';
+    $arr['QDB_PWD'] = '';
   }
   $str = trim($_POST['qtf_dbouser']); if ( $str!='') $_SESSION['qtf_dbouser'] = $str;
   $str = trim($_POST['qtf_dbopwd']); if ( $str!='') $_SESSION['qtf_dbopwd'] = $str;

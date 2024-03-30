@@ -153,7 +153,7 @@ echo '<h2 class="config">'.L('Email_settings').'</h2>
 ';
 echo '<tr title="'.L('H_Use_smtp').'">
 <th>'.L('Use_smtp').'</th>
-<td><select name="use_smtp" onchange="toggleSmtp(this.value); qtFormSafe.not();">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['use_smtp']).'</select></td>
+<td><select name="use_smtp" onchange="toggleSmtp(this.value);">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['use_smtp']).'</select></td>
 </tr>
 ';
 echo '<tr>

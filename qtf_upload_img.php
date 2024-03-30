@@ -44,7 +44,7 @@ echo '<div class="flex-sp">
 <p><input type="file" id="file-upload" size="30"/></p>
 ';
 
-echo '<form  method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="id" value="'.$id.'"/>';
+echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="id" value="'.$id.'"/>';
 if ( $currentExists ) echo '<p>'.L('Delete_picture').' <button type="submit" name="del" value="del" style="width:80px">'.L('Delete').'</button></p>';
 echo '<p><button type="submit" id="exit" name="exit" style="width:80px" >'.L('Exit').'</button></p>';
 echo '</form>';

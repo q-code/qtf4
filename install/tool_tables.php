@@ -85,7 +85,7 @@ if ( isset($_GET['a']) )
 
 echo '<br><p>2. <span class="bold">Drop tables</span></p>';
 
-echo '<form  action="tool_tables.php" method="get">';
+echo '<form action="tool_tables.php" method="get">';
 echo '<p><button type="submit" name="a" value="Drop ALL tables">Drop ALL tables</button> from the database ',QDB_DATABASE,'</p><br>';
 echo '<p>&nbsp;&nbsp;<button type="submit" name="a" value="Drop table Setting" onclick="return doIt(this.value);">Drop table Setting</button> ',TABSETTING,'</p>';
 echo '<p>&nbsp;&nbsp;<button type="submit" name="a" value="Drop table Post" onclick="return doIt(this.value);">Drop table Post</button> ',TABPOST,'</p>';

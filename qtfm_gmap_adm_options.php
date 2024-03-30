@@ -110,7 +110,7 @@ echo '<tr>
 ';
 foreach ($arrFiles as $file=>$name)
 {
-  echo '<input type="radio" data-preview="previewmarker-'.$key.'" data-src="qtfm_gmap/'.$file.'.png" name="symbol_'.$key.'" value="'.$file.'" id="symbol_'.$file.'_'.$key.'"'.($current===$file ? ' checked' : '').' onchange="previewMarker(this.dataset.preview,this.dataset.src);qtFormSafe.not();" style="display:none"/><label for="symbol_'.$file.'_'.$key.'"><img class="marker" title="'.$name.'" src="qtfm_gmap/'.$file.'.png" aria-checked="'.($current===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
+  echo '<input type="radio" data-preview="previewmarker-'.$key.'" data-src="qtfm_gmap/'.$file.'.png" name="symbol_'.$key.'" value="'.$file.'" id="symbol_'.$file.'_'.$key.'"'.($current===$file ? ' checked' : '').' onchange="previewMarker(this.dataset.preview,this.dataset.src);" style="display:none"/><label for="symbol_'.$file.'_'.$key.'"><img class="marker" title="'.$name.'" src="qtfm_gmap/'.$file.'.png" aria-checked="'.($current===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
 }
 echo '</p>
 </td>
@@ -122,7 +122,7 @@ echo '</table>';
 echo '
 <p style="text-align:center"><button type="submit" name="ok" value="ok">'.L('Save').'</button></p>
 </form>
-<p>'.qtSVG('angle-left').' <a href="'.$oH->exiturl.'" onclick="return qtFormSafe.exit(e0);">'.$oH->exitname.'</a></p>
+<p>'.qtSVG('angle-left').' <a href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>
 ';
 
 include 'qtf_adm_inc_ft.php';
