@@ -87,7 +87,7 @@ echo '<h2>'.L('Search_option').'</h2>'.PHP_EOL;
 echo '<section class="search-box options" id="broadcasted-options">'.PHP_EOL;
 echo qtSVG('cog', 'id=opt-icon|class=filigrane'.($s<0 && $fst==='' ? '' : ' spinning'));
 echo '<div>'.L('Section').' <select id="opt-s" name="s" size="1" autocomplete="off">'.sectionsAsOption($s,[],[],L('In_all_sections')).'</select></div>';
-echo '<div>'.L('Status').'&nbsp;<select id="pot-fst" name="fst" size="1" autocomplete="off"><option value=""'.($fst==='' ? ' selected' : '').'>'.L('Any_status').'</option>'.qtTags(CTopic::getStatuses(),$fst).'</select></div>'.PHP_EOL;
+echo '<div>'.L('Status').'&nbsp;<select id="opt-fst" name="fst" size="1" autocomplete="off"><option value=""'.($fst==='' ? ' selected' : '').'>'.L('Any_status').'</option>'.qtTags(CTopic::getStatuses(),$fst).'</select></div>'.PHP_EOL;
 echo '</section>'.PHP_EOL;
 
 // SEARCH CRITERIA

@@ -6,7 +6,7 @@ const tags = document.querySelectorAll('[data-tagdesc]');
 tags.forEach( tag => {
   tag.addEventListener('mouseover', () => {
     const thistag = tag.dataset.tagdesc; if ( thistag==='' ) return;
-    fetch( `bin/srv_tagdesc.php?s=${tag_s}&v=${thistag}&src=../${tag_dir}tags_${tag_lang}&lang=${tag_lang}${tag_cs}` )
+    fetch( `bin/srv_tagdesc.php?s=${tag_s}&fv=${thistag}&src=../${tag_dir}tags_${tag_lang}&lang=${tag_lang}${tag_cs}` )
     .then( response => response.text() )
     .then( data => {
       const siblings = document.querySelectorAll('[data-tagdesc="'+thistag+'"]');

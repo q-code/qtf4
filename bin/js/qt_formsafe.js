@@ -1,25 +1,27 @@
 /*
-The object qtFormSafe allows checking if form input(s) has changed to ask confirmation before exiting the page
-This applied to forms having a class "formsafe" (and pages having this script)
+qtFormSafe object allows checking if an input changes in a <form>
+in order to ask confirmation before exiting the page.
+Note: the <script> can include an attribute data-safemsg with the confirmation question
 */
 const qtFormSafe = {
   safe: true,
   not: function(){ this.safe = false; },
   exit: function(msg='Quit without saving?'){ return this.safe || confirm(msg); }
 };
-// select from .formsafe all input and select
-const forms = document.querySelectorAll('.formsafe');
-forms.forEach( (form)=>{
-  const inputs = document.querySelectorAll('.formsafe input:not([type="hidden"]), .formsafe select');
-  inputs.forEach( (input)=>{
-    input.addEventListener('change', ()=>{ qtFormSafe.not(); });
-  } );
-} );
-// select all anchor in the page
+// Detect <form> having the class 'formsafe'
+const forms = document.querySelectorAll('form.formsafe');
 if ( forms.length ) {
-  const safemsg = document.currentScript.dataset['safemsg']; // [undefined] if missing (fallback to default msg)
-  const hrefs = document.querySelectorAll('a[href]:not(.active)');
+  forms.forEach( (form)=>{
+    // Select all input/select/textarea to add a 'change' event listener
+    const inputs = form.querySelectorAll('input:not([type="hidden"]), select, textarea');
+    inputs.forEach( (input)=>{
+      input.addEventListener('change', ()=>{ qtFormSafe.not(); });
+     } );
+  } );
+  // Select all anchors in the page to add a 'click' event listener.
+  const hrefs = document.querySelectorAll('a:not([href^="javascript:void"])'); // Exclude "javascript:void(0)" (can have specific event).
+  const msg = document.currentScript.dataset['safemsg']; // on missing data [undefined] will use fallback confirmation question
   hrefs.forEach( (href)=>{
-    href.addEventListener('click', (event)=>{ if (qtFormSafe.exit(safemsg)) return true; event.preventDefault(); return false; });
+    href.addEventListener('click', (event)=>{ if ( qtFormSafe.exit(msg) ) return true; event.preventDefault(); return false; });
   } );
 }

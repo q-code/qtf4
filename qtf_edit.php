@@ -254,8 +254,8 @@ echo '<div id="message-preview"></div>
 ';
 
 // FORM START
-
-echo '<form id="form-edit" method="post" action="'.url($oH->selfurl).'" enctype="multipart/form-data">
+$oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
+echo '<form class="formsafe" id="form-edit" method="post" action="'.url($oH->selfurl).'" enctype="multipart/form-data">
 <div class="flex-sp">
 <h2>'.$oH->selfname.'</h2>
 ';

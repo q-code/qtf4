@@ -184,7 +184,8 @@ if ( $edit ) {
 
 if ( SUser::id()!==$id ) echo '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 
-echo '<form method="post" action="'.url(APP.'_user.php').'">
+$oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
+echo '<form class="formsafe" method="post" action="'.url(APP.'_user.php').'">
 <table class="t-profile">
 <tr><th>'.L('Username').'</th><td clss="c-name">'.$row['name'].'</td></tr>
 <tr><th>'.L('Role').'</th><td>'.L('Role_'.$row['role']).($row['role']==='A' ? ' <small>'.qtSVG('user-a', 'title='.L('Role_A')).'</small>' : '').'</td></tr>
@@ -413,8 +414,5 @@ echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL;
 echo qtSVG('symbol-key').PHP_EOL;
 echo qtSVG('symbol-door-open').PHP_EOL;
 echo '</svg>'.PHP_EOL;
-
-if ( $edit )
-$oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
 
 include 'qtf_inc_ft.php';
