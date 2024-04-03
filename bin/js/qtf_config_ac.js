@@ -1,17 +1,17 @@
 function acUrlConfig(method,value) {
   let s = '';
-  let fst = '';
+  let fs = '';
   let dir = '';
   let lang = '';
   switch(method) {
     case 'qkw': break;
     case 'ref':
       if ( document.getElementById('ref-s') ) s = '&s='+document.getElementById('ref-s').value;
-      if ( document.getElementById('ref-fst') ) fst = '&fst='+document.getElementById('ref-fst').value;
+      if ( document.getElementById('ref-fs') ) fs = '&fs='+document.getElementById('ref-fs').value;
       break;
     case 'kw':
       if ( document.getElementById('kw-s') ) s = '&s='+document.getElementById('kw-s').value;
-      if ( document.getElementById('kw-fst') ) fst = '&fst='+document.getElementById('kw-fst').value;
+      if ( document.getElementById('kw-fs') ) fs = '&fs='+document.getElementById('kw-fs').value;
       break;
     case 'tag-edit':
       if ( document.getElementById('tag-dir') ) dir = '&dir='+document.getElementById('tag-dir').value;
@@ -25,5 +25,5 @@ function acUrlConfig(method,value) {
       break;
     default: console.log('unknown input method '+method); return;
   }
-  return 'bin/srv_query.php?q=' + method + '&fv=' + value + s + fst + lang + dir;
+  return 'bin/srv_query.php?q=' + method + '&fv=' + value + s + fs + lang + dir;
 }

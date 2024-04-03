@@ -47,19 +47,18 @@ function qtCtype_digit($str) {
 /**
  * Returns a sql date condition seclecting a timeframe
  * @param string $dbtype database type
- * @param string $tf timeframe {y|m|w|1..12|YYYY|YYYYMM|old}
+ * @param string $ti timeframe {y|m|w|1..12|YYYY|YYYYMM|old}
  * @param string $prefix AND
  * @param string $field
  * @return string
  */
-function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate') {
-  if ( empty($tf) || $tf==='*' ) return ''; // no timeframe
-  if ( !is_string($dbtype) || !is_string($tf) || !is_string($prefix) || !is_string($prefix) || empty($field) ) die('getSqlTimeframe: requires string arguments');
-  // $tf can be {y|m|w|1..12|YYYY|YYYYMM|old}
+function getSqlTimeframe($dbtype, $ti='', $prefix=' AND ', $field='t.firstpostdate') {
+  if ( empty($ti) ) return ''; // no timeframe
+  if ( !is_string($dbtype) || !is_string($ti) || !is_string($prefix) || !is_string($prefix) || empty($field) ) die('getSqlTimeframe: requires string arguments');
+  // $ti can be {y|m|w|1..12|YYYY|YYYYMM|old}
   // i.e. this year, this month, last week, previous month#, a specific year YYYY, a specific yearmonth YYYYMM, 2 years or more
   $operator = '=';
-  switch($tf)
-  {
+  switch($ti) {
     case 'y':	// this year
       $strDate = date('Y');
       break;
@@ -74,28 +73,26 @@ function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate
       $operator = '<=';
       $strDate = (int)date('Y')-2;
       break;
-    default: // $tf is the month number or a specific datemonth
-      if ( !qtCtype_digit($tf) ) die('getSqlTimeframe: invalid tf argument');
-      switch(strlen($tf))
-      {
+    default: // $ti is the month number or a specific datemonth
+      if ( !qtCtype_digit($ti) ) die('getSqlTimeframe: invalid tf argument');
+      switch(strlen($ti)) {
         case 1:
         case 2:
-          $intMonth = (int)$tf;
+          $intMonth = (int)$ti;
           $intYear = (int)date('Y'); if ( $intMonth>date('n') ) --$intYear; // check if month from previous year
           $strDate = (string)($intYear*100+$intMonth);
           break;
         case 4:
-          $strDate = $tf;
+          $strDate = $ti;
           break;
         case 6:
-          $strDate = $tf;
+          $strDate = $ti;
           break;
         default: die('getSqlTimeframe: invalid tf argument');
       }
   }
   $len = strlen($strDate);
-  switch($dbtype)
-  {
+  switch($dbtype) {
     case 'pdo.pg':
     case 'pg': return $prefix . "SUBSTRING($field FROM 1 FOR $len) $operator '$strDate'"; break;
     case 'pdo.sqlite':
@@ -117,18 +114,17 @@ $e1 = empty($L['E_try_other_lettres'])   ? 'Try other lettres'   : $L['E_try_oth
 $e2 = empty($L['E_try_without_options']) ? 'Try without options' : $L['E_try_without_options'];
 
 // options
-$s = isset($_GET['s']) ? $_GET['s'] : '*'; // section {*|id}
-$t = isset($_GET['t']) ? $_GET['t'] : '*'; // item type {*|A|T|...} or user type {*|A|M|U}
-$fst = isset($_GET['fst']) ? $_GET['fst'] : '*'; // status {*|0|1}, 1=closed
-$y = isset($_GET['y']) ? $_GET['y'] : '*'; // year
-$tf = isset($_GET['tf']) ? $_GET['tf'] : '*'; // timeframe
+$s = isset($_GET['s']) ? (int)$_GET['s'] : -1; // section [int]
+$ft = isset($_GET['ft']) ? $_GET['ft'] : ''; // item type {A|T|...} or user type {A|M|U}
+$fs = isset($_GET['fs']) ? $_GET['fs'] : ''; // status {0|1}, 1=closed
+$y = isset($_GET['y']) ? $_GET['y'] : ''; // year
+$ti = isset($_GET['ti']) ? $_GET['ti'] : ''; // timeframe
 $ids = isset($_GET['ids']) ? $_GET['ids'] : ''; // list of topic id
 
 // defaults (1 char to avail injection)
-if ( strlen($s)>1 || $s==='' || $s==='-1' ) $s='*';
-if ( strlen($t)>1 || empty($t) ) $t='*';
-if ( strlen($fst)>1 || $fst==='-1' ) $fst='*';
-if ( empty($y) || !qtCtype_digit($y) ) $y='*'; // if not a year, use '*' (note: case tag-y uses current year)
+if ( strlen($ft)>1 || empty($ft) ) $ft = '';
+if ( strlen($fs)>1 || $fs==='-1' ) $fs = '';
+if ( empty($y) || !qtCtype_digit($y) ) $y = ''; // if not a year, use '*' (note: case tag-y uses current year)
 
 // INITIALIZE
 
@@ -136,41 +132,40 @@ $oDB = new CDatabase();
 
 // General Where options (for topics)
 $where = 't.id>=0';
-if ( $s!=='*' ) $where .= " AND t.forum=$s";
-if ( $t!=='*' ) $where .= " AND t.type='$t'";
-if ( $fst!=='*' ) $where .= " AND t.status='$fst'"; // '1'=closed
+if ( $s>=0 ) $where .= " AND t.forum=$s";
+if ( $ft!=='' ) $where .= " AND t.type='$ft'";
+if ( $fs!=='' ) $where .= " AND t.status='$fs'"; // '1'=closed
 if ( !empty($ids) ) $where .= " AND t.id IN ($ids)";
 
 // PROCESSES
 
-switch($q)
-{
-case 'T': // topics
-  if ( $tf!=='*' ) $where .= getSqlTimeframe($oDB->type, $tf);
-  echo $oDB->count( TABTOPIC." t WHERE $where" );
-  return;
-  break;
-case 'R': // replies
-  if ( $tf!=='*' ) $where .= getSqlTimeframe($oDB->type, $tf);
-  echo $oDB->count( TABPOST." p INNER JOIN TABTOPIC t ON p.topic=t.id WHERE p.type<>'P' AND $where" );
-  return;
-  break;
-case 'attach': // replies
-  if ( $tf!=='*' ) $where .= getSqlTimeframe($oDB->type, $tf);
-  echo $oDB->count( TABPOST." p INNER JOIN TABTOPIC t ON p.topic=t.id WHERE p.attach<>'' AND $where" );
-  return;
-  break;
-case 'unreplied': // topics (status must be already "0"=opened)
-  $d = isset($_GET['d']) ? $_GET['d'] : '10'; // days (use for Prune)
-  $d = addDate(date('Ymd His'),-$d,'day');
-  echo $oDB->count( TABTOPIC." t WHERE $where AND t.replies=0 AND t.firstpostdate<'$d'" );
-  return;
-  break;
-default: // posts
-  echo json_encode(array(array('rItem'=>'','rInfo'=>'invalid argument [q]')));
-  return;
+switch($q) {
+  case 'T': // topics
+    if ( $ti!=='' ) $where .= getSqlTimeframe($oDB->type, $ti);
+    echo $oDB->count( TABTOPIC." t WHERE $where" );
+    return;
+    break;
+  case 'R': // replies
+    if ( $ti!=='' ) $where .= getSqlTimeframe($oDB->type, $ti);
+    echo $oDB->count( TABPOST." p INNER JOIN TABTOPIC t ON p.topic=t.id WHERE p.type<>'P' AND $where" );
+    return;
+    break;
+  case 'attach': // replies
+    if ( $ti!=='' ) $where .= getSqlTimeframe($oDB->type, $ti);
+    echo $oDB->count( TABPOST." p INNER JOIN TABTOPIC t ON p.topic=t.id WHERE p.attach<>'' AND $where" );
+    return;
+    break;
+  case 'unreplied': // topics (status must be already "0"=opened)
+    $d = isset($_GET['d']) ? $_GET['d'] : '10'; // days (use for Prune)
+    $d = addDate(date('Ymd His'),-$d,'day');
+    echo $oDB->count( TABTOPIC." t WHERE $where AND t.replies=0 AND t.firstpostdate<'$d'" );
+    return;
+    break;
+  default: // posts
+    echo json_encode(array(array('rItem'=>'','rInfo'=>'invalid argument [q]')));
+    return;
 }
 
 // RESPONSE FAILED
 
-echo json_encode( array(array('rItem'=>'', 'rInfo'=>$e0.', '.($s.$t.$fst==='***' ? $e1 : $e2))) );
+echo json_encode( array(array('rItem'=>'', 'rInfo'=>$e0.', '.($s.$ft.$fs==='-1' ? $e1 : $e2))) );

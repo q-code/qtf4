@@ -45,11 +45,11 @@ if ( substr($size,0,1)==='p' ) { $i = (int)substr($size,1); $sqlStart = ($i-1)*$
 // init args
 $s = -1; // [int]
 $q = ''; // Search type (not required, use 's' if missing)
-$fst = ''; // Status [string] {'*'|status-key}, caution: can be '0'
+$fs = ''; // Status [string] {'*'|status-key}, caution: can be '0'
 $fv = ''; // Searched [string] text (converted to array of strings)
 $fw = ''; // timeframe [string] or userid
 $pn = 1; $po = 'lastpostdate'; $pd = 'desc'; // page number,order,direction
-qtArgs('q int:s fst fv fw int:pn po pd');
+qtArgs('q int:s fs fv fw int:pn po pd');
 
 // check args
 if ( empty($q) ) $q = '';
@@ -110,7 +110,7 @@ if ( $q!=='' ) {
   if ( $q==='adv' && !empty($fv) ) $strLastcol = 'tags'; // forces display column tags
 }
 
-$forceShowClosed = $_SESSION[QT]['show_closed']==='0' && $fst==='1';
+$forceShowClosed = $_SESSION[QT]['show_closed']==='0' && $fs==='1';
 $sqlHideClosed = $_SESSION[QT]['show_closed']==='0' && !$forceShowClosed ? " AND t.status<>'1'" : ''; // User preference, hide closed items (not for advanced query having status specified)
 
 // Count items & visible for current user ONLY

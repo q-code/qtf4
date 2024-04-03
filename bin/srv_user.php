@@ -51,8 +51,7 @@ $oDB = new CDatabase();
 
 // PROCESSES
 $data = '';
-switch($q)
-{
+switch($q) {
   case 'u':
     $oDB->query( "SELECT u.name,u.role,u.location,birthday FROM TABUSER u WHERE u.id=$id" );
     $row = $oDB->getRow();

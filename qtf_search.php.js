@@ -14,7 +14,7 @@ optionsEl.addEventListener("change", (e)=>{
 function iconSpin() {
   const icon = document.getElementById("opt-icon");
   icon.classList.remove("spinning");
-  if (document.getElementById("opt-s").value!=="-1" || document.getElementById("opt-fst").value!=="") icon.classList.add("spinning");
+  if (document.getElementById("opt-s").value!=="-1" || document.getElementById("opt-fs").value!=="") icon.classList.add("spinning");
 }
 function broadcastOption(option,value) {
   ["ref-","id-","kw-","adv-","user-"].forEach( id => {

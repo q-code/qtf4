@@ -57,11 +57,11 @@ include translate('lg_stat.php');
 $csv = '';
 $pan = 'g'; // panel: g=global, gt=globaltrend, d=detail, dt=detailtrend
 $bt  = 'm';
-$s   = '*';
+$s   = -1;
 $y   = (int)date('Y'); if ( (int)date('n')<2 ) --$y;
 $y0  = $y-1;
 $tag = '';
-qtArgs('pan bt s int:y int:y0 tag');
+qtArgs('pan bt int:s int:y int:y0 tag');
 
 $sqlSection='';
 $sqlTags = '';
@@ -69,8 +69,8 @@ $sqlTags = '';
 // ------
 // Check and Initialise
 // ------
-if ( $s!=='*' ) $sqlSection = 'forum='.$s.' AND '; // int to avoid injection
-if ( $y0>=$y ) $y0=$y-1;
+if ( $s>=0 ) $sqlSection = 'forum='.$s.' AND '; // int to avoid injection
+if ( $y0>=$y ) $y0 = $y-1;
 if ( !empty($tag) )
 {
   $tag = urldecode($tag); if ( substr($tag,-1,1)===';' ) $tag = substr($tag,0,-1);

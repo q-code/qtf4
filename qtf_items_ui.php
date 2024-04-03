@@ -5,24 +5,29 @@
 * @var string $forceShowClosed
 * @var int $intCount
 */
-$ui = '<button id="optionsbar-ctrl" class="nostyle square42'.($_SESSION['EditByRows'] ? ' expanded' : '').'" onclick="qtToggle(`optionsbar`,`flex`,this.id);qtFocusOut(this.id);qtFocus(`pref`);" title="'.L('My_preferences').'">'.qtSVG('cog').'</button> '.PHP_EOL;
-$ui .= '<div id="optionsbar"'.($_SESSION['EditByRows'] ? '' : ' style="display:none"').'><form method="post" action="'.url($oH->selfurl).'?'.qtURI('page').'" id="formPref">'.PHP_EOL;
-$ui .= '<select id="pref" name="pref" onchange="doSubmit(`formPref`);">'.PHP_EOL;
-$ui .= '<option value="-" selected disabled hidden>'.L('Show').'</option>';
-$ui .= '<option value="togglenewsontop">'.L('News_on_top').($_SESSION[QT]['news_on_top'] ? ' &#10004;' : ' &#10008;').'</option>';
-$ui .= '<option value="toggleclosed"'.($_SESSION[QT]['show_closed']=='0' && isset($forceShowClosed) && $forceShowClosed=='1' ? ' disabled' : '').'>'.L('Closed_item+').($_SESSION[QT]['show_closed'] ? ' &#10004;' : ' &#10008;').'</option>';
+$ui = '<button id="optionsbar-ctrl" class="nostyle square42'.($_SESSION['EditByRows'] ? ' expanded' : '').'" onclick="qtToggle(`optionsbar`,`flex`,this.id);qtFocusOut(this.id);qtFocus(`pref`);" title="'.L('My_preferences').'">'.qtSVG('cog').'</button>'.PHP_EOL;
+
+$ui .= '<div id="optionsbar"'.($_SESSION['EditByRows'] ? '' : ' style="display:none"').'>
+<form method="post" action="'.url($oH->selfurl).'?'.qtURI('page').'" id="formPref">
+<select id="pref" name="pref" onchange="doSubmit(`formPref`);">';
+
+$ui .= '<option value="-" selected disabled hidden>'.L('Show').'</option>
+<option value="togglenewsontop">'.L('News_on_top').($_SESSION[QT]['news_on_top'] ? ' &#10004;' : ' &#10008;').'</option>
+<option value="toggleclosed"'.($_SESSION[QT]['show_closed']=='0' && isset($forceShowClosed) && $forceShowClosed=='1' ? ' disabled' : '').'>'.L('Closed_item+').($_SESSION[QT]['show_closed'] ? ' &#10004;' : ' &#10008;').'</option>';
+
 $ui .= '<optgroup label="'.L('Item+').'">';
 if ( !in_array((int)$_SESSION[QT]['items_per_page'], PAGE_SIZES) ) $_SESSION[QT]['items_per_page'] = (string)PAGE_SIZES[0]; // auto-adjust if config changed
 $ipp = (int)$_SESSION[QT]['items_per_page'];
 foreach(PAGE_SIZES as $size)
-$ui .= '<option value="n'.$size.'"'.($ipp===$size ? ' disabled' : '').'>'.$size.' / '.L('page').($ipp===$size ? ' &#10004;' : '').'</option>';
-
+$ui .= '<option value="'.$size.'"'.($ipp===$size ? ' disabled' : '').'>'.$size.' / '.L('page').($ipp===$size ? ' &#10004;' : '').'</option>';
 $ui .= '</optgroup></select>'.PHP_EOL;
 $ui .= '</form>'.PHP_EOL;
+
 $oH->scripts[] = 'function doSubmit(idform,idhide="optionsbar"){
 let d = document.getElementById(idhide); if ( d ) d.style.display="none";
 d = document.getElementById(idhide+"-ctrl"); if ( d ) d.style.visibility="hidden";
 d = document.getElementById(idform); if ( d ) d.submit();}';
+
 if ( SUser::isStaff() ) {
   $ui .= '<form id="modaction" method="post" action="'.url($oH->selfurl).'?'.$oH->selfuri.'">'.PHP_EOL;
   $ui .= '<select name="modaction" onchange="doSubmit(`modaction`);">';

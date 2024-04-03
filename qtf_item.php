@@ -213,7 +213,7 @@ $oH->scripts[] = 'document.getElementById("form-qr-preview").addEventListener("c
 if ( $_SESSION[QT]['tags']!='0' )
 {
   $oH->scripts['tags'] = '<script type="text/javascript" src="bin/js/qt_tags.js"></script>';
-  $oH->scripts['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" id="tagdesc" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
+  $oH->scripts['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
   if ( $tagEditor)
   $oH->scripts['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script>
 <script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';

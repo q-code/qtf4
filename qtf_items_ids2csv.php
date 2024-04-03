@@ -17,17 +17,17 @@ if ( !SUser::canView('V2') ) $oH->voidPage('user-lock.svg',11,true); //...
 // check search arguments
 $s = -1; // [int] section
 $q = ''; // type of search (if missing will use $q='s')
-$fst = ''; // status $fst can be '' or [string]
+$fs = ''; // status $fs can be '' or [string]
 $fv = ''; // searched text [string] >> array of strings
 $fw = ''; // timeframe [string]
 $ids = '';
-qtArgs('int:s q fst fv fw ids',true,false); // $_GET only
+qtArgs('int:s q fs fv fw ids',true,false); // $_GET only
 if ( empty($ids) ) die('Missing ids');
 if ( empty($q)) $q = '';
 $fv = qtCleanArray($fv); // array of (unique) values trimmed (not empty)
 $intCount = count(explode(',',$ids));
 $sqlStart = 0;
-$intLen   = (int)$_SESSION[QT]['items_per_page'];
+$intLen = (int)$_SESSION[QT]['items_per_page'];
 
 // initialise section
 if ( $q==='' && $s<0 ) die('Missing argument $s');

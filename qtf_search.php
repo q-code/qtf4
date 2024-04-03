@@ -23,9 +23,9 @@ $s = -1; // [int]
 $q = ''; // query model
 $fv = ''; // keyword(s), tag(s), date1 or username
 $fw = ''; // timeframe, date2 or userid
-$fst = ''; // status
+$fs = ''; // status
 $to = false; // title only
-qtArgs('int:s q fv fw boo:to fst qkw');
+qtArgs('int:s q fv fw boo:to fs qkw');
 
 // ------
 // SUBMITTED
@@ -55,7 +55,7 @@ if ( isset($_POST['ok']) && !empty($q) ) try {
       if ( $fv===';' ) throw new Exception( 'Tag '.L('invalid') );
       $arg['fv'] = urlencode($fv);
       $arg['fw'] = $fw;
-      $arg['fst'] = $fst;
+      $arg['fs'] = $fs;
       break;
     case 'user':
     case 'userm':
@@ -85,9 +85,9 @@ include APP.'_search_ui.php'; // SEARCH SHORTCUTS
 // SEARCH OPTIONS
 echo '<h2>'.L('Search_option').'</h2>'.PHP_EOL;
 echo '<section class="search-box options" id="broadcasted-options">'.PHP_EOL;
-echo qtSVG('cog', 'id=opt-icon|class=filigrane'.($s<0 && $fst==='' ? '' : ' spinning'));
+echo qtSVG('cog', 'id=opt-icon|class=filigrane'.($s<0 && $fs==='' ? '' : ' spinning'));
 echo '<div>'.L('Section').' <select id="opt-s" name="s" size="1" autocomplete="off">'.sectionsAsOption($s,[],[],L('In_all_sections')).'</select></div>';
-echo '<div>'.L('Status').'&nbsp;<select id="opt-fst" name="fst" size="1" autocomplete="off"><option value=""'.($fst==='' ? ' selected' : '').'>'.L('Any_status').'</option>'.qtTags(CTopic::getStatuses(),$fst).'</select></div>'.PHP_EOL;
+echo '<div>'.L('Status').'&nbsp;<select id="opt-fs" name="fs" size="1" autocomplete="off"><option value=""'.($fs==='' ? ' selected' : '').'>'.L('Any_status').'</option>'.qtTags(CTopic::getStatuses(),$fs).'</select></div>'.PHP_EOL;
 echo '</section>'.PHP_EOL;
 
 // SEARCH CRITERIA
@@ -105,7 +105,7 @@ echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <div style="flex-grow:1;text-align:right">
 <input type="hidden" name="q" value="kw"/>
 <input type="hidden" id="kw-s" name="s" value="'.$s.'"/>
-<input type="hidden" id="kw-fst" name="fst" value="'.$fst.'"/>
+<input type="hidden" id="kw-fs" name="fs" value="'.$fs.'"/>
 <button type="submit" name="ok" value="'.$certificate.'">'.L('Search').'</button>
 </div>
 </section>
@@ -126,7 +126,7 @@ echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 <div style="flex-grow:1;text-align:right">
 <input type="hidden" name="q" value="ref"/>
 <input type="hidden" id="ref-s" name="s" value="'.$s.'"/>
-<input type="hidden" id="ref-fst" name="fst" value="'.$fst.'"/>
+<input type="hidden" id="ref-fs" name="fs" value="'.$fs.'"/>
 <button type="submit" name="ok" value="'.$certificate.'">'.L('Search').'</button>
 </div>
 </section>
@@ -150,7 +150,7 @@ if ( $_SESSION[QT]['tags']!='0' ) echo '<div>'.L('With_tag').' <div id="ac-wrapp
 echo '<div style="flex-grow:1;text-align:right">
 <input type="hidden" name="q" value="adv"/>
 <input type="hidden" name="s" value="'.$s.'" id="adv-s"/>
-<input type="hidden" name="fst" value="'.$fst.'" id="adv-fst"/>
+<input type="hidden" name="fs" value="'.$fs.'" id="adv-fs"/>
 <button type="submit" name="ok" value="'.$certificate.'">'.L('Search').'</button>
 </div>
 </section>

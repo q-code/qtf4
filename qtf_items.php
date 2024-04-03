@@ -18,11 +18,11 @@ if ( !SUser::canView('V2') ) $oH->voidPage('user-lock.svg',11); //...
 // init args
 $s = -1; // [int]
 $q = ''; // Search type ('' means section $s)
-$fst = ''; // Status [string] {''|status-key}, caution: can be '0'
+$fs = ''; // Status [string] {''|status-key}, caution: can be '0'
 $fv = ''; // Searched [string] text (converted to array of strings)
 $fw = ''; // timeframe [string] or userid
 $pn = 1; $po = 'lastpostdate'; $pd = 'desc'; // page number,order,direction
-qtArgs('int:s q fst fv fw int:pn po pd');
+qtArgs('int:s q fs fv fw int:pn po pd');
 if ( $q==='' && $s<0 ) die(__FILE__.' Missing argument $s');
 $fv = qtCleanArray($fv); // [array]
 
@@ -32,12 +32,12 @@ if ( $q==='' ) {
   if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U') ) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
-    $oH->voidPage('user-lock.svg',12,false); //...
+    $oH->voidPage('user-lock.svg',12); //...
   }
   if ( $oS->type==='2' && SUser::role()==='V' ) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
-    $oH->voidPage('user-lock.svg',11,false); //...
+    $oH->voidPage('user-lock.svg',11); //...
     }
   $oH->selfname = L('Section').': '.$oS->title;
 } else {
@@ -89,7 +89,7 @@ if ( $q!=='' ) {
   $oH->warning = sqlQueryParts($sqlFrom,$sqlWhere,$sqlValues,$sqlCount,$sqlCountAlt,$oH->selfuri); //selfuri is not urldecoded
   if ( $q==='adv' && !empty($fv) ) $strLastcol = 'tags'; // forces display column tags
 }
-$forceShowClosed = $_SESSION[QT]['show_closed']==='0' && $fst==='1';
+$forceShowClosed = $_SESSION[QT]['show_closed']==='0' && $fs==='1';
 $sqlHideClosed = $_SESSION[QT]['show_closed']==='0' && !$forceShowClosed ? " AND t.status<>'1'" : ''; // User preference, hide closed items (not for advanced query having status specified)
 // Count topics & visible for current user ONLY
 if ( ($q==='' && $oS->type!==2) || ( $q==='' && SUser::isStaff()) ) {
@@ -177,7 +177,7 @@ switch($q) {
 $pageSubtitle = '';
 if ( $q!=='' ) {
   if ( $s>=0 ) $pageSubtitle = L('only_in_section').' &lsquo;'.CSection::translate($s).'&rsquo;';
-  if ( $fst!=='' ) $pageSubtitle .= (empty($pageSubtitle) ? '' : ', ').L('status').' '.CTopic::getStatus($fst);
+  if ( $fs!=='' ) $pageSubtitle .= (empty($pageSubtitle) ? '' : ', ').L('status').' '.CTopic::getStatus($fs);
 }
 // full title
 if ( !empty($pageTitle) ) $pageTitle = '<p class="pg-title">'.$pageTitle.'</p>'.(empty($pageSubtitle) ? '' : '<p class="pg-title pg-subtitle">'.$pageSubtitle.'</p>');
@@ -209,7 +209,7 @@ if ( $intCount===0 ) {
   if ( $oS->type==='2' && !SUser::isStaff() ) echo '<p class="center">'.L('Only_your_items').'</p>';
   if ( $intCount ) echo '<p class="center">'.qtSVG('exclamation-triangle').' '.L('Closed_item', $intCount).'. '.L('Closed_hidden_by_pref').' (<a href="javascript:void(0)" onclick="let d=document.getElementById(`pref`); if ( d) {d.value=`toggleclosed`;doSubmit(`formPref`);}">'.L('show').' '.L('closed_items').'</a>).</p>';
   // alternate query
-  if ( $fst!=='' ) {
+  if ( $fs!=='' ) {
     $arg = 's=-1&q='.$q;
     if ( $q==='user' || $q==='kw' || $q==='adv' ) $arg .= '&fv='.implode(';',$fv).'&fw='.urlencode($fw);
     echo '<p class="center"><a href="'.url('qtf_items.php').'?'.$arg.'">'.L('Try_without_options').'</a></p>';
@@ -382,11 +382,10 @@ echo '<div id="t1-nav-bot" class="nav-bot">'.$navCommands.'</div>'.PHP_EOL;
 if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && count($arrTags)>0 ) {
   sort($arrTags);
   echo '<div class="tag-box"><p><svg class="svg-symbol svg-125"><use href="#symbol-tags" xlink:href="#symbol-tags"/></svg> '.L('Show_only_tag').'</p>';
-
   foreach($arrTags as $strTag)
   echo '<a class="tag" href="'.url('qtf_items.php').'?s='.$s.'&q=adv&fv='.urlencode($strTag).'" title="..." data-tagdesc="'.$strTag.'">'.$strTag.'</a>';
   echo qtSVG('search','','',true).'</div>';
-  $oH->scripts['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" id="tagdesc" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
+  $oH->scripts['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
 }
 
 // Post-compute user's replied items (for topics having replies). Result is added using js.

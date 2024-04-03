@@ -505,10 +505,10 @@ $oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
-if ( isset($_POST['ok']) && isset($_POST['t']) ) {
+if ( isset($_POST['ok']) && isset($_POST['ban']) ) {
   // ban user
-  if ( (int)$_POST['t']<0 ) die('Wrong parameters: delay');
-  $b = $oDB->exec( "UPDATE TABUSER SET closed='" . $_POST['t'] . "' WHERE id=".$id);
+  if ( (int)$_POST['ban']<0 ) die('Wrong parameters: delay');
+  $b = $oDB->exec( "UPDATE TABUSER SET closed='" . $_POST['ban'] . "' WHERE id=".$id);
   // exit
   $_SESSION[QT.'splash'] = $b ? L('S_update') : 'E|'.L('E_failed');
   $oH->redirect('exit');
@@ -524,7 +524,7 @@ $frm_hd = '<div class="user-dlg">
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<p>'.$row['name'].' <small>('.L('Role_'.$row['role']).')</small></p>';
 $frm[] = '<p>'.L('H_ban').'</p>';
-$frm[] = '<p><select name="t" size="1">';
+$frm[] = '<p><select name="ban" size="1">';
 foreach(array_keys(BAN_DAYS) as $k)
 $frm[] = '<option value="'.$k.'"'.($k==$currentban ? ' selected' : '').'>'.L('day',BAN_DAYS[$k]).'</option>';
 $frm[] = '</select></p>';

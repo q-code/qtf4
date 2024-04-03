@@ -33,18 +33,17 @@ function qtCtype_digit($str) {
 /**
  * Returns a sql date condition seclecting a timeframe
  * @param string $dbtype database type
- * @param string $tf timeframe {y|m|w|1..12|YYYY|YYYYMM|*}
+ * @param string $ti timeframe {y|m|w|1..12|YYYY|YYYYMM|*}
  * @param string $prefix AND
  * @param string $field
  * @return string
  */
-function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate') {
-  if ( empty($tf) || $tf==='*' ) return ''; // no timeframe
-  if ( !is_string($dbtype) || !is_string($tf) || !is_string($prefix) || !is_string($prefix) || empty($field) ) die('getSqlTimeframe: requires string arguments');
-  // $tf can be {y|m|w|1..12|YYYY|YYYYMM|old} i.e. this year, this month, last week, previous month#, a specific year YYYY, a specific yearmonth YYYYMM
+function getSqlTimeframe($dbtype, $ti='', $prefix=' AND ', $field='t.firstpostdate') {
+  if ( empty($ti) ) return ''; // no timeframe
+  if ( !is_string($dbtype) || !is_string($ti) || !is_string($prefix) || !is_string($prefix) || empty($field) ) die('getSqlTimeframe: requires string arguments');
+  // $ti can be {y|m|w|1..12|YYYY|YYYYMM|old} i.e. this year, this month, last week, previous month#, a specific year YYYY, a specific yearmonth YYYYMM
   $operator = '=';
-  switch($tf)
-  {
+  switch($ti) {
     case 'y':	// this year
       $strDate = date('Y');
       break;
@@ -59,21 +58,20 @@ function getSqlTimeframe($dbtype,$tf='*',$prefix=' AND ',$field='t.firstpostdate
       $operator = '<=';
       $strDate = (int)date('Y')-2;
       break;
-    default: // $tf is the month number or a specific datemonth
-      if ( !qtCtype_digit($tf) ) die('getSqlTimeframe: invalid tf argument');
-      switch(strlen($tf))
-      {
+    default: // $ti is the month number or a specific datemonth
+      if ( !qtCtype_digit($ti) ) die('getSqlTimeframe: invalid tf argument');
+      switch(strlen($ti)) {
         case 1:
         case 2:
-          $intMonth = (int)$tf;
+          $intMonth = (int)$ti;
           $intYear = (int)date('Y'); if ( $intMonth>date('n') ) --$intYear; // check if month from previous year
           $strDate = (string)($intYear*100+$intMonth);
           break;
         case 4:
-          $strDate = $tf;
+          $strDate = $ti;
           break;
         case 6:
-          $strDate = $tf;
+          $strDate = $ti;
           break;
         default: die('getSqlTimeframe: invalid tf argument');
       }
@@ -113,17 +111,16 @@ $e4 = empty($L['E_failed'])              ? 'Action failed'       : $L['E_failed'
 
 if ( substr($fv,0,1)==='*' ) { echo $e4,'|',$e1.PHP_EOL; return; }
 // options
-$s = isset($_GET['s']) ? $_GET['s'] : '*'; // section {*|id}
-$t = isset($_GET['t']) ? $_GET['t'] : '*'; // item type {*|A|T|...} or user type {*|A|M|U}
-$fst = isset($_GET['fst']) ? $_GET['fst'] : '*'; // status {*|0|1}, 1=closed
-$y = isset($_GET['y']) ? $_GET['y'] : '*'; // year
-$tf = isset($_GET['tf']) ? $_GET['tf'] : '*'; // timeframe
+$s = isset($_GET['s']) ? (int)$_GET['s'] : -1; // section [int]
+$ft = isset($_GET['ft']) ? $_GET['ft'] : ''; // item type {A|T|...} or user type {A|M|U}
+$fs = isset($_GET['fs']) ? $_GET['fs'] : ''; // status {0|1}, 1=closed
+$y = isset($_GET['y']) ? $_GET['y'] : ''; // year
+$ti = isset($_GET['ti']) ? $_GET['ti'] : ''; // timeframe
 // defaults (1 char to avail injection)
-if ( $s==='' || $s==='-1' ) $s='*';
-if ( strlen($t)>1 || empty($t) ) $t='*';
-if ( strlen($fst)>1 || empty($fst) || $fst==='-1' ) $fst='*';
+if ( strlen($ft)>1 || empty($ft) ) $ft = '';
+if ( strlen($fs)>1 || empty($fs) || $fs==='-1' ) $fs = '';
 $to = empty($_GET['to']) || $_GET['to']==='false' ? 0 : 1; // 1=in title only
-if ( empty($y) || !qtCtype_digit($y) ) $y='*'; // if not a year, use '*' (note: case tag-y uses current year)
+if ( empty($y) || !qtCtype_digit($y) ) $y = ''; // if not a year, use '' (note: case tag-y uses current year)
 
 $oDB = new CDatabase();
 $arrDistinct = [];
@@ -131,21 +128,20 @@ $arr = []; // results
 
 // General Where options (for topics)
 $where = 't.id>=0';
-if ( $s!=='*' ) $where .= " AND t.forum=$s";
-if ( $t!=='*' ) $where .= " AND t.type='$t'";
-if ( $fst!=='*' ) $where .= " AND t.status='$fst'"; // '1'=closed
+if ( $s>=0 ) $where .= " AND t.forum=$s";
+if ( $ft!=='' ) $where .= " AND t.type='$ft'";
+if ( $fs!=='' ) $where .= " AND t.status='$fs'"; // '1'=closed
 
 // PROCESSES
-switch($q)
-{
+switch($q) {
 
 case 'behalf':
 case 'user':
 case 'userm':
 case 'username':
   $where = 'id>0';
-  if ( $t=='A' ) $where = "role='A'";
-  if ( $t=='M' ) $where = "(role='A' OR role='M')";
+  if ( $ft==='A' ) $where = "role='A'";
+  if ( $ft==='M' ) $where = "(role='A' OR role='M')";
   $e2=$e1; //on no result forces 'try other lettres'
   $oDB->query( "SELECT id,name,role FROM TABUSER WHERE $where AND UPPER(name) LIKE ?", ['%'.$fv.'%'] );
   while($row=$oDB->getRow())
@@ -216,7 +212,7 @@ case 'qkw':
 
 case 'tag-y':
   // in stat page year is required, force this year when year not specified (or previous year when still in january)
-  if ( $y==='*' || strlen($y)!==4 ) { $y = (int)date('Y'); if ( (int)date('n')<2 ) $y--; $y=(string)$y; }
+  if ( strlen($y)!==4 ) { $y = (int)date('Y'); if ( (int)date('n')<2 ) $y--; $y=(string)$y; }
   // no break, continue with case 'tag'
 
 case 'tag-edit':
@@ -225,7 +221,7 @@ case 'tag-edit':
   if ( empty($_GET['lang']) ) $_GET['lang']='en';
   require 'lib_qt_tags.php';
   // search matching in section tags
-  if ( $s!=='*' ) {
+  if ( $s>=0 ) {
     $arrTags = readTagsFile('../'.$_GET['dir'].'tags_'.$_GET['lang'].'_'.$s.'.csv');
     foreach($arrTags as $str=>$strDesc) {
       if ( stripos($str, $_GET['fv'])!==false ) $arrDistinct[$str] = substr($strDesc,0,64);
@@ -242,15 +238,13 @@ case 'tag-edit':
   }
   // search in used tags
   if ( count($arrDistinct)<10 ) {
-    $where .= getSqlTimeframe($oDB->type, $tf);
+    $where .= getSqlTimeframe($oDB->type, $ti);
     $arrDistinctKey = array_map('mb_strtolower', array_keys($arrDistinct));
     // search in used tags
     $oDB->query( "SELECT t.tags,count(t.id) as countid FROM TABTOPIC t WHERE $where AND UPPER(t.tags) LIKE ?", ['%'.$fv.'%'] );
-    while($row=$oDB->getRow())
-    {
+    while($row=$oDB->getRow()) {
       $arrTags=explode(';',$row['tags']);
-      foreach($arrTags as $str)
-      {
+      foreach($arrTags as $str) {
         if ( stripos($str, $fv)!==false && !in_array(mb_strtolower($str), $arrDistinctKey) ) $arrDistinct[$str] = '('.$row['countid'].')';
         if ( count($arrDistinct)>8 ) break;
       }
@@ -262,15 +256,14 @@ case 'tag-edit':
 
 case 'userexists':
   $where = '';
-  if ( $t=='A' ) $where = "role='A' AND";
-  if ( $t=='M' ) $where = "(role='A' OR role='M') AND";
+  if ( $ft=='A' ) $where = "role='A' AND";
+  if ( $ft=='M' ) $where = "(role='A' OR role='M') AND";
   echo $oDB->count( TABUSER." WHERE $where name=?", [CDatabase::sqlEncode($_GET['fv'])] )!==0 ? 'true' : 'false'; // case sensitive: use $_GET['fv'] instead of $fv
   return;
   break;
 
 case 'kw':
-  switch($oDB->type)
-  {
+  switch($oDB->type) {
   case 'pdo.sqlsrv':
   case 'sqlsrv': $where .= ' AND (UPPER(p.title) LIKE :v' . ( $to==1 ? ')' : ' OR UPPER(CAST(p.textmsg AS VARCHAR(2000))) LIKE :v)' ); break;
   default:      $where .= ' AND (UPPER(p.title) LIKE :v' . ( $to==1 ? ')' : ' OR UPPER(p.textmsg) LIKE :v)' ); break;
@@ -279,8 +272,7 @@ case 'kw':
     "SELECT t.id,t.type,p.title,p.textmsg,p.type as posttype FROM TABTOPIC t INNER JOIN TABPOST p ON p.topic=t.id WHERE $where",
       [':v'=>'%'.$fv.'%']
     );
-  while($row=$oDB->getRow())
-  {
+  while($row=$oDB->getRow()) {
     $id = (int)$row['id'];
     $image = 'envelope';
     if ( $row['posttype']==='R' ) $image = 'comment-dots';
@@ -310,7 +302,7 @@ default: // posts
 // RESPONSE
 if ( count($arr)==0 )
 {
-  echo json_encode( array(array('rItem'=>'', 'rInfo'=>$e0.', '.($s.$t.$fst==='***' ? $e1 : $e2))) );
+  echo json_encode( array(array('rItem'=>'', 'rInfo'=>$e0.', '.($s.$ft.$fs==='-1' ? $e1 : $e2))) );
 }
 else
 {

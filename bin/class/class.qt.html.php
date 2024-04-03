@@ -118,7 +118,7 @@ public function voidPage(string $title='!', string $content='Access denied', boo
   if ( $appHeader ) {
     $oH = $this; include APP.($inAdm ? '_adm' : '').'_inc_hd.php'; // uses $hideMenuLang=true for error/exit pages
   } else {
-    $this->links['css'] = '<link rel="stylesheet" type="text/css" href="'.($inAdm ? 'bin/css/admin.css' : QT_SKIN.APP.'_styles.css').'"/>';
+    $this->links['css'] = '<link rel="stylesheet" type="text/css" href="bin/css/admin.css"/>';
     $this->head();
     $this->body();
   }
