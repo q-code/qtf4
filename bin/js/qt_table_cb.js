@@ -3,8 +3,8 @@
 // ShiftClick event works when checkboxes include an data-row attribute
 const cbTables = document.querySelectorAll('table[data-cbe]');
 cbTables.forEach( cbTable => {
-  const cbTop = document.querySelector(`#${cbTable.id} input[type="checkbox"][data-target]`);
-  const cbRows = document.querySelectorAll(`#${cbTable.id} input[type="checkbox"][name]`);
+  const cbTop = cbTable.querySelector('input[type="checkbox"][data-target]');
+  const cbRows = cbTable.querySelectorAll('input[type="checkbox"][name]');
   if ( !cbTop || cbRows.length===0 ) return;
   cbTop.addEventListener("click", qtCheckboxAll);
   cbRows.forEach( cb => {
@@ -21,9 +21,6 @@ function qtCheckboxAllUpdate(e) {
   const cbTop = document.querySelector(`[data-target="${e.target.name}"]`);
   if ( !cbTop ) return;
   cbTop.checked = document.querySelectorAll(`[name="${e.target.name}"]`).length===document.querySelectorAll(`[name="${e.target.name}"]:checked`).length;
-}
-function qtCheckboxClick(id) {
-	if ( document.getElementById(id) ) document.getElementById(id).click();
 }
 function qtCheckboxIds(ids, prefixId='t1-cb-', state=true) {
   // Check/uncheck the checkboxes from a list of ids

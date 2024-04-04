@@ -267,8 +267,7 @@ if ( $_SESSION[QT]['register_mode']==='direct' ) {
     var d = document.getElementById("pwd-"+id);
     if ( d.type==="password" ) { d.type="text"; } else { d.type="password"; }
   }';
-  $oH->scripts['newname-w'] = 'let w_already_used = "'.L('Already_used').'";';
-  $oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js"></script>';
+  $oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
 } else {
   $frm[] = L('Password_by_mail').'<br>';
 }
@@ -766,9 +765,7 @@ $frm[] = '<p class="center">'.qtSVG('user','class=svg-label').'&nbsp;<input requ
 $frm[] = '<p id="newname-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="newname-submit" name="ok" value="ok">'.L('Save').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
-
-$oH->scripts['newname-w'] = 'let w_already_used = "'.L('Already_used').'";';
-$oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js"></script>';
+$oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
 
 break;
 

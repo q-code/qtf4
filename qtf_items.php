@@ -47,7 +47,7 @@ if ( $q==='' ) {
 
 // initialise others
 $oH->selfuri = qtURI('pn|po|pd');
-$strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)==='none' ) $strLastcol='0';
+$strLastcol = $oS->getMF('options','last'); if ($strLastcol=='N' || strtolower($strLastcol)==='none' ) $strLastcol='0';
 if ( !isset($_SESSION['EditByRows']) || !SUser::isStaff() ) $_SESSION['EditByRows'] = 0;
 if ( !isset($_SESSION[QT]['lastcolumn']) || $_SESSION[QT]['lastcolumn']==='none' ) $_SESSION[QT]['lastcolumn'] = 'default';
 $navCommands = '';

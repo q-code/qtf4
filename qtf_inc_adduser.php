@@ -62,6 +62,7 @@ if ( isset($_POST['add']) && $_POST['add']===$certificate ) try {
 }
 
 // Security: only administrator can create roles A|M
+$oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
 $formAddUser = '
 <div id="tgl-container" class="strongbox add-user article"'.(isset($_POST['title']) ? '' : ' style="display:none"').'>
 <form method="post" action="'.$oH->self().'">
@@ -74,5 +75,3 @@ $formAddUser = '
 </form>
 </div>
 ';
-$oH->scripts['newname-w'] = 'let w_already_used = "'.L('Already_used').'";';
-$oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js"></script>';

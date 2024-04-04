@@ -187,7 +187,7 @@ case 'itemsMove':
   if ( !SUser::isStaff() ) die('Access denied');
 
   // SUBMITTED
-  if ( isset($_POST['ok']) && isset($_POST['destination']) && $_POST['destination']!=='' ) {
+  if ( isset($_POST['ok']) && isset($_POST['destination']) && (int)$_POST['destination']>=0 ) {
 
     CSection::moveItems($ids, (int)$_POST['destination'], (int)$_POST['ref'], isset($_POST['dropprefix']) ? true : false);
     // exit
