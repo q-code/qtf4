@@ -7,10 +7,7 @@
  * @var string $s
  * @var CHtml $oH
  * @var string $formAddUser
- * @var string $rowCommands
  */
-
-$rowCommands = false;
 $certificate = makeFormCertificate('2b174f48ab4d9704934dda56c6997b3a'); //register public key
 
 // SUBMITTED for add
@@ -64,8 +61,7 @@ if ( isset($_POST['add']) && $_POST['add']===$certificate ) try {
 // Security: only administrator can create roles A|M
 $oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
 $formAddUser = '
-<div id="tgl-container" class="strongbox add-user article"'.(isset($_POST['title']) ? '' : ' style="display:none"').'>
-<form method="post" action="'.$oH->self().'">
+<form method="post" action="'.$oH->self().'" id="tgl-container" class="strongbox add-user article"'.(isset($_POST['title']) ? '' : ' style="display:none"').'>
 <p>'.L('Role').'&nbsp;<select name="role" size="1">'.(SUser::role()==='A' ? '<option value="A">'.L('Role_A').'</option><option value="M">'.L('Role_M').'</option>' : '').'<option value="U" selected>'.L('Role_U').'</option></select></p>
 <p>'.qtSVG('user').'&nbsp;<input required id="newname" name="title" type="text" minlength="3" maxlength="24" value="'.(isset($_POST['title']) ? $_POST['title'] : '').'" onfocus="document.getElementById(`newname-error`).innerHTML=``;" placeholder="'.L('Username').'"/></p>
 <p id="newname-error" class="error"></p>
@@ -73,5 +69,4 @@ $formAddUser = '
 <p>'.qtSVG('envelope').'&nbsp;<input required name="mail" type="email" maxlength="255" value="'.(empty($_POST['email']) ? '' : $_POST['email']).'" placeholder="'.L('Email').'"/></p>
 <p><input id="notify" type="checkbox" name="notify"/> <label for="notify">'.L('Send').' '.L('email').'</label>&nbsp; <button type="submit" id="newname-submit" name="add" value="'.$certificate.'">'.L('Add').'</button></p>
 </form>
-</div>
 ';
