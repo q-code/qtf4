@@ -190,14 +190,21 @@ if ( $intCount<$intUsers ) $strPaging = '<small>'.L('user',$intCount).' '.L('fro
 // ------
 // Memberlist
 // ------
-$rowCommands = L('selection').': <a class="datasetcontrol" href="javascript:void(0)" data-action="usersrole">'.L('role').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersdel">'.L('delete').'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="usersban">'.strtolower(L('Ban')).'</a> &middot; <a class="datasetcontrol" href="javascript:void(0)" data-action="userspic">'.L('picture').'</a>';
-echo PHP_EOL.'<form class="formsafe" id="form-users" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-users-action" name="a" />'.PHP_EOL;
+$m = new CMenu([
+L('role').'|class=rowcmd|data-action=usersrole',
+L('delete').'|class=rowcmd|data-action=usersdel',
+strtolower(L('Ban')).'|class=rowcmd|data-action=usersban',
+L('picture').'|class=rowcmd|data-action=userspic'
+], ' &middot; ');
+$rowCommands = L('selection').': '.$m->build();
+
+echo PHP_EOL.'<form id="form-items" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-items-action" name="a" />'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
-echo '<div id="t1-edits-top" class="left checkboxcmds">'.qtSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
+echo '<div id="t1-edits-top" class="left rowcmds" data-table="t1">'.qtSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // Table definition
-$t = new TabTable('id=t1|class=t-item|data-content=users|data-cbe',$intCount);
+$t = new TabTable('id=t1|class=t-item table-cb|data-content=users',$intCount);
 $t->activecol = $strOrder;
 $t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po='.$strOrder.'&pd='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
 // TH
@@ -270,7 +277,7 @@ while($row=$oDB->getRow())
 echo '</tbody>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
 echo '<div id="tablebot" class="table-ui bot">';
-echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.qtSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo $rowCommands ? '<div id="t1-edits-bot" class="left rowcmds" data-table="t1">'.qtSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 echo '</form>'.PHP_EOL;
 
@@ -285,6 +292,7 @@ echo '<p class="right" style="padding:0.3rem 0">'.L('Show').': '.$m->build('u'.$
 
 // HTML END
 
-$oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js"></script>';
+$oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js" data-noselect="'.L('Nothing_selected').'"></script>';
+$oH->scripts[] = 'qtHideAfterTable("tablebot");';
 
 include 'qtf_adm_inc_ft.php';

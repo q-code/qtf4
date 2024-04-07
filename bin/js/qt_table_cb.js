@@ -1,20 +1,34 @@
-// Checkbox-events are added if the table(s) has a data-cbe attribute
-// Top checkbox (having the data-target attribute) is linked to row checkboxes by the name attribute
+// Checkbox-events (and command-events) are added if the table has the class "table-cb"
+// Top checkbox with [data-target] attribute is linked to row checkboxes by the [name] attribute
 // ShiftClick event works when checkboxes include an data-row attribute
-const cbTables = document.querySelectorAll('table[data-cbe]');
+const cbTables = document.querySelectorAll('table.table-cb');
+let noselect = document.currentScript.dataset['noselect']; if ( !noselect ) noselect = 'Nothing selected';
+let formid = document.currentScript.dataset['formid']; if ( !formid ) formid = 'form-items';
 cbTables.forEach( cbTable => {
+  // top and rows checkbox event
   const cbTop = cbTable.querySelector('input[type="checkbox"][data-target]');
   const cbRows = cbTable.querySelectorAll('input[type="checkbox"][name]');
   if ( !cbTop || cbRows.length===0 ) return;
-  cbTop.addEventListener("click", qtCheckboxAll);
+  const cbName = cbRows[0].name;
+  cbTop.addEventListener('click', qtCheckboxAll);
   cbRows.forEach( cb => {
-    cb.addEventListener("click", qtCheckboxShiftClick);
-    cb.addEventListener("click", qtCheckboxAllUpdate);
+    cb.addEventListener('click', qtCheckboxShiftClick);
+    cb.addEventListener('click', qtCheckboxAllUpdate);
+  });
+  // commands event, search for commands in block menu having [data-table=tableid]
+  document.querySelectorAll('.rowcmds[data-table="'+cbTable.id+'"] a.rowcmd').forEach( cmd => {
+    cmd.addEventListener('click', ()=>{
+      if ( document.querySelectorAll(`input[name="${cbName}"]:checked`).length===0 ) {
+        alert( noselect );
+        return false;
+      }
+      document.getElementById(formid+'-action').value = cmd.dataset.action;
+      document.getElementById(formid).submit();
+    });
   });
 });
 function qtCheckboxAll(e) {
-  const target = e.target.dataset.target;
-  if ( !target ) return;
+  const target = e.target.dataset.target; if ( !target ) return;
   document.querySelectorAll(`[name="${target}"]`).forEach( item => { item.checked = e.target.checked; });
 }
 function qtCheckboxAllUpdate(e) {

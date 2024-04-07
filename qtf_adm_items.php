@@ -27,7 +27,7 @@ if ( isset($_POST['ok']) ) try {
 
   if ( !qtIsBetween($d,1,99) ) throw new Exception( L('Days').' '.L('invalid').' (1-99)' );
   if ( $_SESSION[QT]['unreplied_days']!=$d ) {
-    $_SESSION[QT]['unreplied_days']=$d;
+    $_SESSION[QT]['unreplied_days'] = $d;
     $oDB->exec( "DELETE FROM TABSETTING WHERE param='unreplied_days'" );
     $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('unreplied_days','$d')" );
     SMem::set('settingsage',time());

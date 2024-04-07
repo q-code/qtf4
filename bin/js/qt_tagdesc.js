@@ -1,8 +1,8 @@
 /*
-This adds an mouseover-event (calling srv_tagdesc.php) to every element with the attribute [data-tagdesc].
+This adds a mouseover-event (calling srv_tagdesc.php) to every element with the attribute [data-tagdesc].
 [data-tagdesc] must contain the searched tag. When found, the description is transfered in the [title] while [data-tagdesc] is cleared.
-Other elements in the document having the same [data-tagdesc] are also changed.
-TIPS: This <script src="qt_tagdesc.js"> supports options passed as attribute data-{dir|lang|s|xs|sep|ci|na}
+Other elements in the document having the same [data-tagdesc] are changed.
+TIPS: <script src="qt_tagdesc.js"> supports option passed in attribute data-{dir|lang|s|xs|sep|ci|na}
 */
 const tags = document.querySelectorAll('[data-tagdesc]');
 if ( tags.length>0 ) {

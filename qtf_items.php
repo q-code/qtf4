@@ -221,7 +221,7 @@ if ( $intCount===0 ) {
 // Table definition
 $useNewsOnTop = $_SESSION[QT]['news_on_top'];
 // selfuri contains arguments WITHOUT order,dir
-$t = new TabTable('id=t1|class=t-item|data-cbe', $intCount);
+$t = new TabTable('id=t1|class=t-item table-cb', $intCount);
   $t->activecol = $po;
   $t->activelink = '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po='.$po.'&pd='.($pd==='asc' ? 'desc' : 'asc').'">%s</a> '.qtSVG('caret-'.($pd==='asc' ? 'up' : 'down'));
   $t->thead();
@@ -250,44 +250,34 @@ foreach(['firstpostname','lastpostdate','replies','views','id','status','section
 $t->cloneThTd();
 
 // Edit mode
-if ( $_SESSION['EditByRows']) {
+if ( $_SESSION['EditByRows'] ) {
 
-  $rowCommands = '<a class="rowcmd" href="javascript:void(0)" data-action="itemsType">'.L('Type').'/'.L('Status').'</a>';
-  $rowCommands .= ' &middot; <a class="rowcmd" href="javascript:void(0)" data-action="itemsTags">'.L('Tags').'</a>';
-  $rowCommands .= ' &middot; <a class="rowcmd" href="javascript:void(0)" data-action="itemsMove">'.L('Move').'</a>';
-  $rowCommands .= ' &middot; <a class="rowcmd" href="javascript:void(0)" data-action="itemsDelete">'.L('Delete').'</a>'.PHP_EOL;
-  $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js"></script>';
-  $oH->scripts[] = 'const cmds = document.getElementsByClassName("checkboxcmds");
-  for (const el of cmds){ el.addEventListener("click", (e)=>{ if ( e.target.tagName==="A" ) clickRowCmd("t1-cb[]", e.target.dataset.action); }); }
-  function clickRowCmd(checkboxname,action)
-  {
-    const checkboxes = document.getElementsByName(checkboxname);
-    let n = 0;
-    for (let i=0; i<checkboxes.length; ++i) if ( checkboxes[i].checked ) ++n;
-    if ( n>0 ) {
-      document.getElementById("form-items-action").value=action;
-      document.getElementById("form-items").submit();
-    } else {
-      alert("'.L('Nothing_selected').'");
-    }
-    return false;
-  }';
+  $m = new CMenu([
+  L('Type').'/'.L('Status').'|class=rowcmd|data-action=itemsType',
+  L('Tags').'|class=rowcmd|data-action=itemsTags',
+  L('Move').'|class=rowcmd|data-action=itemsMove',
+  L('Delete').'|class=rowcmd|data-action=itemsDelete|title='.L('Delete').' '.L('item+').', '.L('reply+').' '.L('or').' '.L('attachment+')
+  ], ' &middot; ');
+  $rowCommands = $m->build();
+
+  $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js" data-noselect="'.L('Nothing_selected').'"></script>';
   $oH->scripts[] = 'const cmdExport = document.getElementById("cmd-export-selected");
-if ( cmdExport ) {
-  cmdExport.addEventListener("click", ()=>{
-    const checkboxes = document.getElementsByName("t1-cb[]");
-    let ids = new Array();
-    for (let i=0; i<checkboxes.length; ++i) if ( checkboxes[i].checked ) ids.push(checkboxes[i].value);
-    if ( ids.length===0 ) return alert("'.L('Nothing_selected').'");
-    cmdExport.href = "qtf_items_ids2csv.php?'.$oH->selfuri.'&ids=" + ids.join(",");
-  });
-}';
+  if ( cmdExport ) {
+    cmdExport.addEventListener("click", ()=>{
+      const checkboxes = document.getElementsByName("t1-cb[]");
+      let ids = new Array();
+      for (let i=0; i<checkboxes.length; ++i) if ( checkboxes[i].checked ) ids.push(checkboxes[i].value);
+      if ( ids.length===0 ) return alert("'.L('Nothing_selected').'");
+      cmdExport.href = "qtf_items_ids2csv.php?'.$oH->selfuri.'&ids=" + ids.join(",");
+    });
+  }';
+
 }
 
 // Buttons and paging
 echo '<div id="t1-nav-top" class="nav-top">'.$navCommands.'</div>'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
-echo $rowCommands ? '<div id="t1-edits-top" class="left checkboxcmds">'.qtSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo $rowCommands ? '<div id="t1-edits-top" class="left rowcmds" data-table="t1">'.qtSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // TABLE START DISPLAY
@@ -373,7 +363,7 @@ $strCsv = '';
 if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) $strCsv .= '<a id="cmd-export-selected" class="csv" href="javascript:void(0)" title="'.L('H_Csv').' ('.L('selected').')">'.L('Export').qtSVG('check-square').'</a> &middot; ';
 $strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(url('qtf_items_csv.php').'?'.$oH->selfuri, $intCount, $pn);
 echo '<div id="tablebot" class="table-ui bot">';
-echo $rowCommands ? '<div id="t1-edits-bot" class="left checkboxcmds">'.qtSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo $rowCommands ? '<div id="t1-edits-bot" class="left rowcmds" data-table="t1">'.qtSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 echo '<p class="right table-ui-export">'.$strCsv.'</p>'.PHP_EOL;
 echo '<div id="t1-nav-bot" class="nav-bot">'.$navCommands.'</div>'.PHP_EOL;

@@ -99,12 +99,14 @@ case 'itemsType':
   if ( isset($_POST['ok']) ) {
 
     // update status
-    if ( isset($_POST['status']) && $_POST['status']!=='U' ) $oDB->exec( "UPDATE TABTOPIC SET status=?,statusdate=? WHERE id IN ($strIds)", [$_POST['status'],date('Ymd His')] );
+    if ( isset($_POST['status']) && $_POST['status']!=='U' )
+    $oDB->exec( "UPDATE TABTOPIC SET status=?,statusdate=? WHERE id IN ($strIds)", [$_POST['status'],date('Ymd His')] );
     // update type
-    if ( isset($_POST['type']) && $_POST['type']!=='U' ) $oDB->exec( "UPDATE TABTOPIC SET type=? WHERE id IN ($strIds)", [$_POST['type']] );
+    if ( isset($_POST['type']) && $_POST['type']!=='U' )
+    $oDB->exec( "UPDATE TABTOPIC SET type=? WHERE id IN ($strIds)", [$_POST['type']] );
+    // exit
     memFlush(); memFlushStats(); // clear cache
     $_SESSION[QT.'splash'] = L('S_update');
-    // exit
     $oH->redirect('exit');
 
   }
