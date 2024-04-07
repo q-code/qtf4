@@ -33,7 +33,6 @@ if ( isset($_POST['add']) && $_POST['add']===$certificate ) try {
   $str = substr($_POST['role'],0,1);
   if ( !in_array($str,['U','M','A']) ) throw new Exception( L('Role').' '.L('invalid') );
   $strRole = $str;
-
   // save
   $result = SUser::addUser($strTitle,$strNewpwd,$strMail,$strRole); // return [int]user id or [string]error message
   if ( is_string($result) ) throw new Exception( $result );
@@ -52,21 +51,20 @@ if ( isset($_POST['add']) && $_POST['add']===$certificate ) try {
 
 } catch (Exception $e) {
 
-  // Splash short message and send error to ...inc_hd.php
   $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
   $oH->error = $e->getMessage();
 
 }
 
 // Security: only administrator can create roles A|M
-$oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
+$oH->scripts['rename'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
 $formAddUser = '
 <form method="post" action="'.$oH->self().'" id="tgl-container" class="strongbox add-user article"'.(isset($_POST['title']) ? '' : ' style="display:none"').'>
 <p>'.L('Role').'&nbsp;<select name="role" size="1">'.(SUser::role()==='A' ? '<option value="A">'.L('Role_A').'</option><option value="M">'.L('Role_M').'</option>' : '').'<option value="U" selected>'.L('Role_U').'</option></select></p>
-<p>'.qtSVG('user').'&nbsp;<input required id="newname" name="title" type="text" minlength="3" maxlength="24" value="'.(isset($_POST['title']) ? $_POST['title'] : '').'" onfocus="document.getElementById(`newname-error`).innerHTML=``;" placeholder="'.L('Username').'"/></p>
-<p id="newname-error" class="error"></p>
+<p>'.qtSVG('user').'&nbsp;<input required id="rename" name="title" type="text" minlength="3" maxlength="24" value="'.(isset($_POST['title']) ? $_POST['title'] : '').'" onfocus="document.getElementById(`rename-error`).innerHTML=``;" placeholder="'.L('Username').'"/></p>
+<p id="rename-error" class="error"></p>
 <p>'.qtSVG('lock').'&nbsp;<input required name="pass" type="text" maxlength="32" value="'.(empty($_POST['pass']) ? '' : $_POST['pass']).'" placeholder="'.L('Password').'"/></p>
 <p>'.qtSVG('envelope').'&nbsp;<input required name="mail" type="email" maxlength="255" value="'.(empty($_POST['email']) ? '' : $_POST['email']).'" placeholder="'.L('Email').'"/></p>
-<p><input id="notify" type="checkbox" name="notify"/> <label for="notify">'.L('Send').' '.L('email').'</label>&nbsp; <button type="submit" id="newname-submit" name="add" value="'.$certificate.'">'.L('Add').'</button></p>
+<p><input id="notify" type="checkbox" name="notify"/> <label for="notify">'.L('Send').' '.L('email').'</label>&nbsp; <button type="submit" id="rename-submit" name="add" value="'.$certificate.'">'.L('Add').'</button></p>
 </form>
 ';

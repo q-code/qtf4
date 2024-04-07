@@ -2,8 +2,8 @@
 // Top checkbox with [data-target] attribute is linked to row checkboxes by the [name] attribute
 // ShiftClick event works when checkboxes include an data-row attribute
 const cbTables = document.querySelectorAll('table.table-cb');
-let noselect = document.currentScript.dataset['noselect']; if ( !noselect ) noselect = 'Nothing selected';
-let formid = document.currentScript.dataset['formid']; if ( !formid ) formid = 'form-items';
+const noselect = document.currentScript.dataset['noselect'] ?? 'Nothing selected';
+const formid = document.currentScript.dataset['formid'] ?? 'form-items';
 cbTables.forEach( cbTable => {
   // top and rows checkbox event
   const cbTop = cbTable.querySelector('input[type="checkbox"][data-target]');

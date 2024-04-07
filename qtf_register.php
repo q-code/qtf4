@@ -259,7 +259,7 @@ $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
 $frm[] = '<div class="flex-sp top">';
 $frm[] = '<div style="min-width:65%;padding:0 20px 0 0">';
 $frm[] = '<fieldset class="register"><legend>'.L('Username').' '.L('and').' '.L('password').'</legend>';
-$frm[] = '<p>'.qtSVG('user','class=svg-label|title='.L('Username')).' <input required type="text" id="newname" name="username" size="25" minlength="3" maxlength="64" value="'.$_POST['username'].'" placeholder="'.L('Username').'"/></p><p id="newname-error" class="error"></p>';
+$frm[] = '<p>'.qtSVG('user','class=svg-label|title='.L('Username')).' <input required type="text" id="rename" name="username" size="25" minlength="3" maxlength="64" value="'.$_POST['username'].'" placeholder="'.L('Username').'"/></p><p id="rename-error" class="error"></p>';
 if ( $_SESSION[QT]['register_mode']==='direct' ) {
   $frm[] = '<p class="input-pwd">'.qtSVG('lock','class=svg-label|title='.L('Password')).' <input required type="password" id="pwd-1" name="pwd" size="25" minlength="4" maxlength="50" value="'.$_POST['pwd'].'" placeholder="'.L('Password').'"/>'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
   $frm[] = '<p class="input-pwd">'.qtSVG('lock','class=svg-label|title='.L('Confirm_password')).' <input required type="password" id="pwd-2" name="conpwd" size="25" minlength="4" maxlength="50" value="'.$_POST['conpwd'].'" placeholder="'.L('Confirm_password').'"/>'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
@@ -267,7 +267,7 @@ if ( $_SESSION[QT]['register_mode']==='direct' ) {
     var d = document.getElementById("pwd-"+id);
     if ( d.type==="password" ) { d.type="text"; } else { d.type="password"; }
   }';
-  $oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
+  $oH->scripts['rename'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
 } else {
   $frm[] = L('Password_by_mail').'<br>';
 }
@@ -295,7 +295,7 @@ $frm[] = '<div class="formHelp article">';
 $frm[] = L('Reg_help');
 $frm[] = '</div>';
 $frm[] = '</div>';
-$frm[] = '<p class="submit right"><input type="hidden" name="birthday" value="'.$birthday.'"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button id="newname-submit" type="submit" name="ok" value="'.$certificate.'">'.L('Register').'</button></p>';
+$frm[] = '<p class="submit right"><input type="hidden" name="birthday" value="'.$birthday.'"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button id="rename-submit" type="submit" name="ok" value="'.$certificate.'">'.L('Register').'</button></p>';
 $frm[] = '</form>';
 
 break;
@@ -761,11 +761,11 @@ $frm_attr = 'class=msgbox formName';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
-$frm[] = '<p class="center">'.qtSVG('user','class=svg-label').'&nbsp;<input required type="text" id="newname" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
-$frm[] = '<p id="newname-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="newname-submit" name="ok" value="ok">'.L('Save').'</button></p>';
+$frm[] = '<p class="center">'.qtSVG('user','class=svg-label').'&nbsp;<input required type="text" id="rename" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
+$frm[] = '<p id="rename-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="rename-submit" name="ok" value="ok">'.L('Save').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
-$oH->scripts['newname'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
+$oH->scripts['rename'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
 
 break;
 
