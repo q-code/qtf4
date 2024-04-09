@@ -35,7 +35,7 @@ if ( empty($oH->error) )
   $_SESSION[QT]['m_gmap_gkey'] = '';
   $_SESSION[QT]['m_gmap_gcenter'] = '50.8468142558,4.35238838196';
   $_SESSION[QT]['m_gmap_gzoom'] = '10';
-  $_SESSION[QT]['m_gmap_gbuttons'] = 'P011100'; //order: maptype.streetview.background.scale.fullscreen.mousewheel.geocode
+  $_SESSION[QT]['m_gmap_options'] = 'mt=T;bg=1;sc=1;fs=1;mw=0;sv=0;gc=0'; // mt=maptype[T|S|H|R] bg=background sc=scale fs=fullscreen mw=mousewhell sv=streetview gc=geocode
   $_SESSION[QT]['m_gmap_gfind'] = 'Brussels, Belgium';
   $_SESSION[QT]['m_gmap_gsymbol'] = '0'; // "icon_filename". 0=Default symbol (v4.0 shadow is obsolete)
   $_SESSION[QT]['m_gmap_sections'] = 'U';  // "U,S,id" section id, U=userlist, S=search result
@@ -45,7 +45,7 @@ if ( empty($oH->error) )
   $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_gmap_gkey','" .   $_SESSION[QT]["m_gmap_gkey"].    "')" );
   $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_gmap_gcenter','". $_SESSION[QT]["m_gmap_gcenter"]. "')" );
   $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_gmap_gzoom','" .  $_SESSION[QT]["m_gmap_gzoom"].   "')" );
-  $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_gmap_gbuttons','".$_SESSION[QT]["m_gmap_gbuttons"]."')" );
+  $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_gmap_options','". $_SESSION[QT]["m_gmap_options"]. "')" );
   $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_gmap_gfind','" .  $_SESSION[QT]["m_gmap_gfind"].   "')" );
   $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_gmap_gsymbol','" .$_SESSION[QT]["m_gmap_gsymbol"]. "')" );
   $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('m_gmap_sections','".$_SESSION[QT]["m_gmap_sections"]."')" );

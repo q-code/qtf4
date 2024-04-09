@@ -32,10 +32,10 @@ $L['Gmap']['Symbol']='Symbool';
 $L['Gmap']['Default']='Standaard';
 $L['Gmap']['Search_results']='Onderzoek resultaten';
 
-$L['Gmap']['Back']['M']='Kaart';
+$L['Gmap']['Back']['R']='Kaart';
 $L['Gmap']['Back']['S']='Satelliet';
 $L['Gmap']['Back']['H']='Satelliet en labels';
-$L['Gmap']['Back']['P']='Terrein';
+$L['Gmap']['Back']['T']='Terrein';
 $L['Gmap']['Back']['O']='Straat (OpenStreetMap)';
 $L['Gmap']['Ctrl']['Background']='Basiskaart';
 $L['Gmap']['Ctrl']['Fullscreen']='Volledig scherm';

@@ -37,10 +37,10 @@ $L['Gmap']['Ctrl']['Fullscreen']='Plein écran';
 $L['Gmap']['Ctrl']['Scale']='Echelle';
 $L['Gmap']['Ctrl']['Streetview']='Streetview';
 $L['Gmap']['Ctrl']['Mousewheel']='Zoom à la souris';
-$L['Gmap']['Back']['M']='Plan';
+$L['Gmap']['Back']['R']='Plan';
 $L['Gmap']['Back']['S']='Satellite';
 $L['Gmap']['Back']['H']='Satellite et labels';
-$L['Gmap']['Back']['P']='Relief';
+$L['Gmap']['Back']['T']='Relief';
 $L['Gmap']['Back']['O']='Street (OpenStreetMap)';
 
 $L['Gmap']['List']['0']='No';

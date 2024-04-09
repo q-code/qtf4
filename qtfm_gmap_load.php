@@ -15,17 +15,17 @@ async function gmapInitialize() {
   const {Map} = await google.maps.importLibrary("maps");
   const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
   infowindow = new google.maps.InfoWindow({maxWidth: 220});
-  geocoder = '.(substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ? 'new google.maps.Geocoder()' : 'false').';
+  geocoder = '.(empty(qtExplodeGet($_SESSION[QT]['m_gmap_options'],'gc')) ? 'false' : 'new google.maps.Geocoder()').';
   mapOptions = {
     mapId: "'.strtoupper(APP.'_MAP').'",
     center: new google.maps.LatLng('.$_SESSION[QT]['m_gmap_gcenter'].'),
-    mapTypeId: '.gmapMarkerMapTypeId(substr($_SESSION[QT]['m_gmap_gbuttons'],0,1)).',
-    streetViewControl: '.(substr($_SESSION[QT]['m_gmap_gbuttons'],1,1)==='1' ? 'true' : 'false' ).',
-    mapTypeControl: '.(substr($_SESSION[QT]['m_gmap_gbuttons'],2,1)==='1' ? 'true' : 'false' ).',
+    mapTypeId: '.gmapMarkerMapTypeId(qtExplodeGet($_SESSION[QT]['m_gmap_options'],'mt')).',
+    streetViewControl: '.(qtExplodeGet($_SESSION[QT]['m_gmap_options'],'sv')==='1' ? 'true' : 'false' ).',
+    mapTypeControl: '.(qtExplodeGet($_SESSION[QT]['m_gmap_options'],'bg')==='1' ? 'true' : 'false' ).',
     zoom: '.$_SESSION[QT]['m_gmap_gzoom'].',
-    scaleControl:'.(substr($_SESSION[QT]['m_gmap_gbuttons'],3,1)==='1' ? 'true' : 'false' ).',
-    fullscreenControl:'.(substr($_SESSION[QT]['m_gmap_gbuttons'],4,1)==='1' ? 'true' : 'false' ).',
-    scrollwheel:'.(substr($_SESSION[QT]['m_gmap_gbuttons'],5,1)==='1' ? 'true' : 'false' ).'
+    scaleControl:'.(qtExplodeGet($_SESSION[QT]['m_gmap_options'],'sc')==='1' ? 'true' : 'false' ).',
+    fullscreenControl:'.(qtExplodeGet($_SESSION[QT]['m_gmap_options'],'fs')==='1' ? 'true' : 'false' ).',
+    scrollwheel:'.(qtExplodeGet($_SESSION[QT]['m_gmap_options'],'mw')==='1' ? 'true' : 'false' ).'
     };
   map = new Map(document.getElementById("map_canvas"), mapOptions);
   var marker;

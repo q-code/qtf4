@@ -56,10 +56,7 @@ if ( isset($_POST['cancel']) )
 if ( isset($_POST['ok']) )
 {
   $arrSymbols = [];
-  foreach(array('U','M','A') as $key)
-  {
-  if ( isset($_POST['symbol_'.$key]) ) $arrSymbols[$key]=$_POST['symbol_'.$key];
-  }
+  foreach(array('U','M','A') as $key) if ( isset($_POST['symbol_'.$key]) ) $arrSymbols[$key]=$_POST['symbol_'.$key];
   $_SESSION[QT]['m_gmap_symbols'] = qtImplode($arrSymbols,';');
   $oDB->exec( 'UPDATE TABSETTING SET setting="'.$_SESSION[QT]['m_gmap_symbols'].'" WHERE param="m_gmap_symbols"');
   // exit
@@ -97,19 +94,17 @@ foreach(glob('qtfm_gmap/*.png') as $file) {
   $arrFiles[$file] = ucfirst(str_replace('_',' ',$file));
 }
 
-foreach($arrSymbols as $key=>$strSymbol)
-{
+foreach($arrSymbols as $key=>$strSymbol) {
   // current symbol
   $current = empty($strSymbol) ? 'default' : $strSymbol;
 
 echo '<tr>
-<th style="padding-right:10px">',L('Role_'.$key.'+'),'</th>
+<th style="padding-right:10px">'.L('Role_'.$key.'+').'</th>
 <td style="display:flex;gap:1rem;align-items:flex-end">
-<p><img id="previewmarker-'.$key.'" class="markerpicked" title="default" src="qtfm_gmap/',$current,'.png"/></p>
+<p><img id="previewmarker-'.$key.'" class="markerpicked" title="default" src="qtfm_gmap/'.$current.'.png"/></p>
 <p class="markerpicker small">
 ';
-foreach ($arrFiles as $file=>$name)
-{
+foreach ($arrFiles as $file=>$name) {
   echo '<input type="radio" data-preview="previewmarker-'.$key.'" data-src="qtfm_gmap/'.$file.'.png" name="symbol_'.$key.'" value="'.$file.'" id="symbol_'.$file.'_'.$key.'"'.($current===$file ? ' checked' : '').' onchange="previewMarker(this.dataset.preview,this.dataset.src);" style="display:none"/><label for="symbol_'.$file.'_'.$key.'"><img class="marker" title="'.$name.'" src="qtfm_gmap/'.$file.'.png" aria-checked="'.($current===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
 }
 echo '</p>

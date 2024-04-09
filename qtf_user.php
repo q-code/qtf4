@@ -249,7 +249,7 @@ if ( $useMap ) {
   $strPosition .= ' | <a class="small" href="javascript:void(0)" onclick="deleteMarker(); return false;">'.$L['Gmap']['pntdelete'].'</a>';
   $strPosition .= '</p>'.PHP_EOL;
   $strPosition .= '<div id="map_canvas"></div>'.PHP_EOL;
-  if ( substr($_SESSION[QT]['m_gmap_gbuttons'],6,1)==='1' ) {
+  if ( !empty(qtExplodeGet($_SESSION[QT]['m_gmap_options'],'gc')) ) {
     $strPosition .= '< class="small commands" style="margin:4px 0 2px 2px;text-align:right">'.$L['Gmap']['addrlatlng'].' ';
     $strPosition .= '<input type="text" size="24" id="find" name="find" class="small" value="'.$_SESSION[QT]['m_gmap_gfind'].'" title="'.$L['Gmap']['H_addrlatlng'].'" onkeypress="enterkeyPressed=qtKeyEnter(event); if ( enterkeyPressed) showLocation(this.value,null);"/>';
     $strPosition .= qtSVG('search', 'id=btn-geocode|class=clickable|onclick=showLocation(document.getElementById(`find`).value,null)|title='.L('Search') );
@@ -369,11 +369,12 @@ if ( $useMap ) {
   $gmap_functions = [];
   if ( isset($arrMapData[$id]) && !empty($oMapPoint->y) && !empty($oMapPoint->x) ) {
   $gmap_markers[] = gmapMarker($oMapPoint->y.','.$oMapPoint->x, $edit, $gmap_symbol, $row['name']);
-  $gmap_events[] = '
-  markers[0].addListener("drag", ()=>{ document.getElementById("yx").value = gmapRound(markers[0].position.lat,10) + "," + gmapRound(markers[0].position.lng,10); });
+  if ( $edit ) $gmap_events[] = 'markers[0].addListener("drag", ()=>{
+    document.getElementById("yx").value = gmapRound(markers[0].position.lat,10) + "," + gmapRound(markers[0].position.lng,10);
+  });
 	google.maps.event.addListener(markers[0], "dragend", function() { map.panTo(markers[0].position);	});';
   }
-  $gmap_functions[] = '
+  if ( $edit ) $gmap_functions[] = '
   function showLocation(address,title) {
     if ( infowindow ) infowindow.close();
     geocoder.geocode( { "address": address}, function(results, status) {
