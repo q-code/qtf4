@@ -70,8 +70,8 @@ if ( isset($_POST['ok']) ) try {
 include APP.'_adm_inc_hd.php';
 
 // Check language subdirectories
-$arrFiles = [];
-foreach(LANGUAGES as $k=>$values) if ( is_dir('language/'.$k) ) $arrFiles[$k] = $values;
+$files = [];
+foreach(LANGUAGES as $k=>$values) if ( is_dir('language/'.$k) ) $files[$k] = $values;
 
 // FORM
 echo '
@@ -81,7 +81,7 @@ echo '
 ';
 echo '<tr>
 <th><label for="language">'.L('Dflt_language').'</label></th>
-<td><select id="language" name="language">'.qtTags( $arrFiles, $_SESSION[QT]['language'] ).'</select><span class="small indent">'.(file_exists('language/readme.txt') ? '<a href="tool_txt.php?ro=1&exit=qtf_adm_region.php&file=language/readme.txt&title=How to add languages">How to add languages...</a>' :'').'</span></td>
+<td><select id="language" name="language">'.qtTags( $files, $_SESSION[QT]['language'] ).'</select><span class="small indent">'.(file_exists('language/readme.txt') ? '<a href="tool_txt.php?ro=1&exit=qtf_adm_region.php&file=language/readme.txt&title=How to add languages">How to add languages...</a>' :'').'</span></td>
 </tr>
 ';
 echo '<tr>

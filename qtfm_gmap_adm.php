@@ -14,55 +14,66 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 include translate(APP.'m_gmap.php');
 include translate(APP.'m_gmap_adm.php');
-include 'qtfm_gmap_lib.php';
+include APP.'m_gmap_lib.php';
 
 // INITIALISE
-
-$oH->selfurl = 'qtfm_gmap_adm.php';
+$oH->selfurl = APP.'m_gmap_adm.php';
 $oH->selfname = 'Gmap';
 $oH->selfparent = L('Module');
 $oH->exiturl = $oH->selfurl;
 $oH->exitname = $oH->selfname;
-$oH->selfversion = L('Gmap.Version').' 4.0<br>';
+$oH->selfversion = L('Gmap.Version').' 4.0';
+$useMap = true;
 
 // check register initialized
 foreach(['m_gmap_gkey','m_gmap_gcenter','m_gmap_gzoom','m_gmap_gfind','m_gmap_gsymbol','m_gmap_sections'] as $key) {
   if ( !isset($_SESSION[QT][$key]) ) $_SESSION[QT][$key] = '';
 }
+
 // m_gmap_options (mt=maptype[T|S|H|R] bg=background sc=scale fs=fullscreen mw=mousewhell sv=streetview gc=geocode)
 if ( empty($_SESSION[QT]['m_gmap_options']) ) $_SESSION[QT]['m_gmap_options'] = 'mt=T;bg=1;sc=1;fs=1;mw=0;sv=0;gc=0';
 
 // Read png in directory (shadow is obsolete)
-$arrFiles = [];
-foreach(glob('qtfm_gmap/*.png') as $file) {
+$files = [];
+foreach(glob(APP.'m_gmap/*.png') as $file) {
   $file = substr($file,10,-4);
   if ( strpos($file,'_shadow') ) continue;
-  $arrFiles[$file] = ucfirst(str_replace('_',' ',$file));
+  $files[$file] = ucfirst(str_replace('_',' ',$file));
 }
 
 // ------
 // SUBMITTED
 // ------
-if ( isset($_POST['ok']) ) {
+if ( isset($_POST['ok']) ) try {
 
   // save gkey
   if ( isset($_POST['m_gmap_gkey']) ) {
-    $_SESSION[QT]['m_gmap_gkey'] = trim($_POST['m_gmap_gkey']); if ( strlen($_SESSION[QT]['m_gmap_gkey'])<8 ) $_SESSION[QT]['m_gmap_gkey'] = '';
+    $_SESSION[QT]['m_gmap_gkey'] = trim($_POST['m_gmap_gkey']);
+    if ( strlen($_SESSION[QT]['m_gmap_gkey'])<8 ) $_SESSION[QT]['m_gmap_gkey'] = '';
     // store configuration
     $oDB->updSetting('m_gmap_gkey');
+    if ( empty($_SESSION[QT]['m_gmap_gkey'] ) ) $useMap = false;
   }
   // save others if gkey
-  if ( !empty($_SESSION[QT]['m_gmap_gkey']) ) {
+  if ( $useMap ) {
     if ( isset($_POST['m_gmap_gcenter']) ) $_SESSION[QT]['m_gmap_gcenter'] = trim($_POST['m_gmap_gcenter']);
     if ( isset($_POST['m_gmap_gzoom']) )   $_SESSION[QT]['m_gmap_gzoom'] = trim($_POST['m_gmap_gzoom']);
     if ( isset($_POST['m_gmap_gfind']) )   $_SESSION[QT]['m_gmap_gfind'] = qtAttr($_POST['m_gmap_gfind']);
-    if ( isset($_POST['m_gmap_gsymbol']) ) $_SESSION[QT]['m_gmap_gsymbol'] = trim($_POST['m_gmap_gsymbol']); if ( empty($_SESSION[QT]['m_gmap_gsymbol']) || $_SESSION[QT]['m_gmap_gsymbol']=='default' ) $_SESSION[QT]['m_gmap_gsymbol']='0'; // "iconname" (without extension) or '0' default symbol
+    if ( isset($_POST['m_gmap_gsymbol']) ) $_SESSION[QT]['m_gmap_gsymbol'] = trim($_POST['m_gmap_gsymbol']);
+    if ( empty($_SESSION[QT]['m_gmap_gsymbol']) || $_SESSION[QT]['m_gmap_gsymbol']=='default' ) $_SESSION[QT]['m_gmap_gsymbol']=''; // "iconname" (without extension) or '' default symbol
     if ( isset($_POST['m_gmap_section']) ) $_SESSION[QT]['m_gmap_section'] = substr(trim($_POST['sections']),0,1); // in qtf only one section (U) is supported
     if ( isset($_POST['options']) ) $_SESSION[QT]['m_gmap_options'] = qtImplode($_POST['options'],';');
 
-    // store configuration //!!!
+    // store configuration
     $oDB->updSetting( ['m_gmap_gcenter','m_gmap_gzoom','m_gmap_options','m_gmap_gfind','m_gmap_gsymbol','m_gmap_sections'] );
   }
+  $_SESSION[QT.'splash'] = L('S_save');
+
+} catch (Exception $e) {
+
+  // Splash short message and send error to ...inc_hd.php
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
 
 }
 
@@ -79,7 +90,7 @@ $oH->scripts[] = 'var enterkeyPressed=false;
 function ValidateForm(theForm,enterkeyPressed) {
   if ( enterkeyPressed) return false;
 }
-function previewMarker(src) { document.getElementById("previewmarker").src = src; }';
+';
 
 include 'qtf_adm_inc_hd.php';
 
@@ -94,33 +105,31 @@ echo '
 ';
 
 //------
-if ( !empty($_SESSION[QT]['m_gmap_gkey']) ) {
+if ( $useMap ) {
 //------
 
 $current = empty($_SESSION[QT]['m_gmap_gsymbol']) ? 'default' : $_SESSION[QT]['m_gmap_gsymbol']; // current symbol
-$options = qtExplode($_SESSION[QT]['m_gmap_options'],';'); // attention: use empty() as some options['key'] can be missing (only checked checkbox are posted)
-
 echo '<tr>
 <th style="width:150px">'.L('Gmap.API_ctrl').'</th>
 <td>
-<input type="checkbox" id="map" value="1" name="options[bg]"'.(empty($options['bg']) ? '' : 'checked').'/> <label for="map">'.L('Gmap.Ctrl.Background').'</label>
-&nbsp; <input type="checkbox" id="scale" value="1" name="options[sc]"'.(empty($options['sc']) ? '' : 'checked').'/> <label for="scale">'.L('Gmap.Ctrl.Scale').'</label>
-&nbsp; <input type="checkbox" id="fullscreen" value="1" name="options[fs]"'.(empty($options['fs']) ? '' : 'checked').'/> <label for="fullscreen">'.L('Gmap.Ctrl.Fullscreen').'</label>
-&nbsp; <input type="checkbox" id="mousewheel" value="1" name="options[mw]"'.(empty($options['mw']) ? '' : 'checked').'/> <label for="mousewheel">'.L('Gmap.Ctrl.Mousewheel').'</label>
+<input type="checkbox" id="cb-bg" value="1" name="options[bg]"'.(empty(gmapOption('bg')) ? '' : 'checked').'/> <label for="cb-bg">'.L('Gmap.Ctrl.Background').'</label>
+&nbsp; <input type="checkbox" id="cb-sc" value="1" name="options[sc]"'.(empty(gmapOption('sc')) ? '' : 'checked').'/> <label for="cb-sc">'.L('Gmap.Ctrl.Scale').'</label>
+&nbsp; <input type="checkbox" id="cb-fs" value="1" name="options[fs]"'.(empty(gmapOption('fs')) ? '' : 'checked').'/> <label for="cb-fs">'.L('Gmap.Ctrl.Fullscreen').'</label>
+&nbsp; <input type="checkbox" id="cb-mw" value="1" name="options[mw]"'.(empty(gmapOption('mw')) ? '' : 'checked').'/> <label for="cb-mw">'.L('Gmap.Ctrl.Mousewheel').'</label>
 </td>
 </tr>
 <th style="width:150px">'.L('Gmap.API_services').'</th>
-<td><input type="checkbox" id="streetview" value="1" name="options[sv]"'.(empty($options['sv']) ? '' : 'checked').'/> <label for="streetview">'.L('Gmap.Ctrl.Streetview').'</label>
-&nbsp; <input type="checkbox" id="geocode" value="1" name="options[gc]"'.(empty($options['gc']) ? '' : 'checked').'/> <label for="geocode">'.L('Gmap.Ctrl.Geocode').'</label></td>
+<td><input type="checkbox" id="cb-sv" value="1" name="options[sv]"'.(empty(gmapOption('sv')) ? '' : 'checked').'/> <label for="cb-sv">'.L('Gmap.Ctrl.Streetview').'</label>
+&nbsp; <input type="checkbox" id="cb-gc" value="1" name="options[gc]"'.(empty(gmapOption('gc')) ? '' : 'checked').'/> <label for="cb-gc">'.L('Gmap.Ctrl.Geocode').'</label></td>
 </tr>
 <tr>
 <th style="width:150px">'.L('Gmap.Default_symbol').'</th>
-<td style="display:flex;gap:1rem;align-items:flex-end">
-<p><img id="previewmarker" class="markerpicked" title="default" src="qtfm_gmap/'.$current.'.png" alt="i"/></p>
+<td style="display:flex;gap:1.5rem;align-items:flex-end">
+<p><img id="dflt-marker" class="markerpicked" src="'.APP.'m_gmap/'.$current.'.png" alt="i" title="default"/></p>
 <p class="markerpicker small">'.L('Gmap.Click_to_change').'<br>
 ';
-foreach ($arrFiles as $file=>$name) {
-  echo '<input type="radio" id="symbol_'.$file.'" data-src="qtfm_gmap/'.$file.'.png" name="m_gmap_gsymbol" value="'.$file.'"'.($current===$file ? 'checked' : '').' onchange="previewMarker(this.dataset.src);" style="display:none"/><label for="symbol_'.$file.'"><img class="marker" title="'.$name.'" src="qtfm_gmap/'.$file.'.png" alt="i" aria-checked="'.($current===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
+foreach ($files as $file=>$name) {
+  echo '<input type="radio" id="symbol_'.$file.'" data-preview="dflt-marker" data-src="'.APP.'m_gmap/'.$file.'.png" name="m_gmap_gsymbol" value="'.$file.'"'.($current===$file ? 'checked' : '').' onchange="document.getElementById(this.dataset.preview).src=this.dataset.src;" style="display:none"/><label for="symbol_'.$file.'"><img class="marker" title="'.$name.'" src="'.APP.'m_gmap/'.$file.'.png" alt="i" aria-checked="'.($current===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
 }
 echo '</p></td>
 </tr>
@@ -130,7 +139,7 @@ echo '</p></td>
 <select name="sections" size="1">
 <option value=""'.(in_array('U',$arrSections) ? '' : ' selected').'>'.L('N').'</option>
 <option value="U"'.(in_array('U',$arrSections) ? ' selected' : '').'>'.L('Y').'</option>
-</select><span class="indent small">'.L('Gmap.H_Memberlist').'</span> &middot; <a href="qtfm_gmap_adm_options.php">'.L('Gmap.Symbol_by_role').'...</a></td>
+</select><span class="indent small">'.L('Gmap.H_Memberlist').'</span> &middot; <a href="'.APP.'m_gmap_adm_options.php">'.L('Gmap.Symbol_by_role').'...</a></td>
 </tr>
 </table>
 ';
@@ -150,14 +159,14 @@ echo '<h2 class="config">'.L('Gmap.Mapping_config').'</h2>
 </tr>
 <tr>
 <th style="width:150px;">'.L('Gmap.Background').'</th>
-<td><select id="maptype" name="options[mt]" size="1">'.qtTags(L('Gmap.Back.*'), $options['mt']).'</select></td>
+<td><select id="maptype" name="options[mt]" size="1">'.qtTags(L('Gmap.Back.*'), gmapOption('mt')).'</select></td>
 <td><small>'.L('Gmap.H_Background').'</small></td>
 </tr>
 <tr>
-<th style="width:150px;"><label for="m_gmap_gfind">'.L('Gmap.Address_sample').'</label></th>
+<th style="width:150px;">'.L('Gmap.Address_sample').'</th>
 <td>
-<input'.(empty($options['gc']) ? 'disabled' : '').' type="text" id="m_gmap_gfind" name="m_gmap_gfind" size="20" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gfind'].'"/></td>
-<td><small>'.(empty($options['gc']) ? L('Gmap.Ctrl.Geocode').' (off)' : L('Gmap.H_Address_sample')).'</small></td>
+<input'.(empty(gmapOption('gc')) ? 'disabled' : '').' type="text" id="m_gmap_gfind" name="m_gmap_gfind" size="20" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gfind'].'"/></td>
+<td><small>'.(empty(gmapOption('gc')) ? L('Gmap.Ctrl.Geocode').' (off)' : L('Gmap.H_Address_sample')).'</small></td>
 </tr>
 ';
 
@@ -170,13 +179,13 @@ echo '</table>
 </form>
 ';
 
-if ( !empty($_SESSION[QT]['m_gmap_gkey']) ) {
+if ( $useMap ) {
   echo '<div class="gmap">'.PHP_EOL;
   echo '<p class="small commands" style="margin:2px 0 4px 2px;text-align:right">'.L('Gmap.canmove').' | <a class="small" href="javascript:void(0)" onclick="undoChanges(); return false;">'.L('Gmap.undo').'</a></p>'.PHP_EOL;
   echo '<div id="map_canvas"></div>'.PHP_EOL;
-  if ( !empty(qtExplodeGet($_SESSION[QT]['m_gmap_options'],'gc')) ) {
+  if ( !empty(gmapOption('gc')) ) {
     echo '<p class="small commands" style="margin:4px 0 2px 2px;text-align:right">'.L('Gmap.addrlatlng');
-    echo ' <input type="text" size="24" id="find" name="find" class="small" value="'.$_SESSION[QT]['m_gmap_gfind'].'" title="'.L('Map.H_addrlatlng').'" onkeypress="enterkeyPressed=qtKeyEnter(event); if ( enterkeyPressed) showLocation(this.value,null);"/>';
+    echo ' <input type="text" size="24" id="find" name="find" class="small" value="'.$_SESSION[QT]['m_gmap_gfind'].'" title="'.L('Map.H_addrlatlng').'" onkeypress="if ((event.key!==undefined && event.key==`Enter`) || (event.keyCode!==undefined && event.keyCode==13)) showLocation(this.value,null);"/>';
     echo '<span id="btn-geocode" class="clickable" onclick="showLocation(document.getElementById(`find`).value,null);" title="'.L('Search').'">'.qtSVG('search').'</span></p>'.PHP_EOL;
   }
   echo '</div>'.PHP_EOL;
@@ -186,7 +195,7 @@ if ( !empty($_SESSION[QT]['m_gmap_gkey']) ) {
 
 // HTML END
 
-if ( !empty($_SESSION[QT]['m_gmap_gkey']) ) {
+if ( $useMap ) {
   $gmap_symbol = empty($_SESSION[QT]['m_gmap_gsymbol']) ? false : $_SESSION[QT]['m_gmap_gsymbol']; // false = no icon but default marker
   $gmap_markers = [];
   $gmap_events = [];
@@ -196,8 +205,7 @@ if ( !empty($_SESSION[QT]['m_gmap_gkey']) ) {
   markers[0].addListener("drag", ()=>{ document.getElementById("yx").value = gmapRound(markers[0].position.lat,10) + "," + gmapRound(markers[0].position.lng,10); });
 	google.maps.event.addListener(markers[0], "dragend", function() { map.panTo(markers[0].position);	});';
   $gmap_functions[] = '
-  function undoChanges()
-  {
+  function undoChanges() {
   	if ( infowindow) infowindow.close();
   	if ( markers[0]) markers[0].setPosition(mapOptions.center);
   	if ( mapOptions) map.panTo(mapOptions.center);
@@ -205,13 +213,13 @@ if ( !empty($_SESSION[QT]['m_gmap_gkey']) ) {
   }
   function showLocation(address,title) {
     if ( infowindow ) infowindow.close();
-    geocoder.geocode( { "address": address}, function(results, status) {
-      if ( status == google.maps.GeocoderStatus.OK) {
+    geocoder.geocode( { "address":address}, function(results, status) {
+      if ( status==google.maps.GeocoderStatus.OK ) {
         map.setCenter(results[0].geometry.location);
         if ( markers[0] ) {
           markers[0].setPosition(results[0].geometry.location);
         } else {
-          markers[0] = new google.maps.marker.AdvancedMarkerElement({map: map, position: results[0].geometry.location, draggable: true, title: title});
+          markers[0] = new google.maps.marker.AdvancedMarkerElement({map:map, position:results[0].geometry.location, draggable:true, title:title});
         }
         gmapYXfield("yx",markers[0]);
       } else {
@@ -220,7 +228,7 @@ if ( !empty($_SESSION[QT]['m_gmap_gkey']) ) {
     });
   }
   ';
-  include 'qtfm_gmap_load.php';
+  include APP.'m_gmap_load.php';
 }
 
-include 'qtf_adm_inc_ft.php';
+include APP.'_adm_inc_ft.php';

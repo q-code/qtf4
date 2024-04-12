@@ -8,7 +8,7 @@
  * ------
  * Class CMapPoint
  * gmapCan gmapHasKey gmapApi gmapEmpty gmapEmptycoord
- * gmapMarker gmapMarkerMapTypeId gmapMarkerIcon
+ * gmapMarker gmapMarkerMapTypeId gmapMarkerPin
  * QTgetx QTgety QTgetz QTstr2yx QTdd2dms
  * ============ */
 
@@ -16,26 +16,23 @@ class CMapPoint
 {
   public $y = 4.352;
   public $x = 50.847;
-  public $title = ''; // marker tips
-  public $info = '';  // html to display on click
-  public $icon = false;
-  function __construct($y,$x,$title='',$info='')
+  public $title = '';  // marker tips
+  public $info = '';   // html to display on click
+  public $symbol = ''; // default marker
+  function __construct($y, $x, string $title='', string $info='', string $symbol='')
   {
-    if ( isset($y) && isset($x) )
-    {
-      $this->y = $y;
-      $this->x = $x;
-    }
-    else
-    {
-      if ( isset($_SESSION[QT]['m_gmap_gcenter']) )
-      {
-      $this->y = floatval(QTgety($_SESSION[QT]['m_gmap_gcenter']));
-      $this->x = floatval(QTgetx($_SESSION[QT]['m_gmap_gcenter']));
+    if ( isset($y) && isset($x) ) {
+      $this->y = (float)$y;
+      $this->x = (float)$x;
+    } else {
+      if ( isset($_SESSION[QT]['m_gmap_gcenter']) ) {
+        $this->y = (float)QTgety($_SESSION[QT]['m_gmap_gcenter']);
+        $this->x = (float)QTgetx($_SESSION[QT]['m_gmap_gcenter']);
       }
     }
-    if ( !empty($title) ) $this->title = $title;
-    if ( !empty($info) ) $this->info = $info;
+    $this->title = empty($title) ? '' : $title;
+    $this->info = empty($info) ? '' : $info;
+    $this->info = empty($symbol) || $symbol==='default' ? '' : $symbol;
   }
 }
 
@@ -72,9 +69,9 @@ function gmapApi(string $key='',string $addLibrary='')
   if ( empty($key) ) return '';
   return '(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({ key: "'.$key.'", v: "weekly"});'.PHP_EOL.$addLibrary.PHP_EOL.'gmapInitialize();';
 }
-function gmapOption(string $key='mt')
+function gmapOption(string $key='mt', string $alt='')
 {
-   return qtExplodeGet($_SESSION[QT]['m_gmap_options'], $key);
+  return qtExplodeGet($_SESSION[QT]['m_gmap_options'], $key, $alt);
 }
 function gmapEmpty($i)
 {
@@ -105,14 +102,16 @@ function gmapEmptycoord($a)
 }
 function gmapMarker($centerLatLng='', bool $draggable=false, $gsymbol=false, $title='', $info='')
 {
+  $js = '';
   if ( $centerLatLng==='' || $centerLatLng==='0,0' ) return 'marker = null;';
-
-  $centerLatLng = $centerLatLng==='map' ? 'map.getCenter()' : 'new google.maps.LatLng('.$centerLatLng.')';
-  return '	marker = new google.maps.marker.AdvancedMarkerElement({
-		position: '.$centerLatLng.',
+  if ( $gsymbol ) {
+    $js = gmapMarkerPin($gsymbol);
+  }
+  return $js.' marker = new google.maps.marker.AdvancedMarkerElement({
+		position: '.($centerLatLng==='map' ? 'map.getCenter()' : 'new google.maps.LatLng('.$centerLatLng.')').',
 		map: map,
     gmpDraggable: '.($draggable ? 'true' : 'false').',
-		' . gmapMarkerIcon($gsymbol) . '
+		' . gmapMarkerPin($gsymbol) . '
 		title: "'.$title.'"
 		});
 		markers.push(marker); '.PHP_EOL.(empty($info) ? '' : '	gmapInfo(marker,`'.$info.'`);');
@@ -133,10 +132,18 @@ function gmapMarkerNEW($centerLatLng='',$draggable=false,$gsymbol=false,$title='
   return '	marker = new google.maps.marker.AdvancedMarkerElement({
 		position: '.$centerLatLng.',
 		map: map,
-		' . $draggable . gmapMarkerIcon($gsymbol) . '
+		' . $draggable . gmapMarkerPin($gsymbol) . '
 		title: "'.$title.'"
 		});
 		markers.push(marker); '.PHP_EOL.(empty($info) ? '' : '	gmapInfo(marker,`'.$info.'`);');
+}
+function gmapMarkerPin($gsymbol=false)
+{
+  // returns the google.maps.Marker.icon argument
+  if ( empty($gsymbol) ) return ''; // no icon source means that the default symbol is used
+  // icons are 32x32 pixels and the anchor depends on the name: (10,32) for puhspin, (16,32) for point, center form others
+  //var_dump($gsymbol); //!!!
+  return '';
 }
 function gmapMarkerIcon($gsymbol=false)
 {
@@ -151,9 +158,9 @@ function gmapMarkerIcon($gsymbol=false)
     default: return 'icon: new google.maps.MarkerImage("qtfm_gmap/'.$gsymbol.'.png",new google.maps.Size(32,32),new google.maps.Point(0,0),new google.maps.Point(16,16)),';
   }
 }
-function gmapMarkerMapTypeId($gbuttons)
+function gmapMarkerMapTypeId($maptype)
 {
-  switch((string)$gbuttons) {
+  switch((string)$maptype) {
 	case 'S':
 	case 'SATELLITE': return 'google.maps.MapTypeId.SATELLITE'; break;
 	case 'H':

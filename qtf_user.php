@@ -38,8 +38,8 @@ if ( qtModule('gmap') ) {
   if ( gmapCan('U') ) $useMap = true;
   if ( $useMap ) {
     $oH->links[] = '<link rel="stylesheet" type="text/css" href="qtfm_gmap.css"/>';
-    if ( !isset($_SESSION[QT]['m_gmap_symbols']) ) $_SESSION[QT]['m_gmap_symbols'] = '0';
-    $arrSymbolByRole = empty($_SESSION[QT]['m_gmap_symbols']) ? array() : qtExplode($_SESSION[QT]['m_gmap_symbols']);
+    if ( empty($_SESSION[QT]['m_gmap_symbols']) ) $_SESSION[QT]['m_gmap_symbols'] = '';
+    $arrSymbolByRole = qtExplode($_SESSION[QT]['m_gmap_symbols']);
   }
 }
 
@@ -120,11 +120,8 @@ if ( SUser::role()==='M' && SUser::id()!==$id) {
 if ( !SUser::canSeePrivate($row['privacy'],$id) ) { $row['y']=null; $row['x']=null; }
 
 // map settings
-if ( $useMap && !gmapEmpty($row['x']) && !gmapEmpty($row['y']) )
-{
-  $y = (float)$row['y']; $x = (float)$row['x'];
-  $strPname = $row['name'];
-  $oMapPoint = new CMapPoint($y,$x,$strPname);
+if ( $useMap && !gmapEmpty($row['x']) && !gmapEmpty($row['y']) ) {
+  $oMapPoint = new CMapPoint((float)$row['y'], (float)$row['x'], $row['name']);
   if ( !empty($arrSymbolByRole[$row['role']]) ) $oMapPoint->icon = $arrSymbolByRole[$row['role']];
   $arrMapData[$id] = $oMapPoint;
 }
@@ -249,9 +246,9 @@ if ( $useMap ) {
   $strPosition .= ' | <a class="small" href="javascript:void(0)" onclick="deleteMarker(); return false;">'.$L['Gmap']['pntdelete'].'</a>';
   $strPosition .= '</p>'.PHP_EOL;
   $strPosition .= '<div id="map_canvas"></div>'.PHP_EOL;
-  if ( !empty(qtExplodeGet($_SESSION[QT]['m_gmap_options'],'gc')) ) {
+  if ( !empty(gmapOption('gc')) ) {
     $strPosition .= '< class="small commands" style="margin:4px 0 2px 2px;text-align:right">'.$L['Gmap']['addrlatlng'].' ';
-    $strPosition .= '<input type="text" size="24" id="find" name="find" class="small" value="'.$_SESSION[QT]['m_gmap_gfind'].'" title="'.$L['Gmap']['H_addrlatlng'].'" onkeypress="enterkeyPressed=qtKeyEnter(event); if ( enterkeyPressed) showLocation(this.value,null);"/>';
+    $strPosition .= '<input type="text" size="24" id="find" name="find" class="small" value="'.$_SESSION[QT]['m_gmap_gfind'].'" title="'.$L['Gmap']['H_addrlatlng'].'" onkeypress="if ((event.key!==undefined && event.key==`Enter`) || (event.keyCode!==undefined && event.keyCode==13)) showLocation(this.value,null);"/>';
     $strPosition .= qtSVG('search', 'id=btn-geocode|class=clickable|onclick=showLocation(document.getElementById(`find`).value,null)|title='.L('Search') );
     $strPosition .= '</p>'.PHP_EOL;
   }
@@ -342,7 +339,7 @@ if ( $useMap ) {
   * @var array $gmap_events
   * @var array $gmap_functions
   */
-  $gmap_symbol = empty($_SESSION[QT]['m_gmap_gsymbol']) ? false : $_SESSION[QT]['m_gmap_gsymbol']; // false = no icon but default marker
+  $gmap_symbol = empty($_SESSION[QT]['m_gmap_gsymbol']) || $_SESSION[QT]['m_gmap_gsymbol']==='default'  ? false : $_SESSION[QT]['m_gmap_gsymbol']; // false = no icon but default marker
 
   // check new map center
   $y = (float)QTgety($_SESSION[QT]['m_gmap_gcenter']);
@@ -353,14 +350,9 @@ if ( $useMap ) {
     // symbol by role
     $oMapPoint = $arrMapData[$id];
     if ( !empty($oMapPoint->icon) ) $gmap_symbol = $oMapPoint->icon;
-
     // center on user
-    if ( !empty($oMapPoint->y) && !empty($oMapPoint->x) ) {
-    $y=$oMapPoint->y;
-    $x=$oMapPoint->x;
-    }
+    if ( !empty($oMapPoint->y) && !empty($oMapPoint->x) ) { $y = $oMapPoint->y; $x = $oMapPoint->x; }
   }
-
   // update center
   $_SESSION[QT]['m_gmap_gcenter'] = $y.','.$x;
 
@@ -368,11 +360,11 @@ if ( $useMap ) {
   $gmap_events = [];
   $gmap_functions = [];
   if ( isset($arrMapData[$id]) && !empty($oMapPoint->y) && !empty($oMapPoint->x) ) {
-  $gmap_markers[] = gmapMarker($oMapPoint->y.','.$oMapPoint->x, $edit, $gmap_symbol, $row['name']);
-  if ( $edit ) $gmap_events[] = 'markers[0].addListener("drag", ()=>{
-    document.getElementById("yx").value = gmapRound(markers[0].position.lat,10) + "," + gmapRound(markers[0].position.lng,10);
-  });
-	google.maps.event.addListener(markers[0], "dragend", function() { map.panTo(markers[0].position);	});';
+    $gmap_markers[] = gmapMarker($oMapPoint->y.','.$oMapPoint->x, $edit, $gmap_symbol, $row['name']);
+    if ( $edit ) $gmap_events[] = 'markers[0].addListener("drag", ()=>{
+      document.getElementById("yx").value = gmapRound(markers[0].position.lat,10) + "," + gmapRound(markers[0].position.lng,10);
+    });
+    google.maps.event.addListener(markers[0], "dragend", function() { map.panTo(markers[0].position);	});';
   }
   if ( $edit ) $gmap_functions[] = '
   function showLocation(address,title) {

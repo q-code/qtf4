@@ -23,14 +23,12 @@ $bStepZ = true;
 // STEP 1
 
 foreach(array('qtfm_gmap_uninstall.php','qtfm_gmap_adm.php','qtfm_gmap_load.php','qtfm_gmap_lib.php') as $strFile)
-{
 if ( !file_exists($strFile) ) $oH->error='Missing file: '.$strFile.'<br>This module cannot be used.';
-}
+
 if ( !empty($oH->error) ) $bStep1 = false;
 
 // STEP Z
-if ( empty($oH->error) )
-{
+if ( empty($oH->error) ) {
   $_SESSION[QT]['module_gmap'] = 'Gmap';
   $_SESSION[QT]['m_gmap_gkey'] = '';
   $_SESSION[QT]['m_gmap_gcenter'] = '50.8468142558,4.35238838196';
