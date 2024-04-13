@@ -11,7 +11,7 @@ div.gmap_disabled{margin:5px;padding:5px;background-color:inherit;color:#888}
 #btn-geocode:hover{border-color:#0000FF;color:#0000FF}
 .ginfo{margin-top:5px;width:225px;font-family:verdana,arial,sans-serif;font-size:0.8rem}
 
-#map_canvas{width:100%;height:380px;background-image:url(qtfm_gmap/load.gif);background-repeat:no-repeat;background-position:center center}
+#map_canvas{width:100%;height:380px;background-image:url(bin/css/load.gif);background-repeat:no-repeat;background-position:center center}
 div.canvashandler{padding:0}
 a.canvashandler{
  display:inline-block;vertical-align:top;margin:0 10px;padding:2px 5px;

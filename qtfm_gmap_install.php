@@ -35,7 +35,7 @@ if ( empty($oH->error) ) {
   $_SESSION[QT]['m_gmap_gzoom'] = '10';
   $_SESSION[QT]['m_gmap_options'] = 'mt=T;bg=1;sc=1;fs=1;mw=0;sv=0;gc=0'; // mt=maptype[T|S|H|R] bg=background sc=scale fs=fullscreen mw=mousewhell sv=streetview gc=geocode
   $_SESSION[QT]['m_gmap_gfind'] = 'Brussels, Belgium';
-  $_SESSION[QT]['m_gmap_gsymbol'] = '0'; // "icon_filename". 0=Default symbol (v4.0 shadow is obsolete)
+  $_SESSION[QT]['m_gmap_gsymbol'] = ''; // "icon_filename". 0=Default symbol (v4.0 shadow is obsolete)
   $_SESSION[QT]['m_gmap_sections'] = 'U';  // "U,S,id" section id, U=userlist, S=search result
   $_SESSION[QT]['m_gmap_symbols'] = '0'; // symbols by user role (0=No symbols by userrole)
   $oDB->exec( "DELETE FROM TABSETTING WHERE param='module_gmap' OR param LIKE 'm_gmap_%'" );

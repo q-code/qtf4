@@ -18,8 +18,8 @@ class CMapPoint
   public $x = 50.847;
   public $title = '';  // marker tips
   public $info = '';   // html to display on click
-  public $symbol = ''; // default marker
-  function __construct($y, $x, string $title='', string $info='', string $symbol='')
+  public $marker = ''; // default marker
+  function __construct($y, $x, string $title='', string $info='', string $marker='')
   {
     if ( isset($y) && isset($x) ) {
       $this->y = (float)$y;
@@ -32,7 +32,7 @@ class CMapPoint
     }
     $this->title = empty($title) ? '' : $title;
     $this->info = empty($info) ? '' : $info;
-    $this->info = empty($symbol) || $symbol==='default' ? '' : $symbol;
+    $this->marker = empty($marker) || $marker==='default' ? '' : $marker;
   }
 }
 
@@ -40,14 +40,12 @@ class CMapPoint
 // If x,y,z are NULL or not float, these functions will returns FALSE.
 // When entity (item) is created, the x,y,z are null (i.e. no point, no display)
 
-function gmapCan($section=null,$strRole='')
+function gmapCan($section=null)
 {
    if ( !gmapHasKey() ) return FALSE;
 
   // Check
-
   if ( !isset($section) ) die('gmapCan: arg #1 must be a section ref');
-  if ( !is_string($strRole) ) die('gmapCan: arg #2 must be an string');
   if ( $section===-1 ) return FALSE;
 
   // Added section registery if missing
@@ -100,63 +98,24 @@ function gmapEmptycoord($a)
   }
   die('gmapEmptycoord: invalid argument #1');
 }
-function gmapMarker($centerLatLng='', bool $draggable=false, $gsymbol=false, $title='', $info='')
-{
-  $js = '';
-  if ( $centerLatLng==='' || $centerLatLng==='0,0' ) return 'marker = null;';
-  if ( $gsymbol ) {
-    $js = gmapMarkerPin($gsymbol);
-  }
-  return $js.' marker = new google.maps.marker.AdvancedMarkerElement({
-		position: '.($centerLatLng==='map' ? 'map.getCenter()' : 'new google.maps.LatLng('.$centerLatLng.')').',
-		map: map,
-    gmpDraggable: '.($draggable ? 'true' : 'false').',
-		' . gmapMarkerPin($gsymbol) . '
-		title: "'.$title.'"
-		});
-		markers.push(marker); '.PHP_EOL.(empty($info) ? '' : '	gmapInfo(marker,`'.$info.'`);');
-}
-function gmapMarkerNEW($centerLatLng='',$draggable=false,$gsymbol=false,$title='',$info='')
+function gmapMarker(string $centerLatLng='', bool $draggable=false, string $marker='', string $title='', string $info='')
 {
   if ( $centerLatLng==='' || $centerLatLng==='0,0' ) return 'marker = null;';
-  if ( $centerLatLng=='map' ) {
-    $centerLatLng = 'map.getCenter()';
-  } else {
-    $centerLatLng = 'new google.maps.LatLng('.$centerLatLng.')';
-  }
-  if ( $draggable=='1' || $draggable==='true' || $draggable===true ) {
-  	$draggable = 'draggable:true,';
-  } else {
-  	$draggable = 'draggable:false,';
-  }
-  return '	marker = new google.maps.marker.AdvancedMarkerElement({
-		position: '.$centerLatLng.',
-		map: map,
-		' . $draggable . gmapMarkerPin($gsymbol) . '
-		title: "'.$title.'"
-		});
-		markers.push(marker); '.PHP_EOL.(empty($info) ? '' : '	gmapInfo(marker,`'.$info.'`);');
+  return gmapMarkerPin($marker).PHP_EOL.'marker = new google.maps.marker.AdvancedMarkerElement({
+  position: '.($centerLatLng==='map' ? 'gmap.getCenter()' : 'new google.maps.LatLng('.$centerLatLng.')').',
+  map: gmap,
+  gmpDraggable: '.($draggable ? 'true' : 'false').',
+  content: gmapPin,
+  title: "'.$title.'"
+  });'.PHP_EOL.'markers.push(marker);'.PHP_EOL.(empty($info) ? '' : 'gmapInfo(marker,`'.$info.'`);');
 }
-function gmapMarkerPin($gsymbol=false)
+function gmapMarkerPin(string $marker='')
 {
-  // returns the google.maps.Marker.icon argument
-  if ( empty($gsymbol) ) return ''; // no icon source means that the default symbol is used
-  // icons are 32x32 pixels and the anchor depends on the name: (10,32) for puhspin, (16,32) for point, center form others
-  //var_dump($gsymbol); //!!!
-  return '';
-}
-function gmapMarkerIcon($gsymbol=false)
-{
-  // returns the google.maps.Marker.icon argument
-  if ( empty($gsymbol) ) return ''; // no icon source means that the default symbol is used
-  // icons are 32x32 pixels and the anchor depends on the name: (10,32) for puhspin, (16,32) for point, center form others
-  return ''; //!!! must be changed due to AdvancedMarkerElement
-  $arr = explode('_',$gsymbol);
-  switch($arr[0]) {
-    case 'pushpin': return 'icon: new google.maps.MarkerImage("qtfm_gmap/'.$gsymbol.'.png",new google.maps.Size(32,32),new google.maps.Point(0,0),new google.maps.Point(10,32)),';
-    case 'point': return 'icon: new google.maps.MarkerImage("qtfm_gmap/'.$gsymbol.'.png",new google.maps.Size(32,32),new google.maps.Point(0,0),new google.maps.Point(16,32)),';
-    default: return 'icon: new google.maps.MarkerImage("qtfm_gmap/'.$gsymbol.'.png",new google.maps.Size(32,32),new google.maps.Point(0,0),new google.maps.Point(16,16)),';
-  }
+  if ( empty($marker) || $marker==='0.png' ) return 'gmapPin = null;';
+  if ( file_exists(APP.'m_gmap/'.$marker) ) return 'gmapPin = document.createElement("img"); gmapPin.src = "'.APP.'m_gmap/'.$marker.'";';
+  // svg in a glyph
+  // if ( file_exists(APP.'m_gmap/'.$marker.'.svg') ) return 'gmapPin = document.createElement("img"); gmapPin.src = "'.APP.'m_gmap/'.$marker.'.svg"; gmapPin = new PinElement({glyph:gmapPin}); gmapPin = gmapPin.element;';
+  return 'gmapPin = null;';
 }
 function gmapMarkerMapTypeId($maptype)
 {

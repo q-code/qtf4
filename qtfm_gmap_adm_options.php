@@ -44,7 +44,7 @@ $oH->selfversion = L('Gmap.Version').' 4.0<br>';
 if ( isset($_POST['ok']) ) try {
 
   $symbols = [];
-  foreach(['U','M','A'] as $role) $symbols[$role] = empty($_POST['symbols'][$role]) || $_POST['symbols'][$role]==='default' ? '0' : $_POST['symbols'][$role];
+  foreach(['U','M','A'] as $role) $symbols[$role] = empty($_POST['symbols'][$role]) || $_POST['symbols'][$role]==='0.png' ? '0' : $_POST['symbols'][$role];
   $_SESSION[QT]['m_gmap_symbols'] = qtImplode($symbols,';');
   $oDB->updSetting('m_gmap_symbols');
   // exit
@@ -67,7 +67,9 @@ $symbols = qtExplode($_SESSION[QT]['m_gmap_symbols']);
 
 // reset if incoherents values
 if ( count($symbols)!==3 ) $symbols = ['U'=>'0','M'=>'0','A'=>'0'];
-if ( !isset($symbols['A']) || !isset($symbols['M']) || !isset($symbols['U']) ) $symbols = ['U'=>'0','M'=>'0','A'=>'0'];
+if ( !isset($symbols['U']) ) $symbols['U'] = '0';
+if ( !isset($symbols['M']) ) $symbols['M'] = '0';
+if ( !isset($symbols['A']) ) $symbols['A'] = '0';
 
 $oH->links[]='<link rel="stylesheet" type="text/css" href="'.APP.'m_gmap.css"/>';
 
@@ -80,24 +82,27 @@ echo '
 <tr><td colspan="3" class="right" style="background-color:transparent"><small>'.L('Gmap.Click_to_change').'</small></td></tr>
 ';
 
-// Read png ONLY in directory (shadow is obsolete)
+// Read png/svg in directory
 $files = [];
-foreach(glob(APP.'m_gmap/*.png') as $file) {
-  $file = substr($file,10,-4);
+foreach(glob(APP.'m_gmap/*.*g') as $file) {
+  $file = substr($file,10);
   if ( strpos($file,'_shadow') ) continue;
-  $files[$file] = ucfirst(str_replace('_',' ',$file));
+  $name = ucfirst(str_replace('_',' ',substr($file,0,-4)));
+  $files[$file] = empty($name) ? 'Default' : $name;
 }
 
 foreach($symbols as $role=>$symbol) {
   // current symbol
-  $currentFile = empty($symbol) ? 'default' : $symbol;
+  $currentFile = empty($symbol) ? '0.png' : $symbol;
   echo '<tr>
-  <th style="padding-right:10px">'.L('Role_'.$role.'+').'</th>
+  <th>'.L('Role_'.$role.'+').'</th>
   <td style="display:flex;gap:1.5rem;align-items:flex-end">
-  <p><img id="preview-'.$role.'" class="markerpicked" title="default" src="'.APP.'m_gmap/'.$currentFile.'.png"/></p>
+  <p><img id="preview-'.$role.'" class="markerpicked" title="default" src="'.APP.'m_gmap/'.$currentFile.'"/></p>
   <p class="markerpicker small">';
+  $i = 0;
   foreach ($files as $file=>$name) {
-  echo '<input type="radio" data-preview="preview-'.$role.'" data-src="'.APP.'m_gmap/'.$file.'.png" name="symbols['.$role.']" value="'.$file.'" id="symbol_'.$file.'_'.$role.'"'.($currentFile===$file ? ' checked' : '').' onchange="document.getElementById(this.dataset.preview).src=this.dataset.src;" style="display:none"/><label for="symbol_'.$file.'_'.$role.'"><img class="marker" title="'.$name.'" src="'.APP.'m_gmap/'.$file.'.png" aria-checked="'.($currentFile===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
+    echo '<input type="radio" data-preview="preview-'.$role.'" data-src="'.APP.'m_gmap/'.$file.'" name="symbols['.$role.']" value="'.$file.'" id="symb_'.$i.'_'.$role.'"'.($currentFile===$file ? ' checked' : '').' onchange="document.getElementById(this.dataset.preview).src=this.dataset.src;" style="display:none"/><label for="symb_'.$i.'_'.$role.'"><img class="marker" title="'.$name.'" src="'.APP.'m_gmap/'.$file.'" aria-checked="'.($currentFile===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
+    ++$i;
   }
   echo '</p>
   </td>
@@ -107,9 +112,9 @@ foreach($symbols as $role=>$symbol) {
 echo '</table>';
 
 echo '
-<p style="text-align:center"><button type="submit" name="ok" value="ok">'.L('Save').'</button></p>
+<p style="text-align:center">
+<button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Save').'</button></p>
 </form>
-<p>'.qtSVG('angle-left').' <a href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>
 ';
 
 include APP.'_adm_inc_ft.php';

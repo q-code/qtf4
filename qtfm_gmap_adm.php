@@ -33,12 +33,12 @@ foreach(['m_gmap_gkey','m_gmap_gcenter','m_gmap_gzoom','m_gmap_gfind','m_gmap_gs
 // m_gmap_options (mt=maptype[T|S|H|R] bg=background sc=scale fs=fullscreen mw=mousewhell sv=streetview gc=geocode)
 if ( empty($_SESSION[QT]['m_gmap_options']) ) $_SESSION[QT]['m_gmap_options'] = 'mt=T;bg=1;sc=1;fs=1;mw=0;sv=0;gc=0';
 
-// Read png in directory (shadow is obsolete)
+// Read png/svg in directory
 $files = [];
-foreach(glob(APP.'m_gmap/*.png') as $file) {
-  $file = substr($file,10,-4);
+foreach(glob(APP.'m_gmap/*.*g') as $file) {
+  $file = substr($file,10);
   if ( strpos($file,'_shadow') ) continue;
-  $files[$file] = ucfirst(str_replace('_',' ',$file));
+  $files[$file] = ucfirst(str_replace('_',' ',substr($file,0,-4)));
 }
 
 // ------
@@ -60,7 +60,7 @@ if ( isset($_POST['ok']) ) try {
     if ( isset($_POST['m_gmap_gzoom']) )   $_SESSION[QT]['m_gmap_gzoom'] = trim($_POST['m_gmap_gzoom']);
     if ( isset($_POST['m_gmap_gfind']) )   $_SESSION[QT]['m_gmap_gfind'] = qtAttr($_POST['m_gmap_gfind']);
     if ( isset($_POST['m_gmap_gsymbol']) ) $_SESSION[QT]['m_gmap_gsymbol'] = trim($_POST['m_gmap_gsymbol']);
-    if ( empty($_SESSION[QT]['m_gmap_gsymbol']) || $_SESSION[QT]['m_gmap_gsymbol']=='default' ) $_SESSION[QT]['m_gmap_gsymbol']=''; // "iconname" (without extension) or '' default symbol
+    if ( empty($_SESSION[QT]['m_gmap_gsymbol']) || $_SESSION[QT]['m_gmap_gsymbol']==='0.png' ) $_SESSION[QT]['m_gmap_gsymbol'] = ''; // "iconname" (without extension) or '' default symbol
     if ( isset($_POST['m_gmap_section']) ) $_SESSION[QT]['m_gmap_section'] = substr(trim($_POST['sections']),0,1); // in qtf only one section (U) is supported
     if ( isset($_POST['options']) ) $_SESSION[QT]['m_gmap_options'] = qtImplode($_POST['options'],';');
 
@@ -108,7 +108,7 @@ echo '
 if ( $useMap ) {
 //------
 
-$current = empty($_SESSION[QT]['m_gmap_gsymbol']) ? 'default' : $_SESSION[QT]['m_gmap_gsymbol']; // current symbol
+$currentSymbol = empty($_SESSION[QT]['m_gmap_gsymbol']) ? '0.png' : $_SESSION[QT]['m_gmap_gsymbol']; // current symbol
 echo '<tr>
 <th style="width:150px">'.L('Gmap.API_ctrl').'</th>
 <td>
@@ -125,11 +125,13 @@ echo '<tr>
 <tr>
 <th style="width:150px">'.L('Gmap.Default_symbol').'</th>
 <td style="display:flex;gap:1.5rem;align-items:flex-end">
-<p><img id="dflt-marker" class="markerpicked" src="'.APP.'m_gmap/'.$current.'.png" alt="i" title="default"/></p>
+<p><img id="dflt-marker" class="markerpicked" src="'.APP.'m_gmap/'.$currentSymbol.'" alt="i" title="default"/></p>
 <p class="markerpicker small">'.L('Gmap.Click_to_change').'<br>
 ';
+$i = 0;
 foreach ($files as $file=>$name) {
-  echo '<input type="radio" id="symbol_'.$file.'" data-preview="dflt-marker" data-src="'.APP.'m_gmap/'.$file.'.png" name="m_gmap_gsymbol" value="'.$file.'"'.($current===$file ? 'checked' : '').' onchange="document.getElementById(this.dataset.preview).src=this.dataset.src;" style="display:none"/><label for="symbol_'.$file.'"><img class="marker" title="'.$name.'" src="'.APP.'m_gmap/'.$file.'.png" alt="i" aria-checked="'.($current===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
+  echo '<input type="radio" id="symb_'.$i.'" data-preview="dflt-marker" data-src="'.APP.'m_gmap/'.$file.'" name="m_gmap_gsymbol" value="'.$file.'"'.($currentSymbol===$file ? 'checked' : '').' onchange="document.getElementById(this.dataset.preview).src=this.dataset.src;" style="display:none"/><label for="symb_'.$i.'"><img class="marker" title="'.$name.'" src="'.APP.'m_gmap/'.$file.'" alt="i" aria-checked="'.($currentSymbol===$file ? 'true' : 'false').'"/></label>'.PHP_EOL;
+  ++$i;
 }
 echo '</p></td>
 </tr>
@@ -203,19 +205,19 @@ if ( $useMap ) {
   $gmap_markers[] = gmapMarker($_SESSION[QT]['m_gmap_gcenter'],true,$gmap_symbol,L('Gmap.Default_center'));
   $gmap_events[] = '
   markers[0].addListener("drag", ()=>{ document.getElementById("yx").value = gmapRound(markers[0].position.lat,10) + "," + gmapRound(markers[0].position.lng,10); });
-	google.maps.event.addListener(markers[0], "dragend", function() { map.panTo(markers[0].position);	});';
+	google.maps.event.addListener(markers[0], "dragend", function() { gmap.panTo(markers[0].position);	});';
   $gmap_functions[] = '
   function undoChanges() {
-  	if ( infowindow) infowindow.close();
-  	if ( markers[0]) markers[0].setPosition(mapOptions.center);
-  	if ( mapOptions) map.panTo(mapOptions.center);
+  	if ( gmapInfoBox) gmapInfoBox.close();
+  	if ( markers[0]) markers[0].setPosition(gmapOptions.center);
+  	if ( gmapOptions) gmap.panTo(gmapOptions.center);
   	return null;
   }
   function showLocation(address,title) {
-    if ( infowindow ) infowindow.close();
-    geocoder.geocode( { "address":address}, function(results, status) {
+    if ( gmapInfoBox ) gmapInfoBox.close();
+    gmapCoder.geocode( { "address":address}, function(results, status) {
       if ( status==google.maps.GeocoderStatus.OK ) {
-        map.setCenter(results[0].geometry.location);
+        gmap.setCenter(results[0].geometry.location);
         if ( markers[0] ) {
           markers[0].setPosition(results[0].geometry.location);
         } else {
