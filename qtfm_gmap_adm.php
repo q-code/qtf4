@@ -209,7 +209,7 @@ if ( $useMap ) {
   $gmap_functions[] = '
   function undoChanges() {
   	if ( gmapInfoBox) gmapInfoBox.close();
-  	if ( markers[0]) markers[0].setPosition(gmapOptions.center);
+  	if ( markers[0]) markers[0].position = gmapOptions.center;
   	if ( gmapOptions) gmap.panTo(gmapOptions.center);
   	return null;
   }
@@ -219,7 +219,7 @@ if ( $useMap ) {
       if ( status==google.maps.GeocoderStatus.OK ) {
         gmap.setCenter(results[0].geometry.location);
         if ( markers[0] ) {
-          markers[0].setPosition(results[0].geometry.location);
+          markers[0].position = results[0].geometry.location;
         } else {
           markers[0] = new google.maps.marker.AdvancedMarkerElement({map:map, position:results[0].geometry.location, draggable:true, title:title});
         }

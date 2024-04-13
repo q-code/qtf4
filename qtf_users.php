@@ -291,7 +291,7 @@ if ( $bMap && !$_SESSION[QT]['m_gmap_hidelist'] ) {
       if ( status==google.maps.GeocoderStatus.OK) {
         gmap.setCenter(results[0].geometry.location);
         if ( marker ) {
-          marker.setPosition(results[0].geometry.location);
+          marker.position = results[0].geometry.location;
         } else {
           marker = new google.maps.marker.AdvancedMarkerElement({map: gmap, position: results[0].geometry.location, draggable: true, title: "Move to define the default map center"});
         }
