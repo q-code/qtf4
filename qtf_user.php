@@ -364,7 +364,7 @@ if ( $useMap ) {
     if ( $edit ) $gmap_events[] = 'markers[0].addListener("drag", ()=>{
       document.getElementById("yx").value = gmapRound(markers[0].position.lat,10) + "," + gmapRound(markers[0].position.lng,10);
     });
-    google.maps.event.addListener(markers[0], "dragend", function() { gmap.panTo(markers[0].position);	});';
+    google.maps.event.addListener(markers[0], "dragend", function() { gmap.panTo(markers[0].position); });';
   }
   if ( $edit ) $gmap_functions[] = '
   function showLocation(address,title) {
