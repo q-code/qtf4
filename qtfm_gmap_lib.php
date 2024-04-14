@@ -42,20 +42,13 @@ class CMapPoint
 
 function gmapCan($section=null)
 {
-   if ( !gmapHasKey() ) return FALSE;
-
-  // Check
+  if ( !gmapHasKey() || $section===-1 ) return false;
   if ( !isset($section) ) die('gmapCan: arg #1 must be a section ref');
-  if ( $section===-1 ) return FALSE;
-
-  // Added section registery if missing
-  if ( !isset($_SESSION[QT]['m_gmap_sections']) ) $_SESSION[QT]['m_gmap_sections']='';
-
+  if ( !isset($_SESSION[QT]['m_gmap_sections']) ) $_SESSION[QT]['m_gmap_sections'] = '';
   // check section
-  if ( $_SESSION[QT]['m_gmap_sections']!==$section ) return FALSE; // only 'U' is supported in qtf
-
+  if ( $_SESSION[QT]['m_gmap_sections']!==$section ) return false; // only 'U' is supported in qtf
   // exit
-  return TRUE;
+  return true;
 }
 
 function gmapHasKey()
