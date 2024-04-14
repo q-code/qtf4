@@ -23,13 +23,13 @@ $fg = 'all'; // filter by group
 qtArgs('int:pn po pd fg', true, false);
 
 // MAP MODULE
-$bMap=false;
+$useMap=false;
 $arrMapData = [];
 if ( qtModule('gmap') ) {
   include translate(APP.'m_gmap.php');
   include 'qtfm_gmap_lib.php';
-  if ( gmapCan('U') ) $bMap=true;
-  if ( $bMap ) $oH->links[]='<link rel="stylesheet" type="text/css" href="qtfm_gmap.css"/>';
+  if ( gmapCan('U') ) $useMap=true;
+  if ( $useMap ) $oH->links[]='<link rel="stylesheet" type="text/css" href="qtfm_gmap.css"/>';
   if ( isset($_GET['hidemap']) ) $_SESSION[QT]['m_gmap_hidelist']=true;
   if ( isset($_GET['showmap']) ) $_SESSION[QT]['m_gmap_hidelist']=false;
   if ( !isset($_SESSION[QT]['m_gmap_hidelist']) ) $_SESSION[QT]['m_gmap_hidelist']=false;
@@ -170,7 +170,7 @@ while($row=$oDB->getRow()) {
   $t->arrTd['userpriv']->content = renderUserPrivSymbol($row);
 
 	// map settings
-	if ( $bMap && !gmapEmpty($row['x']) && !gmapEmpty($row['y']) ) {
+	if ( $useMap && !gmapEmpty($row['x']) && !gmapEmpty($row['y']) ) {
 	  $y = (float)$row['y']; $x = (float)$row['x'];
 		$strPname = $row['name'];
 		$strPinfo = $row['name'].'<br><a class="gmap" href="'.url('qtf_user.php').'?id='.$row['id'].'">'.L('Profile').'</a>';
@@ -204,10 +204,10 @@ if ( !empty($strPaging) ) echo '<p id="tablebot" class="paging">'.$strPaging.'</
 
 // MAP MODULE, Show map
 
-if ( $bMap ) {
+if ( $useMap ) {
   if ( count($arrMapData)==0 ) {
     echo '<div class="gmap_disabled">'.$L['Gmap']['E_noposition'].'</div>';
-    $bMap=false;
+    $useMap = false;
   } else {
     //select zoomto (maximum 20 items in the list)
     $str = '';
@@ -240,7 +240,7 @@ if ( $bMap ) {
 // HTML END
 // ------
 // MAP MODULE
-if ( $bMap && !$_SESSION[QT]['m_gmap_hidelist'] ) {
+if ( $useMap && !$_SESSION[QT]['m_gmap_hidelist'] ) {
 
   /**
   * @var array $gmap_markers

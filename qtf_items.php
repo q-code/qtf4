@@ -125,7 +125,7 @@ $strPaging = makePager( url($oH->selfurl).'?'.$oH->selfuri, $intCount, (int)$_SE
 if ( $strPaging!='' ) $strPaging = L('Page').$strPaging;
 
 // MAP
-$bMap = false; // map is only used for user's location
+$useMap = false; // map is only used for user's location
 
 // Page title or description
 $pageTitle = '';
@@ -311,7 +311,7 @@ $intRow=0; // count row displayed
 $arrRe = []; // topic id having replies (use in post-processing)
 $arrTags = [];
 $arrOptions = [];
-$arrOptions['bmap'] = $bMap;
+$arrOptions['bmap'] = $useMap;
 if ( $_SESSION[QT]['item_firstline']==='0' ) {
   $arrOptions['firstline'] = false;
 } elseif ( $_SESSION[QT]['item_firstline']==='2' ) {

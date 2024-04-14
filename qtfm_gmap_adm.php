@@ -38,7 +38,8 @@ $files = [];
 foreach(glob(APP.'m_gmap/*.*g') as $file) {
   $file = substr($file,10);
   if ( strpos($file,'_shadow') ) continue;
-  $files[$file] = ucfirst(str_replace('_',' ',substr($file,0,-4)));
+  $name = ucfirst(str_replace('_',' ',substr($file,0,-4)));
+  $files[$file] = empty($name) ? 'Default' : $name;
 }
 
 // ------
@@ -166,8 +167,7 @@ echo '<h2 class="config">'.L('Gmap.Mapping_config').'</h2>
 </tr>
 <tr>
 <th style="width:150px;">'.L('Gmap.Address_sample').'</th>
-<td>
-<input'.(empty(gmapOption('gc')) ? 'disabled' : '').' type="text" id="m_gmap_gfind" name="m_gmap_gfind" size="20" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gfind'].'"/></td>
+<td><input'.(empty(gmapOption('gc')) ? 'disabled' : '').' type="text" id="m_gmap_gfind" name="m_gmap_gfind" size="20" maxlength="100" value="'.$_SESSION[QT]['m_gmap_gfind'].'"/></td>
 <td><small>'.(empty(gmapOption('gc')) ? L('Gmap.Ctrl.Geocode').' (off)' : L('Gmap.H_Address_sample')).'</small></td>
 </tr>
 ';

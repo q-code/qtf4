@@ -194,8 +194,8 @@ div.filterusers{margin:0 0 10px 0;padding:5px; background-color:#DDD;border-radi
 table.subtable{width:100%;margin-bottom:10px;background-color:#F2F2F2;border:solid 1px #c3d9ff}
 table.subtable tr{background-color:transparent}
 table.subtable tr.hover:hover{background-color:#dfdfdf}
-table.subtable th{padding:2px 4px;vertical-align:middle;background-color:#c3d9ff;text-align:left;border:none}
-table.subtable td{padding:2px 4px;vertical-align:middle;background-color:transparent}
+table.subtable th{padding:0.2rem 0.4rem;vertical-align:middle;background-color:#c3d9ff;text-align:left;border:none}
+table.subtable td{padding:0.2rem 0.4rem;vertical-align:middle;background-color:transparent}
 span.colname{display:inline-block; padding:2px 4px; font-size:0.8rem; color:#555; background-color:#FFF; border:solid 1px #BBB; border-radius:3px}
 img.sectioninfo-left{float:left; margin-right:10px}
 img.sectioninfo-right{float:right; margin-left:10px}
