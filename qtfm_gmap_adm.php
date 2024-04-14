@@ -39,7 +39,7 @@ foreach(glob(APP.'m_gmap/*.*g') as $file) {
   $file = substr($file,10);
   if ( strpos($file,'_shadow') ) continue;
   $name = ucfirst(str_replace('_',' ',substr($file,0,-4)));
-  $files[$file] = empty($name) ? 'Default' : $name;
+  $files[$file] = empty($name) ? L('Gmap.Default') : $name;
 }
 
 // ------
@@ -126,7 +126,7 @@ echo '<tr>
 <tr>
 <th style="width:150px">'.L('Gmap.Default_symbol').'</th>
 <td style="display:flex;gap:1.5rem;align-items:flex-end">
-<p><img id="dflt-marker" class="markerpicked" src="'.APP.'m_gmap/'.$currentSymbol.'" alt="i" title="default"/></p>
+<p><img id="dflt-marker" class="markerpicked" src="'.APP.'m_gmap/'.$currentSymbol.'" alt="i" title="'.L('Gmap.Default').'"/></p>
 <p class="markerpicker small">'.L('Gmap.Click_to_change').'<br>
 ';
 $i = 0;
@@ -192,7 +192,7 @@ if ( $useMap ) {
   }
   echo '</div>'.PHP_EOL;
 } else {
-  echo '<p class="minor">'.L('Gmap.E_disabled').'</p>';
+  echo '<p class="minor">'.L('Gmap.Disabled').'</p>';
 }
 
 // HTML END

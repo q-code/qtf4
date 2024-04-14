@@ -29,7 +29,7 @@ $L['Gmap']['Default_center']='Centre par défaut';
 $L['Gmap']['To_first']='Sur le premier';
 $L['Gmap']['To_all']='Sur tout';
 $L['Gmap']['Symbol']='Symbole';
-$L['Gmap']['Default']='Default';
+$L['Gmap']['Default']='Défault';
 $L['Gmap']['Search_results']='Search results';
 
 $L['Gmap']['Ctrl']['Background']='Fond de carte';
@@ -47,4 +47,4 @@ $L['Gmap']['List']['0']='No';
 $L['Gmap']['List']['1']='Yes';
 $L['Gmap']['List']['M']='Yes (staff only)';
 
-$L['Gmap']['E_disabled']='Cartographie non disponible';
+$L['Gmap']['Disabled']='Cartographie non disponible';

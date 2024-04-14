@@ -88,7 +88,7 @@ foreach(glob(APP.'m_gmap/*.*g') as $file) {
   $file = substr($file,10);
   if ( strpos($file,'_shadow') ) continue;
   $name = ucfirst(str_replace('_',' ',substr($file,0,-4)));
-  $files[$file] = empty($name) ? 'Default' : $name;
+  $files[$file] = empty($name) ? L('Gmap.Default') : $name;
 }
 
 foreach($symbols as $role=>$symbol) {
@@ -97,7 +97,7 @@ foreach($symbols as $role=>$symbol) {
   echo '<tr>
   <th>'.L('Role_'.$role.'+').'</th>
   <td style="display:flex;gap:1.5rem;align-items:flex-end">
-  <p><img id="preview-'.$role.'" class="markerpicked" title="default" src="'.APP.'m_gmap/'.$currentFile.'"/></p>
+  <p><img id="preview-'.$role.'" class="markerpicked" title="'.L('Gmap.Default').'" src="'.APP.'m_gmap/'.$currentFile.'"/></p>
   <p class="markerpicker small">';
   $i = 0;
   foreach ($files as $file=>$name) {

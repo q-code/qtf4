@@ -46,4 +46,4 @@ $L['Gmap']['List']['0']='Geen';
 $L['Gmap']['List']['1']='Ja';
 $L['Gmap']['List']['M']='Ja (staff slechts)';
 
-$L['Gmap']['E_disabled']='De kaart (sleutel) wordt niet geactiveerd.';
+$L['Gmap']['Disabled']='De kaart (sleutel) wordt niet geactiveerd.';

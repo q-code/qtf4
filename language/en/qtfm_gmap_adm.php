@@ -48,4 +48,4 @@ $L['Gmap']['List']['0']='No';
 $L['Gmap']['List']['1']='Yes';
 $L['Gmap']['List']['M']='Yes (staff only)';
 
-$L['Gmap']['E_disabled']='Mapping not activated.';
+$L['Gmap']['Disabled']='Mapping not activated.';
