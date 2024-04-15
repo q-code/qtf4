@@ -114,18 +114,18 @@ function gmapMarkerPin(string $marker='')
   }
   return $js;
 }
-function gmapMarkerMapTypeId($maptype)
+function gmapMarkerMapTypeId(string $maptype='')
 {
-  switch((string)$maptype) {
-	case 'S':
-	case 'SATELLITE': return 'google.maps.MapTypeId.SATELLITE'; break;
-	case 'H':
-	case 'HYBRID': return 'google.maps.MapTypeId.HYBRID'; break;
-	case 'P':
-	case 'T':
-	case 'TERRAIN': return 'google.maps.MapTypeId.TERRAIN'; break;
-	default: return 'google.maps.MapTypeId.ROADMAP';
+  switch($maptype) {
+    case 'S':
+    case 'SATELLITE': return 'google.maps.MapTypeId.SATELLITE';
+    case 'H':
+    case 'HYBRID': return 'google.maps.MapTypeId.HYBRID';
+    case 'P':
+    case 'T':
+    case 'TERRAIN': return 'google.maps.MapTypeId.TERRAIN';
   }
+  return 'google.maps.MapTypeId.ROADMAP';
 }
 function QTgetx($str=null,$onerror=0.0)
 {
