@@ -104,11 +104,15 @@ function gmapMarker(string $centerLatLng='', bool $draggable=false, string $mark
 }
 function gmapMarkerPin(string $marker='')
 {
-  if ( empty($marker) || $marker==='0.png' ) return 'gmapPin = null;';
-  if ( file_exists(APP.'m_gmap/'.$marker) ) return 'gmapPin = document.createElement("img"); gmapPin.src = "'.APP.'m_gmap/'.$marker.'";';
-  // svg in a glyph
-  // if ( file_exists(APP.'m_gmap/'.$marker.'.svg') ) return 'gmapPin = document.createElement("img"); gmapPin.src = "'.APP.'m_gmap/'.$marker.'.svg"; gmapPin = new PinElement({glyph:gmapPin}); gmapPin = gmapPin.element;';
-  return 'gmapPin = null;';
+  $js = 'gmapPin = null;';
+  if ( empty($marker) || $marker==='0.png' ) return $js;
+  if ( file_exists(APP.'m_gmap/'.$marker) ) {
+    $js = 'gmapPin = document.createElement("img"); gmapPin.src = "'.APP.'m_gmap/'.$marker.'";';
+    if ( file_exists(APP.'m_gmap/'.$marker.'.js') ) $js .= 'gmapPin.style.'.file_get_contents(APP.'m_gmap/'.$marker.'.js');
+    // svg in a glyph
+    // if ( file_exists(APP.'m_gmap/'.$marker.'.svg') ) return 'gmapPin = document.createElement("img"); gmapPin.src = "'.APP.'m_gmap/'.$marker.'.svg"; gmapPin = new PinElement({glyph:gmapPin}); gmapPin = gmapPin.element;';
+  }
+  return $js;
 }
 function gmapMarkerMapTypeId($maptype)
 {

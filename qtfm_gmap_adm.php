@@ -38,7 +38,7 @@ $files = [];
 foreach(glob(APP.'m_gmap/*.*g') as $file) {
   $file = substr($file,10);
   if ( strpos($file,'_shadow') ) continue;
-  $name = ucfirst(str_replace('_',' ',substr($file,0,-4)));
+  $name = ucfirst(str_replace('_',' ',qtDropExt($file)));
   $files[$file] = empty($name) ? L('Gmap.Default') : $name;
 }
 

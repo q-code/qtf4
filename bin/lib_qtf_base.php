@@ -290,8 +290,7 @@ function validateFileExt($file, $extensions='')
   if ( !is_string($extensions) || empty($extensions) ) die('validateFileExt: argument #2 must be a string');
   $file = strtolower($file);
   $extensions = strtolower($extensions);
-  $ext = strrpos($file,'.'); if ( $ext===false ) return 'file extension not found';
-  $ext = substr($file,$ext+1);
+  $ext = qtExt($file);
   if ( strpos($extensions,$ext)===false ) return 'Format ['.$ext.'] not supported... Use '.$extensions;
   return '';
 }
