@@ -17,25 +17,16 @@
 */
 
 session_start();
-/**
- * @var CHtml $oH
- * @var array $L
- * @var CDatabase $oDB
- */
 require 'bin/init.php';
+if ( SUser::role()!=='A' ) die('Access denied');
 include translate('lg_adm.php');
 
-if ( SUser::role()!=='A' ) die('Access denied');
-
 // INITIALISE
-
 $pan = 'en';
 $dest = '';
 qtArgs('pan dest');
 if ( empty($dest) ) $oH->error = 'Missing file name';
-
 $intSize = 100;
-
 $oH->selfurl = 'qtf_adm_tags_upload.php';
 $oH->selfname = L('Tags');
 $oH->exiturl = 'qtf_adm_tags.php';
@@ -45,25 +36,26 @@ $oH->selfparent = L('Board_content');
 // ------
 // SUBMITTED FOR UPLOAD
 // ------
-if ( isset($_POST['ok']) )
-{
+if ( isset($_POST['ok']) ) try {
+
   // Check uploaded document
-
-  $oH->error = validateFile($_FILES['title'],'csv,txt,text','',500);
-
+  fileValidate($_FILES['title'], ['csv','txt','text'], [], 500);
   // Save
+  copy($_FILES['title']['tmp_name'], 'upload/'.$v);
+  unlink($_FILES['title']['tmp_name']);
+  $oH->voidPage('', L('S_update').'<script type="text/javascript">setTimeout(()=>{window.location="'.url($oH->exiturl).'";}, 2000);</script>', 'admin');
 
-  if ( empty($oH->error) )
-  {
-    copy($_FILES['title']['tmp_name'],'upload/'.$v);
-    unlink($_FILES['title']['tmp_name']);
-    $oH->voidPage('', L('S_update').'<script type="text/javascript">setTimeout(()=>{window.location="'.url($oH->exiturl).'";}, 2000);</script>', 'admin');
-  }
+} catch (Exception $e) {
+
+  $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+  $oH->error = $e->getMessage();
+
 }
 
 // ------
 // HTML BEGIN
 // ------
+
 include 'qtf_adm_inc_hd.php';
 
 CHtml::msgBox(L('Add').' CSV '.L('file'));

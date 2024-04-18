@@ -118,16 +118,14 @@ if ( isset($_POST['dosend']) ) try {
   // check upload
   if ( $_SESSION[QT]['upload']!=='0' && !empty($_FILES['newdoc']['name']) ) {
     include 'config/config_upload.php';
-    $info = validateFile($_FILES['newdoc'],ALLOWED_FILE_EXT,ALLOWED_MIME_TYPE,intval($_SESSION[QT]['upload_size'])*1024+16);
-    if ( !empty($info) ) throw new Exception( $info ); //...
+    fileValidate($_FILES['newdoc'], ALLOWED_FILE_EXT, ALLOWED_MIME_TYPE, $_SESSION[QT]['upload_size']*1024+16);
     $withDoc = true;
     // remove old attach
     if ( !empty($_POST['attach']) && file_exists(QT_DIR_DOC.$_POST['attach']) ) { unlink(QT_DIR_DOC.$_POST['attach']); $oP->attach = ''; }
   }
 
   // PROCESS $a
-  switch($a)
-  {
+  switch($a) {
   case 'nt': // new topic
     $oDB->beginTransac();
     $oT->id = $oDB->nextId(TABTOPIC);
@@ -148,8 +146,7 @@ if ( isset($_POST['dosend']) ) try {
     $oT->firstpostdate = $now;
     $oT->lastpostdate = $now;
     $oP->issuedate = $now;
-    if ( $withDoc )
-    {
+    if ( $withDoc ) {
       $strDir = qtDirData('',$oP->id);
       $oP->attach = $strDir.$oP->id.'_'.$_FILES['newdoc']['name'];
       copy($_FILES['newdoc']['tmp_name'],QT_DIR_DOC.$oP->attach);

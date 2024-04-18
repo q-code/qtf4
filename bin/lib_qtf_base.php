@@ -199,8 +199,7 @@ function getUsers(string $q='A', string $name='', int $max=100)
   // $q={A|S|M|U|N|N*} role admin, admin or moderator, moderator, user or name $name or name starting by $name
   // $max maximum number of results (0 means unlimited)
   global $oDB;
-  switch($q)
-  {
+  switch($q) {
     case 'A': $where = "role='A'"; break;
     case 'S': $where = "role='A' OR role='M'"; break;
     case 'M': $where = "role='M'"; break;
@@ -220,79 +219,46 @@ function getUsers(string $q='A', string $name='', int $max=100)
   }
   $oDB->query( "SELECT id,name FROM TABUSER WHERE $where ORDER BY name" );
   $res = [];
-  while ($row=$oDB->getRow())
-  {
+  while ($row=$oDB->getRow()) {
     $res[(int)$row['id']]=$row['name'];
     if ( --$max===0 ) break; // never breaks when $max starts at 0
   }
   return $res;
 }
-function validateFile(&$arrFile=[], $extensions='', $mimes='', int $size=0, int $width=0, int $height=0, bool $strictName=true)
+function fileValidate(array &$arrFile=[], array $extensions=[], array $mimes=[], int $size=0, int $width=0, int $height=0, bool $strictName=true)
 {
-  // For the uploaded document ($arrFile), this function returns [string] '' if it matches with all conditions
-  // and an error message otherwize (and unlink the uploaded document)
+  // For the uploaded document ($arrFile), checks conditions
+  // or an error message (and unlink the uploaded document).
+  // The filename can be changed: lowercase and remove space/diacritics.
+  // Extensions and mimetypes are checked as case insensitive (lowercase)
   // $arrFile: The uploaded document ($_FILES['fieldname']).
-  // $extensions: csv valid extensions. Empty to skip (any extension valid)
-  // $mimes: csv valid mimetypes. Empty to skip (any mimetype valid)
-  // $size: Maximum file size (kb). 0 to skip.
-  // $width: Maximum image width (pixels). 0 to skip.
-  // $height: Maximum image width (pixels). 0 to skip.
+  // $extensions: Allowed extensions (without '.'). Empty means any extension is valid
+  // $mimes: Allowed mimetypes. Empty means any mimetype is valid
+  // $size: Maximum file size(kb) or 0 to skip.
+  // $width: Maximum image width (px) or 0 to skip.
+  // $height: Maximum image width (px) or 0 to skip.
 
-  // Check arguments
-  if ( is_array($extensions) ) $extensions = implode(',', $extensions);
-  if ( is_array($mimes) ) $mimes = implode(',', $mimes);
-  if ( !is_array($arrFile) || !is_string($extensions) || !is_string($mimes) ) die('CheckUpload: invalid argument type');
   // Check load
-  if ( !is_uploaded_file($arrFile['tmp_name']) ) {
-    unlink($arrFile['tmp_name']);
-    return 'You did not upload a file!';
-  }
+  if ( !is_uploaded_file($arrFile['tmp_name']) ) throw new Exception( 'You did not upload a file' );
   // Check size (kb)
   if ( $size>0 && $arrFile['size']>($size*1024+16) ) {
-    unlink($arrFile['tmp_name']);
-    return L('E_file_size').' (&lt;'.$size.' Kb)';
-  }
-  // check extension
-  if ( !empty($extensions) ) {
-    $result = validateFileExt($arrFile['name'], $extensions);
-    if ( $result ) {
-      unlink($arrFile['tmp_name']);
-      return $result;
-    }
-  }
+    unlink($arrFile['tmp_name']); throw new Exception( L('E_file_size').' (&lt;'.$size.' Kb)' ); }
+  // Check extension
+  if ( count($extensions) && !in_array(qtExt($arrFile['name']), array_map('strtolower',$extensions)) ) {
+    unlink($arrFile['tmp_name']); throw new Exception( 'Format ['.qtExt($arrFile['name']).'] not supported... Use '.implode(', ', $extensions) ); }
   // Check mimetype
-  if ( !empty($mimes) && strpos(strtolower($mimes),strtolower($arrFile['type']))===false ) {
-    unlink($arrFile['tmp_name']);
-    return 'Format ['.$arrFile['type'].'] not supported... Use '.$extensions;
-  }
+  if ( count($mimes) && !in_array(strtolower($arrFile['type']), array_map('strtolower',$mimes)) ) {
+    unlink($arrFile['tmp_name']); throw new Exception( 'Format ['.$arrFile['type'].'] not supported... Use '.implode(', ',$mimes) ); }
   // Check size (pixels)
   if ( $width>0 || $height>0 ) {
     $size = getimagesize($arrFile['tmp_name']);
-    if ( $width>0 && $size[0]>$width ) {
-      unlink($arrFile['tmp_name']);
-      return $width.'x'.$height.' '.L('e_pixels_max');
-    }
-    if ( $height>0 && $size[1]>$height ) {
-      unlink($arrFile['tmp_name']);
-      return $width.'x'.$height.' '.L('e_pixels_max');
-    }
+    if ( ( $width>0 && $size[0]>$width ) || ( $height>0 && $size[1]>$height ) ) {
+      unlink($arrFile['tmp_name']); throw new Exception( $width.'x'.$height.' '.L('e_pixels_max') ); }
   }
   if ( $strictName ) {
     $arrFile['name'] = strtolower(qtDropDiacritics($arrFile['name']));
     $arrFile['name'] = preg_replace('/[^a-z0-9_\-\.]/i', '_', $arrFile['name']);
   }
-  return '';
-}
-function validateFileExt($file, $extensions='')
-{
-  if ( is_array($extensions) ) $extensions = implode(',', $extensions);
-  if ( !is_string($file) || empty($file) ) die('validateFileExt: argument #1 must be a string');
-  if ( !is_string($extensions) || empty($extensions) ) die('validateFileExt: argument #2 must be a string');
-  $file = strtolower($file);
-  $extensions = strtolower($extensions);
-  $ext = qtExt($file);
-  if ( strpos($extensions,$ext)===false ) return 'Format ['.$ext.'] not supported... Use '.$extensions;
-  return '';
 }
 function makePager(string $uri, int $count, int $pagesize=50, int $currentpage=1, string $sep='', string $currentclass='current')
 {

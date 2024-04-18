@@ -140,11 +140,11 @@ function attrAddClass(array &$arr, string $value='')
   if ( empty($arr['class']) ) { $arr['class'] = $value; return; }
   if ( strpos($arr['class'],$value)===false ) $arr['class'] .= ' '.$value;
 }
-function qtExt($file)
+function qtExt($file, bool $lowercase=true)
 {
   $ext = strrpos($file,'.');
   if ( $ext===false || $ext===0 ) die(__FUNCTION__.' file extension not found');
-  return substr($file,$ext+1);
+  return $lowercase ? strtolower(substr($file,$ext+1)) : substr($file,$ext+1);
 }
 function qtDropExt($file)
 {

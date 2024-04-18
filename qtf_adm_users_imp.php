@@ -1,19 +1,13 @@
 <?php // v4.0 build:20240210 allows app impersonation [qt f|i ]
 
 session_start();
-/**
- * @var CHtml $oH
- * @var CDatabase $oDB
- */
 require 'bin/init.php'; if ( SUser::role()!=='A' ) die('Access denied');
 include translate('lg_adm.php');
 
 // INITIALISE
-
-$strTitle   = '';
+$strTitle = '';
 $strDelimit = ';';
 $skipFirstLine = false;
-
 $oH->selfurl = APP.'_adm_users_imp.php';
 $oH->selfname = L('Users_import_csv');
 $oH->selfparent = L('Board_content');
@@ -26,7 +20,7 @@ $oH->exitname = '&laquo; '.L('Users');
 if ( isset($_POST['ok']) ) try {
 
   // Check uploaded document
-  $str = validateFile($_FILES['title'],'csv,txt,text','',2000); if ( !empty($str) ) throw new Exception( $str );
+  fileValidate($_FILES['title'],['csv','txt','text'],[],2000);
 
   // Check form value
   $strDelimit = trim($_POST['delimit']);
@@ -67,14 +61,12 @@ if ( isset($_POST['ok']) ) try {
   fclose($handle);
 
   // End message
-
-  if ( empty($oH->error) ) {
-    unlink($_FILES['title']['tmp_name']);
-    $oH->voidPage('', $intCountUser===0 ? 'No user inserted... Check the file and check that you don\'t have duplicate usernames.<br>' : L('User',$intCountUser).'<br>'.L('S_update').'<br>', 'admin');
-  }
+  unlink($_FILES['title']['tmp_name']);
+  $oH->voidPage('', $intCountUser===0 ? 'No user inserted... Check the file and check that you don\'t have duplicate usernames.<br>' : L('User',$intCountUser).'<br>'.L('S_update').'<br>', 'admin');
 
 } catch (Exception $e) {
 
+  unlink($_FILES['title']['tmp_name']);
   $oH->error = $e->getMessage();
   $_SESSION[QT.'splash'] = 'E|'.$oH->error;
 

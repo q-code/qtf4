@@ -70,14 +70,14 @@ $bFile = file_exists(QT_DIR_DOC.$file);
 
 echo '<tr style="height:35px">';
 echo '<td class="c-section" colspan="2">'.L('Common_all_sections').'</td>';
-echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
+echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
 echo '<td class="c-action">';
 
-echo $bFile ? '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'">'.L('Edit').'</a>' : '<span class="disabled">'.L('Edit').'</span>';
+echo $bFile ? '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'">'.L('Edit').'</a>' : '<span class="disabled">'.L('Edit').'</span>';
 echo '<br>';
-echo '<a href="'.APP.'_adm_tags_upload.php?pan='.$pan.'&v='.$file.'">'.L('Upload').'</a>';
+echo '<a href="'.APP.'_adm_tags_upload.php?pan='.$pan.'&dest='.$file.'">'.L('Upload').'</a>';
 echo '<br>';
-echo $bFile ? '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&a=delete&file='.QT_DIR_DOC.$file.'">'.L('Delete').'</a>' : '<span class="disabled">'.L('Delete').'</span>';
+echo $bFile ? '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&a=delete&file='.QT_DIR_DOC.$file.'">'.L('Delete').'</a>' : '<span class="disabled">'.L('Delete').'</span>';
 
 echo '</td></tr>'.PHP_EOL;
 
@@ -108,14 +108,14 @@ foreach($arrDomains as $idDom=>$strDomtitle)
     echo ' &middot; '.L('E_no_tag');
     }
     echo '</small></td>';
-    echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&s='.$oS->id.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
+    echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&s='.$oS->id.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
     echo '<td class="c-action">';
 
-    echo $bFile ? '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&file='.QT_DIR_DOC.$file.'">'.L('Edit').'</a>' : '<span class="disabled">'.L('Edit').'</span>';
+    echo $bFile ? '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'">'.L('Edit').'</a>' : '<span class="disabled">'.L('Edit').'</span>';
     echo '<br>';
-    echo '<a href="'.APP.'_adm_tags_upload.php?pan='.$pan.'&v='.$file.'">'.L('Upload').'</a>';
+    echo '<a href="'.APP.'_adm_tags_upload.php?pan='.$pan.'&dest='.$file.'">'.L('Upload').'</a>';
     echo '<br>';
-    echo $bFile ? '<a href="tool_txt.php?exit='.urlencode($oH->selfurl.'?pan='.$pan).'&a=delete&file='.QT_DIR_DOC.$file.'">'.L('Delete').'</a>' : '<span class="disabled">'.L('Delete').'</span>';
+    echo $bFile ? '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&a=delete&file='.QT_DIR_DOC.$file.'">'.L('Delete').'</a>' : '<span class="disabled">'.L('Delete').'</span>';
 
     echo '</td></tr>'.PHP_EOL;
   }
@@ -178,31 +178,26 @@ if ( !empty($_GET['a']) && $_GET['a']==='used' )
   echo '<h2 class="ellipsis" style="margin:20px 0 10px 0">'.L('Used_tags').' &middot; '.L('Section').' '.qtQuote(CSection::translate($s),"&'").'</h2>
   ';
 
-  if ( count($arrUsed)===0 )
-  {
+  if ( count($arrUsed)===0 ) {
     echo '<p class="disabled">'.L('No_result').'</p>';
-  }
-  else
-  {
+  } else {
     // search proposed tags
     $arrTags = readTagsFile(QT_DIR_DOC.'tags_'.$pan.'.csv');
     $arrTags2 = readTagsFile(QT_DIR_DOC.'tags_'.$pan.'_'.$s.'.csv');
-    foreach($arrTags2 as $strKey=>$strValue)
-    {
-      if ( !isset($arrTags[$strKey]) ) $arrTags[$strKey]=$strValue;
+    foreach($arrTags2 as $strKey=>$strValue) {
+      if ( !isset($arrTags[$strKey]) ) $arrTags[$strKey] = $strValue;
     }
 
     // display
 
     echo '<div class="scroll">';
     echo '<table class="tags">'.PHP_EOL;
-    foreach($arrUsed as $strValue)
-    {
-    echo '<tr class="hover">'.PHP_EOL;
-    echo '<td>'.$strValue.'</td>'.PHP_EOL;
-    echo '<td>'.(isset($arrTags[$strValue]) ? $arrTags[$strValue] : '&nbsp;').'</td>'.PHP_EOL;
-    echo '<td><a class="small" href="'.APP.'_items.php?q=adv&s='.$s.'&fw=*&v='.$strValue.'" title="'.L('Find_item_tag').'">'.L('Search').'</a></td>'.PHP_EOL;
-    echo '</tr>';
+    foreach($arrUsed as $strValue) {
+      echo '<tr class="hover">'.PHP_EOL;
+      echo '<td>'.$strValue.'</td>'.PHP_EOL;
+      echo '<td>'.(isset($arrTags[$strValue]) ? $arrTags[$strValue] : '&nbsp;').'</td>'.PHP_EOL;
+      echo '<td><a class="small" href="'.APP.'_items.php?q=adv&s='.$s.'&fw=*&v='.$strValue.'" title="'.L('Find_item_tag').'">'.L('Search').'</a></td>'.PHP_EOL;
+      echo '</tr>';
     }
     echo '</table>'.PHP_EOL;
     echo '</div>';
