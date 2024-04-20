@@ -61,7 +61,7 @@ case 'deldom':
   if ( count($arrSections)>0 ) { $strSections = implode('<br>',$arrSections); }
 
   $frm_title = L('Domain_del');
-  $frm[] = '<form method="post" action="'.$oH->self().'">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->selfurl.'">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Domain').':</p><p class="ellipsis indent"><span class="bold">'.CDomain::translate($s).'</span><br><span class="minor">#'.$s.' &middot; '.(isset($_Domains[$s]['title']) ? $_Domains[$s]['title'] : 'Domain '.$s).'</span></p>';
   $frm[] = '</article>';
@@ -73,7 +73,7 @@ case 'deldom':
     $frm[] = '<p>'.L('Move_sections_to').':</p><p class="indent"><select name="dest" size="1">'.qtTags(CDomain::getTitles([$s])).'</select></p>';
     $frm[] = '</article>';
   }
-  $frm[] = '<p class="row-confirm">'.L('Confirm').':</p><p class="indent"><span class="cblabel"><input required type="checkbox" id="itemDelete" name="itemDelete"/> <label for="itemDelete">'.L('Domain_del').(count($arrSections)===0 ? '' : ' '.L('and').' '.L('move').' '.L('section',count($arrSections))).'</label></span></p><p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exit().'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
+  $frm[] = '<p class="row-confirm">'.L('Confirm').':</p><p class="indent"><span class="cblabel"><input required type="checkbox" id="itemDelete" name="itemDelete"/> <label for="itemDelete">'.L('Domain_del').(count($arrSections)===0 ? '' : ' '.L('and').' '.L('move').' '.L('section',count($arrSections))).'</label></span></p><p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
   $frm[] = '</form>';
 
   break;
@@ -96,7 +96,7 @@ case 'delsec':
   $countA = $countT===0 ? 0 : $oDB->count( CSection::sqlCountItems($s,'','A') );
   $countR = $countT===0 ? 0 : $oDB->count( CSection::sqlCountItems($s,'replies') );
   $frm_title = L('Section_del');
-  $frm[] = '<form method="post" action="'.$oH->self().'">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->selfurl.'">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Section').':</p>';
   $frm[] = '<p class="ellipsis indent"><span class="bold">'.CSection::translate($s).'</span><br><span class="minor">'.L('item',$countT).', '.L('news',$countA).', '.L('reply',$countR).' &middot; #'.$s.' '.(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : 'Domain '.$s).'</span></p>';
@@ -109,7 +109,7 @@ case 'delsec':
   }
   $frm[] = '<p class="row-confirm">'.L('Confirm').':</p>';
   $frm[] = '<p class="indent"><span class="cblabel"><input required type="checkbox" id="itemDelete" name="itemDelete"/> <label for="itemDelete">'.L('Section_del').($countT ? ' '.L('and').' '.L('item',$countT) : '').'</label></span></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exit().'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.$frm_title.'</button></p>';
   $frm[] = '</form>';
 
   break;
@@ -161,7 +161,7 @@ case 'delsecitems':
   foreach(array_keys($arrYears) as $k) $arrYears[$k] .= ' ('.L('item',$arrCount[$k]['T']).')';
 
   $frm_title = L('Delete');
-  $frm[] = '<form method="post" action="'.$oH->self().'" onsubmit="return validateForm()">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->selfurl.'" onsubmit="return validateForm()">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Items_in_section').':</p>';
   $frm[] = '<p class="ellipsis indent"><span class="bold">'.CSection::translate($s).'</span><br><span class="minor">'.L('item',$arrCount['*']['T']).', '.L('news',$arrCount['*']['A']).', '.L('reply',$arrCount['*']['R']).' &middot; #'.$s.' '.(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : 'Domain '.$s).'</span></p>';
@@ -185,7 +185,7 @@ case 'delsecitems':
   $frm[] = '<p class="indent cblabel"><input type="checkbox" id="deleteT" name="deleteT"/> <label for="deleteT">'.L('Delete').' '.L('item+').'</label></p>';
   $frm[] = '<p class="indent cblabel"><input type="checkbox" id="deleteR" name="deleteR"/> <label for="deleteR">'.L('Delete').' '.L('reply+').'</label></p>';
   $frm[] = '<p class="indent cblabel"><input type="checkbox" id="deleteA" name="dropattach" /> <label for="deleteA">'.L('Drop_attachments').'<small id="attachoption"></small></label></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exit().'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' (<span id="submit-sum">...</span>)</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' (<span id="submit-sum">...</span>)</button></p>';
   $frm[] = '</form>';
 
 $oH->scripts[] = 'const inTF = document.getElementById("inTF");
@@ -282,7 +282,7 @@ case 'prune':
   $countU = $oDB->count( CSection::sqlCountItems($s,'unreplied','','','',$days) );
   $countUA = $countU===0 ? 0 : $oDB->count( CSection::sqlCountItems($s,'unreplied','0','A','',$days) );
   $frm_title = L('Prune');
-  $frm[] = '<form method="post" action="'.$oH->self().'" onsubmit="validateForm();">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->selfurl.'" onsubmit="validateForm();">'.$frm_dflt_args;
   $frm[] = '<input type="hidden" id="inDay" name="d" value="'.$days.'"/>';
   $frm[] = '<article>';
   $frm[] = '<p><span class="minor">'.qtSVG('info').' '.L('Unreplied').': '.sprintf(L('unreplied_def'),$days).'</span></p>';
@@ -301,7 +301,7 @@ case 'prune':
   $frm[] = '</article>';
   $frm[] = '<p class="row-confirm">'.L('Confirm').':</p>';
   $frm[] = '<p class="indent cblabel"><input required type="checkbox" id="inPrune" name="PruneT"/> <label for="inPrune">'.L('Delete').'</label></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exit().'`;">'.L('Cancel').'</button> <button type="btnSubmit" name="ok" value="ok">'.L('Delete').' (<span id="submit-sum">...</span>)</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="btnSubmit" name="ok" value="ok">'.L('Delete').' (<span id="submit-sum">...</span>)</button></p>';
   $frm[] = '</form>';
 
 $oH->scripts[] = 'const inDay = document.getElementById("inDay");
@@ -364,7 +364,7 @@ case 'moveitems':
   foreach(array_keys($arrYears) as $k) $arrYears[$k] .= ' ('.L('item',$arrCount[$k]['T']).')';
 
   $frm_title = L('Move');
-  $frm[] = '<form method="post" action="'.$oH->self().'">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->selfurl.'">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Items_in_section').':</p>';
   $frm[] = '<p class="ellipsis indent"><span class="bold">'.CSection::translate($s).'</span><br>';
@@ -397,7 +397,7 @@ case 'moveitems':
   $frm[] = '</article>';
   $frm[] = '<p class="row-confirm">'.L('Confirm').':</p>';
   $frm[] = '<p class="indent cblabel"><input type="checkbox" id="inMove" name="MoveT" required/> <label for="inMove">'.L('Move').' '.L('item+').'</label></p>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exit().'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Move').' (<span id="submit-sum">...</span>)</button></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Move').' (<span id="submit-sum">...</span>)</button></p>';
   $frm[] = '</form>';
 
 $oH->scripts[] = 'const inTF = document.getElementById("inTF");

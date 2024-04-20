@@ -86,7 +86,7 @@ echo '<h2 class="config">'.L('Board_status').'</h2>
 <th>'.L('Board_status').'</th>
 <td class="flex-sp">
 <p><span style="display:inline-block;width:16px;background-color:'.($_SESSION[QT]['board_offline'] ? 'red' : 'green').';border-radius:3px">&nbsp;</span> '.L(($_SESSION[QT]['board_offline']?'Off' : 'On').'_line').'</p>
-<form class="formsafe" method="post" action="'.$oH->self().'">
+<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 '.L('Change').' <select id="offline" name="offline">
 '.qtTags([L('On_line'),L('Off_line')], $_SESSION[QT]['board_offline']).'
 </select> <button type="submit" name="ok" value="save">'.L('Ok').'</button>

@@ -34,7 +34,7 @@ $id = empty($_GET['id']) ? 0 : (int)$_GET['id']; if ( !empty($_POST['id']) ) $id
 
 include translate('lg_reg.php');
 $oH->selfurl = APP.'_register.php';
-$oH->selfuri = $oH->selfurl.'?a='.$a;
+$frm_action = $oH->selfurl.'?a='.$a;
 $oH->exiturl = APP.'_index.php';
 $oH->exitname = L('Exit');
 $frm_attr = 'class=msgbox';
@@ -63,7 +63,7 @@ if ( isset($_POST['ok']) ) try {
 
   if ( !isset($_POST['agreed']) ) throw new Exception( L('Rules_not_agreed'));
   if ( $_SESSION[QT]['register_coppa'] && !qtIsValiddate($intY*10000+$intM*100+$intD,true,false) ) throw new Exception( L('Birthday').' '.L('invalid') );
-  $oH->redirect(APP.'_register.php?a=in'.($_SESSION[QT]['register_coppa'] ? '&y='.$intY.'&m='.$intM.'&d='.$intD : '')); //...
+  $oH->redirect(APP.'_register.php?a=in'.($_SESSION[QT]['register_coppa'] ? '&y='.$intY.'&m='.$intM.'&d='.$intD : '')); //█
 
 } catch (Exception $e) {
 
@@ -74,7 +74,7 @@ if ( isset($_POST['ok']) ) try {
 // FORM
 $frm_hd = file_get_contents(qtDirLang().'app_rules.txt'); if ( $frm_hd===false ) $frm_hd = 'Unable to read file app_rules.txt';
 $frm_hd = '<div class="rules article">'.$frm_hd.'</div>';
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'">';
 $frm[] = '<p class="bold"><span class="cblabel"><input required type="checkbox" id="agreed" name="agreed"'.(isset($_POST['agreed']) ? 'checked' : '').'/><label for="agreed">&nbsp;'.L('Agree').'</label><span></p>';
 if ( $_SESSION[QT]['register_coppa'] ){
 $frm[] = '<p>'.L('Birthday').'</p>';
@@ -255,7 +255,7 @@ if ( $_SESSION[QT]['register_coppa']=='1' &&  $strChild!='0' ) {
   $frm_hd = '<div class="rules article">'.$frm_hd.'</div>';
 }
 
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'">';
 $frm[] = '<div class="flex-sp top">';
 $frm[] = '<div style="min-width:65%;padding:0 20px 0 0">';
 $frm[] = '<fieldset class="register"><legend>'.L('Username').' '.L('and').' '.L('password').'</legend>';
@@ -307,7 +307,6 @@ case 'out':
 if ( $id<2 ) die('Admin and Visitor cannot be removed');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('Unregister');
-$oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -341,7 +340,7 @@ $frm[] = '<p class="submit right"><button type="button" name="cancel" value="can
 } else {
 if ( SUser::id()!==$id ) $frm[] = '<p class="right">'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<p>'.L('H_Unregister').'</p>';
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'.qtSVG('lock','class=svg-label').'&nbsp;<input required type="password" name="pwd" size="20" minlength="4" maxlength="50" placeholder="'.L('Password').'" /></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Unregister').'</button></p>';
 $frm[] = '</form>';
@@ -358,7 +357,6 @@ if ( $id<1 ) die('Invalid id');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
 include 'bin/class/class.phpmailer.php';
 $oH->selfname = L('Change_password');
-$oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 $oH->exitname = L('Profile');
 
@@ -404,7 +402,7 @@ $frm_hd = '<div class="user-dlg">
 ';
 $frm_attr = 'class=msgbox formPwd';
 if ( SUser::id()!==$id ) $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p class="right input-pwd">'.L('Old_password').'&nbsp;<input required id="pwd-1" type="password" name="oldpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
 $frm[] = '<p class="right input-pwd">'.L('New_password').'&nbsp;<input required id="pwd-2" type="password" name="newpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
 $frm[] = '<p class="right input-pwd">'.L('Confirm_password').'&nbsp;<input required id="pwd-3" type="password" name="conpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(3)|title='.L('Show')).'</p>';
@@ -434,7 +432,7 @@ if ( isset($_POST['ok']) ) try {
   $_POST['username'] = trim($_POST['username']);
   if ( !qtIsPwd($_POST['username']) ) throw new Exception( L('Username').' '.L('invalid') );
   $oDB->query( "SELECT id FROM TABUSER WHERE name=?", [qtDb($_POST['username'])] );
-  if ( $row=$oDB->getRow() ) $oH->redirect( $oH->selfurl.'?a=reset&id='.$row['id'] ); //... reset pwd
+  if ( $row=$oDB->getRow() ) $oH->redirect( $oH->selfurl.'?a=reset&id='.$row['id'] ); //█ reset pwd
   throw new Exception( L('Username').' '.L('invalid') );
 
 } catch (Exception $e) {
@@ -446,7 +444,7 @@ if ( isset($_POST['ok']) ) try {
 
 // FORM username
 
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'">';
 $frm[] = '<p>'.L('Reg_pass').'</p>';
 $frm[] = '<p>'.qtSVG('user','class=svg-label').'&nbsp;<input required type="text" name="username" pattern="^.{2}.*" size="24" maxlength="24" placeholder="'.L('Username').'" /></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok">'.L('Ok').'</button></p>';
@@ -460,7 +458,6 @@ case 'role':
 if ( $id<2 ) die('Guest and first administrator are protected');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('Change_role');
-$oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -481,7 +478,7 @@ $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $frm_hd = '<div class="user-dlg">
 <div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>
 ';
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'. $row['name'].' <select name="role" size="1">
 <option value="A"'.($row['role']=='A' ? ' selected' : '').(SUser::role()!=='A' ? ' disabled' : '').'>'.L('Role_A').'</option>
 <option value="M"'.($row['role']=='M' ? ' selected' : '').'>'.L('Role_M').'</option>
@@ -500,7 +497,6 @@ case 'ban':
 if ( $id<2 ) die('Guest and first administrator are protected');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('Ban');
-$oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -520,7 +516,7 @@ $currentban = !empty($row['closed']) && array_key_exists((int)$row['closed'],BAN
 
 $frm_hd = '<div class="user-dlg">
 <div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'.$row['name'].' <small>('.L('Role_'.$row['role']).')</small></p>';
 $frm[] = '<p>'.L('H_ban').'</p>';
 $frm[] = '<p><select name="ban" size="1">';
@@ -539,7 +535,6 @@ case 'delete':
 if ( $id<2 ) die('Wrong argument (guest and first administrator are protected)');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('User_del');
-$oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -554,7 +549,7 @@ if ( isset($_POST['ok']) && isset($_POST['confirm']) ) {
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p><input required type="checkbox" name="confirm"/> '.$row['name'].' <small>('.L('Role_'.$row['role']).')</small></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="delete">'.L('Delete').'</button></p>';
 $frm[] = '</form>';
@@ -568,7 +563,6 @@ case 'adm-reset':
 if ( $id<1 ) die('Missing argument');
 if ( SUser::role()!=='A' ) die('Access denied');
 $oH->selfname = L('Reset_pwd');
-$oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -595,7 +589,7 @@ if ( isset($_POST['ok']) ) {
   }
   // exit
   $_SESSION[QT.'splash'] = L('S_update');
-  if ( SUser::role()==='A' ) $oH->voidPage('','<p>'.$strMessage.'</p>'); //...
+  if ( SUser::role()==='A' ) $oH->voidPage('','<p>'.$strMessage.'</p>'); //█
   $oH->redirect('exit');
 }
 
@@ -604,7 +598,7 @@ if ( isset($_POST['ok']) ) {
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'.L('Reset_pwd').' - '.$row['name'].'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
@@ -617,7 +611,6 @@ case 'reset':
 //------
 if ( $id<1 ) die('Visitor password can not be reset');
 $oH->selfname = L('Forgotten_pwd');
-$oH->selfuri .= '&id='.$id;
 
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
@@ -669,7 +662,7 @@ if ( isset($_POST['ok']) && !empty($_POST['s']) ) {
 }
 
 // FORM secret
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'.L('Reg_pass_reset').'</p>';
 $frm[] = '<p>'.$row['secret_q'].'</p>';
 $frm[] = '<p><input required type="text" id="secret_a" name="s" size="24" maxlength="255" /></p>';
@@ -684,7 +677,6 @@ case 'qa':
 //------
 if ( $id<1 ) die('Missing argument');
 $oH->selfname = L('Secret_question');
-$oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 $oH->exitname = L('Profile');
 
@@ -714,7 +706,7 @@ $frm_attr = 'class=msgbox formQa';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
 $frm[] = '<p class="center">'.L('H_Secret_question').'</p>';
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'" autocomplete="off">';
+$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'" autocomplete="off">';
 $frm[] = '<p class="center"><select name="secret_q">'.qtTags($L['Secret_q'],$secret_q).'</select></p>';
 $frm[] = '<p class="center"><input required type="text" name="secret_a" size="32" maxlength="255" placeholder="'.(empty($row['secret_a']) ? '' : '*********').'"/></p>';
 $frm[] = '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
@@ -730,7 +722,6 @@ if ( $id<1 ) die('Missing parameters');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
 
 $oH->selfname = L('Change_name');
-$oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 $oH->exitname = L('Profile');
 
@@ -760,7 +751,7 @@ $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=
 $frm_attr = 'class=msgbox formName';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p class="center">'.qtSVG('user','class=svg-label').'&nbsp;<input required type="text" id="rename" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
 $frm[] = '<p id="rename-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="rename-submit" name="ok" value="ok">'.L('Save').'</button></p>';
 $frm[] = '</form>';
@@ -776,7 +767,6 @@ if ( $id<1 ) die('Visitor cannot be edited');
 if ( SUser::id()!==$id && !SUser::isStaff() ) die('Access denied.');
 
 $oH->selfname = L('Change_signature');
-$oH->selfuri .= '&id='.$id;
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -812,7 +802,7 @@ $frm[] = '<p>'.L('H_no_signature').'</p>';
 $frm[] = '<h2>'.L('Signature').'</h2>';
 $frm[] = '<div id="signature-preview">'.$strSign.'</div>';
 $frm[] = '<h2>'.$oH->selfname.'</h2>'.( !empty($oH->error) ? '<p class="error">'.$oH->error.'</p>' : '');
-$frm[] = '<form method="post" action="'.url($oH->selfuri).'">';
+$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<div id="signature">';
 $frm[] = '<div class="bbc-bar">'.bbcButtons(3).'</div>';
 $frm[] = '<textarea id="text-area" name="text" rows="5">'.$row['signature'].'</textarea>';

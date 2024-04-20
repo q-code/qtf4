@@ -80,7 +80,7 @@ $customCss = is_writable($_SESSION[QT]['skin_dir'].'custom.css') ? $_SESSION[QT]
 $welcomeTxt = is_writable('language/'.QT_LANG.'/app_welcome.txt') ? 'language/'.QT_LANG.'/app_welcome.txt' : '';
 
 // FORM
-echo '<form class="formsafe" method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <h2 class="config">'.L('Skin').'</h2>
 <table class="t-conf">
 <tr title="'.L('H_Section_skin').'">

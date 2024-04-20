@@ -49,7 +49,7 @@ function __construct($ref=null, bool $translate=false)
 public function setFrom($ref=null)
 {
   // $ref can be [null|int|array|obj-class], otherwhise die
-  if ( $ref===null ) return; //... exit with void-instance (default properties, id=-1)
+  if ( $ref===null ) return; // exit with void-instance (default properties, id=-1)
   if ( is_int($ref) ) {
     if ( $ref<0 ) die(__METHOD__.' Argument must be positive');
     $oDB = new CDatabase();
@@ -77,9 +77,9 @@ public function setFrom($ref=null)
         case 'prefix':       $this->prefix    = (string)$value; break;
       } // Unit test: $k must be [string] otherwhise key 0 can change the first case (as 0=='id' in switch)
     }
-    return; //...
+    return; //█
   }
-  if ( is_a($ref,'CSection') ) return $this->setFrom(get_object_vars($ref)); //...
+  if ( is_a($ref,'CSection') ) return $this->setFrom(get_object_vars($ref)); //█
   die(__METHOD__.' Invalid argument type' );
 }
 public static function create(string $title='untitled', int $pid=-1, bool $uniquetitle=true)
@@ -318,47 +318,44 @@ public static function moveAllItems(int $s, int $dest, int $renum=1, bool $dropp
   if ( $year==='*' || $year==='-1' || $year==='all' ) $year=''; // year can also be '*','all' or 'old'
   if ( strlen($year)>4 ) die('CSection::moveAllItems: arg #7 must be string');
   // build sql criteria
-  $strS = 'forum='.$s;
-  $strD = 'forum='.$dest;
+  $sqlSrc = 'forum='.$s;
+  $sqlDest = 'forum='.$dest;
   if ( $status!=='' ) $status = ' AND status="'.$status.'"';
   if ( $type!=='' ) $type = ' AND type="'.$type.'"';
   if ( $year!=='' ) $year = ' AND '.sqlDateCondition($year);
-  $prefix = $dropprefix ? ',icon="00"' : '';
+  $sqlPrefix = $dropprefix ? ',icon="00"' : '';
   global $oDB;
-  $strNum = $renum===0 ? ', numid=0' : '';
-  if ( $renum==2 )
-  {
-    $nextnumid = $oDB->nextId(TABTOPIC,'numid','WHERE '.$strD);
-    $oDB->query( "SELECT MIN(numid) as minnumid FROM TABTOPIC WHERE $strS" );
+  $sqlNum = $renum===0 ? ', numid=0' : '';
+  if ( $renum==2 ) {
+    $nextnumid = $oDB->nextId(TABTOPIC,'numid','WHERE '.$sqlDest);
+    $oDB->query( "SELECT MIN(numid) as minnumid FROM TABTOPIC WHERE $sqlSrc" );
     $row = $oDB->getRow();
     $minnumid = $row['minnumid'];
-    $strNum = ", numid = $nextnumid + (numid - $minnumid)";
+    $sqlNum = ", numid = $nextnumid + (numid - $minnumid)";
   }
   // Update topics and posts
-  $oDB->exec( "UPDATE TABTOPIC SET $strD $strNum, modifdate='".date('Ymd His')."' WHERE ".$strS.$type.$status.$year.$where );
-  $oDB->exec( "UPDATE TABPOST SET $strD $prefix WHERE ".$strS.str_replace('firstpostdate','issuedate',$year).$where );
+  $oDB->exec( "UPDATE TABTOPIC SET $sqlDest $sqlNum, modifdate='".date('Ymd His')."' WHERE ".$sqlSrc.$type.$status.$year.$where );
+  $oDB->exec( "UPDATE TABPOST SET $sqlDest $sqlPrefix WHERE ".$sqlSrc.str_replace('firstpostdate','issuedate',$year).$where );
   // Mem
   memFlush(); memFlushStats();
 }
 public static function moveItems($ids, int $dest=0, int $renum=1, bool $dropprefix=false)
 {
   // $ids can be an int, an array of int, or string csv, or a array of numeric
-  if ( is_int($ids) ) $ids=array($ids);
-  if ( is_string($ids) ) $ids=explode(';',$ids);
+  if ( is_int($ids) ) $ids = [$ids];
+  if ( is_string($ids) ) $ids = explode(';',$ids);
   if ( !is_array($ids) ) die('CSection->moveItems: Argument #1 must be list of ids');
   foreach($ids as $id) if ( !is_numeric($id) ) die('CSection->moveItems: Argument #1 must be list of ids');
   if ( $dest<0 ) die('CSection->moveItems: Argument #2 must be int'); // destination section
-
-  switch($renum)
-  {
-  case 2: $strNum = ',numid=(SELECT MAX(numid)+1 FROM TABTOPIC WHERE forum='.$dest.')'; break;
-  case 0: $strNum = ',numid=0'; break;
-  default: $strNum = '';
+  switch($renum) {
+    case 2: $sqlNum = ',numid=(SELECT MAX(numid)+1 FROM TABTOPIC WHERE forum='.$dest.')'; break;
+    case 0: $sqlNum = ',numid=0'; break;
+    default: $sqlNum = '';
   }
 
   // Update topics and posts
   global $oDB;
-  $oDB->exec( "UPDATE TABTOPIC SET forum=$dest $strNum, modifdate='".date('Ymd His')."' WHERE id IN (".implode(',',$ids).")" );
+  $oDB->exec( "UPDATE TABTOPIC SET forum=$dest $sqlNum, modifdate='".date('Ymd His')."' WHERE id IN (".implode(',',$ids).")" );
   $oDB->exec( "UPDATE TABPOST SET forum=$dest ".($dropprefix ? ",icon='00'" : '')." WHERE topic IN (".implode(',',$ids).")" );
   // Mem
   memFlush(); memFlushStats();

@@ -265,7 +265,7 @@ function makePager(string $uri, int $count, int $pagesize=50, int $currentpage=1
   // $sep (space) is inserted before each page-number
   if ( $currentpage<1 ) $currentpage=1;
   if ( $pagesize<5 ) $pagesize=50;
-  if ( $count<2 || $count<=$pagesize ) return ''; //...
+  if ( $count<2 || $count<=$pagesize ) return ''; //█
   $arg = qtImplode(qtExplodeUri($uri,'pn')); // extract query part and drop the 'page'-part (arguments remain urlencoded)
   $uri = parse_url($uri, PHP_URL_PATH); // redifine $uri as the path-part only
   $strPages='';

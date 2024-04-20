@@ -9,8 +9,8 @@ session_start();
 require 'bin/init.php';
 
 $oH->selfurl = 'qtf_user.php';
-if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) $oH->voidPage('tools.svg',99,true,false); //...
-if ( SUser::role()==='V' ) $oH->voidPage('user-lock.svg',11,true); //...
+if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) $oH->voidPage('tools.svg',99,true,false); //█
+if ( SUser::role()==='V' ) $oH->voidPage('user-lock.svg',11,true); //█
 
 $id = -1;
 $edit = false;

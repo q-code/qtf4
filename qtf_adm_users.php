@@ -173,7 +173,7 @@ if ( $strCateg=='SC' ) $sqlWhere .= ' AND children="2"'; //sleeping children
 $intCount = $oDB->count( TABUSER.' WHERE id>0 '.$sqlWhere );
 
 // Lettres bar
-if ( $intCount>$ipp || $fg!=='all' ) echo htmlLettres(url($oH->selfurl).'?'.qtURI('group|page'), $fg, L('All'), 'lettres', L('Username_starting').' ', $intCount>300 ? 1 : ($intCount>$ipp*2 ? 2 : 3));
+if ( $intCount>$ipp || $fg!=='all' ) echo htmlLettres(url($oH->selfurl).qtURI('group|page'), $fg, L('All'), 'lettres', L('Username_starting').' ', $intCount>300 ? 1 : ($intCount>$ipp*2 ? 2 : 3));
 
 // End if no result
 if ( $intCount==0 ) {

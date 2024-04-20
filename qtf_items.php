@@ -8,8 +8,8 @@ session_start();
 require 'bin/init.php';
 
 $oH->selfurl = 'qtf_items.php';
-if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) $oH->voidPage('tools.svg',99,true,false); //...
-if ( !SUser::canView('V2') ) $oH->voidPage('user-lock.svg',11); //...
+if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) $oH->voidPage('tools.svg',99,true,false); //█
+if ( !SUser::canView('V2') ) $oH->voidPage('user-lock.svg',11); //█
 
 // ------
 // INITIALISE
@@ -32,12 +32,12 @@ if ( $q==='' ) {
   if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U') ) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
-    $oH->voidPage('user-lock.svg',12); //...
+    $oH->voidPage('user-lock.svg',12); //█
   }
   if ( $oS->type==='2' && SUser::role()==='V' ) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
-    $oH->voidPage('user-lock.svg',11); //...
+    $oH->voidPage('user-lock.svg',11); //█
     }
   $oH->selfname = L('Section').': '.$oS->title;
 } else {
@@ -62,7 +62,7 @@ if ( isset($_POST['pref']) ) {
   if ( $_POST['pref']==='toggleclosed') $_SESSION[QT]['show_closed'] = $_SESSION[QT]['show_closed'] ? '0' : '1';
 }
 if ( isset($_POST['modaction']) && SUser::isStaff() ) {
-  if ( $_POST['modaction']==='nt') $oH->redirect('qtf_edit.php?s='.$s.'&a=nt', L('New_item')); //...
+  if ( $_POST['modaction']==='nt') $oH->redirect('qtf_edit.php?s='.$s.'&a=nt', L('New_item')); //█
   $_SESSION[QT]['lastcolumn'] = $_POST['modaction'];
 }
 if ( isset($_POST['toggleedit']) && $_POST['toggleedit']==='1' && SUser::isStaff() ) {
@@ -119,9 +119,9 @@ if ( $q==='' ) {
   }
   $navCommands .= '<a'.attrRender($def).'>'.L('New_item').'</a>';
 }
-$navCommands .= '<a class="button btn-search" href="'.url('qtf_search.php').'?'.$oH->selfuri.'" title="'.L('Search').'">'.qtSVG('search').'</a>';
+$navCommands .= '<a class="button btn-search" href="'.url('qtf_search.php').$oH->selfuri.'" title="'.L('Search').'">'.qtSVG('search').'</a>';
 
-$strPaging = makePager( url($oH->selfurl).'?'.$oH->selfuri, $intCount, (int)$_SESSION[QT]['items_per_page'], $pn);
+$strPaging = makePager( url($oH->selfurl).$oH->selfuri, $intCount, (int)$_SESSION[QT]['items_per_page'], $pn);
 if ( $strPaging!='' ) $strPaging = L('Page').$strPaging;
 
 // MAP
@@ -223,23 +223,23 @@ $useNewsOnTop = $_SESSION[QT]['news_on_top'];
 // selfuri contains arguments WITHOUT order,dir
 $t = new TabTable('id=t1|class=t-item table-cb', $intCount);
   $t->activecol = $po;
-  $t->activelink = '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po='.$po.'&pd='.($pd==='asc' ? 'desc' : 'asc').'">%s</a> '.qtSVG('caret-'.($pd==='asc' ? 'up' : 'down'));
+  $t->activelink = '<a href="'.$oH->selfurl.$oH->selfuri.'&po='.$po.'&pd='.($pd==='asc' ? 'desc' : 'asc').'">%s</a> '.qtSVG('caret-'.($pd==='asc' ? 'up' : 'down'));
   $t->thead();
   $t->tbody('data-dataset='.($useNewsOnTop ? 'newsontop' : 'items'));
 // TH (note: class are defined after)
 if ( $_SESSION['EditByRows'] )
 $t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" data-target="t1-cb[]"/>');
-$t->arrTh['icon'] = new TabHead('&bull;', '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=icon&pd=asc">%s</a>');
+$t->arrTh['icon'] = new TabHead('&bull;', '', '<a href="'.$oH->selfurl.$oH->selfuri.'&po=icon&pd=asc">%s</a>');
 if ( $q!=='' || ( $q==='' && $oS->numfield!=='N' && $oS->numfield!=='' ) )
-$t->arrTh['numid'] = new TabHead(L('Ref'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=numid&pd=desc">%s</a>');
-$t->arrTh['title'] = new TabHead(L('Item+'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=title&pd=asc">%s</a>');
+$t->arrTh['numid'] = new TabHead(L('Ref'), '', '<a href="'.$oH->selfurl.$oH->selfuri.'&po=numid&pd=desc">%s</a>');
+$t->arrTh['title'] = new TabHead(L('Item+'), '', '<a href="'.$oH->selfurl.$oH->selfuri.'&po=title&pd=asc">%s</a>');
 if ( !empty($q) && $s<0 )
-$t->arrTh['section'] = new TabHead(L('Section'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=section&pd=asc">%s</a>');
-$t->arrTh['firstpostname'] = new TabHead(L('Author'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=firstpostname&pd=asc">%s</a>');
-$t->arrTh['lastpostdate'] = new TabHead(L('Last_message'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=lastpostdate&pd=desc">%s</a>');
-$t->arrTh['replies'] = new TabHead(L('Reply+'), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po=replies&pd=desc">%s</a>');
+$t->arrTh['section'] = new TabHead(L('Section'), '', '<a href="'.$oH->selfurl.$oH->selfuri.'&po=section&pd=asc">%s</a>');
+$t->arrTh['firstpostname'] = new TabHead(L('Author'), '', '<a href="'.$oH->selfurl.$oH->selfuri.'&po=firstpostname&pd=asc">%s</a>');
+$t->arrTh['lastpostdate'] = new TabHead(L('Last_message'), '', '<a href="'.$oH->selfurl.$oH->selfuri.'&po=lastpostdate&pd=desc">%s</a>');
+$t->arrTh['replies'] = new TabHead(L('Reply+'), '', '<a href="'.$oH->selfurl.$oH->selfuri.'&po=replies&pd=desc">%s</a>');
 if ( in_array($strLastcol,['id','views','status','tags']) )
-$t->arrTh[$strLastcol] = new TabHead(L(ucfirst($strLastcol)), '', '<a href="'.$oH->selfurl.'?'.$oH->selfuri.'&po='.$strLastcol.'&pd=desc">%s</a>');
+$t->arrTh[$strLastcol] = new TabHead(L(ucfirst($strLastcol)), '', '<a href="'.$oH->selfurl.$oH->selfuri.'&po='.$strLastcol.'&pd=desc">%s</a>');
 // add default class {c-$k}
 foreach(array_keys($t->arrTh) as $k) $t->arrTh[$k]->add('class', 'c-'.$k);
 // append class secondary
@@ -267,7 +267,7 @@ if ( $_SESSION['EditByRows'] ) {
       let ids = new Array();
       for (let i=0; i<checkboxes.length; ++i) if ( checkboxes[i].checked ) ids.push(checkboxes[i].value);
       if ( ids.length===0 ) return alert("'.L('Nothing_selected').'");
-      cmdExport.href = "qtf_items_ids2csv.php?'.$oH->selfuri.'&ids=" + ids.join(",");
+      cmdExport.href = "qtf_items_ids2csv.php'.$oH->selfuri.'&ids=" + ids.join(",");
     });
   }';
 
@@ -284,7 +284,7 @@ if ( $_SESSION['EditByRows']) {
   echo '<form id="form-items" method="post" action="'.url('qtf_dlg.php').'">
 <input type="hidden" id="form-items-action" name="a"/>
 <input type="hidden" name="s" value="'.$s.'"/>
-<input type="hidden" name="uri" value="'.$oH->selfuri.'"/>
+<input type="hidden" name="uri" value="'.substr($oH->selfuri,1).'"/>
 ';
 }
 
@@ -360,7 +360,7 @@ if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) echo '</form>'.PHP_EO
 // BUTTON LINE AND PAGER
 $strCsv = '';
 if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) $strCsv .= '<a id="cmd-export-selected" class="csv" href="javascript:void(0)" title="'.L('H_Csv').' ('.L('selected').')">'.L('Export').qtSVG('check-square').'</a> &middot; ';
-$strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(url('qtf_items_csv.php').'?'.$oH->selfuri, $intCount, $pn);
+$strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(url('qtf_items_csv.php').$oH->selfuri, $intCount, $pn);
 echo '<div id="tablebot" class="table-ui bot">';
 echo $rowCommands ? '<div id="t1-edits-bot" class="left rowcmds" data-table="t1">'.qtSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;

@@ -130,6 +130,7 @@ function validateQueryArgs(array $args, bool $trimV=true) {
  * @return string '' or a result warning (string parts are updated by reference)
  */
 function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt,string $argFilters) {
+  if ( $argFilters[0]==='?' ) $argFilters = substr($argFilters,1);
   $args = []; parse_str($argFilters, $args); if ( count($args)===0 ) die(__FUNCTION__.' missing query argument');
   $args = validateQueryArgs($args);
   $result = '';

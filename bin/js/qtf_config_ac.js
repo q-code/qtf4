@@ -21,7 +21,6 @@ function acUrlConfig(method,value) {
     case 'user':
     case 'userm':
       if ( document.getElementById('user-s') ) s = '&s='+document.getElementById('user-s').value;
-      url += s;
       break;
     default: console.log('unknown input method '+method); return;
   }

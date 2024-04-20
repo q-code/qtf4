@@ -75,7 +75,7 @@ foreach(LANGUAGES as $k=>$values) if ( is_dir('language/'.$k) ) $files[$k] = $va
 
 // FORM
 echo '
-<form class="formsafe" method="post" action="'.$oH->self().'">
+<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <h2 class="config">'.L('Language').'</h2>
 <table class="t-conf">
 ';

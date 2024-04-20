@@ -17,7 +17,7 @@ $oH->links['cssCustom'] = null;
 $oH->head();
 $oH->body();
 
-echo CHtml::pageDIV('class=pg-admin', 'pg-admin');
+echo CHtml::pageEntity('class=pg-admin', 'pg-admin');
 
 if ( file_exists(translate($oH->selfurl.'.txt')) ) {
   echo '<div class="hlp-box">';
@@ -40,7 +40,7 @@ if ( !defined('HIDE_MENU_LANG') || !HIDE_MENU_LANG ) {
       foreach (LANGUAGES as $iso=>$lang) {
         $lang = explode(' ',$lang);
         $lang = empty($lang[1]) ? strtoupper($iso) : $lang[1]; // uppercase iso code if no description
-        $langMenu->add('lang-'.$iso, strtoupper($iso).'|href='.$oH->selfurl.'?'.qtURI('lang').'&lang='.$iso.'||title='.$lang);
+        $langMenu->add('lang-'.$iso, strtoupper($iso).'|href='.$oH->selfurl.qtURI('lang').'&lang='.$iso.'|title='.$lang);
       }
     } else {
       $langMenu->add('!missing file:config/config_lang.php');
@@ -50,7 +50,7 @@ if ( !defined('HIDE_MENU_LANG') || !HIDE_MENU_LANG ) {
   echo '<div id="menulang">'.$langMenu->build('lang-'.QT_LANG, 'tag=span|onclick=return false').'</div>';
 }
 
-echo CHtml::pageDIV('id=pg-layout', 'pg-layout');
+echo CHtml::pageEntity('id=pg-layout', 'pg-layout');
 
 if ( !defined('HIDE_MENU_TOC') || !HIDE_MENU_TOC ) {
   $navMenu = new CMenu(null,'');
@@ -89,7 +89,7 @@ if ( !defined('HIDE_MENU_TOC') || !HIDE_MENU_TOC ) {
   echo '</div>'.PHP_EOL;
 }
 
-echo CHtml::pageDIV();
+echo CHtml::pageEntity();
 
 // Title (and error)
 echo '<h1 class="title"'.(isset($oH->selfparent) ? ' data-parent="'.$oH->selfparent.'"' : '').'>'.$oH->selfname.'</h1>';

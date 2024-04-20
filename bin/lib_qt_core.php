@@ -350,11 +350,12 @@ function qtExplodeUri(string $str='', string $skip='')
 /**
  * Return the URI-part of the current REQUEST_URI
  * @param string $skip argument to be removed  (can be a list with | separator)
+ * @param string $prefix is usualy '?'
  * @return string uri-arguments
  */
-function qtURI(string $skip='')
+function qtURI(string $skip='', string $prefix='?')
 {
-  return qtImplode(qtExplodeUri('',$skip));
+  return $prefix.qtImplode(qtExplodeUri('',$skip));
 }
 /**
  * Search a specific key value in a multifield string 'a=1;b=2;c=3'

@@ -62,7 +62,7 @@ include APP.'_adm_inc_hd.php';
 if ( $_SESSION[QT]['defaulttimezone']!='' ) date_default_timezone_set($_SESSION[QT]['defaulttimezone']); // restore application timezone
 $oDT = new DateTime();
 
-echo '<form class="formsafe" method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <h2 class="config">Server time zone</h2>
 <table class="t-conf">
 <tr>

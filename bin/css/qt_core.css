@@ -130,7 +130,7 @@ background:#ffc;border:1px solid #666;border-radius:8px;box-shadow:0 0 5px 5px #
 #splash-ico{margin-right:20px}
 
 /* AJAX AUTOCOMPLETE */
-div[id^="ac-wrapper"]{display:inline-block;position:relative}
+[id^="ac-wrapper"]{display:inline-block;position:relative}
 .ac-list{list-style:none;z-index:2;padding:unset;margin:unset;position:absolute;width:100%;background-color:white;box-shadow:0 0 5px #aaa}
 .ac-list li{border:1px solid #aaa; border-top:unset}
 .ac-list button{display:block;width:100%;text-align:left;padding:0.2rem 0.3rem;border:unset;background:unset;

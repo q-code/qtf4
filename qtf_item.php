@@ -7,7 +7,7 @@ session_start();
  */
 require 'bin/init.php';
 $oH->selfurl = 'qtf_item.php';
-if ( !SUser::canView('V3') ) $oH->voidPage('user-lock.svg',11,true); //...
+if ( !SUser::canView('V3') ) $oH->voidPage('user-lock.svg',11,true); //█
 
 // ------
 // PRE-INITIALISE
@@ -15,14 +15,13 @@ if ( !SUser::canView('V3') ) $oH->voidPage('user-lock.svg',11,true); //...
 $t = -1; qtArgs('int:t!'); if ( $t<0 ) die('Invalid argument');
 $oT = new CTopic($t); //provide userid to update stats, after access granted, does not increment views
 $s = $oT->pid;
+$oH->exiturl = 'qtf_items.php?s='.$s; // used in next voidPage()
 
 // ------
 // SUBMITTED
 // ------
 if ( isset($_POST['Maction']) ) {
 
-  $oH->exiturl = 'qtf_items.php';
-  $oH->exituri = 's='.$s;
   $oH->exitname = L('Section');
   if ( empty($_POST['Maction']) ) $oH->redirect(url('qtf_item.php').'?t='.$t);
   if ( substr($_POST['Maction'],0,7)==='status_' ) $oT->setStatus(substr($_POST['Maction'],-1,1));
@@ -37,22 +36,21 @@ if ( isset($_POST['Maction']) ) {
 // INITIALISE and check grant access
 // ------
 $oS = new CSection($s);
-
 // access denied
 if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U') ) {
   $oH->selfname = L('Section');
   $oH->exitname = SLang::translate();
-  $oH->voidPage('', L('R_staff')); //... exit
+  $oH->voidPage('', L('R_staff')); //█
 }
 if ( $oS->type==='2' && SUser::role()==='V' && $oT->type!=='A' ) {
   $oH->selfname = L('Section');
   $oH->exitname = SLang::translate();
-  $oH->voidPage('', L('R_member')); //... exit
+  $oH->voidPage('', L('R_member')); //█
 }
 if ( $oS->type==='2' && SUser::role()==='U' && $oT->firstpostuser != SUser::id() && $oT->type!=='A' ) {
   $oH->selfname = L('Section');
   $oH->exitname = SLang::translate();
-  $oH->voidPage('', L('R_member').'<br>'.L('E_item_private')); //... exit
+  $oH->voidPage('', L('R_member').'<br>'.L('E_item_private')); //█
 }
 
 // access granted
@@ -63,8 +61,6 @@ $limit = 0;
 $currentPage = 1;
 if ( isset($_GET['page']) ) { $limit = ($_GET['page']-1)*$_SESSION[QT]['replies_per_page']; $currentPage = (int)$_GET['page']; }
 if ( isset($_GET['view']) ) { $_SESSION[QT]['viewmode'] = $_GET['view']; }
-$oH->exiturl = 'qtf_items.php';
-$oH->exituri = 's='.$s;
 $oH->selfname = L('Messages');
 
 // SUBMITTED CHANGE TAGS (tag-edit can be empty to delete all tags)

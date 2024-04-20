@@ -14,7 +14,7 @@ require 'bin/init.php';
 // Security and compliance
 
 $oH->selfurl = 'qtf_edit_preview.php';
-if ( !SUser::canView('V5') ) $oH->voidPage('user-lock.svg',11,true); //...
+if ( !SUser::canView('V5') ) $oH->voidPage('user-lock.svg',11,true); //█
 
 $a='';
 $s = -1;
@@ -60,12 +60,12 @@ try {
   $oT->preview = qtInline($oP->text);
 
   // Detect basic errors
-  if ( $oP->text=='' ) throw new Exception( L('Message').' '.L('invalid') ); //...
-  if ( $a=='nt' && $oP->title=='' && $oS->titlefield==2 ) throw new Exception( L('E_no_title') ); //...
+  if ( $oP->text=='' ) throw new Exception( L('Message').' '.L('invalid') ); //█
+  if ( $a=='nt' && $oP->title=='' && $oS->titlefield==2 ) throw new Exception( L('E_no_title') ); //█
   if ( $a=='nt' && $oP->title=='' ) CPost::makeTitle($oP);
 
   // Check flood limit
-  if ( !empty($_SESSION[QT.'_usr']['lastpost']) && $_SESSION[QT.'_usr']['lastpost']+QT_FLOOD >= time() ) throw new Exception( L('E_wait') ); //...
+  if ( !empty($_SESSION[QT.'_usr']['lastpost']) && $_SESSION[QT.'_usr']['lastpost']+QT_FLOOD >= time() ) throw new Exception( L('E_wait') ); //█
 
   // check maximum post per day (not for moderators)
   if ( !SUser::isStaff() && !postsTodayAcceptable((int)$_SESSION[QT]['posts_per_day']) ) {

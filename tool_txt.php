@@ -137,13 +137,13 @@ if ( file_exists($file) )
   $str = file_get_contents($file);
 
   // editor
-  echo '<form method="post" action="'.$oH->self().'">'.PHP_EOL;
+  echo '<form method="post" action="'.$oH->selfurl.'">'.PHP_EOL;
   if ( !empty($exit) ) echo '<input type="hidden" name="exit" value="'.$oH->exiturl.'"/>'.PHP_EOL;
   if ( !empty($file) ) echo '<input type="hidden" name="file" value="'.$file.'"/>'.PHP_EOL;
   if ( !empty($help) ) echo '<input type="hidden" name="help" value="'.$help.'"/>'.PHP_EOL;
   echo '<textarea name="content" class="content-'.$ext.'" rows="'.$rows.'"'.($readonly ? ' readonly' : '').'>'.$str.'</textarea>'.PHP_EOL;
   echo '<p class="filename">'.$file.'</p>'.PHP_EOL;
-  echo '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exit().'`;">'.L('Exit').'</button>'.($readonly ? '' : ' &nbsp; <button type="submit" name="ok" value="save">'.L('Save').'</button>').'</p>'.PHP_EOL;
+  echo '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Exit').'</button>'.($readonly ? '' : ' &nbsp; <button type="submit" name="ok" value="save">'.L('Save').'</button>').'</p>'.PHP_EOL;
   echo '</form>'.PHP_EOL;
 }
 else

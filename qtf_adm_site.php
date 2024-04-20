@@ -100,7 +100,7 @@ if ( !empty($oH->warning) ) $oH->warning = qtSVG('flag', 'style=font-size:1.4rem
 include APP.'_adm_inc_hd.php';
 
 // FORM
-echo '<form class="formsafe" method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <h2 class="config">'.L('General_site').'</h2>
 <table class="t-conf input100">
 ';

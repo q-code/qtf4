@@ -60,7 +60,7 @@ if ( isset($_POST['ok']) ) try {
 include APP.'_adm_inc_hd.php';
 
 echo '
-<form class="formsafe" method="post" action="'.$oH->self().'">
+<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <h2 class="config">'.L('Domain').'</h2>
 <table class="t-conf input100">
 ';
@@ -85,7 +85,7 @@ echo '</div></td>
 </table>
 <p class="submit">
 <input type="hidden" name="id" value="'.$id.'"/>
-<button type="button" onclick="window.location=`'.$oH->exit().'`;">'.L('Cancel').'</button>
+<button type="button" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button>
 <button type="submit" name="ok" value="ok">'.L('Save').'</button>
 </p>
 </form>

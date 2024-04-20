@@ -9,7 +9,7 @@ require 'bin/init.php';
  * @var string $ft
  */
 $oH->selfurl = 'qtf_items_csv.php';
-if ( !SUser::canView('V2') ) $oH->voidPage('user-lock.svg',11,true); //...
+if ( !SUser::canView('V2') ) $oH->voidPage('user-lock.svg',11,true); //█
 
 // ------
 // INITIALISE
@@ -64,12 +64,12 @@ if ( $q==='' || $s>=0 ) {
   if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U')) {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
-    $oH->voidPage('user-lock.svg',12,true); //...
+    $oH->voidPage('user-lock.svg',12,true); //█
   }
   if ( $oS->type==='2' && SUser::role()==='V') {
     $oH->selfname = L('Section');
     $oH->exitname = SLang::translate();
-    $oH->voidPage('user-lock.svg',11,true); //...
+    $oH->voidPage('user-lock.svg',11,true); //█
   }
   $oH->selfname = L('Section').': '.$oS->title;
 } else {

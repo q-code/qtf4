@@ -34,7 +34,7 @@ public function __construct($ref=null, int $intNum=-1, bool $text255=false)
 public function setFrom($ref=null)
 {
   // $ref can be [null|int|array|obj-class], otherwhise die
-  if ( $ref===null ) return; //... exit with void-instance (default properties)
+  if ( $ref===null ) return; // exit with void-instance (default properties)
   if ( is_int($ref) ) {
     if ( $ref<0 ) die(__METHOD__.' Argument must be positive');
     $oDB = new CDatabase();
@@ -65,9 +65,9 @@ public function setFrom($ref=null)
         case 'attach':   $this->attach = $value; break;
       } // Unit test: $k must be [string] otherwhise key 0 can change the first case (0=='id')
     }
-    return; //...
+    return; //█
   }
-  if ( is_a($ref,'CSection') ) return $this->setFrom(get_object_vars($ref)); //...
+  if ( is_a($ref,'CSection') ) return $this->setFrom(get_object_vars($ref)); //█
   die(__METHOD__.' Invalid argument type');
 }
 public static function getOwner(int $id) {

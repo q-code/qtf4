@@ -61,7 +61,7 @@ if ( !$hideMenuLang ) {
       $langMenu->add( '!|' );
       foreach (LANGUAGES as $iso=>$language) {
         $arr = explode(' ', $language, 2);
-        $langMenu->add( 'text='.$arr[0].'|id=lang-'.$iso.'|href='.url($oH->selfurl).'?'.qtURI('lang').'&lang='.$iso.'|title='.(isset($arr[1]) ? $arr[1] : $arr[0]) );
+        $langMenu->add( 'text='.$arr[0].'|id=lang-'.$iso.'|href='.url($oH->selfurl).qtURI('lang').'&lang='.$iso.'|title='.(isset($arr[1]) ? $arr[1] : $arr[0]) );
       }
     } else {
       $langMenu->add('!missing file:config/config_lang.php');
@@ -87,7 +87,7 @@ if ( !$hideMenuLang ) {
 $oH->title = (empty($oH->selfname) ? '' : $oH->selfname.' - ').$oH->title;
 $oH->head();
 $oH->body();
-echo CHtml::pageDIV('id=site|'.($_SESSION[QT]['viewmode']==='C' ? 'class=compact' : ''));
+echo CHtml::pageEntity('id=site|'.($_SESSION[QT]['viewmode']==='C' ? 'class=compact' : ''));
 
 // ------
 // HEADER shows BANNER LANG-MENU NAV
@@ -163,14 +163,12 @@ echo '</p>
 switch($oH->selfurl)
 {
 case 'qtf_stats.php':
-  $strURI = qtURI('view'); // drop the 'view'-part. Arguments remain urlencoded
   break;
 case 'qtf_item.php':
-  $strURI = qtURI('view'); // drop the 'view'-part. Arguments remain urlencoded
   if ( $_SESSION[QT]['viewmode']=='C' ) {
-    echo '<a id="viewmode" href="'.url($oH->selfurl).'?'.$strURI.'&view=N" title="'.L('View_n').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-down').'</a>';
+    echo '<a id="viewmode" href="'.url($oH->selfurl).qtURI('view').'&view=N" title="'.L('View_n').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-down').'</a>';
   } else {
-    echo '<a id="viewmode" href="'.url($oH->selfurl).'?'.$strURI.'&view=C" title="'.L('View_c').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-up').'</a>';
+    echo '<a id="viewmode" href="'.url($oH->selfurl).qtURI('view').'&view=C" title="'.L('View_c').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-up').'</a>';
   }
   break;
 case 'qtf_items.php':

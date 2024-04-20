@@ -18,7 +18,7 @@ try {
   $oDB = new CDatabase();
   $oDB->query( "SELECT param,setting FROM TABSETTING WHERE param='admin_email'" );
 } catch (Exception $e) {
-  $error = $e->getMessage(); //...
+  $error = $e->getMessage(); //█
 }
 while ($row = $oDB->getRow()) $_SESSION[QT][$row['param']] = (string)$row['setting'];
 if ( !isset($_SESSION[QT]['admin_email']) ) $_SESSION[QT]['admin_email'] = '';

@@ -26,7 +26,7 @@ $a = '';
 $d = -1;
 $s = -1;
 $add = false; // shows Add-Form
-qtArgs('a int:d int:s bool:add');
+qtArgs('a int:d int:s boo:add');
 
 $oH->selfurl = APP.'_adm_sections.php';
 $oH->selfname = L('Section+');
@@ -143,7 +143,7 @@ echo '
 </p>
 ';
 echo '<div id="tgl-container" class="add-dom-sec" style="display:'.($add ? 'block' : 'none' ).'">
-<form class="formsafe" method="post" action="'.$oH->self().'">
+<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <div class="add-dom">
 <div class="flex-sp">
 <p>'.L('Domain').' <input required id="domain" name="title" type="text" size="24" maxlength="64" /></p>
@@ -151,7 +151,7 @@ echo '<div id="tgl-container" class="add-dom-sec" style="display:'.($add ? 'bloc
 </div>
 </div>
 </form>
-<form class="formsafe" method="post" action="'.$oH->self().'">
+<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <div class="add-sec">
 <div class="flex-sp">
 <p>'.L('Section').' <input required id="section" name="title" type="text" size="24" maxlength="64" /> '.L('in_domain').' <select name="indomain" size="1">'.qtTags($arrDomains).'</select></p>
@@ -171,7 +171,7 @@ echo '<div id="dlg-reorder" style="display:none">
 foreach($arrDomains as $id=>$domain)
 echo '<tr data-dragid="d'.$id.'" draggable="true"><td class="ellipsis">'.qtSVG('arrows-v').'<span class="indent">'.$domain.'</span></td></tr>'.PHP_EOL;
 echo '</table>
-<form class="formsafe" method="post" action="'.$oH->self().'">
+<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <p class="submit">
 <input type="hidden" id="neworder" name="neworder" />
 <button type="button" onclick="qtToggle(`dlg-reorder`)">'.L('Cancel').'</button> <button type="submit" id="neworder-save" name="save" value="save">'.L('Save').'</button>

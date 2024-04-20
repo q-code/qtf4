@@ -141,7 +141,7 @@ echo '<div class="pan">
 
 if ( $pan===1 ) {
 
-echo '<form class="formsafe" method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <h2 class="subconfig">'.L('Definition').'</h2>
 <table class="t-conf">
 <tr>
@@ -175,16 +175,13 @@ echo '</td>
 <tr>
 <th style="width:150px; text-align:right">'.L('Role_C').'</th>
 <td>';
-if ( count($arrStaff)>15 )
-{
+if ( count($arrStaff)>15 ) {
 echo 'input type="hidden" id="usr-t" value="M"/>
 <input type="hidden" name="ownernameold" value="'.$oS->ownername.'"/>
 <div id="ac-wrapper-user">
 <input name="ownername" id="user" maxlength="24" value="'.$oS->ownername.'" size="32"/>
 </div>';
-}
-else
-{
+} else {
 echo '<input type="hidden" name="owneridold" value="'.$oS->ownerid.'"/>
 <select id="ownerid" class="stamprole" name="ownerid">'.qtTags($arrStaff, $oS->ownerid).'</select>';
 }
@@ -227,8 +224,7 @@ echo '<p class="submit">
 }
 
 // FORM 2
-
-if ( $pan==2 ) {
+if ( $pan===2 ) {
 
 $addOption='';
 $strFile='';
@@ -240,11 +236,11 @@ if ( !empty($strFile) ) {
   if ( !empty($_GET['up']) ) $oS->setMF('options','logo',$strFile,true); // save if uploaded
   $addOption = '<option value="'.$strFile.'"'.(empty($oS->getMF('options','logo')) ? '' : 'selected').'>'.L('Specific_image').'</option>';
 }
-echo '<form class="formsafe" method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <table class="t-conf">
 <tr>
 <th><span class="texthead">Logo</span></th>
-<td><select name="sectionlogo" onchange="switchpreview(this.value);">
+<td><select name="sectionlogo" onchange="document.getElementById(`previewlogo`).src=this.value===`` ? `'.QT_SKIN.'img/section_'.$oS->type.'_'.$oS->status.'.gif` : `'.QT_DIR_DOC.'section/`+this.value;">
 <option value="">'.L('Default').'</option>
 '.$addOption.'
 </select> '.asImg($oS->logo(), 'id=previewlogo|title='.L('Ico_section_'.$oS->type.'_'.$oS->status)).' <a class="small" href="qtf_adm_section_img.php?id='.$s.'">'.L('Add').'/'.L('Remove').'</a>
@@ -252,7 +248,7 @@ echo '<form class="formsafe" method="post" action="'.$oH->self().'">
 </tr>
 ';
 
-$arr = array('lastpostdate'=>L('Lastpost_date'),'numid'=>L('Ref_number'),'title'=>L('Title'));
+$arr = ['lastpostdate'=>L('Lastpost_date'), 'numid'=>L('Ref_number'), 'title'=>L('Title')];
 $strOrder = $oS->getMF('options','order','lastpostdate');
 echo '<tr>
 <th><span class="texthead">'.L('Default_items_order').'</span></th>
@@ -278,20 +274,12 @@ echo '<p class="submit">
 </form>
 ';
 
-$oH->scripts[] = 'function switchpreview(img){
-  const src = img=="" ? "'.QT_SKIN.'img/section_'.$oS->type.'_'.$oS->status.'.gif" : "'.QT_DIR_DOC.'section/"+img;
-  document.getElementById("previewlogo").src = src;
-  return null;
-}';
-
 }
 
 // FORM 3
+if ( $pan===3 ) {
 
-if ( $pan==3 )
-{
-
-echo '<form class="formsafe" method="post" action="'.$oH->self().'">
+echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <table class="t-conf input100">
 <tr>
 <th>'.L('Title').' *</th>
@@ -299,8 +287,7 @@ echo '<form class="formsafe" method="post" action="'.$oH->self().'">
 ';
 $arrTrans = SLang::get('sec','*','s'.$oS->id);
 $arrDescTrans = SLang::get('secdesc','*','s'.$oS->id);
-foreach(LANGUAGES as $k=>$values)
-{
+foreach(LANGUAGES as $k=>$values) {
   $arr = explode(' ',$values,2); if ( empty($arr[1]) ) $arr[1]=$arr[0];
   $str = empty($arrTrans[$k]) ? '' : $arrTrans[$k];
   echo '<p class="iso" title="'.L('Name_of_index').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="tr-'.$k.'" maxlength="64" value="'.$str.'" placeholder="'.$oS->title.'"/>'.(strpos($str,'&amp;') ?  ' <small>'.$arrTrans[$k].'</small>' : '').'</p>'.PHP_EOL;
@@ -311,8 +298,7 @@ echo '</div></td>
 <th>'.L('Description').'</th>
 <td><div class="languages-scroll">
 ';
-foreach(LANGUAGES as $k=>$values)
-{
+foreach(LANGUAGES as $k=>$values) {
   $arr = explode(' ',$values,2); if ( empty($arr[1]) ) $arr[1]=$arr[0];
   $str = empty($arrDescTrans[$k]) ? '' : $arrDescTrans[$k];
   echo '<p class="iso" title="'.L('Description').' ('.$arr[1].')">'.$arr[0].'</p><p><input type="text" name="desc-'.$k.'" maxlength="254" value="'.$str.'"/></p>'.PHP_EOL;
@@ -343,7 +329,7 @@ echo '
 
 // HTML END
 
-if ( $pan==1 && count($arrStaff)>15 )
+if ( $pan===1 && count($arrStaff)>15 )
 $oH->scripts['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script>
 <script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
 

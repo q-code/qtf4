@@ -99,12 +99,12 @@ if ( isset($_POST['dosend']) ) try {
   $oT->preview = qtInline($oP->text);
 
   // Detect basic errors
-  if ( $oP->text==='' ) throw new Exception( L('Message').' '.L('invalid') ); //...
-  if ( $a==='nt' && $oP->title==='' && $oS->titlefield===2 ) throw new Exception( L('E_no_title') ); //...
+  if ( $oP->text==='' ) throw new Exception( L('Message').' '.L('invalid') ); //█
+  if ( $a==='nt' && $oP->title==='' && $oS->titlefield===2 ) throw new Exception( L('E_no_title') ); //█
   if ( $a==='nt' && $oP->title==='' ) CPost::makeTitle($oP);
 
   // Check flood limit (_usr_lastpost is set in CPost::insert)
-  if ( !empty($_SESSION[QT.'_usr']['lastpost']) && $_SESSION[QT.'_usr']['lastpost']+QT_FLOOD >= time() ) throw new Exception( L('E_wait') ); //...
+  if ( !empty($_SESSION[QT.'_usr']['lastpost']) && $_SESSION[QT.'_usr']['lastpost']+QT_FLOOD >= time() ) throw new Exception( L('E_wait') ); //█
 
   // check maximum post per day (not for moderators)
   if ( !SUser::isStaff() && !postsTodayAcceptable((int)$_SESSION[QT]['posts_per_day']) ) {
