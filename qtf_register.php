@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e]
+<?php // v4.0 build:20240210 allows app impersonation [qt*]
 
 /*
 Handles all ui and bi regarding user's profile
@@ -255,7 +255,7 @@ if ( $_SESSION[QT]['register_coppa']=='1' &&  $strChild!='0' ) {
   $frm_hd = '<div class="rules article">'.$frm_hd.'</div>';
 }
 
-$frm[] = '<form method="post" action="'.url($frm_action).'">';
+$frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'">';
 $frm[] = '<div class="flex-sp top">';
 $frm[] = '<div style="min-width:65%;padding:0 20px 0 0">';
 $frm[] = '<fieldset class="register"><legend>'.L('Username').' '.L('and').' '.L('password').'</legend>';
@@ -297,6 +297,7 @@ $frm[] = '</div>';
 $frm[] = '</div>';
 $frm[] = '<p class="submit right"><input type="hidden" name="birthday" value="'.$birthday.'"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button id="rename-submit" type="submit" name="ok" value="'.$certificate.'">'.L('Register').'</button></p>';
 $frm[] = '</form>';
+$oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
 
 break;
 
@@ -402,7 +403,7 @@ $frm_hd = '<div class="user-dlg">
 ';
 $frm_attr = 'class=msgbox formPwd';
 if ( SUser::id()!==$id ) $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
-$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
+$frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p class="right input-pwd">'.L('Old_password').'&nbsp;<input required id="pwd-1" type="password" name="oldpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
 $frm[] = '<p class="right input-pwd">'.L('New_password').'&nbsp;<input required id="pwd-2" type="password" name="newpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
 $frm[] = '<p class="right input-pwd">'.L('Confirm_password').'&nbsp;<input required id="pwd-3" type="password" name="conpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(3)|title='.L('Show')).'</p>';
@@ -411,12 +412,12 @@ $frm[] = '<input type="hidden" name="name" value="'.$row['name'].'"/>';
 $frm[] = '<input type="hidden" name="child" value="'.$row['children'].'"/>';
 $frm[] = '<input type="hidden" name="parentmail" value="'.$row['parentmail'].'"/>';
 $frm[] = '</form>';
+$frm_ft = '</div>';
+$oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
 $oH->scripts[] = 'function togglePwd(id) {
   var d = document.getElementById("pwd-"+id);
   if ( d.type==="password" ) { d.type="text"; } else { d.type="password"; }
 }';
-$frm_ft = '
-</div>';
 
 break;
 
@@ -486,8 +487,7 @@ $frm[] = '<p>'. $row['name'].' <select name="role" size="1">
 </select></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
-$frm_ft = '
-</div>';
+$frm_ft = '</div>';
 
 break;
 
@@ -567,6 +567,7 @@ $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
 if ( isset($_POST['ok']) ) {
+
   // set new password
   $newpwd = 'T'.rand(0,9).rand(0,9).'Q'.rand(0,9).rand(0,9); // T..Q.. allows detecting when a pwd was resetted
   $oDB->exec( 'UPDATE TABUSER SET pwd="'.sha1($newpwd).'" WHERE id="'.$id.'"');
@@ -591,10 +592,10 @@ if ( isset($_POST['ok']) ) {
   $_SESSION[QT.'splash'] = L('S_update');
   if ( SUser::role()==='A' ) $oH->voidPage('','<p>'.$strMessage.'</p>'); //█
   $oH->redirect('exit');
+
 }
 
 // FORM
-
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
@@ -696,7 +697,6 @@ if ( isset($_POST['ok']) ) {
 }
 
 // FORM
-
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $secret_q = empty($row['secret_q']) ? '' : $row['secret_q'];
@@ -705,13 +705,14 @@ $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=
 $frm_attr = 'class=msgbox formQa';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
+$frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'" autocomplete="off">';
 $frm[] = '<p class="center">'.L('H_Secret_question').'</p>';
-$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'" autocomplete="off">';
 $frm[] = '<p class="center"><select name="secret_q">'.qtTags($L['Secret_q'],$secret_q).'</select></p>';
 $frm[] = '<p class="center"><input required type="text" name="secret_a" size="32" maxlength="255" placeholder="'.(empty($row['secret_a']) ? '' : '*********').'"/></p>';
 $frm[] = '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
+$oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
 
 break;
 
@@ -751,11 +752,12 @@ $frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=
 $frm_attr = 'class=msgbox formName';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
-$frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
+$frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p class="center">'.qtSVG('user','class=svg-label').'&nbsp;<input required type="text" id="rename" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
 $frm[] = '<p id="rename-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="rename-submit" name="ok" value="ok">'.L('Save').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = '</div>';
+$oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
 $oH->scripts['rename'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
 
 break;
