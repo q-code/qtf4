@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e|m]
+<?php // v4.0 build:20240210 allows app impersonation [qt*]
 
 session_start();
 /**
@@ -22,17 +22,16 @@ $oH->exitname = $oH->selfname;
 // ------
 if ( isset($_POST['ok']) ) try {
 
-  $_SESSION[QT]['show_time_zone'] = qtDb($_POST['show_time_zone']); // 0=no, 1=time, 2=time+gmt
-  $oDB->updSetting('show_time_zone');
+  // All $_POST are sanitized into $post
+  $post = array_map('trim', qtDb($_POST));
 
-  $_SESSION[QT]['time_zone'] = qtDb(substr($_POST['time_zone'],3)); // drop gmt in gmt+i
-  $oDB->updSetting('time_zone');
+  $_SESSION[QT]['show_time_zone'] = $post['show_time_zone']; // 0=no, 1=time, 2=time+gmt
+  $_SESSION[QT]['time_zone'] = substr($post['time_zone'],3); // drop gmt in gmt+i
+  $_SESSION[QT]['userlang'] = $post['userlang'];
+  $oDB->updSetting(['show_time_zone','time_zone','userlang']);
 
-  $_SESSION[QT]['userlang'] = qtDb($_POST['userlang']);
-  $oDB->updSetting('userlang');
-
-  if ( !array_key_exists($_POST['language'],LANGUAGES) ) $_POST['language']='en';
-  $_SESSION[QT]['language'] = qtDb($_POST['language']);
+  if ( !array_key_exists($post['language'],LANGUAGES) ) $post['language']='en';
+  $_SESSION[QT]['language'] = $post['language'];
   $oDB->updSetting('language',$_SESSION[QT]['language']);
 
   // change language
@@ -43,13 +42,13 @@ if ( isset($_POST['ok']) ) try {
   $oH->exitname = $oH->selfname;
 
   // formatdate
-  $str = qtDb(trim($_POST['formatdate'])); if ( empty($str) ) throw new Exception( L('Date_format').' '.L('invalid') );
-  $_SESSION[QT]['formatdate'] = $str;
+  if ( empty($post['formatdate']) ) throw new Exception( L('Date_format').' '.L('invalid') );
+  $_SESSION[QT]['formatdate'] = $post['formatdate'];
   $oDB->updSetting('formatdate');
 
   // formattime
-  $str = qtDb(trim($_POST['formattime'])); if ( empty($str) ) throw new Exception( L('Time_format').' '.L('invalid') );
-  $_SESSION[QT]['formattime'] = $str;
+  if ( empty($post['formattime']) ) throw new Exception( L('Time_format').' '.L('invalid') );
+  $_SESSION[QT]['formattime'] = $post['formattime'];
   $oDB->updSetting('formattime');
 
   // Successfull end

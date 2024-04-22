@@ -17,7 +17,7 @@ $tools = '';
 if ( file_exists('tool_tables.php') ) $tools .= '<a href="tool_tables.php">Tool tables...</a>';
 if ( file_exists('tool_check.php') ) $tools .= ' | <a href="tool_check.php">Check installation...</a>';
 
-function redirect(string $u, string $s='Continue')
+function redirect(string $u='exit', string $s='Continue')
 {
   if ( empty($u) ) die('CHtml::redirect arg must be string');
   if ( headers_sent() ) {

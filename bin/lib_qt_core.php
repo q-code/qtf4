@@ -152,13 +152,14 @@ function qtDropExt($file)
   if ( $i===false || $i===0 ) die(__FUNCTION__.' file extension not found');
   return substr($file,0,$i);
 }
+/**
+ * Returns a [string] n and for big-int nK nM
+ */
 function qtK(int $n, string $unit='k', string $unit2='M')
 {
-  if ( $n<1000 ) return $n;
-  // Thousands: 1 decimal no round-up (9999 is 9.9k not 10k)
-  if ( $n<1000000 ) return round(floor($n/100)/10, 1).$unit;
-  // Millions: 2 decimals
-  return round($n/1000000,2).$unit2;
+  if ( $n<1000 ) return (string)$n;
+  if ( $n<1000000 ) return round(floor($n/100)/10, 1).$unit; // Thousands: 1 decimal no round-up (9999 is 9.9k not 10k)
+  return round($n/1000000,2).$unit2; // Millions: 2 decimals
 }
 function qtSVG(string $ref='info', string $attr='', string $wrapper='', bool $addSvgClass=false)
 {
@@ -493,14 +494,17 @@ function qtQuote($txt, string $beg='"', string $end='', bool $keepNum=false)
 }
 /**
  * Convert apostrophe (and optionally doublequote, &, <, >) to html entity (used for sql statement values insertion)
- * @param string $str
+ * @param array|string $str (string or array of strings)
  * @param boolean $double convert doublequote (true by default)
  * @param boolean $amp convert ampersand (default defined by system constant)
  * @param boolean $tag convert < and > (true by default)
- * @return string
+ * @return array|string
  */
-function qtDb(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $symbolTag=true)
+function qtDb($str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $symbolTag=true)
 {
+  // Work recursievely on array
+  if ( is_array($str) ) { foreach($str as $k=>$val) $str[$k] = qtDb($val,$double,$amp,$symbolTag); return $str; }
+  if ( !is_string($str) ) die(__FUNCTION__.' invalid argument #1');
   // same as CDatabase::sqlEncode (with $amp using config constant)
   if ( empty($str) ) return $str;
   if ( $amp && strpos($str,'&')!==false ) $str = str_replace('&','&#38;',$str);

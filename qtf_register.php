@@ -34,9 +34,9 @@ $id = empty($_GET['id']) ? 0 : (int)$_GET['id']; if ( !empty($_POST['id']) ) $id
 
 include translate('lg_reg.php');
 $oH->selfurl = APP.'_register.php';
-$frm_action = $oH->selfurl.'?a='.$a;
 $oH->exiturl = APP.'_index.php';
 $oH->exitname = L('Exit');
+$frm_action = $oH->selfurl.'?a='.$a;
 $frm_attr = 'class=msgbox';
 $frm_hd = '';
 $frm = [];
@@ -386,7 +386,7 @@ if ( isset($_POST['ok']) ) try {
   }
   // exit
   $_SESSION[QT.'splash'] = L('S_update');
-  $oH->redirect('exit');
+  $oH->redirect(); //█
 
 } catch (Exception $e) {
 
@@ -469,7 +469,7 @@ if ( isset($_POST['ok']) ) {
   if ( $_POST['role']==='U' ) $oDB->exec( "UPDATE TABSECTION SET moderator=1, moderatorname='Admin' WHERE moderator=" . $id );
   // exit
   $_SESSION[QT.'splash'] = L('S_update');
-  $oH->redirect('exit');
+  $oH->redirect(); //█
 }
 
 // FORM
@@ -506,7 +506,7 @@ if ( isset($_POST['ok']) && isset($_POST['ban']) ) {
   $b = $oDB->exec( "UPDATE TABUSER SET closed='" . $_POST['ban'] . "' WHERE id=".$id);
   // exit
   $_SESSION[QT.'splash'] = $b ? L('S_update') : 'E|'.L('E_failed');
-  $oH->redirect('exit');
+  $oH->redirect(); //█
 }
 
 // FORM
@@ -591,7 +591,7 @@ if ( isset($_POST['ok']) ) {
   // exit
   $_SESSION[QT.'splash'] = L('S_update');
   if ( SUser::role()==='A' ) $oH->voidPage('','<p>'.$strMessage.'</p>'); //█
-  $oH->redirect('exit');
+  $oH->redirect(); //█
 
 }
 
@@ -692,7 +692,7 @@ if ( isset($_POST['ok']) ) {
 
   // exit
   $_SESSION[QT.'splash'] = L('S_update');
-  $oH->redirect('exit');
+  $oH->redirect(); //█
 
 }
 
@@ -736,7 +736,7 @@ if ( isset($_POST['ok']) ) try {
   // Execute and exit
   if ( !SUser::rename($oDB,$id,$_POST['username']) ) throw new Exception( 'Unable to perform some queries. Rollback done.' );
   $_SESSION[QT.'splash'] = L('S_save');
-	$oH->redirect('exit');
+	$oH->redirect(); //█
 
 } catch (Exception $e) {
 
@@ -778,7 +778,7 @@ if ( isset($_POST['ok']) ) {
     $oDB->exec( "UPDATE TABUSER SET signature=? WHERE id=".$id, [qtAttr($_POST['text'],255)] );
     // exit
     $_SESSION[QT.'splash'] = L('S_update');
-    $oH->redirect('exit');
+    $oH->redirect(); //█
   } else {
     $_SESSION[QT.'splash'] = 'E|'.$oH->error;
   }

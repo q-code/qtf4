@@ -8,10 +8,10 @@ ob_start();
 
 // Change default header settings
 $oH->links['ico'] = '<link rel="shortcut icon" href="bin/css/qt.ico"/>';
-unset($oH->links['cssContrast']);
 $oH->links['css'] = '<link rel="stylesheet" type="text/css" href="bin/css/admin.css"/>';
 $oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
-$oH->links['cssCustom'] = null;
+unset($oH->links['cssCustom']);
+unset($oH->links['cssContrast']);
 
 // Render
 $oH->head();

@@ -34,7 +34,7 @@ $oH->exiturl = APP.'_adm_section.php?pan=2&s='.$id.'&up='.(empty($_POST['up']) ?
 // ------
 // SUBMITTED for Exit
 // ------
-if ( isset($_POST['exit']) ) $oH->redirect('exit');
+if ( isset($_POST['exit']) ) $oH->redirect(); //█
 
 // ------
 // INITIALISE image and repository

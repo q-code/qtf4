@@ -44,7 +44,7 @@ if ( isset($_POST['ok']) ) try {
 	// Successful exit
   memFlushLang();
 	$_SESSION[QT.'splash'] = L('S_update');
-  $oH->redirect($oH->exiturl,$oH->exitname);
+  $oH->redirect($oH->exiturl,$oH->exitname); //█
 
 } catch (Exception $e) {
 

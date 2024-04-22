@@ -23,12 +23,12 @@ $oH->exiturl = 'qtf_items.php?s='.$s; // used in next voidPage()
 if ( isset($_POST['Maction']) ) {
 
   $oH->exitname = L('Section');
-  if ( empty($_POST['Maction']) ) $oH->redirect(url('qtf_item.php').'?t='.$t);
+  if ( empty($_POST['Maction']) ) $oH->redirect( 'qtf_item.php'.'?t='.$t ); //█
   if ( substr($_POST['Maction'],0,7)==='status_' ) $oT->setStatus(substr($_POST['Maction'],-1,1));
   if ( substr($_POST['Maction'],0,5)==='type_' ) $oT->setType(substr($_POST['Maction'],-1,1));
-  if ( $_POST['Maction']==='reply' ) $oH->redirect( url('qtf_edit.php').'?a=re&t='.$t, L('Reply') );
-  if ( $_POST['Maction']==='move' ) $oH->redirect( url('qtf_dlg.php').'?a=itemsMove&s='.$s.'&ids='.$t, L('Move') );
-  if ( $_POST['Maction']==='delete' ) $oH->redirect( url('qtf_dlg.php').'?a=itemsDelete&s='.$s.'&ids='.$t, L('Delete') );
+  if ( $_POST['Maction']==='reply' ) $oH->redirect( 'qtf_edit.php?a=re&t='.$t, L('Reply') ); //█
+  if ( $_POST['Maction']==='move' ) $oH->redirect( 'qtf_dlg.php?a=itemsMove&s='.$s.'&ids='.$t, L('Move') ); //█
+  if ( $_POST['Maction']==='delete' ) $oH->redirect( 'qtf_dlg.php?a=itemsDelete&s='.$s.'&ids='.$t, L('Delete') ); //█
 
 }
 

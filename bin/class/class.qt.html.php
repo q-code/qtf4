@@ -10,7 +10,7 @@ class CHtml
 
 public $html = '<html>'; // can be use to include xml attributes
 public $title = '';
-public $metas = []; // List of meta declarations. Recommandation: Use the meta 'name' as array key to void double metas when adding a new meta
+public $metas = [];
 public $links = [];
 public $scripts_top = [];
 public $scripts = [];
@@ -22,17 +22,16 @@ public $selfparent = ''; // parent name
 public $selfversion= '';
 public $exitname = 'Back';
 public $exiturl = APP.'_index.php';
-public $exituri = '';
 public $items = 0; // number of items in the page, visible (can be in several pages)
 public $itemsHidden = 0; // number of items in the page, hidden (by users preferences)
 public $error = '';
 public $warning = '';
-
 public function head()
 {
   //push cssContrast as last link
-  if ( array_key_exists('cssContrast', $this->links) ) {
-    $this->links[] = $this->links['cssContrast']; unset($this->links['cssContrast']);
+  if ( !empty($this->links['cssContrast']) ) {
+    $arr = array_keys($this->links);
+    if ( end($arr)!=='cssContrast' ) { $this->links[] = $this->links['cssContrast']; unset($this->links['cssContrast']); }
   }
   // check/add <script> enclosing tag
   foreach($this->scripts_top as $k=>$src) {
@@ -66,15 +65,15 @@ public static function pageEntity(string $attr='id=site', string $info='id site'
   return PHP_EOL.'<!-- start '.$info.' -->'.PHP_EOL.'<'.$entity.''.attrRender($attr).'>'.PHP_EOL;
 }
 /**
- * Redirect to the url $u
+ * Redirect to the url($u)
  * @param string $u 'self|exit|url' selfurl?selfuri
  * @param string $s
  */
-public function redirect(string $u, string $s='Continue')
+public function redirect(string $u='exit', string $s='Continue')
 {
   if ( empty($u) ) die(__METHOD__.' arg must be string');
   if ( $u==='self' ) $u = $this->selfurl.($this->selfuri ?: '');
-  if ( $u==='exit' ) $u = $this->exiturl.($this->exituri ?: '');
+  if ( $u==='exit' ) $u = $this->exiturl;
   $u = url($u);
   if ( headers_sent() ) {
     echo '<a href="'.$u.'">'.$s.'</a><meta http-equiv="REFRESH" content="0;url='.$u.'">';
@@ -92,7 +91,7 @@ public function backButton(string $class='button btn-back', string $symbol='chev
 public static function msgBox(string $title='', string $attr='class=msgbox', string $attrTitle='class=msgboxtitle', string $attrBody='class=msgboxbody')
 {
   // End msgbox
-  if ( $title==='/' ) { echo '</>'.PHP_EOL.'</div>'.PHP_EOL; return; }
+  if ( $title==='/' ) { echo '</div>'.PHP_EOL.'</div>'.PHP_EOL; return; }
   // Start msgbox.
   echo '<div'.attrRender($attr).'>'.PHP_EOL;
   echo '<div'.attrRender($attrTitle).'>'.$title.'</div>'.PHP_EOL;

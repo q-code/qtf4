@@ -106,7 +106,7 @@ case 'itemsType':
     // exit
     memFlush(); memFlushStats(); // clear cache
     $_SESSION[QT.'splash'] = L('S_update');
-    $oH->redirect('exit');
+    $oH->redirect(); //█
 
   }
 
@@ -187,7 +187,7 @@ case 'itemsMove':
     CSection::moveItems($ids, (int)$_POST['destination'], (int)$_POST['ref'], isset($_POST['dropprefix']) ? true : false);
     // exit
     $_SESSION[QT.'splash'] = L('S_update');
-    $oH->redirect('exit');
+    $oH->redirect(); //█
 
   }
 
@@ -239,7 +239,7 @@ case 'itemsDelete':
       throw new Exception( L('Nothing_selected') );
     }
     $_SESSION[QT.'splash'] = L('S_delete');
-    $oH->redirect('exit');
+    $oH->redirect(); //█
 
   } catch (Exception $e) {
 
@@ -340,7 +340,7 @@ case 'replyDelete':
     memFlush();memFlushStats(); // clear cache
     // exit
     $_SESSION[QT.'splash'] = L('S_delete');
-    $oH->redirect('exit');
+    $oH->redirect(); //█
 
   }
 
