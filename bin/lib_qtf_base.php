@@ -90,7 +90,7 @@ function emptyFloat($i)
 {
   // Return true when $i is empty or a value starting with '0.000000'
   if ( empty($i) ) return true;
-  if ( !is_string($i) && !is_float($i) && !is_int($i) ) die('emptyFloat: Invalid argument #1, must be a float, int or string');
+  if ( !is_string($i) && !is_float($i) && !is_int($i) ) die('not_emptyFloat: Invalid argument #1, must be a float, int or string');
   if ( substr((string)$i,0,8)==='0.000000' ) return true;
   return false;
 }

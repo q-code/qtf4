@@ -34,7 +34,7 @@ $useMap = false;
 $arrMapData = [];
 if ( qtModule('gmap') ) {
   include translate(APP.'m_gmap.php');
-  include 'qtfm_gmap_lib.php';
+  include APP.'m_gmap_lib.php';
   if ( gmapCan('U') ) $useMap = true;
   if ( $useMap ) {
     $oH->links[] = '<link rel="stylesheet" type="text/css" href="qtfm_gmap.css"/>';
@@ -48,49 +48,47 @@ if ( qtModule('gmap') ) {
 // ------
 if ( isset($_POST['ok']) ) try {
 
-  // check form
-  $strLoca = qtDb(trim($_POST['location']));
-  $strMail = trim($_POST['emails']); // html support multiple emails with ','
-  if ( empty($strMail) ) throw new Exception( L('Email').' '.L('invalid') );
-  if ( substr_count($strMail,',')>4 ) throw new Exception( '5 '.L('emails').' '.L('maximum') );
-  if ( empty($_POST['birth_y']) || empty($_POST['birth_d']) || empty($_POST['birth_d']) ) {
-    $strBirth = '0';
+  // All $_POST are sanitized into $post
+  $post = array_map('trim', qtDb($_POST));
+
+  // check email (multiple with ',')
+  if ( empty($post['emails']) ) throw new Exception( L('Email').' '.L('invalid') );
+  if ( substr_count($post['emails'],',')>4 ) throw new Exception( '5 '.L('emails').' '.L('maximum') );
+  // check others
+  if ( empty($post['birth_y']) || empty($post['birth_d']) || empty($post['birth_d']) ) {
+    $birth = 0;
   } else {
-    $i = intval($_POST['birth_y'])*10000+intval($_POST['birth_m'])*100+intval($_POST['birth_d']);
-    if ( !qtIsValiddate($i,true,false,false) ) throw new Exception( L('Birthday').' ('.$_POST['birth_y'].'-'.$_POST['birth_m'].'-'.$_POST['birth_d'].') '.L('invalid') );
-    $strBirth = $i;
+    $birth = (int)$post['birth_y']*10000 + (int)$post['birth_m']*100 + (int)$post['birth_d'];
+    if ( !qtIsValiddate($birth,true,false,false) ) throw new Exception( L('Birthday').' ('.$post['birth_y'].'-'.$post['birth_m'].'-'.$post['birth_d'].') '.L('invalid') );
   }
-  $strChild = '0'; if ( isset($_POST['child']) ) $strChild = substr($_POST['child'],0,1);
-  $strParentmail = ''; if ( isset($_POST['parentmail']) ) $strParentmail = trim($_POST['parentmail']);
-  if ( $id==1 && $strChild!=='0' ) throw new Exception( 'user id[1] is admin and child status cannot be changed...' );
-  if ( $id==0 && $strChild!=='0' ) throw new Exception( 'user id[0] is visitor and child status cannot be changed...' );
-  if ( $_SESSION[QT]['register_coppa']==='1' && $strChild!=='0' && empty($strParentmail) ) throw new Exception( L('Parent_mail').' '.L('invalid') );
-  $strWww = qtAttr($_POST['www']);
-  if ( !empty($strWww) && substr($strWww,0,4)!=='http' ) throw new Exception( L('Website').' '.L('invalid') );
-  if ( empty($strWww) || $strWww=='http://' || $strWww=='https://' ) $strWww='';
+  $child = isset($post['child']) && $post['child']==='1' ? '1' : '0';
+  $parentmail = isset($post['parentmail']) ? $post['parentmail'] : '';
+  if ( $id===1 && $child!=='0' ) throw new Exception( 'user id[1] is admin and child status cannot be changed...' );
+  if ( $id===0 && $child!=='0' ) throw new Exception( 'user id[0] is visitor and child status cannot be changed...' );
+  if ( $_SESSION[QT]['register_coppa']==='1' && $child!=='0' && empty($parentmail) ) throw new Exception( L('Parent_mail').' '.L('invalid') );
+  if ( !empty($post['www']) && substr($post['www'],0,4)!=='http' ) throw new Exception( L('Website').' '.L('invalid') );
+  if ( empty($post['www']) || $post['www']=='http://' || $post['www']=='https://' ) $post['www'] = '';
 
   // Save
   $oDB->exec( "UPDATE TABUSER SET birthday=?,location=?,mail=?,www=?,privacy=?,children=?,parentmail=? WHERE id=".$id,
-    [$strBirth,$strLoca,$strMail,$strWww,$_POST['privacy'],$strChild,$strParentmail]
+    [(string)$birth,$post['location'],$post['emails'],$post['www'],$post['privacy'],$child,$parentmail]
     );
-  if ( isset($_POST['coord']) )
-  {
-    $coord = strip_tags(trim($_POST['coord']));
-    $coord = str_replace(' ','',$coord); // remove spaces between coordinates y,x
-    SUser::setCoord($oDB,$id,$coord); // coord can be empty (coordinates are removed)
+  if ( isset($post['coord']) ) {
+    $post['coord'] = str_replace(' ', '', $post['coord']); // remove spaces between coordinates y,x
+    SUser::setCoord($oDB, $id, $post['coord']); // coord can be empty (coordinates are removed)
   }
 
   // parent warning if coppa
-  if ( $strChild=='1' && $_SESSION[QT]['register_coppa']=='1' ) {
+  if ( $child==='1' && $_SESSION[QT]['register_coppa']==='1' ) {
     $strSubject='Profile updated';
     $strMessage="Your children (login: %s) has modified his/her profile on the board {$_SESSION[QT]['site_name']}.";
     $strFile = qtDirLang().'mail_profile_coppa.php';
     if ( file_exists($strFile) ) include $strFile;
-    $strMessage = sprintf($strMessage, $_POST['name']);
-    if ( !empty($_POST['parentmail']) ) qtMail($_POST['parentmail'],$strSubject,$strMessage,QT_HTML_CHAR);
+    $strMessage = sprintf($strMessage, $post['name']);
+    if ( !empty($post['parentmail']) ) qtMail($post['parentmail'], $strSubject, $strMessage, QT_HTML_CHAR);
   }
 
-  // exit (if no error)
+  // exit
   $_SESSION[QT.'splash'] = L('S_update');
 
 } catch (Exception $e) {
@@ -131,8 +129,7 @@ $strMail = '';  if ( !empty($row['mail']) && SUser::canSeePrivate($row['privacy'
 $strLocation = ''; if ( !empty($row['location']) && SUser::canSeePrivate($row['privacy'],$id) ) $strLocation = $row['location'];
 $strCoord = ''; // coordinates with visual units
 $strYX = ''; // coordinates in map unit [y,x]
-if ( $useMap && !empty($row['x']) && !empty($row['y']) && SUser::canSeePrivate($row['privacy'],$id) )
-{
+if ( $useMap && !empty($row['x']) && !empty($row['y']) && SUser::canSeePrivate($row['privacy'],$id) ) {
   $strYX = round((float)$row['y'],8).','.round((float)$row['x'],8);
   $strCoord = QTdd2dms((float)$row['y']).', '.QTdd2dms((float)$row['x']).' '.$L['Coord_latlon'].' <span class="small disabled">DD '.$strYX.'</span>';
 }
@@ -195,9 +192,9 @@ $strBrith_y = '';
 $strBrith_m = '';
 $strBrith_d = '';
 if ( !empty($row['birthday']) ) {
-  $strBrith_y = intval(substr(strval($row['birthday']),0,4));
-  $strBrith_m = intval(substr(strval($row['birthday']),4,2));
-  $strBrith_d = intval(substr(strval($row['birthday']),6,2));
+  $strBrith_y = (int)substr(strval($row['birthday']),0,4);
+  $strBrith_m = (int)substr(strval($row['birthday']),4,2);
+  $strBrith_d = (int)substr(strval($row['birthday']),6,2);
 }
 echo '<td><select name="birth_d" size="1">'.PHP_EOL;
 echo qtTags([0=>'',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],$strBrith_d);

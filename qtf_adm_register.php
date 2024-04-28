@@ -121,18 +121,16 @@ case 'catdel':
   if ( empty($cat) ) die('Invalid argument');
 
   // SUBMITTED
-  if ( isset($_POST['ok']) && isset($_POST['confirm']) )
-  {
+  if ( isset($_POST['ok']) && isset($_POST['confirm']) ) {
+
     // Delete
     $where = ' id>1 AND ';
-    switch($cat)
-    {
+    switch($cat) {
     case 'CH': $where .= 'children="2"'; break;
     case 'FM': $where .= 'firstdate=lastdate'; break;
     case 'SC': $where .= 'children="2"'; break;
     case 'SM':
-      switch($oDB->type)
-      {
+      switch($oDB->type) {
       case 'pdo.mysql':
       case 'mysql':
       case 'pdo.sqlsrv':
@@ -151,6 +149,7 @@ case 'catdel':
     // Exit
     $_SESSION[QT.'splash'] = $b ? L('S_update') : 'E|'.L('E_failed');
     $oH->redirect(); //█
+
   }
 
   // FORM
@@ -171,12 +170,11 @@ case 'usersban':
   // SUBMITTED
   if ( isset($_POST['ok']) && isset($_POST['ban']) && $_POST['ban']!=='' ) try {
 
-    $ban = substr($_POST['ban'],0,1);
-    $list = implode(',',$ids);
-    // check if admins
-    if ( $oDB->count( TABUSER." WHERE role='A' AND id IN ($list)" )>0 ) throw new Exception( L('Admin_protected') );
+    $sqlIds = implode(',',$ids);
+    // check other admins
+    if ( $oDB->count( TABUSER." WHERE role='A' AND id IN ($sqlIds)" )>0 ) throw new Exception( L('Admin_protected') );
     // ban
-    $oDB->exec( "UPDATE TABUSER SET closed='$ban' WHERE id IN ($list)" );
+    $oDB->exec( "UPDATE TABUSER SET closed='".substr($_POST['ban'],0,1)."' WHERE id IN ($sqlIds)" );
     // exit
     $_SESSION[QT.'splash'] = L('S_update');
     $oH->redirect(); //█

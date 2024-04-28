@@ -1,4 +1,4 @@
-<?php  //4.0 build:20240210 allows app impersonation [qt*]
+<?php  //4.0 build:20240210 allows app impersonation [qtf|i|e|n]
 
 session_start();
 /**
@@ -20,57 +20,39 @@ $strHelper = false;
 // ------
 if ( isset($_POST['ok']) ) try {
 
-  // All $_POST are sanitized into $post
-  // For username and password use specific qtDB($_POST[...])
-  $post = array_map('trim', qtDb($_POST)); // convert '"<>&
+  // Check. All $_POST are sanitized into $post. For username and password use original $_POST[...]
+  $post = array_map('trim', qtDb($_POST));
+  if ( empty($post['site_name']) ) throw new Exception( L('Site_name').' '.L('not_empty') );
+  if ( empty($post['site_url']) ) throw new Exception( L('Site_url').' '.L('not_empty') );
+  if ( empty($post['index_name']) ) throw new Exception( L('Name_of_index').' '.L('not_empty') );
+  if ( substr($post['site_url'],-1,1)==='/' ) $post['site_url'] = substr($post['site_url'],0,-1);
+  if ( strlen($post['site_url'])<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$post['site_url']) ) { $_SESSION[QT]['site_url']='https://'; throw new Exception( L('Site_url').' '.L('invalid') ); }
 
-  // check sitename
-  if ( empty($post['site_name']) ) throw new Exception( L('Site_name').' '.L('invalid') );
+  // Register and save
   $_SESSION[QT]['site_name'] = $post['site_name'];
   $oH->title = $_SESSION[QT]['site_name']; // refresh current title
-
-  // check siteurl
-  if ( substr($post['site_url'],-1,1)==='/' ) $post['site_url'] = substr($post['site_url'],0,-1); // drop final /
-  if ( empty($post['site_url']) || strlen($post['site_url'])<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$post['site_url']) ) { $_SESSION[QT]['site_url']='https://'; throw new Exception( L('Site_url').' '.L('invalid') ); }
   $_SESSION[QT]['site_url'] = $post['site_url'];
-
-  // check indexname
-  if ( empty($post['index_name']) ) throw new Exception( L('Name_of_index').' '.L('invalid') );
   $_SESSION[QT]['index_name'] = $post['index_name'];
-
-  // check admin email (no multiple, required)
   $_SESSION[QT]['admin_email'] = $post['admin_mail'];
-
-  // check smtp
-  $_SESSION[QT]['use_smtp'] = $post['use_smtp']==='1' ?  '1' : '0';
-
-  // Save values
+  $_SESSION[QT]['use_smtp'] = $post['use_smtp']==='1' ? '1' : '0';
   $oDB->updSetting( ['site_name','site_url','index_name','admin_email','use_smtp'] );
+  // Save translations (cache unchanged)
+  SLang::delete('index','i');
+  foreach($_POST as $k=>$val) if ( substr($k,0,3)==='tr-' && !empty($val) ) SLang::add('index', substr($k,3), 'i', $val);
 
-  // check and save others (optional)
-  foreach(['admin_phone','admin_name','admin_addr'] as $key) {
-    if ( !isset($_SESSION[QT][$key]) ) continue;
-    $_SESSION[QT][$key] = $post[$key];
-    $oDB->updSetting($key);
-  }
-
+  // Check and save others (optional)
+  foreach(['admin_phone','admin_name','admin_addr'] as $k) if ( isset($_SESSION[QT][$k]) ) $_SESSION[QT][$k] = $post[$k];
+  $oDB->updSetting(['admin_phone','admin_name','admin_addr']);
   if ( $_SESSION[QT]['use_smtp']==='1' ) {
-    $_SESSION[QT]['smtp_host'] = $post['smtp_host']; if ( empty($_SESSION[QT]['smtp_host']) ) throw new Exception( 'Smtp host '.L('invalid') );
+    if ( empty($post['smtp_host']) ) throw new Exception( 'Smtp host '.L('not_empty') );
+    $_SESSION[QT]['smtp_host'] = $post['smtp_host'];
     $_SESSION[QT]['smtp_port'] = $post['smtp_port'];
     $_SESSION[QT]['smtp_username'] = qtDb($_POST['smtp_username'],true,false,false); // no trim and allows <>&
     $_SESSION[QT]['smtp_password'] = qtDb($_POST['smtp_password'],true,false,false); // no trim and allows <>&
-    $oDB->exec( "DELETE FROM TABSETTING WHERE param='smtp_host' OR param='smtp_port' OR param='smtp_username' OR param='smtp_password'" );
-    foreach(['smtp_host','smtp_port','smtp_username','smtp_password'] as $param)
-    $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES (?,?)", [$param,$_SESSION[QT][$param]] );
+    $oDB->updSetting( ['smtp_host','smtp_port','smtp_username','smtp_password'] );
   }
 
-  // Save translations (cache unchanged)
-  SLang::delete('index','i');
-  foreach($_POST as $k=>$post) {
-    if ( substr($k,0,3)==='tr-'  && !empty($post) ) {
-      SLang::add('index', substr($k,3), 'i', $post);
-    }
-  }
+  // Exit
   memFlushLang(); // Clear cache
   SMem::set('settingsage',time());
   $_L['index'] = SLang::get('index',QT_LANG); // Register lang
@@ -149,43 +131,41 @@ echo '</table>
 echo '<h2 class="config">'.L('Email_settings').'</h2>
 <table class="t-conf">
 ';
+if ( empty($_SESSION[QT]['smtp_host']) ) $_SESSION[QT]['smtp_host'] = '';
+if ( !isset($_SESSION[QT]['smtp_port']) ) $_SESSION[QT]['smtp_port'] = '25';
+if ( empty($_SESSION[QT]['smtp_username']) ) $_SESSION[QT]['smtp_username'] = '';
+if ( empty($_SESSION[QT]['smtp_password']) ) $_SESSION[QT]['smtp_password'] = '';
 echo '<tr title="'.L('H_Use_smtp').'">
 <th>'.L('Use_smtp').'</th>
-<td><select name="use_smtp" onchange="toggleSmtp(this.value);">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['use_smtp']).'</select></td>
+<td><select name="use_smtp" onchange="toggleSmtp(this.form,this.value);">'.qtTags([L('N'),L('Y')],(int)$_SESSION[QT]['use_smtp']).'</select></td>
 </tr>
-';
-echo '<tr>
+<tr>
 <th>Smtp host</th>
-<td>
-<input type="text" id="smtp_host" name="smtp_host" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_host']).'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').'/>
- port <input type="text" id="smtp_port" name="smtp_port" size="4" maxlength="6" value="'.(isset($_SESSION[QT]['smtp_port']) ? qtAttr($_SESSION[QT]['smtp_port']) : '25').'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').'/>
-</td>
+<td><input type="text" id="smtp_host" name="smtp_host" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_host']).'"'.($_SESSION[QT]['use_smtp']==='0' ? ' disabled' : '').'/> port <input type="text" id="smtp_port" name="smtp_port" size="4" maxlength="6" value="'.qtAttr($_SESSION[QT]['smtp_port']).'"'.($_SESSION[QT]['use_smtp']==='0' ? ' disabled' : '').'/></td>
 </tr>
-';
-echo '<tr>
+<tr>
 <th>Smtp username</th>
-<td><input type="text" id="smtp_username" name="smtp_username" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_username']).'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').'/></td>
+<td><input type="text" id="smtp_username" name="smtp_username" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_username']).'"'.($_SESSION[QT]['use_smtp']==='0' ? ' disabled' : '').'/></td>
 </tr>
-';
-echo '<tr>
+<tr>
 <th>Smtp password</th>
-<td><input type="text" id="smtp_password" name="smtp_password" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_password']).'"'.($_SESSION[QT]['use_smtp']=='0' ? 'disabled' : '').'/> <a href="javascript:void(0)" onclick="addArgs(this);" target="_blank">test smtp</a></td>
+<td><input type="text" id="smtp_password" name="smtp_password" size="28" maxlength="64" value="'.qtAttr($_SESSION[QT]['smtp_password']).'"'.($_SESSION[QT]['use_smtp']==='0' ? ' disabled' : '').'/> <a href="javascript:void(0)" onclick="addArgs(this);" target="_blank">test smtp</a></td>
 </tr>
 </table>
-';
+'; // use void <a> to bypass formsafe
 echo '
 <p class="submit"><button type="submit" name="ok" value="save">'.L('Save').'</button></p>
 </form>';
 
 // HTML END
 
-$oH->scripts[] = 'function toggleSmtp(status){
-  document.getElementById("smtp_host").disabled = status==="0";
-  document.getElementById("smtp_port").disabled = status==="0";
-  document.getElementById("smtp_username").disabled = status==="0";
-  document.getElementById("smtp_password").disabled = status==="0";
+$oH->scripts[] = 'function toggleSmtp(form,state) {
+  form.smtp_host.disabled = state==="0";
+  form.smtp_port.disabled = state==="0";
+  form.smtp_username.disabled = state==="0";
+  form.smtp_password.disabled = state==="0";
 }
-function addArgs(ancor){
+function addArgs(ancor) {
   ancor.href = "'.APP.'_adm_smtp.php?h=" + document.getElementById("smtp_host").value + "&p=" + document.getElementById("smtp_port").value + "&u=" + encodeURI(document.getElementById("smtp_username").value) + "&fw=" + encodeURI(document.getElementById("smtp_password").value);
 }';
 

@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e]
+<?php // v4.0 build:20240210 allows app impersonation [qt f|i|e|n]
 
 session_start();
 /**
@@ -33,8 +33,8 @@ if ( isset($_POST['ok']) ) try {
 
   // Save change. Attention, it can be a empty string (i.e. No change in the timezone)
   $_SESSION[QT]['defaulttimezone'] = $tzi;
-  $oDB->exec( "DELETE FROM TABSETTING WHERE param='defaulttimezone'" );
-  $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('defaulttimezone', '" . $_SESSION[QT]['defaulttimezone'] . "')" );
+  $oDB->exec( "DELETE FROM TABSETTING WHERE param='defaulttimezone'" ); // delete-insert REQUIRED as parametre can be missing
+  $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES (?,?)", ['defaulttimezone',$_SESSION[QT]['defaulttimezone']] );
 
   // Successfull end
   SMem::set('settingsage',time());
@@ -52,14 +52,14 @@ if ( isset($_POST['ok']) ) try {
 // HTML BEGIN
 // ------
 $arrTZI = [];
-$groups = array('AFRICA'=>'Africa','ANTARCTICA'=>'Antarctica','ARCTIC'=>'Arctic','AMERICA'=>'America','ASIA'=>'Asia','ATLANTIC'=>'Atlantic','AUSTRALIA'=>'Australia','EUROPE'=>'Europe','INDIAN'=>'Indian','PACIFIC'=>'Pacific','OTHERS'=>'Universal & others');
-$group = 'EUROPE';
+$groups = ['africa','america','asia','atlantic','australia','europe','indian','pacific','others'];
+$fg = 'europe';
 qtArgs('fg',true,false);
-if ( !array_key_exists($group,$groups) ) $group = 'ALL';
+if ( !in_array($fg,$groups) && $fg!=='all' ) $fg = 'europe';
 
 include APP.'_adm_inc_hd.php';
 
-if ( $_SESSION[QT]['defaulttimezone']!='' ) date_default_timezone_set($_SESSION[QT]['defaulttimezone']); // restore application timezone
+if ( $_SESSION[QT]['defaulttimezone']!=='' ) date_default_timezone_set($_SESSION[QT]['defaulttimezone']); // restore application timezone
 $oDT = new DateTime();
 
 echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
@@ -80,21 +80,18 @@ echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 </form>
 ';
 
-switch($group) {
-  case 'ALL':
+switch($fg) {
+  case 'all':
     $arrTZI = DateTimeZone::listIdentifiers();
     break;
-  case 'OTHERS':
+  case 'others':
     $arrTZI = DateTimeZone::listIdentifiers();
-    foreach ($arrTZI as $i=>$str) {
-    foreach (array_keys($groups) as $s) {
-      if ( $s===strtoupper(substr($str,0,strlen($s))) ) unset($arrTZI[$i]);
-    }}
+    foreach ($arrTZI as $i=>$str)
+    foreach ($groups as $s) if ( $s===strtolower(substr($str,0,strlen($s))) ) unset($arrTZI[$i]);
+    arsort($arrTZI);
     break;
   default:
-    foreach (DateTimeZone::listIdentifiers() as $str) {
-      if ( $fg==strtoupper(substr($str,0,strlen($group))) ) $arrTZI[]=$str;
-    }
+    foreach (DateTimeZone::listIdentifiers() as $str) if ( $fg==strtolower(substr($str,0,strlen($fg))) ) $arrTZI[] = $str;
     break;
 }
 
@@ -111,8 +108,8 @@ echo '
 <tr>
 <td class="right" style="vertical-align:top">
 ';
-foreach ($groups as $k=>$group) echo '<a href="'.APP.'_adm_time.php?fg='.$k.'">'.$group.'</a><br>';
-echo '<br><a href="'.APP.'_adm_time.php?fg=ALL">Show all</a>';
+foreach ($groups as $k) echo '<a href="'.APP.'_adm_time.php?fg='.$k.'">'.ucfirst($k).'</a><br>';
+echo '<br><a href="'.APP.'_adm_time.php?fg=all">Show all</a>';
 echo '</td>
 <td style="vertical-align:top"><div class="scroll">'.implode('<br>',$arrTZI).'</div></td>
 </tr>

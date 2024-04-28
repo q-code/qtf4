@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210 allows app impersonation [qt*]
+<?php // v4.0 build:20240210 allows app impersonation [qtf|i|e|n]
 
 session_start();
 /**
@@ -24,32 +24,28 @@ if ( isset($_POST['ok']) ) try {
 
   // All $_POST are sanitized into $post
   $post = array_map('trim', qtDb($_POST));
+  if ( empty($post['formatdate']) ) throw new Exception( L('Date_format').' '.L('not_empty') );
+  if ( empty($post['formattime']) ) throw new Exception( L('Time_format').' '.L('not_empty') );
 
   $_SESSION[QT]['show_time_zone'] = $post['show_time_zone']; // 0=no, 1=time, 2=time+gmt
   $_SESSION[QT]['time_zone'] = substr($post['time_zone'],3); // drop gmt in gmt+i
   $_SESSION[QT]['userlang'] = $post['userlang'];
   $oDB->updSetting(['show_time_zone','time_zone','userlang']);
 
-  if ( !array_key_exists($post['language'],LANGUAGES) ) $post['language']='en';
+  // Change language
+  if ( !array_key_exists($post['language'],LANGUAGES) ) $post['language'] = 'en';
   $_SESSION[QT]['language'] = $post['language'];
   $oDB->updSetting('language',$_SESSION[QT]['language']);
-
-  // change language
   include translate('lg_main.php');
   include translate('lg_adm.php');
   include translate('lg_zone.php');
   $oH->selfname = L('Board_region');
   $oH->exitname = $oH->selfname;
 
-  // formatdate
-  if ( empty($post['formatdate']) ) throw new Exception( L('Date_format').' '.L('invalid') );
+  // Formatdate/time
   $_SESSION[QT]['formatdate'] = $post['formatdate'];
-  $oDB->updSetting('formatdate');
-
-  // formattime
-  if ( empty($post['formattime']) ) throw new Exception( L('Time_format').' '.L('invalid') );
   $_SESSION[QT]['formattime'] = $post['formattime'];
-  $oDB->updSetting('formattime');
+  $oDB->updSetting(['formatdate','formattime']);
 
   // Successfull end
   SMem::set('settingsage',time());
@@ -77,13 +73,11 @@ echo '
 <form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <h2 class="config">'.L('Language').'</h2>
 <table class="t-conf">
-';
-echo '<tr>
+<tr>
 <th><label for="language">'.L('Dflt_language').'</label></th>
 <td><select id="language" name="language">'.qtTags( $files, $_SESSION[QT]['language'] ).'</select><span class="small indent">'.(file_exists('language/readme.txt') ? '<a href="tool_txt.php?ro=1&exit=qtf_adm_region.php&file=language/readme.txt&title=How to add languages">How to add languages...</a>' :'').'</span></td>
 </tr>
-';
-echo '<tr>
+<tr>
 <th><label for="userlang">'.L('User_language').'</label></th>
 <td><select id="userlang" name="userlang">'.qtTags( [L('N'),L('Y')], (int)$_SESSION[QT]['userlang'] ).'</select><span class="small indent">'.L('H_User_language').'</span></td>
 </tr>
@@ -101,12 +95,11 @@ echo '<tr>
 }
 echo '<tr>
 <th>'.L('Date_format').'</th>
-<td><input type="text" name="formatdate" size="10" maxlength="24" value="'.qtAttr($_SESSION[QT]['formatdate']).'"/><span class="small indent">'.L('H_Date_format').'</span></td>
+<td><input required type="text" name="formatdate" size="10" maxlength="24" value="'.qtAttr($_SESSION[QT]['formatdate']).'"/><span class="small indent">'.L('H_Date_format').'</span></td>
 </tr>
-';
-echo '<tr>
+<tr>
 <th>'.L('Time_format').'</th>
-<td><input type="text" name="formattime" size="10" maxlength="24" value="'.qtAttr($_SESSION[QT]['formattime']).'"/><span class="small indent">'.L('H_Time_format').'</span></td>
+<td><input required type="text" name="formattime" size="10" maxlength="24" value="'.qtAttr($_SESSION[QT]['formattime']).'"/><span class="small indent">'.L('H_Time_format').'</span></td>
 </tr>
 </table>
 ';
@@ -127,8 +120,7 @@ echo '<p class="submit"><button type="submit" name="ok" value="ok">'.L('Save').'
 ';
 echo '<h2 class="config">'.L('Preview').'</h2>
 <table class="t-conf" style="width:250px;">
-';
-echo '<tr>
+<tr>
 <td class="right">'.L('Date').'</td><td>'.qtDate('now',$_SESSION[QT]['formatdate'],'',false).'</td>
 </tr>
 <tr>

@@ -4,6 +4,7 @@
  */
 include 'app_role.php';
 $L['Already_used']='Reeds gebruikt';
+$L['not_empty']='kan niet leeg zijn';
 $L['E_0'] ='Onbekend fout';
 $L['E_1'] ='ongeldig';
 $L['E_2'] ='Verkeerd antwoord';

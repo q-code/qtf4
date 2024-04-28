@@ -4,6 +4,7 @@
  */
 include 'app_role.php';
 $L['Already_used']='Déjà utilisé';
+$L['not_empty']='ne peut pas être vide';
 $L['E_0'] ='Erreur inconnue';
 $L['E_1'] ='erroné';
 $L['E_2'] ='Réponse erronée.';

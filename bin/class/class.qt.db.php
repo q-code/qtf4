@@ -395,10 +395,10 @@ public function getRow()
 }
 public function updSetting($param, $setting=null, bool $userAsAdmin=false)
 {
-  // Works recursively on array
-  if ( is_array($param) ) { foreach($param as $item) $this->updSetting($item, $setting, $userAsAdmin); return; }
   // Admin security
   if ( $this->userrole==='A' ) $userAsAdmin = true; if ( !$userAsAdmin ) die(__METHOD__.' access denied');
+  // Works recursively on array
+  if ( is_array($param) ) { foreach($param as $item) $this->updSetting($item, $setting, $userAsAdmin); return; }
   // NOTE: arguments must be [strict]string and cannot contain single-quote
   if ( !is_string($param) || empty($param) ) die(__METHOD__.' arg #1 must be a string');
   $setting = is_null($setting) && isset($_SESSION[QT][$param]) ? $_SESSION[QT][$param] : $setting;
