@@ -46,10 +46,10 @@ class CDomain extends AContainer implements IContainer
   }
   public static function create(string $title='untitled', int $pid=-1, bool $uniquetitle=true)
   {
-    $title = qtDb($title);
-    if ( empty($title) ) throw new Exception( L('Name').' '.L('invalid') );
-    global $oDB;
+    $title = qtDb(trim($title));
+    if ( empty($title) ) throw new Exception( L('Name').' '.L('not_empty') );
     // unique title
+    global $oDB;
     if ( $uniquetitle && $oDB->count( TABDOMAIN." WHERE title=?", [$title] )>0 ) throw new Exception( L('Name').' '.L('already_used') );
     // create
     $id = $oDB->nextId(TABDOMAIN);

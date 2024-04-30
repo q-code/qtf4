@@ -11,14 +11,13 @@ if ( SUser::role()!=='A' ) die('Access denied');
 include translate('lg_adm.php');
 
 // FUNCTION
-function arrShift(array $arr, $item, int $step=1)
+function aswap(array &$arr, $item, int $step=1)
 {
-  // To shift up/down we swap the item with previous/next (step -1 or 1). WARNING: array index changes
-  $arr = array_values($arr); // new index (0..n)
-  $i = array_search($item,$arr);
-  if ( $i===false || $i+$step<0 || $i+$step>=count($arr) ) return $arr;
+  // Swap item with previous/next (step -1 or 1). WARNING: index are changed even if item is not found, or no previous/next
+  $arr = array_values($arr);
+  $i = array_search($item,$arr,true);
+  if ( $i===false || $i+$step<0 || $i+$step>=count($arr) ) return;
   [$arr[$i],$arr[$i+$step]] = [$arr[$i+$step],$arr[$i]];
-  return $arr;
 }
 
 // INITIALISE
@@ -35,25 +34,22 @@ $oH->selfparent = L('Board_content');
 // ------
 // SUBMITTED
 // ------
-// REODER DOMAINS/SECTIONS 'neworder' contains a csv list of s{id} or d{id} created by java drag and drop events
+// REODER DOMAINS/SECTIONS 'neworder' contains a csv list of s{id} or d{id}
 if ( isset($_POST['neworder']) ) try {
 
   if ( substr($_POST['neworder'],0,1)==='d' ) {
-    foreach(explode(';',$_POST['neworder']) as $k=>$id) {
-      $oDB->exec( 'UPDATE TABDOMAIN SET titleorder='.$k.' WHERE id='.substr($id,1) );
-    }
+    foreach(explode(';',$_POST['neworder']) as $k=>$id)
+    $oDB->exec( 'UPDATE TABDOMAIN SET titleorder='.$k.' WHERE id='.substr($id,1) );
     SMem::clear('_Domains');
   }
   if ( substr($_POST['neworder'],0,1)==='s' ) {
-    foreach(explode(';',$_POST['neworder']) as $k=>$id) {
-      $oDB->exec( 'UPDATE TABSECTION SET titleorder='.$k.' WHERE id='.substr($id,1) );
-    }
+    foreach(explode(';',$_POST['neworder']) as $k=>$id)
+    $oDB->exec( 'UPDATE TABSECTION SET titleorder='.$k.' WHERE id='.substr($id,1) );
     SMem::clear('_Sections');
   }
 
 } catch (Exception $e) {
 
-  // Splash short message and send error to ...inc_hd.php
   $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
   $oH->error = $e->getMessage();
 
@@ -62,14 +58,11 @@ if ( isset($_POST['neworder']) ) try {
 // ADD DOMAIN
 if ( isset($_POST['add_dom']) ) try {
 
-  $_POST['title'] = trim($_POST['title']); if ( empty($_POST['title']) ) throw new Exception( L('Domain').' '.L('invalid') );
-  CDomain::create($_POST['title']); // check unique title. Cache is cleared
-  // Successfull end
+  CDomain::create($_POST['title']); // sanitize title and check unique, clear cache
   $_SESSION[QT.'splash'] = L('S_insert');
 
 } catch (Exception $e) {
 
-  // Splash short message and send error to ...inc_hd.php
   $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
   $oH->error = $e->getMessage();
 
@@ -78,15 +71,11 @@ if ( isset($_POST['add_dom']) ) try {
 // ADD SECTION
 if ( isset($_POST['add_sec']) ) try {
 
-  $_POST['title'] = qtDb(trim($_POST['title']));
-  if ( empty($_POST['title']) ) throw new Exception( L('Section').' '.L('invalid') );
-  CSection::create($_POST['title'],(int)$_POST['indomain']); // check unique title. Clear cache
-  // Successfull end
+  CSection::create($_POST['title'],(int)$_POST['indomain']); // sanitize title and check unique, clear cache
   $_SESSION[QT.'splash'] = L('S_insert');
 
 } catch (Exception $e) {
 
-  // Splash short message and send error to ...inc_hd.php
   $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
   $oH->error = $e->getMessage();
 
@@ -99,7 +88,7 @@ if ( !empty($a) ) try {
   if ( $a==='d_up' || $a==='d_down' ) {
     $oDB->query( "SELECT id FROM TABDOMAIN ORDER BY titleorder" );
     while($row=$oDB->getRow()) $arr[] = (int)$row['id'];
-    $arr = arrShift($arr, $d, $a==='d_up' ? -1 : 1);
+    aswap($arr, $d, $a==='d_up' ? -1 : 1);
     foreach($arr as $k=>$id) $oDB->exec( "UPDATE TABDOMAIN SET titleorder=$k WHERE id=$id" );
     // Clear cache
     SMem::clear('_Domains');
@@ -107,7 +96,7 @@ if ( !empty($a) ) try {
   if ( $a==='s_up' || $a==='s_down' ) {
     $oDB->query( "SELECT id FROM TABSECTION WHERE domainid=$d ORDER BY titleorder" );
     while($row=$oDB->getRow()) $arr[] = (int)$row['id'];
-    $arr = arrShift($arr, $s, $a==='s_up' ? -1 : 1);
+    aswap($arr, $s, $a==='s_up' ? -1 : 1);
     foreach($arr as $k=>$id) $oDB->exec( "UPDATE TABSECTION SET titleorder=$k WHERE id=$id" );
     // Clear cache
     SMem::clear('_Sections');
@@ -115,7 +104,6 @@ if ( !empty($a) ) try {
 
 } catch (Exception $e) {
 
-  // Splash short message and send error to ...inc_hd.php
   $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
   $oH->error = $e->getMessage();
 
@@ -135,9 +123,10 @@ if ( !empty($oH->warning) ) $oH->warning = qtSVG('flag', 'style=font-size:1.4rem
 // ------
 include APP.'_adm_inc_hd.php';
 
+echo $oH->pageEntity('style=position:relative','main relative');
+
 // Add domain/section
 echo '
-<div style="position:relative">
 <p class="right">
 <a id="tgl-ctrl" class="tgl-ctrl'.($add ? ' expanded' : '' ).'" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Add').' '.L('domain').'/'.L('section').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>
 </p>
@@ -171,7 +160,7 @@ echo '<div id="dlg-reorder" style="display:none">
 foreach($arrDomains as $id=>$domain)
 echo '<tr data-dragid="d'.$id.'" draggable="true"><td class="ellipsis">'.qtSVG('arrows-v').'<span class="indent">'.$domain.'</span></td></tr>'.PHP_EOL;
 echo '</table>
-<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+<form method="post" action="'.$oH->selfurl.'">
 <p class="submit">
 <input type="hidden" id="neworder" name="neworder" />
 <button type="button" onclick="qtToggle(`dlg-reorder`)">'.L('Cancel').'</button> <button type="submit" id="neworder-save" name="save" value="save">'.L('Save').'</button>
@@ -222,7 +211,7 @@ foreach($arrDomains as $idDomain=>$domain) {
   if ( isset($arrSections[$idDomain]) && count($arrSections[$idDomain])>0 ) {
 
     $isSortable = count($arrSections[$idDomain])>1;
-    echo '<tbody '.($isSortable ? ' class="sortable"' : '').'>'.PHP_EOL;
+    echo '<tbody'.($isSortable ? ' class="sortable"' : '').'>'.PHP_EOL;
     foreach($arrSections[$idDomain] as $idSection=>$arrSection) {
       $oS = new CSection($arrSection,true);
       $strUp = qtSVG('caret-up', 'class=disabled');
@@ -252,10 +241,9 @@ foreach($arrDomains as $idDomain=>$domain) {
 echo '</table>
 ';
 
+// ------
 // HTML END
-
-echo '
-</div>
-';
+// ------
+echo $oH->pageEntity('/','main relative');
 
 include APP.'_adm_inc_ft.php';

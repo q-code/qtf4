@@ -84,9 +84,11 @@ public function setFrom($ref=null)
 }
 public static function create(string $title='untitled', int $pid=-1, bool $uniquetitle=true)
 {
-  if ( empty($title) || $pid<0 ) die(__METHOD__.' Invalid argument' );
-  global $oDB;
+  $title = qtDb(trim($title));
+  if ( empty($title) ) throw new Exception( L('Name').' '.L('not_empty') );
+  if ( $pid<0 ) throw new Exception( 'Domain id '.L('invalid') );
   // unique title
+  global $oDB;
   if ( $uniquetitle && $oDB->count( TABSECTION." WHERE domainid=$pid AND title=?", [qtDb($title)] )>0 ) throw new Exception( L('Name').' '.L('already_used') );
   // create
   $id = $oDB->nextId(TABSECTION);

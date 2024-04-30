@@ -35,7 +35,6 @@ if ( isset($_POST['ok']) ) try {
 
 } catch (Exception $e) {
 
-  // Splash short message and send error to ...inc_hd.php
   $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
   $oH->error = $e->getMessage();
 
@@ -51,7 +50,7 @@ $stats = CSection::getSectionsStats(); // force recompute stats
 
 echo '<p class="right"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Unreplied').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></p>
 <div id="tgl-container" class="opt-unreplied right" style="display:none">
-<form class="formsafe" method="post" action="'.$oH->selfurl.'">'.
+<form method="post" action="'.$oH->selfurl.'">'.
 sprintf(L('Unreplied_def'),'<input type="number" name="d" min="1" max="99" value="'.$d.'"/>').
 '&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></form>
 </div>';
@@ -103,6 +102,8 @@ echo '</tbody>
 <p class="minor">'.qtSVG('info').' '.L('Unreplied').': '.sprintf(L('unreplied_def'),$d).'</p>
 ';
 
+// ------
 // HTML END
-
+// ------
+unset($oH->scripts['formsafe']);
 include APP.'_adm_inc_ft.php';
