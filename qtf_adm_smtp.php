@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210 allows app impersonation [qt f|i ]
+<?php // v4.0 build:20240210 allows app impersonation [qtf|i|e|n]
 
 session_start();
 /**
@@ -49,13 +49,13 @@ if ( isset($_POST['ok']) ) try {
 // HTML BEGIN
 // ------
 const HIDE_MENU_TOC = true;
-
+const HIDE_MENU_LANG = true;
 include APP.'_adm_inc_hd.php';
 
 // CONTENT
 
 echo '<br>
-<form class="formsafe" method="post" action="',$oH->selfurl,'">
+<form class="formsafe" method="post" action="'.$oH->selfurl.'">
 <h2 class="config">SMTP Settings</h2>
 <table class="t-conf">
 <tr>

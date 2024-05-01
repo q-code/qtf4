@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210 allows app impersonation [qt f|i ]
+<?php // v4.0 build:20240210 allows app impersonation [qtf|i|n]
 
 session_start();
 /**
@@ -10,11 +10,11 @@ include translate('lg_adm.php');
 $oH->selfurl = APP.'_adm_tags_help.php';
 
 const HIDE_MENU_TOC = true;
-
+const HIDE_MENU_LANG = true;
 
 include APP.'_adm_inc_hd.php';
 
-echo '<div style="margin:25px;padding:20px;border:#ccc solid 1px">';
+echo '<div style="padding:2rem;border:#ccc solid 1px">';
 include translate(APP.'_adm_tags_help.php');
 echo '</div>';
 

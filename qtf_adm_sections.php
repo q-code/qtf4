@@ -10,9 +10,7 @@ require 'bin/init.php';
 if ( SUser::role()!=='A' ) die('Access denied');
 include translate('lg_adm.php');
 
-// FUNCTION
-function aswap(array &$arr, $item, int $step=1)
-{
+function aswap(array &$arr, $item, int $step=1) {
   // Swap item with previous/next (step -1 or 1). WARNING: index are changed even if item is not found, or no previous/next
   $arr = array_values($arr);
   $i = array_search($item,$arr,true);
