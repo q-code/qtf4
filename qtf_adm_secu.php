@@ -64,7 +64,7 @@ if ( isset($_POST['ok']) ) try {
   // Public access level
   if ( $oDB->getSetting('show_memberlist','missing')==='missing' ) $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('show_memberlist','U')" );
   $_SESSION[QT]['visitor_right'] = $_POST['pal']; // 0=view nothing...6=create subject
-  $_SESSION[QT]['show_memberlist'] = $_POST['memberlist'];
+  $_SESSION[QT]['show_memberlist'] = $_POST['memberlist']; // A|M|U|V
   $oDB->updSetting(['visitor_right','show_memberlist']);
 
   // Login authority
@@ -80,18 +80,18 @@ if ( isset($_POST['ok']) ) try {
   $_SESSION[QT]['register_coppa'] = $_POST['regcoppa'];
   $oDB->updSetting(['register_mode','register_safe','register_coppa']);
   if ( $_POST['regsafe']==='recaptcha2' ) {
-    if ( empty($_POST['api2pk']) || empty($_POST['api2sk']) ) throw new Exception( 'recaptcha keys '.L('not_empty') );
+    if ( empty($_POST['api2pk']) || empty($_POST['api2sk']) ) throw new Exception( 'reCaptcha keys '.L('not_empty') );
     if ( $oDB->getSetting('recaptcha2pk','missing')==='missing' ) $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('recaptcha2pk','')" );
     if ( $oDB->getSetting('recaptcha2sk','missing')==='missing' ) $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('recaptcha2sk','')" );
-    $_SESSION[QT]['recaptcha2pk'] = $_POST['api2pk']; $oDB->updSetting('recaptcha2pk');
-    $_SESSION[QT]['recaptcha2sk'] = $_POST['api2sk']; $oDB->updSetting('recaptcha2sk');
+    $_SESSION[QT]['recaptcha2pk'] = trim(qtDb($_POST['api2pk'])); $oDB->updSetting('recaptcha2pk');
+    $_SESSION[QT]['recaptcha2sk'] = trim(qtDb($_POST['api2sk'])); $oDB->updSetting('recaptcha2sk');
   }
   if ( $_POST['regsafe']=='recaptcha3' ) {
-    if ( empty($_POST['api3pk']) || empty($_POST['api3sk']) ) throw new Exception( 'recaptcha keys '.L('not_empty') );
+    if ( empty($_POST['api3pk']) || empty($_POST['api3sk']) ) throw new Exception( 'reCaptcha keys '.L('not_empty') );
     if ( $oDB->getSetting('recaptcha3pk','missing')==='missing' ) $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('recaptcha3pk','')" );
     if ( $oDB->getSetting('recaptcha3sk','missing')==='missing' ) $oDB->exec( "INSERT INTO TABSETTING (param,setting) VALUES ('recaptcha3sk','')" );
-    $_SESSION[QT]['recaptcha3pk'] = $_POST['api3pk']; $oDB->updSetting('recaptcha3pk');
-    $_SESSION[QT]['recaptcha3sk'] = $_POST['api3sk']; $oDB->updSetting('recaptcha3sk');
+    $_SESSION[QT]['recaptcha3pk'] = trim(qtDb($_POST['api3pk'])); $oDB->updSetting('recaptcha3pk');
+    $_SESSION[QT]['recaptcha3sk'] = trim(qtDb($_POST['api3sk'])); $oDB->updSetting('recaptcha3sk');
   }
 
   $format = qtExplode('mime=0;width=100;height=100'); //default values

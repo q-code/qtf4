@@ -461,7 +461,7 @@ function qtBasename(string $file, bool $chgUnderscore=true)
  * @param string|int|float|array $txt
  * @param string $beg openquote (&' &" &< to get curved ' " <<)
  * @param string $end closequote (if empty, uses mirror curved symbol or openquote)
- * @param bool $keepnumeric int/float are returned as int/float (not quoted)
+ * @param bool $keepNum int/float are returned as int/float (not quoted)
  * @return string|array (with array, index and non-string element remain unchanged)
  */
 function qtQuote($txt, string $beg='"', string $end='', bool $keepNum=false)
@@ -493,37 +493,41 @@ function qtQuote($txt, string $beg='"', string $end='', bool $keepNum=false)
   throw new Exception(__FUNCTION__.' invalid argument');
 }
 /**
- * Convert apostrophe (and optionally doublequote, &, <, >) to html entity (used for sql statement values insertion)
+ * Convert apostrophe and optionally "<>& to html entity (used for sql statement values insertion)
  * @param array|string $str (string or array of strings)
  * @param boolean $double convert doublequote (true by default)
- * @param boolean $amp convert ampersand (default defined by system constant)
  * @param boolean $tag convert < and > (true by default)
  * @return array|string
  */
-function qtDb($str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $symbolTag=true)
+function qtDb($str, bool $double=true, bool $tag=true)
 {
-  // Work recursievely on array
-  if ( is_array($str) ) { foreach($str as $k=>$val) $str[$k] = qtDb($val,$double,$amp,$symbolTag); return $str; }
+  // Work recursievely on array, and [] returns [].
+  if ( is_array($str) ) { foreach($str as $k=>$val) $str[$k] = qtDb($val,$double,$tag); return $str; }
   if ( !is_string($str) ) die(__FUNCTION__.' invalid argument #1');
   // same as CDatabase::sqlEncode (with $amp using config constant)
   if ( empty($str) ) return $str;
-  if ( $amp && strpos($str,'&')!==false ) $str = str_replace('&','&#38;',$str);
+  if ( !defined('QT_CONVERT_AMP') ) define('QT_CONVERT_AMP', false);
+  if ( QT_CONVERT_AMP && strpos($str,'&')!==false ) $str = str_replace('&','&#38;',$str); // must be first
   if ( $double && strpos($str,'"')!==false ) $str = str_replace('"','&#34;',$str);
-  if ( $symbolTag ) {
+  if ( $tag ) {
     if ( strpos($str,'<')!==false ) $str = str_replace('<','&#60;',$str);
     if ( strpos($str,'>')!==false ) $str = str_replace('>','&#62;',$str);
   }
   return strpos($str,"'")===false ? $str : str_replace("'",'&#39;',$str);
 }
-function qtDbDecode(string $str, bool $double=true, bool $amp=QT_CONVERT_AMP, bool $tag=true)
+function qtDbDecode($str, bool $double=true, bool $tag=true)
 {
+  // Work recursievely on array, and [] returns [].
+  if ( is_array($str) ) { foreach($str as $k=>$val) $str[$k] = qtDbDecode($val,$double,$tag); return $str; }
+  if ( !is_string($str) ) die(__FUNCTION__.' invalid argument #1');
   // same as CDatabase::sqlEncode (with $amp using config constant)
   if ( empty($str) || strpos($str,'&')===false ) return $str;
   if ( strpos($str,'&#39;')!==false ) $str = str_replace('&#39;',"'",$str);
   if ( $double && strpos($str,'&#34;')!==false ) $str = str_replace('&#34;','"',$str);
   if ( $tag && strpos($str,'&#60;')!==false ) $str = str_replace('&#60;','<',$str);
   if ( $tag && strpos($str,'&#62;')!==false ) $str = str_replace('&#62;','>',$str);
-  if ( $amp && strpos($str,'&#38;')!==false ) $str = str_replace('&#38;','&',$str);
+  if ( !defined('QT_CONVERT_AMP') ) define('QT_CONVERT_AMP', false);
+  if ( QT_CONVERT_AMP && strpos($str,'&#38;')!==false ) $str = str_replace('&#38;','&',$str); // must be last
   return $str;
 }
 function qtDropDiacritics($str)
@@ -552,15 +556,13 @@ function qtTrunc($txt, int $max=255, string $end='...')
  * @param integer $max when >0 uses qtTrunc
  * @param string $end end characters used by qtTrunc
  * @param boolean $unbbc remove bbc tags
- * @param string|array $in text to be replaced
- * @param string|array $out text replacement
+ * @param array $in texts to be replaced
+ * @param array $out replacement texts
  * @return string
  */
-function qtInline(string $str, int $max=255, string $end='...', bool $unbbc=true, $in=["\r\n",'<br>','  '], $out=[' ',' ',' '])
+function qtInline(string $str, int $max=255, string $end='...', bool $unbbc=true, array $in=["\r\n",'<br>','  '], array $out=[' ',' ',' '])
 {
   if ( empty($str) ) return $str;
-  if ( !is_string($in) && !is_array($in) ) die(__FUNCTION__.' arg #5 must be a string or array');
-  if ( !is_string($out) && !is_array($out) ) die(__FUNCTION__.' arg #6 must be a string or array');
   if ( $max>0 ) $str = substr($str,0,$max+64); // reduce length if truncating
   // unbbc and inline
   if ( $unbbc ) $str = qtBBclean($str);

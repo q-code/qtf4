@@ -393,12 +393,15 @@ public function getRow()
   }
   return $row;
 }
-public function updSetting($param, $setting=null, bool $userAsAdmin=false)
+/**
+ * Update setting (requires that param and setting are sanitized with qtDb)
+ */
+public function updSetting($param, $setting=null, bool $impersonateAdmin=false)
 {
-  // Admin security
-  if ( $this->userrole==='A' ) $userAsAdmin = true; if ( !$userAsAdmin ) die(__METHOD__.' access denied');
+  // Security requires script impersonates an admin or user is an admin
+  if ( !$impersonateAdmin && $this->userrole!=='A') die(__METHOD__.' access denied');
   // Works recursively on array
-  if ( is_array($param) ) { foreach($param as $item) $this->updSetting($item, $setting, $userAsAdmin); return; }
+  if ( is_array($param) ) { foreach($param as $item) $this->updSetting($item, $setting, true); return; }
   // NOTE: arguments must be [strict]string and cannot contain single-quote
   if ( !is_string($param) || empty($param) ) die(__METHOD__.' arg #1 must be a string');
   $setting = is_null($setting) && isset($_SESSION[QT][$param]) ? $_SESSION[QT][$param] : $setting;

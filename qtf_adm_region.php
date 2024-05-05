@@ -22,30 +22,26 @@ $oH->exitname = $oH->selfname;
 // ------
 if ( isset($_POST['ok']) ) try {
 
-  // All $_POST are sanitized into $post
-  $post = array_map('trim', qtDb($_POST));
-  if ( empty($post['formatdate']) ) throw new Exception( L('Date_format').' '.L('not_empty') );
-  if ( empty($post['formattime']) ) throw new Exception( L('Time_format').' '.L('not_empty') );
-
-  $_SESSION[QT]['show_time_zone'] = $post['show_time_zone']; // 0=no, 1=time, 2=time+gmt
-  $_SESSION[QT]['time_zone'] = substr($post['time_zone'],3); // drop gmt in gmt+i
-  $_SESSION[QT]['userlang'] = $post['userlang'];
-  $oDB->updSetting(['show_time_zone','time_zone','userlang']);
+  // All $_POST are sanitized
+  $_POST = array_map('trim', qtDb($_POST));
+  if ( empty($_POST['formatdate']) ) throw new Exception( L('Date_format').' '.L('not_empty') );
+  if ( empty($_POST['formattime']) ) throw new Exception( L('Time_format').' '.L('not_empty') );
+  $_SESSION[QT]['formatdate'] = $_POST['formatdate'];
+  $_SESSION[QT]['formattime'] = $_POST['formattime'];
+  $_SESSION[QT]['show_time_zone'] = $_POST['show_time_zone']; // 0=no, 1=time, 2=time+gmt
+  $_SESSION[QT]['time_zone'] = substr($_POST['time_zone'],3); // drop gmt in gmt+i
+  $_SESSION[QT]['userlang'] = $_POST['userlang']; // 0|1
+  $oDB->updSetting(['formatdate','formattime','show_time_zone','time_zone','userlang']);
 
   // Change language
-  if ( !array_key_exists($post['language'],LANGUAGES) ) $post['language'] = 'en';
-  $_SESSION[QT]['language'] = $post['language'];
+  if ( !array_key_exists($_POST['language'],LANGUAGES) ) $_POST['language'] = 'en';
+  $_SESSION[QT]['language'] = $_POST['language'];
   $oDB->updSetting('language',$_SESSION[QT]['language']);
   include translate('lg_main.php');
   include translate('lg_adm.php');
   include translate('lg_zone.php');
   $oH->selfname = L('Board_region');
   $oH->exitname = $oH->selfname;
-
-  // Formatdate/time
-  $_SESSION[QT]['formatdate'] = $post['formatdate'];
-  $_SESSION[QT]['formattime'] = $post['formattime'];
-  $oDB->updSetting(['formatdate','formattime']);
 
   // Successfull end
   SMem::set('settingsage',time());

@@ -56,7 +56,7 @@ if ( isset($_POST['neworder']) ) try {
 // ADD DOMAIN
 if ( isset($_POST['add_dom']) ) try {
 
-  CDomain::create($_POST['title']); // sanitize title and check unique, clear cache
+  CDomain::create($_POST['title']); // sanitize trim title and check unique, clear cache
   $_SESSION[QT.'splash'] = L('S_insert');
 
 } catch (Exception $e) {
@@ -69,7 +69,7 @@ if ( isset($_POST['add_dom']) ) try {
 // ADD SECTION
 if ( isset($_POST['add_sec']) ) try {
 
-  CSection::create($_POST['title'],(int)$_POST['indomain']); // sanitize title and check unique, clear cache
+  CSection::create($_POST['title'],(int)$_POST['indomain']); // sanitize trim title and check unique, clear cache
   $_SESSION[QT.'splash'] = L('S_insert');
 
 } catch (Exception $e) {

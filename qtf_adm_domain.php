@@ -30,13 +30,13 @@ $arrTrans = SLang::get('domain','*','d'.$id);
 // ------
 if ( isset($_POST['ok']) ) try {
 
-  // Check. All $_POST are sanitized into $post
-  $post = array_map('trim', qtDb($_POST));
-  if ( empty($post['title']) ) throw new Exception( L('Title').' '.L('not_empty') );
+  // Trim all $_POST (::rename and ::add do sanitize)
+  $_POST = array_map('trim', $_POST);
+  if ( empty($_POST['title']) ) throw new Exception( L('Title').' '.L('not_empty') );
   // Update
-  if ( $post['title']!==$row['title'] ) CDomain::rename($id, $post['title']); // encode, check unique title, clears _Domains cache
-  SLang::delete('domain', 'd'.$id, '*');
-  foreach($post as $k=>$val) if ( substr($k,0,3)==='tr-' && !empty($val) ) SLang::add('domain', substr($k,3), 'd'.$id, $val);
+  if ( $_POST['title']!==$row['title'] ) CDomain::rename($id, $_POST['title']); // encode, check unique title, clears _Domains cache
+  SLang::delete('domain', 'd'.$id);
+  foreach($_POST as $k=>$name) if ( substr($k,0,3)==='tr-' && !empty($name) ) SLang::add('domain', substr($k,3), 'd'.$id, $name);
 	// Successful exit
   memFlushLang();
 	$_SESSION[QT.'splash'] = L('S_update');
@@ -87,5 +87,4 @@ echo '</div></td>
 ';
 
 // HTML END
-
 include APP.'_adm_inc_ft.php';

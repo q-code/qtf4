@@ -16,8 +16,8 @@ $oH->selfparent = L('Board_info');
 
 if ( isset($_GET['h']) ) $_SESSION[QT]['smtp_host'] = qtDb($_GET['h']);
 if ( isset($_GET['p']) ) $_SESSION[QT]['smtp_port'] = qtDb($_GET['p']);
-if ( isset($_GET['u']) ) $_SESSION[QT]['smtp_username'] = qtDb($_GET['u']);
-if ( isset($_GET['fw']) ) $_SESSION[QT]['smtp_password'] = qtDb($_GET['fw']);
+if ( isset($_GET['u']) ) $_SESSION[QT]['smtp_username'] = qtDb($_GET['u'],true,false);
+if ( isset($_GET['fw']) ) $_SESSION[QT]['smtp_password'] = qtDb($_GET['fw'],true,false);
 
 // ------
 // SUBMITTED for send test
@@ -27,8 +27,8 @@ if ( isset($_POST['ok']) ) try {
   // register value used
   $_SESSION[QT]['smtp_host'] = qtDb($_POST['smtphost']);
   $_SESSION[QT]['smtp_port'] = qtDb($_POST['smtpport']);
-  $_SESSION[QT]['smtp_username'] = qtDb($_POST['smtpusr']);
-  $_SESSION[QT]['smtp_password'] = qtDb($_POST['smtppwd']);
+  $_SESSION[QT]['smtp_username'] = qtDb($_POST['smtpusr'],true,false);
+  $_SESSION[QT]['smtp_password'] = qtDb($_POST['smtppwd'],true,false);
 
   // send mail
   qtMail($_POST['mailto'], $_POST['subject'], $_POST['message'], 'iso-8859-1', '1');

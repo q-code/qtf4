@@ -113,28 +113,31 @@ class SMem
   }
 }
 
+/**
+ * Each method will lowercase arguments type/lang/id. Some method allows a list of type [csv-string] (argument $types).
+ */
 class SLang
 {
-  // Note: type/id/name uses following storage format:
-  // 'index'   'i'  >> index name
-  // 'domain'  'd1' >> domain 1 name
-  // 'sec'     's1' >> section 1 name
-  // 'secdesc' 's1' >> section 1 description
+  // [type]    [id] [name]
+  // 'index'   'i'  index name
+  // 'domain'  'd1' domain 1 name
+  // 'sec'     's1' section 1 name
+  // 'secdesc' 's1' section 1 description
   public static function add(string $type='', string $lang='en', string $id='', string $name='')
   {
-    if ( empty($type) || empty($lang) || empty($id) || empty($name) ) die('SLang::add invalid argument');
-    if ( !defined('QT_CONVERT_AMP') ) define('QT_CONVERT_AMP',false);
-    $lang = strtolower($lang);
+    if ( empty($type) || empty($lang) || empty($id) || empty($name) ) die(__METHOD__.' invalid argument');
+    [$type,$lang,$id] = array_map('strtolower', [$type,$lang,$id]);
     // Process
     global $oDB;
     $oDB->exec( "INSERT INTO TABLANG (objtype,objlang,objid,objname) VALUES (?,?,?,?)", [$type, $lang, $id, qtDb($name)] );
   }
-  public static function delete(string $type='', string $id='')
+  public static function delete(string $types='', string $id='')
   {
-    if ( empty($type) || empty($id) ) die(__FUNCTION__.' invalid argument');
-    $type = implode(',', qtQuote(explode(',',$type), "'"));
+    if ( empty($types) || empty($id) ) die(__FUNCTION__.' invalid argument');
+    [$types,$id] = array_map('strtolower', [$types,$id]);
+    $types = implode("','", explode(',',$types));
     global $oDB;
-    $oDB->exec( "DELETE FROM TABLANG WHERE objid='$id' AND objtype IN ($type)" );
+    $oDB->exec( "DELETE FROM TABLANG WHERE objid='$id' AND objtype IN ('$types')" );
   }
   public static function get(string $type='index', string $lang='en', string $id='*')
   {
@@ -143,22 +146,18 @@ class SLang
     // Can return an array of object translation when $lang is '*'
     if ( empty($type) || empty($lang) || empty($id) ) die('SLang::get invalid argument');
     if ( $id==='*' && $lang==='*' ) die('SLang::get: Arg 2 and 3 cannot be *');
-    $lang = strtolower($lang);
+    [$type,$lang,$id] = array_map('strtolower', [$type,$lang,$id]);
     // Process
     global $oDB;
     if ( $id==='*' ) {
       $arr = [];
       $oDB->query( "SELECT objid,objname FROM TABLANG WHERE objtype='$type' AND objlang='$lang'" );
-      while($row=$oDB->getRow()) {
-        if ( !empty($row['objname']) ) $arr[$row['objid']] = $row['objname'];
-      }
+      while($row=$oDB->getRow()) if ( !empty($row['objname']) ) $arr[$row['objid']] = $row['objname'];
       return $arr;
     } elseif ( $lang==='*' ) {
       $arr = [];
       $oDB->query( "SELECT objlang,objname FROM TABLANG WHERE objtype='$type' AND objid='$id'" );
-      while($row=$oDB->getRow()) {
-        $arr[$row['objlang']] = $row['objname'];
-      }
+      while($row=$oDB->getRow()) $arr[$row['objlang']] = $row['objname'];
       return $arr;
     } else {
       $oDB->query( "SELECT objname FROM TABLANG WHERE objtype='$type' AND objlang='$lang' AND objid='$id'" );
@@ -166,15 +165,16 @@ class SLang
       return empty($row['objname']) ? '' : $row['objname'];
     }
   }
-  public static function translate(string $object='index', string $id='i', string $alt='')
+  public static function translate(string $type='index', string $id='i', string $alt='')
   {
     // Returns the translation - if defined! - (must be in session[QT]['L'])
-    // Otherwhise returns $alt (or a default objectname is $alt is empty)
-    if ( empty($object) || empty($id) ) die(__FUNCTION__.' invalid argument');
+    // Otherwhise returns $alt (or a default typename is $alt is empty)
+    if ( empty($type) || empty($id) ) die(__FUNCTION__.' invalid argument');
+    [$type,$id] = array_map('strtolower', [$type,$id]);
     // Look in translations
-    if ( !empty($GLOBALS['_L'][$object][$id]) ) return $GLOBALS['_L'][$object][$id];
+    if ( !empty($GLOBALS['_L'][$type][$id]) ) return $GLOBALS['_L'][$type][$id];
     // Use alternate
-    switch($object) {
+    switch($type) {
       case 'index':
         if ( empty($alt) && !empty($_SESSION[QT]['index_name']) ) $alt = $_SESSION[QT]['index_name'];
         return empty($alt) ? '(index)' : $alt;
@@ -189,17 +189,20 @@ class SLang
       case 'tabdesc':
       case 'ffield': return $alt;
     }
-    return '(unknown object '.$object.')';
+    return '(unknown type '.$type.')';
   }
   // functions added for qt v4.0
   public static function addTranslations(string $type='', string $id='', string $name='', array $lang=[])
   {
     if ( empty($lang) ) $lang = array_keys(LANGUAGES);
     if ( empty($type) || empty($lang) || empty($id) || empty($name) ) die('SLang::addTranslations invalid argument');
+    [$type,$id] = array_map('strtolower', [$type,$id]);
+    $lang = array_map('strtolower', $lang);
     if ( !defined('QT_CONVERT_AMP') ) define('QT_CONVERT_AMP',false);
     // Process
     global $oDB;
-    foreach($lang as $iso) $oDB->exec( "INSERT INTO TABLANG (objtype,objlang,objid,objname) VALUES (?,?,?,?)", [$type, $iso, $id, qtDb($name)] );
+    foreach($lang as $iso)
+    $oDB->exec( "INSERT INTO TABLANG (objtype,objlang,objid,objname) VALUES (?,?,?,?)", [$type, $iso, $id, qtDb($name)] );
   }
   public static function deleteTranslations(array $type=[], string $id='', array $lang=[])
   {
@@ -208,6 +211,7 @@ class SLang
     global $oDB;
     $type = implode("','", $type);
     $lang = implode("','", $lang);
+    [$type,$lang,$id] = array_map('strtolower', [$type,$lang,$id]);
     $oDB->exec( "DELETE FROM TABLANG WHERE objid='$id' AND objlang IN ('$lang') AND objtype IN ('$type')" );
   }
 }

@@ -59,6 +59,7 @@ if ( isset($_POST['ok']) && !empty($q) ) try {
       break;
     case 'user':
     case 'userm':
+      $fv = qtDb(trim($fv));
       if ( empty($fw) && !empty($fv) ) $fw = SUser::getUserId($oDB,$fv); // return false if wrong name or empty post
       if ( empty($fw) ) throw new Exception( L('Username').' '.L('unknown') );
       $arg['fv'] = urlencode($fv);

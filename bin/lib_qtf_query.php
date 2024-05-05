@@ -86,6 +86,7 @@ function validateQueryArgs(array $args, bool $trimV=true) {
     case 'user':
     case 'userm':
       // search using userid [w] (search [w] from [v] if missing)
+      $args['fv'] = qtDb(trim($args['fv']));
       if ( empty($args['fw']) && !empty($args['fv']) ) { global $oDB; $args['fw'] = SUser::getUserId($oDB,$args['fv']); } // return false if not found)
       if ( empty($args['fw']) || !is_numeric($args['fw']) || $args['fw']<0 ) die(__FUNCTION__.' Invalid argument w');
       break;

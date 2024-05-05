@@ -20,7 +20,7 @@ $strHelper = false;
 // ------
 if ( isset($_POST['ok']) ) try {
 
-  // Check. All $_POST are sanitized into $post. For username and password use original $_POST[...]
+  // All $_POST are sanitized into $post. For username and password use original $_POST[...]
   $post = array_map('trim', qtDb($_POST));
   if ( empty($post['site_name']) ) throw new Exception( L('Site_name').' '.L('not_empty') );
   if ( empty($post['site_url']) ) throw new Exception( L('Site_url').' '.L('not_empty') );
@@ -47,8 +47,8 @@ if ( isset($_POST['ok']) ) try {
     if ( empty($post['smtp_host']) ) throw new Exception( 'Smtp host '.L('not_empty') );
     $_SESSION[QT]['smtp_host'] = $post['smtp_host'];
     $_SESSION[QT]['smtp_port'] = $post['smtp_port'];
-    $_SESSION[QT]['smtp_username'] = qtDb($_POST['smtp_username'],true,false,false); // no trim and allows <>&
-    $_SESSION[QT]['smtp_password'] = qtDb($_POST['smtp_password'],true,false,false); // no trim and allows <>&
+    $_SESSION[QT]['smtp_username'] = qtDb($_POST['smtp_username'],true,false); // no trim and allows <>&
+    $_SESSION[QT]['smtp_password'] = qtDb($_POST['smtp_password'],true,false); // no trim and allows <>&
     $oDB->updSetting( ['smtp_host','smtp_port','smtp_username','smtp_password'] );
   }
 

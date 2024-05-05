@@ -14,9 +14,9 @@ if ( !SUser::canView('V6') ) die(L('E_11'));
 // ------
 $certificate = makeFormCertificate('db6a94aa9b95da757a97f96ab4ce4ca5');
 // Forwarding certificate. Note: 'dopreview' is ajax-transfered to edit_preview.php
-if ( isset($_POST['dosend']) && $_POST['dosend']===makeFormCertificate('ec8a0d9ab2cae03d0c7314491eb60d0b') ) $_POST['dosend']=$certificate;
+if ( isset($_POST['send']) && $_POST['send']===makeFormCertificate('ec8a0d9ab2cae03d0c7314491eb60d0b') ) $_POST['send'] = $certificate;
 // Check certificate
-if ( isset($_POST['dosend']) && $_POST['dosend']!==$certificate ) die('Unable to check certificate');
+if ( isset($_POST['send']) && $_POST['send']!==$certificate ) die('Unable to check certificate');
 
 // ------
 // INITIALISE
@@ -25,18 +25,23 @@ $a = ''; // required
 $s = -1;
 $t = -1;
 $p = -1;
-qtArgs('a! int:s int:t int:p'); // a,s,t,p can be send by GET or POST, others only by POST from the form.
+qtArgs('a! int:s int:t int:p'); // a,s,t,p can be send by GET or POST, others only by POST
 
 // Initialise containers and check $s
+$withDoc = false;
+$tagEditor = false;
 $oT = new CTopic($t>=0 ? $t : null); // can be -1 (new topic)
 if ( $oT->pid>=0 ) $s = $oT->pid; // when editing a topic, $s is that topic pid, otherwise uses the GET/POST value
 if ( $s<0 ) die('Missing parameters: s');
 $oS = new CSection($s);
 $oP = new CPost($p>=0 ? $p : null);
 if ( $a==='qu' && !empty($oP->text) ) {
-  $str = $oP->text; $oP = new CPost(null); $oP->text = $str; // quote must be a void-post with only text
+  $str = $oP->text;
+  $oP = new CPost(null);
+  $oP->text = $str; // quote must be a void-post with only text
 }
-if ( isset($_POST['text']) ) $oP->text = trim($_POST['text']); // Note: text can be forwarded (not yet submitted) when user changes from quickreply to advanced-reply form
+if ( isset($_POST['text']) ) $oP->text = rtrim($_POST['text']); // right trim
+// Note: text can be forwarded (not yet submitted) when user changes from quickreply to advanced-reply form
 
 // Initialise $oH and check $a
 $oH->selfurl = APP.'_edit.php';
@@ -50,20 +55,15 @@ switch($a) {
 $oH->exiturl = APP.'_item.php?t='.$t; if ( $t<0 ) $oH->exiturl = 'qtf_items.php?s='.$s;
 $oH->exitname = L('Item+');
 
-// Initialise others
-$now = date('Ymd His');
-$withDoc = false;
-$tagEditor = false;
-
 // Check initial type and parent ('quote' become 'reply')
 switch($a) {
-case 'nt': $oP->type = 'P'; break;
-case 're': $oP->type = 'R'; if ( $t<0 ) die('Missing parameters: t'); break;
-case 'qu': $oP->type = 'R'; if ( $t<0 || $p<0 ) die('Missing parameters: t or p');
-  $oP->text = '[quote='.$oP->username.']'.$oP->text.'[/quote]';
-  $a = 're';
-  break;
-case 'ed': if ( $t<0 || $p<0 ) die('Missing parameters: t or p'); break;
+  case 'nt': $oP->type = 'P'; break;
+  case 're': $oP->type = 'R'; if ( $t<0 ) die('Missing parameters: t'); break;
+  case 'qu': $oP->type = 'R'; if ( $t<0 || $p<0 ) die('Missing parameters: t or p');
+    $oP->text = '[quote='.$oP->username.']'.$oP->text.'[/quote]';
+    $a = 're';
+    break;
+  case 'ed': if ( $t<0 || $p<0 ) die('Missing parameters: t or p'); break;
 }
 
 if ( isset($_GET['debug']) ) var_dump($oP);
@@ -71,27 +71,27 @@ if ( isset($_GET['debug']) ) var_dump($oP);
 // ------
 // SUBMITTED
 // ------
-if ( isset($_POST['dosend']) ) try {
+if ( isset($_POST['send']) ) try {
 
   // Current editor/creator (modifuser), can be the onbehalf
   $oP->modifuser = (int)$_POST['userid'];
-  $oP->modifname = qtDb(trim($_POST['username']));
-  if ( !empty($_POST['behalf']) ){
-    $strBehalf = qtDb(trim($_POST['behalf']));
+  $oP->modifname = trim($_POST['username']);
+  if ( !empty($_POST['behalf']) ) {
+    $strBehalf = trim($_POST['behalf']);
     $intBehalf = (int)$_POST['behalfid']; if ( $intBehalf<0 ) $intBehalf = SUser::getUserId($oDB,$strBehalf,-1);
     if ( $intBehalf<0 ) throw new Exception( L('Send_on_behalf').' '.L('invalid') );
     $oP->modifuser = $intBehalf;
     $oP->modifname = $strBehalf;
   }
   // For New post (or Reply or Quote) creator=modifuser, while creator don't change when editing existing post
-  if ( $a!='ed' ) {
+  if ( $a!=='ed' ) {
     $oP->userid = $oP->modifuser;
     $oP->username = $oP->modifname;
   }
 
   // Read submitted form values
-  if ( isset($_POST['icon']) )   $oP->icon = substr($_POST['icon'],0,2);
-  if ( isset($_POST['title']) )  $oP->title = qtInline(trim($_POST['title']),64);
+  if ( isset($_POST['icon']) ) $oP->icon = substr($_POST['icon'],0,2);
+  if ( isset($_POST['title']) ) $oP->title = qtInline(trim($_POST['title']),64);
   if ( isset($_POST['attach']) ) $oP->attach = $_POST['attach']; // old attachment
   if ( isset($_POST['tag-edit']) ) $oT->descr = trim($_POST['tag-edit']);
   if ( strlen($oP->text)>$_SESSION[QT]['chars_per_post'] ) throw new Exception( L('E_too_long').' '.sprintf(L('E_char_max'), $_SESSION[QT]['chars_per_post']) );
@@ -99,17 +99,17 @@ if ( isset($_POST['dosend']) ) try {
   $oT->preview = qtInline($oP->text);
 
   // Detect basic errors
-  if ( $oP->text==='' ) throw new Exception( L('Message').' '.L('invalid') ); //█
-  if ( $a==='nt' && $oP->title==='' && $oS->titlefield===2 ) throw new Exception( L('E_no_title') ); //█
+  if ( $oP->text==='' ) throw new Exception( L('Message').' '.L('invalid') );
+  if ( $a==='nt' && $oP->title==='' && $oS->titlefield===2 ) throw new Exception( L('E_no_title') );
   if ( $a==='nt' && $oP->title==='' ) CPost::makeTitle($oP);
 
   // Check flood limit (_usr_lastpost is set in CPost::insert)
-  if ( !empty($_SESSION[QT.'_usr']['lastpost']) && $_SESSION[QT.'_usr']['lastpost']+QT_FLOOD >= time() ) throw new Exception( L('E_wait') ); //█
+  if ( !empty($_SESSION[QT.'_usr']['lastpost']) && $_SESSION[QT.'_usr']['lastpost']+QT_FLOOD >= time() ) throw new Exception( L('E_wait') );
 
   // check maximum post per day (not for moderators)
   if ( !SUser::isStaff() && !postsTodayAcceptable((int)$_SESSION[QT]['posts_per_day']) ) {
     $oH->exiturl = 'qtf_items.php?s='.$s;
-    $oH->voidPage('', L('E_too_much')); //###
+    $oH->voidPage('', L('E_too_much')); //█
   }
 
   // Module antispam
@@ -125,6 +125,7 @@ if ( isset($_POST['dosend']) ) try {
   }
 
   // PROCESS $a
+  $now = date('Ymd His');
   switch($a) {
   case 'nt': // new topic
     $oDB->beginTransac();
@@ -184,33 +185,32 @@ if ( isset($_POST['dosend']) ) try {
 
     // topic status/type (from staff)
     if ( isset($_POST['topictype']) ) $oT->setType($_POST['topictype']);
-    if ( isset($_POST['topicstatus']) )$oT->setStatus($_POST['topicstatus']);
+    if ( isset($_POST['topicstatus']) ) $oT->setStatus($_POST['topicstatus']);
 
     // topic status (from user)
-    if ( isset($_POST['topicstatususer']) ) { if ( $_POST['topicstatususer'][0]=='1' ) $oT->setStatus('1'); }
+    if ( isset($_POST['topicstatususer']) && $_POST['topicstatususer'][0]==='1' ) $oT->setStatus('1');
     break;
 
   case 'ed': // SEND a edit
     if ( $oP->type==='P' && ($oS->titlefield===0 || empty($oP->title)) ) CPost::makeTitle($oP);
 
-    $strModif = '';
+    $sqlModif = '';
     // modifdate+modifuser if editor is not the creator
-    if ( $oP->modifuser!=$oP->userid ) $strModif=', modifdate="'.date('Ymd His').'", modifuser='.$oP->modifuser.', modifname="'.$oP->modifname.'"';
+    if ( $oP->modifuser!=$oP->userid ) $sqlModif=', modifdate="'.date('Ymd His').'", modifuser='.$oP->modifuser.', modifname="'.$oP->modifname.'"';
     // modifdate+modifuser if not the last message
-    if ( $oT->lastpostid!=$oP->id ) $strModif=', modifdate="'.date('Ymd His').'", modifuser='.$oP->modifuser.', modifname="'.$oP->modifname.'"';
+    if ( $oT->lastpostid!=$oP->id ) $sqlModif=', modifdate="'.date('Ymd His').'", modifuser='.$oP->modifuser.', modifname="'.$oP->modifname.'"';
 
     // Add attach
     if ( $withDoc ) {
-      $strDir = qtDirData('',$oP->id);
-      $oP->attach = $strDir.$oP->id.'_'.$_FILES['newdoc']['name'];
-      copy($_FILES['newdoc']['tmp_name'],QT_DIR_DOC.$oP->attach);
+      $oP->attach = qtDirData('',$oP->id).$oP->id.'_'.$_FILES['newdoc']['name'];
+      copy($_FILES['newdoc']['tmp_name'], QT_DIR_DOC.$oP->attach);
       unlink($_FILES['newdoc']['tmp_name']);
     }
 
     // Drop attach
     if ( isset($_POST['dropattach']) ) { $oP->attach=''; CPost::dropAttachs($oP->id,false); }
     // save edits
-    $oDB->exec( "UPDATE TABPOST SET title='".qtDb($oP->title)."', icon='".$oP->icon."',textmsg='".qtDb($oP->text)."',attach='".$oP->attach."' ".$strModif." WHERE id=".$oP->id );
+    $oDB->exec( "UPDATE TABPOST SET title='".qtDb($oP->title)."', icon='".$oP->icon."', textmsg='".qtDb($oP->text)."', attach='".$oP->attach."' ".$sqlModif." WHERE id=".$oP->id );
     // topic type (from staff)
     if ( isset($_POST['topictype']) ) $oT->setType($_POST['topictype']);
     // topic status (from staff)
@@ -226,7 +226,7 @@ if ( isset($_POST['dosend']) ) try {
   memFlush(); memFlushStats();
 
   // EXIT
-  $str = ''; if ( $oS->numfield!='N' ) $str=sprintf($oS->numfield,$oT->numid);
+  $str = ''; if ( $oS->numfield!='N' ) $str = sprintf($oS->numfield,$oT->numid);
   $str .= (empty($oH->warning) ? '' : ' '.$oH->warning).' ';
   $_SESSION[QT.'splash'] = $str.L('S_message_saved');
   $oH->redirect('qtf_item.php?t='.$oP->topic.'#'.$oP->id);
@@ -284,8 +284,7 @@ echo '<div class="edit-post">
 <input type="hidden" id="username" name="username" value="'.SUser::name().'"/>
 ';
 echo '<table>'.PHP_EOL;
-if ( !empty($oS->prefix) )
-{
+if ( !empty($oS->prefix) ) {
   echo '<tr>';
   echo '<th>'.L('Prefix').'</th>';
   echo '<td><span class="cblabel">'.PHP_EOL;
@@ -298,10 +297,10 @@ if ( !empty($oS->prefix) )
 }
 // title
 if ( $oS->titlefield!==0 ) {
-echo '<tr>'.PHP_EOL;
-echo '<th>'.L('Title').'</th>'.PHP_EOL;
-echo '<td><input'.($oS->titlefield===2 ? ' required' : '').' id="edit-form-title" tabindex="1" type="text" name="title" maxlength="64" value="'.qtAttr($oP->title).'"/></td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
+  echo '<tr>'.PHP_EOL;
+  echo '<th>'.L('Title').'</th>'.PHP_EOL;
+  echo '<td><input'.($oS->titlefield===2 ? ' required' : '').' id="edit-form-title" tabindex="1" type="text" name="title" maxlength="64" value="'.qtAttr($oP->title).'"/></td>'.PHP_EOL;
+  echo '</tr>'.PHP_EOL;
 }
 // message
 echo '<tr>';
@@ -346,8 +345,8 @@ echo '</div>
 ';
 
 // ADD TAGS
-if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P') ) ) {
-  $arrTags=explode(';',$oT->descr);
+if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P')) ) {
+  $arrTags = explode(';',$oT->descr);
   if ( $oT->status!=='1' ) {
     if ( SUser::isStaff() ) $tagEditor=true;
     if ( $_SESSION[QT]['tags']=='U' && SUser::id()===$oT->firstpostuser ) $tagEditor=true; // 'U'=members can edit in his own ticket
@@ -373,7 +372,7 @@ if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P')
 echo '<p class="submit">
 <button type="button" tabindex="5" onclick="window.location=`'.url($oH->exiturl).'`">'.L('Cancel').'</button>&nbsp;
 <button type="submit" tabindex="6" id="form-edit-preview" value="'.$certificate.'" onclick="this.form.dataset.state=0">'.L('Preview').'...</button>&nbsp;
-<button type="submit" tabindex="7" name="dosend" value="'.$certificate.'" onclick="this.form.dataset.state=1">'.($a=='ed' ? L('Save') : L('Send')).'</button>
+<button type="submit" tabindex="7" name="send" value="'.$certificate.'" onclick="this.form.dataset.state=1">'.($a=='ed' ? L('Save') : L('Send')).'</button>
 </p>
 </form>
 ';

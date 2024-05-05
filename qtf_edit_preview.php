@@ -32,7 +32,7 @@ $oT = new CTopic($t);
 $oP = new CPost(); if ( isset($_POST['p']) ) $oP->id = (int)$_POST['p']; // id = -1 while preview
 $oP->type = 'R';
 $oP->issuedate = date('Y-m-d H:i');
-$oP->text = trim($_POST['text']);
+$oP->text = rtrim($_POST['text']); // right-trim
 $oP->userid = (int)$_POST['userid'];
 $oP->username = $_POST['username'];
 $oP->modifuser = (int)$_POST['userid']; // can be onbehalf
@@ -60,17 +60,17 @@ try {
   $oT->preview = qtInline($oP->text);
 
   // Detect basic errors
-  if ( $oP->text=='' ) throw new Exception( L('Message').' '.L('invalid') ); //█
-  if ( $a=='nt' && $oP->title=='' && $oS->titlefield==2 ) throw new Exception( L('E_no_title') ); //█
+  if ( $oP->text=='' ) throw new Exception( L('Message').' '.L('invalid') );
+  if ( $a=='nt' && $oP->title=='' && $oS->titlefield==2 ) throw new Exception( L('E_no_title') );
   if ( $a=='nt' && $oP->title=='' ) CPost::makeTitle($oP);
 
   // Check flood limit
-  if ( !empty($_SESSION[QT.'_usr']['lastpost']) && $_SESSION[QT.'_usr']['lastpost']+QT_FLOOD >= time() ) throw new Exception( L('E_wait') ); //█
+  if ( !empty($_SESSION[QT.'_usr']['lastpost']) && $_SESSION[QT.'_usr']['lastpost']+QT_FLOOD >= time() ) throw new Exception( L('E_wait') );
 
   // check maximum post per day (not for moderators)
   if ( !SUser::isStaff() && !postsTodayAcceptable((int)$_SESSION[QT]['posts_per_day']) ) {
     $oH->exiturl = 'qtf_items.php?s='.$s;
-    $oH->voidPage('', L('E_too_much')); //###
+    $oH->voidPage('', L('E_too_much')); //█
   }
 
   // Module antispam
@@ -109,6 +109,6 @@ echo '<h2>'.L('Preview').'</h2>
 ';
 if ( !empty($oH->error) ) echo '<p><span class="error">'.$oH->error.'</span></p>';
 
-echo $oP->render($oS,$oT,true,'',QT_SKIN,'1');
+echo $oP->render($oS, $oT, true, '', QT_SKIN, '1');
 
 echo '<p class="right small">'.( empty($oP->attach) ? '' : qtSVG('info').' '.L('No_attachment_preview') ).'</p><br>';

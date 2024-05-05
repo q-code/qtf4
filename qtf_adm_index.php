@@ -23,7 +23,7 @@ if ( isset($_POST['ok']) && isset($_POST['offline']) ) try {
   if ( empty($_SESSION[QT]['admin_email']) ) throw new Exception('Email not yet defined...');
   if ( strlen($_SESSION[QT]['site_url'])<8 ) throw new Exception('Site url not yet defined...');
   // update
-  $_SESSION[QT]['board_offline'] = $_POST['offline']==='0' ? '0' : '1'; // only 0|1
+  $_SESSION[QT]['board_offline'] = $_POST['offline']==='0' ? '0' : '1'; // sanitize only 0|1
   $oDB->updSetting('board_offline');
   // Successfull end
   SMem::set('settingsage',time());
@@ -52,8 +52,7 @@ if ( isset($_GET['cmd']) && $_GET['cmd']==='decrypt' && !empty($_GET['file']) ) 
 }
 
 // FUNCTION
-function qtEncrypt(string $key=APP, string $str='install')
-{
+function qtEncrypt(string $key=APP, string $str='install') {
   $key = hash('sha256', $key);
   $iv = substr(hash('sha256','5fgf5HJ5g27'), 0, 16); // sha256 is hash_hmac_algo
   $output = openssl_encrypt($str, 'AES-256-CBC', $key, 0, $iv);
@@ -73,11 +72,16 @@ $intHidden = $oDB->count( TABSECTION." WHERE type='1'" );
 $arrItems = getItemsInfo($oDB);
 
 // Start Helper
-if ( $intSection-$intHidden==0 ) echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('No_public_section').' <a href="'.APP.'_adm_sections.php?add=1">'.L('Add').' '.L('domain').'/'.L('section').'...</a></p>';
-if ( empty($_SESSION[QT]['admin_email']) ) echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Contact').' '.L('Adm_e_mail').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
-if ( strlen($_SESSION[QT]['site_url'])<10 ) echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Site_url').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
-if ( $_SESSION[QT]['home_menu'] && (strlen($_SESSION[QT]['home_url'])<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$_SESSION[QT]['home_url'])) ) echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Home_website_url').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_skin.php">'.L('Board_layout').'...</a></p>';
-if ( is_dir('install') ) echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:red').' Install folder is accessible: <a href="install/setup_9.php?lang='.QT_LANG.'">'.L('Change').'...</a></p>';
+if ( $intSection-$intHidden===0 )
+echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('No_public_section').' <a href="'.APP.'_adm_sections.php?add=1">'.L('Add').' '.L('domain').'/'.L('section').'...</a></p>';
+if ( empty($_SESSION[QT]['admin_email']) )
+echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Contact').' '.L('Adm_e_mail').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
+if ( strlen($_SESSION[QT]['site_url'])<10 )
+echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Site_url').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_site.php">'.L('Board_general').'...</a></p>';
+if ( $_SESSION[QT]['home_menu'] && (strlen($_SESSION[QT]['home_url'])<10 || !preg_match('/^(http:\/\/|https:\/\/)/',$_SESSION[QT]['home_url'])) )
+echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.L('Home_website_url').' '.L('invalid').'. '.L('Edit').': <a href="'.APP.'_adm_skin.php">'.L('Board_layout').'...</a></p>';
+if ( is_dir('install') )
+echo '<p class="right article">'.qtSVG('flag', 'style=font-size:1.4rem;color:red').' Install folder is accessible: <a href="install/setup_9.php?lang='.QT_LANG.'">'.L('Change').'...</a></p>';
 
 // BOARD OFFLINE
 echo '<h2 class="config">'.L('Board_status').'</h2>
@@ -97,18 +101,25 @@ echo '<h2 class="config">'.L('Board_status').'</h2>
 ';
 
 // INFO
-echo '<h2 class="config">'.L('Info').'</h2>'.PHP_EOL;
-echo '<table class="t-conf">'.PHP_EOL;
-echo '<tr><th>'.L('Domains').'/'.L('Section+').'</th><td>'.L('Domain',$intDomain).', '.L('Section',$intSection).' <small>('.L('hidden',$intHidden).')</small>, <a href="'.APP.'_adm_sections.php?add=1">'.L('Add').' '.L('domain').'/'.L('section').'...</a></td></tr>'.PHP_EOL;
-if ( !empty($arrItems['startdate']) ) echo '<tr><th>'.L('Board_start_date').'</th><td>'.$arrItems['startdate'].', <a href="'.APP.'_stats.php">'.L('Statistics').'...</a></td></tr>'.PHP_EOL;
-
+echo '<h2 class="config">'.L('Info').'</h2>
+<table class="t-conf">
+<tr>
+<th>'.L('Domains').'/'.L('Section+').'</th><td>'.L('Domain',$intDomain).', '.L('Section',$intSection).' <small>('.L('hidden',$intHidden).')</small>, <a href="'.APP.'_adm_sections.php?add=1">'.L('Add').' '.L('domain').'/'.L('section').'...</a></td>
+</tr>
+<tr>
+<th>'.L('Board_start_date').'</th><td>'.(empty($arrItems['startdate']) ? L('None') : $arrItems['startdate']).', <a href="'.APP.'_stats.php">'.L('Statistics').'...</a></td>
+</tr>
+';
 $intUser = $oDB->count( TABUSER );
 $intAdmin = $oDB->count( TABUSER." WHERE role='A'" );
 $intMod = $oDB->count( TABUSER." WHERE role='M'" );
-
-echo '<tr><th>'.L('Users').'</th><td>'.L('User',$intUser).' <small>('.L('Role_A',$intAdmin).', '.L('Role_M',$intMod).', '.L('Role_U',$intUser-$intAdmin-$intMod).')</small></td></tr>'.PHP_EOL;
-if ( !empty($arrItems['content']) ) echo '<tr><th>'.L('Content').'</th><td>'.$arrItems['content'].'</td></tr>';
-echo '</table>
+echo '<tr>
+<th>'.L('Users').'</th><td>'.L('User',$intUser).' <small>('.L('Role_A',$intAdmin).', '.L('Role_M',$intMod).', '.L('Role_U',$intUser-$intAdmin-$intMod).')</small></td>
+</tr>
+<tr>
+<th>'.L('Content').'</th><td>'.(empty($arrItems['content']) ? L('None') : $arrItems['content']).'</td>
+</tr>
+</table>
 ';
 
 // PUBLIC ACCESS LEVEL

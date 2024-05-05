@@ -181,7 +181,7 @@ echo '<div class="g-qr-btn">
 <input type="hidden" name="username" value="'.SUser::name().'"/>
 <input type="hidden" name="icon" value="00"/>
 <input type="hidden" name="title" />
-<button type="submit" id="form-qr-preview" name="preview" value="'.$certificate.'">'.L('Preview').'...</button><button type="submit" id="dosend" name="dosend" value="'.$certificate.'">'.L('Send').'</button>
+<button type="submit" id="form-qr-preview" name="preview" value="'.$certificate.'">'.L('Preview').'...</button><button type="submit" id="send" name="send" value="'.$certificate.'">'.L('Send').'</button>
 </div>
 ';
 echo '</div>
