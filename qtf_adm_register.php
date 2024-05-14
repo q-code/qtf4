@@ -38,8 +38,7 @@ $frm_hd = '';
 $frm = [];
 $frm_ft = '';
 
-function renderUsers(array $ids, array $fields=['name','role','closed'])
-{
+function renderUsers(array $ids, array $fields=['name','role','closed']) {
   // process ids [array of int]
   $str = '';
   $days = BAN_DAYS;
@@ -59,20 +58,23 @@ case 'usersrole':
   if ( empty($ids) || in_array(0,$ids,true) || in_array(1,$ids,true) ) die('Invalid argument'); // [strict] 0 and 1 cannot be delete/upgraded/ban
 
   // SUBMITTED
-  if ( isset($_POST['ok']) && isset($_POST['role']) && $_POST['role']!=='' )
-  {
+  if ( isset($_POST['ok']) && isset($_POST['role']) && $_POST['role']!=='' ) try {
     $role = strtoupper($_POST['role']);
     $list = implode(',',$ids);
-    // update role
     $oDB->exec( "UPDATE TABUSER SET role='$role' WHERE id IN ($list)" );
     // change section coordinator if required
     if ( $role==='U' ) {
       $oDB->exec( "UPDATE TABSECTION SET moderator=1, moderatorname='Admin' WHERE moderator IN ($list)" );
       SMem::clear('_Sections');
     }
-    // exit
     $_SESSION[QT.'splash'] = L('S_update');
     $oH->redirect(); //█
+
+  } catch (Exception $e) {
+
+    $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+    $oH->error = $e->getMessage();
+
   }
 
   // FORM
@@ -96,13 +98,16 @@ case 'usersdel':
   if ( empty($ids) || in_array(0,$ids,true) || in_array(1,$ids,true) ) die('Invalid argument'); // [strict] 0 and 1 cannot be delete/upgraded/ban
 
   // SUBMITTED
-  if ( isset($_POST['ok']) && isset($_POST['confirm']) )
-  {
-    // Delete
+  if ( isset($_POST['ok']) && isset($_POST['confirm']) ) try {
     foreach($ids as $id) SUser::delete($oDB,$id);
-    // Exit
     $_SESSION[QT.'splash'] = L('S_delete');
     $oH->redirect(); //█
+
+  } catch (Exception $e) {
+
+    $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+    $oH->error = $e->getMessage();
+
   }
 
   // FORM
@@ -121,7 +126,7 @@ case 'catdel':
   if ( empty($cat) ) die('Invalid argument');
 
   // SUBMITTED
-  if ( isset($_POST['ok']) && isset($_POST['confirm']) ) {
+  if ( isset($_POST['ok']) && isset($_POST['confirm']) ) try {
 
     // Delete
     $where = ' id>1 AND ';
@@ -145,10 +150,14 @@ case 'catdel':
       }
       break;
     }
-    $b = $oDB->exec( 'DELETE FROM TABUSER WHERE '.$where );
-    // Exit
-    $_SESSION[QT.'splash'] = $b ? L('S_update') : 'E|'.L('E_failed');
+    $oDB->exec( 'DELETE FROM TABUSER WHERE '.$where );
+    $_SESSION[QT.'splash'] = L('S_update');
     $oH->redirect(); //█
+
+  } catch (Exception $e) {
+
+    $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
+    $oH->error = $e->getMessage();
 
   }
 
@@ -173,14 +182,13 @@ case 'usersban':
     $sqlIds = implode(',',$ids);
     // check other admins
     if ( $oDB->count( TABUSER." WHERE role='A' AND id IN ($sqlIds)" )>0 ) throw new Exception( L('Admin_protected') );
-    // ban
     $oDB->exec( "UPDATE TABUSER SET closed='".substr($_POST['ban'],0,1)."' WHERE id IN ($sqlIds)" );
-    // exit
     $_SESSION[QT.'splash'] = L('S_update');
     $oH->redirect(); //█
 
   } catch (Exception $e) {
 
+    $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
     $oH->error = $e->getMessage();
 
   }
@@ -209,14 +217,13 @@ case 'userspic':
 
     // check if admins
     if ( $oDB->count( TABUSER." WHERE role='A' AND id IN (".implode(',',$ids).")" )>0 ) throw new Exception( L('Admin_protected') );
-    // delete user's pic
     SUser::deletePicture($ids);
-    // exit
     $_SESSION[QT.'splash'] = L('S_delete');
     $oH->redirect(); //█
 
   } catch (Exception $e) {
 
+    $_SESSION[QT.'splash'] = 'E|'.L('E_failed');
     $oH->error = $e->getMessage();
 
   }
@@ -226,7 +233,8 @@ case 'userspic':
   $frm[] = '<form method="post" action="'.$frm_action.'">';
   $frm[] = '<p>'.L('Users').':</p>';
   $frm[] = renderUsers($ids).'<br>';
-  $frm[] = '<p class="row-confirm"><input required type="checkbox" id="confirm" name="confirm"/> <label for="confirm">'.L('Confirm').': '.L('Delete').' '.L('picture',count($ids)).'<label></p>';  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' ('.count($ids).')</button></p>';
+  $frm[] = '<p class="row-confirm"><input required type="checkbox" id="confirm" name="confirm"/> <label for="confirm">'.L('Confirm').': '.L('Delete').' '.L('picture',count($ids)).'<label></p>';
+  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Delete').' ('.count($ids).')</button></p>';
   $frm[] = '<input type="hidden" name="ids" value="'.implode(',',$ids).'"/>';
   $frm[] = '</form>';
   break;
@@ -241,12 +249,11 @@ const HIDE_MENU_LANG = true;
 include APP.'_adm_inc_hd.php';
 
 unset($oH->scripts['formsafe']);
-if ( !empty($frm_hd) ) echo $frm_hd.PHP_EOL;
 
+if ( $frm_hd ) echo $frm_hd.PHP_EOL;
 CHtml::msgBox($frm_title, 'class=msgbox|style=margin-bottom:2rem');
 echo implode(PHP_EOL,$frm);
 CHtml::msgBox('/');
-
-if ( !empty($frm_ft) ) echo $frm_ft.PHP_EOL;
+if ( $frm_ft ) echo $frm_ft.PHP_EOL;
 
 include APP.'_adm_inc_ft.php';

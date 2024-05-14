@@ -31,7 +31,7 @@ echo '<div id="main-ft">
 <p>'.implode(' &middot; ',$arr).'</p>
 <p>';
 if ( QT_SHOW_JUMPTO ) {
-  echo '<select id="jumpto" size="1" onchange="window.location=this.value;" accesskey="j">';
+  echo '<select id="jumpto" size="1" onchange="window.location=this.value;">';
   echo '<option disabled selected hidden>'.L('Goto').'...</option>';
   if ( $oH->selfurl=='qtf_search.php' ) echo '<option value="'.url('qtf_index.php').'">'.SLang::translate().'</option>';
   if ( $oH->selfurl!='qtf_search.php' && SUser::canView('V4') ) echo '<option value="'.url('qtf_search.php').'">'.L('Advanced_search').'</option>';
@@ -131,7 +131,7 @@ qtApplyStoredState("aside");';
 }}}
 
 // END PAGE SITE
-echo CHtml::pageEntity('/');
+echo CHtml::pageEntity('/', 'site');
 
 // ------
 // FOOTER
@@ -147,7 +147,7 @@ if ( SUser::role()!=='V' || SUser::role().substr($_SESSION[QT]['m_rss_conf'],0,1
 
 // footer menu extra definition
 $navMenu->separator = ' &middot; ';
-if ( SUser::role()==='A' ) $navMenu->add('admin', '['.L('Administration').']|id=menu-admin|href=qtf_adm_index.php|accesskey=a');
+if ( SUser::role()==='A' ) $navMenu->add('admin', '['.L('Administration').']|id=menu-admin|href=qtf_adm_index.php');
 $skip = array_diff(array_keys($navMenu->menu), ['home','privacy','stats','rss','sign','admin']);
 echo '<p id="footer-menu">'.$navMenu->build($oH->selfurl, 'tag=span|onclick=return false', $skip).'</p>'.PHP_EOL;
 echo '<p id="footer-credit">powered by <a href="http://www.qt-cute.org">QT-cute</a> <span title="'.VERSION.' '.BUILD.'">v'.VERSION.'</span></p>

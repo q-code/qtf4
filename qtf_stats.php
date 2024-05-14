@@ -155,12 +155,12 @@ echo '<h1>'.L('Statistics').'</h1>'.PHP_EOL;
 
 // DISPLAY TABS
 $href = $oH->selfurl.qtURI('pan');
-$arrM = [];
-$arrM['pan-g']  = L('Global')        .'|href='.$href.'&pan=g |id=pan-g |class=pan-tab|title='.L('H_Global').' '.$y;
-$arrM['pan-gt'] = L('Global_trends') .'|href='.$href.'&pan=gt|id=pan-gt|class=pan-tab|title='.L('H_Global_trends').' '.$y0.'-'.$y;
-$arrM['pan-d']  = L('Details')       .'|href='.$href.'&pan=d |id=pan-d |class=pan-tab|title='.L('H_Details').' '.$y;
-$arrM['pan-dt'] = L('Details_trends').'|href='.$href.'&pan=dt|id=pan-dt|class=pan-tab|title='.L('H_Details_trends').' '.$y0.'-'.$y;
-$m = new CMenu($arrM, '');
+$m = [];
+$m['pan-g']  = L('Global')        .'|href='.$href.'&pan=g |id=pan-g |class=pan-tab|title='.L('H_Global').' '.$y;
+$m['pan-gt'] = L('Global_trends') .'|href='.$href.'&pan=gt|id=pan-gt|class=pan-tab|title='.L('H_Global_trends').' '.$y0.'-'.$y;
+$m['pan-d']  = L('Details')       .'|href='.$href.'&pan=d |id=pan-d |class=pan-tab|title='.L('H_Details').' '.$y;
+$m['pan-dt'] = L('Details_trends').'|href='.$href.'&pan=dt|id=pan-dt|class=pan-tab|title='.L('H_Details_trends').' '.$y0.'-'.$y;
+$m = new CMenu($m, '');
 echo '<div class=pan-tabs>'.$m->build('pan-'.$pan).'</div>';
 echo '<div class="pan">
 <p class="pan-title">'.$m->get('pan-'.$pan,'title');
@@ -177,16 +177,16 @@ include 'qtf_stats_inc.php';
 
 // DISPLAY title & option
 $href = $oH->selfurl.qtURI('bt'); // remove argument &bt=
-$arrM = [];
-$arrM['bt-q'] = L('Per_q').'|id=bt-q|href='.$href.'&bt=q';
-$arrM['bt-m'] = L('Per_m').'|id=bt-m|href='.$href.'&bt=m';
-$arrM['bt-d'] = L('Per_d').'|id=bt-d|href='.$href.'&bt=d';
+$m = [];
+$m['bt-q'] = L('Per_q').'|id=bt-q|href='.$href.'&bt=q';
+$m['bt-m'] = L('Per_m').'|id=bt-m|href='.$href.'&bt=m';
+$m['bt-d'] = L('Per_d').'|id=bt-d|href='.$href.'&bt=d';
 // add comparaison year selector
 if ( $pan=='gt' || $pan=='dt' ) {
   $href = $oH->selfurl.qtURI('y0'); // remove argument '&y0='
-  $arrM[] = '!<span>'.L('Compare_year').'&nbsp;<select id="y0" name="y0" value="'.$y0.'" onchange="window.location=`'.$href.'`+this.value;">'.qtTags([$y-4=>$y-4,$y-3=>$y-3,$y-2=>$y-2,$y-1=>$y-1], $y0).'</select></span>';
+  $m[] = '!<span>'.L('Compare_year').'&nbsp;<select id="y0" name="y0" value="'.$y0.'" onchange="window.location=`'.$href.'`+this.value;">'.qtTags([$y-4=>$y-4,$y-3=>$y-3,$y-2=>$y-2,$y-1=>$y-1], $y0).'</select></span>';
 }
-$m = new CMenu($arrM, ' &middot; ');
+$m = new CMenu($m, ' &middot; ');
 echo '<div id="nav-blocktime">'.$m->build('bt-'.$bt, 'tag=span|addclass=actif').'</div>';
 
 switch($pan)

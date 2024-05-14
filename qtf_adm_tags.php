@@ -37,14 +37,14 @@ $arrSections = CSection::getSections('A',-2); // titles not translated, optimisa
 
 // DISPLAY TABS
 
-$arrM = [];
+$m = [];
 foreach (LANGUAGES as $iso=>$lang)
 {
   $lang = explode(' ',$lang);
   $lang = empty($lang[1]) ? strtoupper($iso) : $lang[1]; // uppercase iso code if no description
-  $arrM['pan-'.$iso] = $lang.'|href='.$oH->selfurl.'?pan='.$iso.'|id=pan-'.$iso.'|class=pan-tab|title='.L('Edit').' '.$lang;
+  $m['pan-'.$iso] = $lang.'|href='.$oH->selfurl.'?pan='.$iso.'|id=pan-'.$iso.'|class=pan-tab|title='.L('Edit').' '.$lang;
 }
-$m = new CMenu($arrM,'');
+$m = new CMenu($m,'');
 echo '<div class="pan-tabs">'.$m->build( 'pan-'.$pan ).'</div>';
 
 // DISPLAY TAB PANEL

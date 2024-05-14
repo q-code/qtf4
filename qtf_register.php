@@ -1,4 +1,4 @@
-<?php // v4.0 build:20240210 allows app impersonation [qt*]
+<?php // v4.0 build:20240210 allows app impersonation [qtf|i|e|n]
 
 /*
 Handles all ui and bi regarding user's profile
@@ -332,8 +332,8 @@ if ( isset($_POST['ok']) ) try {
 // FORM
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
-$frm_hd = '<div class="user-dlg">
-<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
+$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>
 ';
 if ( $row['role']!='U' ) {
 $frm[] = '<p>'.$row['name'].L('Unregister_staff').'</p>';
@@ -346,7 +346,7 @@ $frm[] = '<p>'.qtSVG('lock','class=svg-label').'&nbsp;<input required type="pass
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Unregister').'</button></p>';
 $frm[] = '</form>';
 }
-$frm_ft = '</div>';
+$frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
 
 break;
 
@@ -398,11 +398,11 @@ if ( isset($_POST['ok']) ) try {
 // FORM
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
-$frm_hd = '<div class="user-dlg">
-<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>
-';
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
 $frm_attr = 'class=msgbox formPwd';
-if ( SUser::id()!==$id ) $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+if ( SUser::id()!==$id )
+$frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p class="right input-pwd">'.L('Old_password').'&nbsp;<input required id="pwd-1" type="password" name="oldpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
 $frm[] = '<p class="right input-pwd">'.L('New_password').'&nbsp;<input required id="pwd-2" type="password" name="newpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
@@ -412,7 +412,7 @@ $frm[] = '<input type="hidden" name="name" value="'.$row['name'].'"/>';
 $frm[] = '<input type="hidden" name="child" value="'.$row['children'].'"/>';
 $frm[] = '<input type="hidden" name="parentmail" value="'.$row['parentmail'].'"/>';
 $frm[] = '</form>';
-$frm_ft = '</div>';
+$frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
 $oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
 $oH->scripts[] = 'function togglePwd(id) {
   var d = document.getElementById("pwd-"+id);
@@ -476,9 +476,8 @@ if ( isset($_POST['ok']) ) {
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id );
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 
-$frm_hd = '<div class="user-dlg">
-<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>
-';
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
+$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'. $row['name'].' <select name="role" size="1">
 <option value="A"'.($row['role']=='A' ? ' selected' : '').(SUser::role()!=='A' ? ' disabled' : '').'>'.L('Role_A').'</option>
@@ -487,7 +486,7 @@ $frm[] = '<p>'. $row['name'].' <select name="role" size="1">
 </select></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
-$frm_ft = '</div>';
+$frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
 
 break;
 
@@ -514,8 +513,8 @@ $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $currentban = !empty($row['closed']) && array_key_exists((int)$row['closed'],BAN_DAYS) ? (int)$row['closed'] : 0;
 
-$frm_hd = '<div class="user-dlg">
-<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
+$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'.$row['name'].' <small>('.L('Role_'.$row['role']).')</small></p>';
 $frm[] = '<p>'.L('H_ban').'</p>';
@@ -525,7 +524,7 @@ $frm[] = '<option value="'.$k.'"'.($k==$currentban ? ' selected' : '').'>'.L('da
 $frm[] = '</select></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
-$frm_ft = '</div>';
+$frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
 
 break;
 
@@ -548,12 +547,12 @@ if ( isset($_POST['ok']) && isset($_POST['confirm']) ) {
 // FORM
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
-$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section').'<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p><input required type="checkbox" name="confirm"/> '.$row['name'].' <small>('.L('Role_'.$row['role']).')</small></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="delete">'.L('Delete').'</button></p>';
 $frm[] = '</form>';
-$frm_ft = '</div>';
+$frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
 
 break;
 
@@ -598,12 +597,12 @@ if ( isset($_POST['ok']) ) {
 // FORM
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
-$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section').'<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'.L('Reset_pwd').' - '.$row['name'].'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
-$frm_ft = '</div>';
+$frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
 
 break;
 
@@ -701,8 +700,9 @@ $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $secret_q = empty($row['secret_q']) ? '' : $row['secret_q'];
 
-$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
 $frm_attr = 'class=msgbox formQa';
+$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
 $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'" autocomplete="off">';
@@ -711,7 +711,7 @@ $frm[] = '<p class="center"><select name="secret_q">'.qtTags($L['Secret_q'],$sec
 $frm[] = '<p class="center"><input required type="text" name="secret_a" size="32" maxlength="255" placeholder="'.(empty($row['secret_a']) ? '' : '*********').'"/></p>';
 $frm[] = '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '</form>';
-$frm_ft = '</div>';
+$frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
 $oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
 
 break;
@@ -748,15 +748,16 @@ if ( isset($_POST['ok']) ) try {
 // FORM
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
-$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
 $frm_attr = 'class=msgbox formName';
+$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p class="center">'.qtSVG('user','class=svg-label').'&nbsp;<input required type="text" id="rename" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
 $frm[] = '<p id="rename-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="rename-submit" name="ok" value="ok">'.L('Save').'</button></p>';
 $frm[] = '</form>';
-$frm_ft = '</div>';
+$frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
 $oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
 $oH->scripts['rename'] = '<script type="text/javascript" src="bin/js/qt_user_rename.js" data-used="'.L('Already_used').'"></script>';
 
@@ -797,9 +798,11 @@ if ( SUser::id()!==$id && $row['role']==='A' && SUser::role()==='M' ) {
 if ( empty($row['signature']) ) $row['signature']='';
 $strSign = qtBBcode($row['signature']); if ( empty($strSign) ) $strSign='&nbsp;';
 
-$frm_hd = '<div class="user-dlg"><div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
 $frm_attr = 'class=msgbox formSign';
-if ( SUser::id()!==$id ) $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
+if ( SUser::id()!==$id )
+$frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<p>'.L('H_no_signature').'</p>';
 $frm[] = '<h2>'.L('Signature').'</h2>';
 $frm[] = '<div id="signature-preview">'.$strSign.'</div>';
@@ -811,7 +814,7 @@ $frm[] = '<textarea id="text-area" name="text" rows="5">'.$row['signature'].'</t
 $frm[] = '<p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '</div>';
 $frm[] = '</form>';
-$frm_ft = '</div>';
+$frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
 $oH->scripts[] = 'document.querySelectorAll("#signature-preview a").forEach( anchor => {anchor.href="javascript:void(0)"; anchor.target="";} );';
 
 break;
@@ -829,10 +832,10 @@ default: die('Unknown command');
 // ------
 include APP.'_inc_hd.php';
 
-if ( !empty($frm_hd) ) echo $frm_hd.PHP_EOL;
+if ( $frm_hd ) echo $frm_hd.PHP_EOL;
 CHtml::msgBox($oH->selfname,$frm_attr);
-echo PHP_EOL.implode(PHP_EOL,$frm).PHP_EOL;
+echo implode(PHP_EOL,$frm).PHP_EOL;
 CHtml::msgBox('/');
-if ( !empty($frm_ft) ) echo $frm_ft.PHP_EOL;
+if ( $frm_ft ) echo $frm_ft.PHP_EOL;
 
 include APP.'_inc_ft.php';
