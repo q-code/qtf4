@@ -219,6 +219,7 @@ private function sqlQuote($value)
 private function sqlConst(string $sql)
 {
   if ( empty($sql) ) die(__METHOD__.' invalid arguments');
+  if ( strpos($sql,'TAB')===false ) return $sql; // skip if no more tab
   // Use actual tablenames (constant in the sql statement is replaced by the constant value) - only uppercase
   foreach(TABTABLES as $table) {
     if ( strpos($sql,$table) ) {
@@ -228,9 +229,9 @@ private function sqlConst(string $sql)
   }
   return $sql;
 }
-public function query(string $sql, array $sqlValues=[])
+public function query(string $sql, array $sqlValues=[], bool $withConst=true)
 {
-  $sql = $this->sqlConst($sql); // actual tablenames (constant-name in the sql statement is replaced by the constant value) - only uppercase
+  if ( $withConst ) $sql = $this->sqlConst($sql); // actual tablenames (constant-name in the sql statement is replaced by the constant value) - only uppercase
   // Direct query (no preparation args)
   if ( count($sqlValues)===0 ) return $this->queryDirect($sql);
   // Using preparation. PDO uses prepare() and execute(), non-pdo emulate a preparation with SqlPrepare
@@ -305,10 +306,10 @@ private function queryDirect(string $sql)
   if ( $this->stats ) { ++$this->stats['num']; $this->stats['end'] = gettimeofday(true); }
   return true;
 }
-public function exec(string $sql, array $sqlValues=[])
+public function exec(string $sql, array $sqlValues=[], bool $withConst=true)
 {
   if ( $this->stats ) ++$this->stats['num'];
-  $sql = $this->sqlConst($sql); // actual tablenames (constant-name in the sql statement is replaced by the constant value) - only uppercase
+  if ( $withConst ) $sql = $this->sqlConst($sql); // actual tablenames (constant-name in the sql statement is replaced by the constant value) - only uppercase
 
   // Direct query (no preparation args or no pdo)
   if ( count($sqlValues)===0 ) return $this->execDirect($sql);

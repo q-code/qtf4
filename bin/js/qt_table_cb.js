@@ -48,10 +48,10 @@ function qtCheckboxShiftClick(e) {
   // find checkbox checked having the same [name]
   const items = document.querySelectorAll(`[name="${e.target.name}"]:checked`);
   if ( items.length<2 ) return; // no others
-  const sorted_rows = [...items].map(item => parseInt(item.dataset.row)).sort();
-  // checks between first and last found
-  const max = sorted_rows.pop();
-  for(let i=sorted_rows[0]+1; i<max; ++i ) {
+  const idx = [...items].map(item => parseInt(item.dataset.row));
+  const idxMin = Math.min(...idx);
+  const idxMax = Math.max(...idx);
+  for(let i=idxMin; i<idxMax+1; ++i ) {
     const el = document.querySelector(`[name="${e.target.name}"][data-row="${i}"]`);
     if ( el ) el.checked = true;
   }
