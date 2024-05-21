@@ -20,12 +20,12 @@ if ( isset($_POST['ok']) && $_POST['ok']===makeFormCertificate('a2038e83fd6618a4
 if ( isset($_POST['ok']) && $_POST['ok']!==$certificate ) die('Unable to check certificate');
 
 $s = -1; // [int]
-$q = ''; // query model
+$q = ''; // query model {ref|qkw|kw|adv|user|userm}
 $fv = ''; // keyword(s), tag(s), date1 or username
 $fw = ''; // timeframe, date2 or userid
-$fs = ''; // status
+$fs = ''; // status {'0'|'1'}
 $to = false; // title only
-qtArgs('int:s q fv fw boo:to fs qkw');
+qtArgs('int:s char5:q fv fw char:fs qkw boo:to');
 
 // ------
 // SUBMITTED

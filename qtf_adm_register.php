@@ -20,9 +20,9 @@ if ( !empty($_GET['cat']) ) $cat = substr($_GET['cat'],0,2); // in case working 
 if ( !empty($_POST['cat']) ) $cat = substr($_POST['cat'],0,2);
 // ids [array-of-int] from GET, POST, or Checkboxes
 $ids = [];
-if ( isset($_GET['ids']) ) $ids = array_map( 'intval', explode(',',$_GET['ids']) );
-if ( isset($_POST['ids']) ) $ids = array_map( 'intval', explode(',',$_POST['ids']) );
-if ( isset($_POST['t1-cb']) ) $ids = getPostedValues('t1-cb');
+if ( isset($_GET['ids']) ) $ids = array_map('intval', explode(',',$_GET['ids']));
+if ( isset($_POST['ids']) ) $ids = array_map('intval', explode(',',$_POST['ids']));
+if ( isset($_POST['t1-cb']) && is_array($_POST['t1-cb'])) $ids = array_map('intval',$_POST['t1-cb']);
 
 $oH->links['css'] = '<link rel="stylesheet" type="text/css" href="bin/css/admin.css"/>';
 include translate('lg_adm.php');

@@ -25,14 +25,6 @@ function sectionsAsOption(int $selected=-1, array $reject=[], array $disabled=[]
   }
   return $str;
 }
-function getPostedValues(string $post='t1-cb', bool $asInt=true)
-{
-  if ( !isset($_POST[$post]) ) return [];
-  // POSTs values can be transmitted in an array (i.e. checkboxes 'name[]') or in a input csv-string
-  $arr = is_array($_POST[$post]) ? $_POST[$post] : explode(',',$_POST[$post]);
-  return $asInt ? array_map('intval', $arr) : $arr;
-  // NOTE intval allows string|float|boolean|array but numeric is rounded-down, array/boolean become 0|1, text become 0
-}
 function htmlCsvLink($strUrl,$intCount=20,$pn=1)
 {
   if ( empty($strUrl) ) return '';

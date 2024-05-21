@@ -24,7 +24,7 @@ $ids = '';
 $uri = '';
 qtArgs('a! int:s ids uri');
 $ids = array_map('intval', explode(',',$ids));
-if ( isset($_POST['t1-cb']) ) $ids = getPostedValues('t1-cb');
+if ( isset($_POST['t1-cb']) && is_array($_POST['t1-cb'])) $ids = array_map('intval',$_POST['t1-cb']);
 $strIds = implode(',',$ids);
 
 $oH->selfname = L('Item+');

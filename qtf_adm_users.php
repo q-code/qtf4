@@ -256,12 +256,9 @@ while($row=$oDB->getRow())
   $t->arrTd['pic']->content = '<div class="magnifier center">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', '').'</div>';
   $t->arrTd['role']->content = L('Role_'.strtoupper($row['role']));
   $t->arrTd['numpost']->content = qtK((int)$row['numpost']);
-  if ( $strCateg=='FM' || $strCateg=='SC' )
-  {
+  if ( $strCateg=='FM' || $strCateg=='SC' ) {
   $t->arrTd['firstdate']->content = empty($row['firstdate']) ? '' : qtDate($row['firstdate'],'$','',true);
-  }
-  else
-  {
+  } else {
   $t->arrTd['lastdate']->content = (empty($row['lastdate']) ? '' : qtDate($row['lastdate'],'$','',true)) . (empty($row['ip']) ? '' : '<br><small>('.$row['ip'].')</small>');
   }
   $t->arrTd['closed']->content = $strLock;

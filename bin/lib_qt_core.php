@@ -202,65 +202,55 @@ function qtCtype_digit(string $str)
   return false;
 }
 /**
- * Assign GET/POST values into typed-variables listed in $def. Suffix ! means a GET/POST is required
- * @param string $def list of type:variable, space separated. Ex. "a! b int:c boo:d"
+ * Assign GET/POST values into typed-variables listed in $defs. Suffix ! means a value is required
+ * @param string $defs list of type:variable, space separated. Ex. "a! char2:b int:c boo:d"
  * @param boolean $inGet read value from $_GET
  * @param boolean $inPost read value from $_POST
  * @param boolean $trim trim value
  * @param boolean $striptags remove tags
- * @param boolean $star2int on int: check, convert '*' to -1
- * @return void global variables listed in $def are re-assigned if the value exists in GET/POST
+ * @param boolean $dieOnCharOverflow die when value length is above charN, otherwhise returns substr
+ * @return void global variables listed in $defs are re-assigned if the value exists in GET/POST
  */
-function qtArgs(string $def, bool $inGet=true, bool $inPost=true, bool $trim=true, bool $striptags=true)
+function qtArgs(string $defs, bool $inGet=true, bool $inPost=true, bool $trim=true, bool $striptags=true, bool $dieOnCharOverflow=true)
 {
-  // NOTES:
-  // Initializing the variables before using qtArgs is recommended. GET/POST values are urldecoded (build-in php)
-  // Only variables in $def are parsed. Other (url-injected) variables are skipped.
-  // Supported types are [integer,float,boolean,string] noted 'int:', 'flo:', 'boo:', 'str:' in the $def
-  // For boolean, TRUE is set when GET/POST is '1' or 'true'. For ALL OTHER string FALSE is set.
-  // For required variable (suffix !), script stops if the variable is not in GET/POST or is an empty string.
-  // When values are not in the GET/POST (and not marked as required), the initial variable remains unchanged (can be a new variable with NULL value if the variable was not initialized).
-  // When both GET and POST are used, the POST-values overwrite GET-values, and POST can include other variables (in addition to those already assigned from GET)
-  // For required variable, the script stops if the variable is declared as empty in GET (even if the variable is also declared in POST)
-  $def = array_filter(explode(' ',$def));
-  foreach($def as $typedvar) {
-    if ( strpos($typedvar,':')===false ) $typedvar = 'str:'.$typedvar; // default str: when no type
-    $arr = explode(':',$typedvar); if ( count($arr)!==2 ) die(__FUNCTION__.'invalid format');
-    $type = substr(trim($arr[0]),0,3); // first 3-lettres defines the type ('boolean', 'bool', 'boo' are valid. 'bol' throws a data type error)
-    $var = trim($arr[1]); // global variable name
+  $defs = array_filter(explode(' ',$defs));
+  foreach($defs as $def) {
+    if ( strpos($def,':')===false ) $def = 'str:'.$def; // no type is str
+    $d = explode(':',$def); if ( count($d)!==2 ) die(__FUNCTION__.' unknown definition ['.$def.']');
+    $type = strtolower(substr($d[0],0,3)); if ( !in_array($type,['str','int','boo','flo','cha']) ) die(__FUNCTION__.' unknown type ['.$d[0].']');
+    $var = trim($d[1]);
     if ( substr($var,-1)==='!' ) { $var = substr($var,0,-1); $required = true; } else { $required = false; } // required becomes FALSE when a value exists in GET or POST
+    $post = null; // reset required
+    if ( $inGet && isset($_GET[$var]) ) $post = $_GET[$var];
+    if ( $inPost && isset($_POST[$var]) ) $post = $_POST[$var]; // POST overwrites GET (ie. a variable well assigned by GET can become missing if set to '' here)
+    if ( $required && ($post==='' || $post===null) ) die(__FUNCTION__.' required argument ['.$var.'] is missing or without value');
+    if ( $post===null ) continue;
+    if ( $trim ) $post = trim($post);
+    if ( $striptags ) $post = strip_tags($post);
+    if ( ($type==='int' || $type==='flo') && !is_numeric($post) ) die(__FUNCTION__.' value ['.$var.'] cannot be casted as ['.$d[0].']');
     global $$var;
-    if ( $inGet && isset($_GET[$var]) ) {
-      if ( $required && $_GET[$var]==='' ) die(__FUNCTION__.'Required argument ['.$var.'] is without value'); // initially empty (before type check, trim or strip_tags)
-      $required = false;
-      if ( $trim ) $_GET[$var] = trim($_GET[$var]);
-      if ( $striptags ) $_GET[$var] = strip_tags($_GET[$var]);
-      if ( ($type==='int' || $type==='flo') && !is_numeric($_GET[$var]) ) die(__FUNCTION__.'Invalid type for argument '.$var);
-      switch($type) {
-        case 'str': $$var = $_GET[$var]; break;
-        case 'int': $$var = (int)$_GET[$var]; break;
-        case 'boo': $$var = $_GET[$var]==='1' || strtolower($_GET[$var])==='true' ? true : false; break;
-        case 'flo': $$var = (float)$_GET[$var]; break;
-        default: die(__FUNCTION__.'Invalid data type ['.$type.']');
-      }
+    switch($type) {
+      case 'str': $$var = $post; break;
+      case 'int': $$var = (int)$post; break;
+      case 'boo': $$var = $post==='1' || strtolower($post)==='true' ? true : false; break;
+      case 'flo': $$var = (float)$post; break;
+      case 'cha':
+        $size = substr($d[0],-1); // [optional] last character can be the length, between 1..9 (if other, uses 1)
+        $size = !is_numeric($size) ? 1 : (int)$size; if ( $size===0 ) $size = 1;
+        if ( $dieOnCharOverflow && isset($post[$size]) ) die(__FUNCTION__.' maximum '.$size.' char allowed for argument ['.$var.']');
+        $$var = substr($post,0,$size);
+        break;
     }
-    if ( $inPost && isset($_POST[$var]) ) {
-      if ( $required && $_POST[$var]==='' ) die(__FUNCTION__.'Required argument ['.$var.'] is without value'); // initially empty (before type check, trim or strip_tags)
-      $required = false;
-      if ( $trim ) $_POST[$var] = trim($_POST[$var]);
-      if ( $striptags ) $_POST[$var] = strip_tags($_POST[$var]);
-      if ( ($type==='int' || $type==='flo') && !is_numeric($_POST[$var]) ) die(__FUNCTION__.'Invalid type for argument '.$var);
-      switch($type) {
-        case 'str': $$var = $_POST[$var]; break;
-        case 'int': $$var = (int)$_POST[$var]; break;
-        case 'boo': $$var = $_POST[$var]==='1' || strtolower($_POST[$var])==='true' ? true : false; break;
-        case 'flo': $$var = (float)$_POST[$var]; break;
-        default: die(__FUNCTION__.'Invalid data type ['.$type.']');
-      }
-    }
-    // Still required, if required but is not in GET nor in POST
-    if ( $required ) die(__FUNCTION__.' Required argument ['.$var.'] is missing');
   }
+  // Initializing the variables before using qtArgs is recommended. GET/POST values are urldecoded (build-in php)
+  // Only variables in $defs are parsed. Other (url-injected) variables are skipped.
+  // Supported types are [integer,float,boolean,string,char,charN] can be noted 'int:', 'flo:', 'boo:', 'str:', 'char:', 'charN:' in the $defs
+  // For type 'boo', TRUE is assigned when GET/POST is '1' or 'true'. FALSE is assigned for all other values.
+  // For type 'char' (N=1) or 'charN' (N=2..9), with $dieOnCharOverflow TRUE the script stops when the length exceed N, while FALSE assigns the N-first char.
+  // Type 'char' is the same as 'char1'. Wrong type like 'char0' or 'charAZ' is casted as 'char1'.
+  // For required variable (suffix !), script stops if the variable is not in GET/POST or is an empty string.
+  // When a value is not in the GET/POST and not required, the initial variable remains unchanged (if not initialized, new variable is not created)
+  // When both GET and POST are used, the POST-values overwrite GET-values (or are added to those already defined by GET).
 }
 /**
  * Generates a string of html-tags (option, checkbox, span or input-hidden) based on an array
