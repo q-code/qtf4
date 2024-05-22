@@ -47,22 +47,12 @@ function L(string $k, int $n=null, string $format='n w', array $A=[], string $pk
   if ( $dropDoublequote && strpos($res,'"')!==false ) $res = str_replace('"','',$res);
   return $n===null ? $res : sprintf($f, $format==='k w' ? qtK($n) : $n, $res);
 }
-function saveToFile(string $file, string $str='', bool $create=true)
-{
-  if ( empty($file) )  die(__FUNCTION__.'arg #1 must be a string');
-  $error = '';
-  // Stop of no file and creation not allowed
-  if ( !file_exists($file) && !$create ) return 'Impossible to open the file ['.$file.'].';
-  // Update file (or create file)
-  if ( !$handle=fopen($file, 'w') ) $error = 'Impossible to open the file ['.$file.'].';
-  if ( empty($error) ) {
-    if ( fwrite($handle,$str)===FALSE ) {
-      $error = 'Impossible to write into the file ['.$file.'].';
-    } else {
-     fclose($handle);
-    }
-  }
-  return $error;
+function saveToFile(string $file, string $txt='', bool $create=true, string $mode='w') {
+  if ( empty($file) || empty($mode) ) die('saveToFile: invalid argument');
+  if ( !file_exists($file) && !$create ) throw new Exception('Impossible to open the file ['.$file.']');
+  if ( !$handle=fopen($file, $mode) ) throw new Exception('Impossible to open the file ['.$file.'] in mode ['.$mode.']');
+  if ( fwrite($handle,$txt)===FALSE ) throw new Exception('Impossible to write into the file ['.$file.']');
+  fclose($handle);
 }
 
 include '../config/config_db.php';

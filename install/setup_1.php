@@ -73,24 +73,17 @@ if ( isset($_POST['ok']) ) try {
   const QDB_USER = "'.$arr['QDB_USER'].'";
   const QDB_PWD = "'.$arr['QDB_PWD'].'";
   const QDB_INSTALL = "'.$date.' '.APP.substr($date,-1).'";'; // default memory namespace is "qtf{n}"
-  $error = saveToFile('../config/config_db.php',$str); // SAVE TO FILE
-  if ( !empty($error) ) throw new Exception( L('E_save').'<br>'.$error );
+  saveToFile('../config/config_db.php',$str); // SAVE TO FILE
   echo '<p class="result ok">'.L('S_save').'</p>';
 
   // Test Connection
-  if ( $arr['QDB_SYSTEM']=='pdo.sqlite' || $arr['QDB_SYSTEM']=='sqlite' )
-  {
+  if ( $arr['QDB_SYSTEM']=='pdo.sqlite' || $arr['QDB_SYSTEM']=='sqlite' ) {
     // for sqlite, check filename insead of connect()
     if ( !file_exists('../'.$arr['QDB_DATABASE']) ) throw new Exception( 'SQLite database file not found: '.$arr['QDB_DATABASE'].'<br><a href="setup_1.php?sqlite='.$arr['QDB_DATABASE'].'">Create SQLite file ['.$arr['QDB_DATABASE'].']...</a>' );
-  }
-  else
-  {
-    if ( isset($_SESSION['qtf_dbologin']) )
-    {
+  } else {
+    if ( isset($_SESSION['qtf_dbologin']) ) {
     $oDB = new CDatabase($arr['QDB_SYSTEM'],$arr['QDB_HOST'],$arr['QDB_DATABASE'],$_SESSION['qtf_dbologin'],$_SESSION['qtf_dbopwd']);
-    }
-    else
-    {
+    } else {
     $oDB = new CDatabase($arr['QDB_SYSTEM'],$arr['QDB_HOST'],$arr['QDB_DATABASE'],$arr['QDB_USER'],$arr['QDB_PWD']);
     }
     if ( !empty($oDB->error) ) throw new Exception( sprintf(L('E_connect'),$arr['QDB_DATABASE'],$arr['QDB_HOST']).'<br>'.$oDB->error );

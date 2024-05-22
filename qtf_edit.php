@@ -25,7 +25,9 @@ $a = ''; // required
 $s = -1;
 $t = -1;
 $p = -1;
-qtArgs('a! int:s int:t int:p'); // a,s,t,p can be send by GET or POST, others only by POST
+qtArgs('char2:a! int:s int:t int:p'); // a,s,t,p can be send by GET or POST, others only by POST
+if ( !in_array($a,['nt','re','ed','qu']) ) die('Invalid parameter a');
+if ( $s<0 ) die('Missing parameters: section id');
 
 // Initialise containers and check $s
 $withDoc = false;
@@ -50,7 +52,6 @@ switch($a) {
   case 're': $oH->selfname = L('Reply'); break;
   case 'qu': $oH->selfname = L('Reply'); break;
   case 'ed': $oH->selfname = L('Edit_message'); break;
-  default: die('Missing parameters a');
 }
 $oH->exiturl = APP.'_item.php?t='.$t; if ( $t<0 ) $oH->exiturl = 'qtf_items.php?s='.$s;
 $oH->exitname = L('Item+');
@@ -219,7 +220,6 @@ if ( isset($_POST['send']) ) try {
     if ( isset($_POST['topicstatususer']) && $_POST['topicstatususer'][0]=='1' ) $oT->setStatus('1');
     break;
 
-  default: die('Invalid edit type');
   }
 
   // clear caches (SectionsStats, Sections, StatsGDS)

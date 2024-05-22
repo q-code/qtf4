@@ -19,30 +19,24 @@ if ( !SUser::canAccess('show_stats') ) $oH->voidPage('user-lock.svg',11,true); /
 
 include translate('lg_stat.php');
 include 'bin/lib_qt_stat.php';
-
 function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
 {
   global $L;
   $csv = '';
-  foreach($arrYears as $y)
-  {
+  foreach($arrYears as $y) {
     //header
     $csv .= qtQuote($y).';';
-    switch($bt)
-    {
+    switch($bt) {
     case 'q': for ($i=1;$i<=MAXBT;++$i) { $csv .= qtQuote('Q'.$i).';'; } break;
     case 'm': for ($i=1;$i<=MAXBT;++$i) { $csv .= qtQuote($L['dateMM'][$i]).';'; } break;
     case 'd': for ($i=1;$i<=MAXBT;++$i) { $csv .= qtQuote(qtDate(addDate($strTendaysago,$i,'day'),'d M','')).';'; } break;
     }
     $csv .= qtQuote(($bt==='d' ? '10 '.strtolower(L('Days')) : L('Total'))).'<br>';
     // data series
-    foreach($arrSeries as $k=>$title)
-    {
+    foreach($arrSeries as $k=>$title) {
       $csv .= qtQuote($title).';';
       for ($intBt=1;$intBt<=MAXBT;$intBt++)
-      {
       $csv .= (isset($arrD[$y][$k][$intBt]) ? $arrD[$y][$k][$intBt] : 0).';';
-      }
       $csv .= $arrS[$y][$k].'<br>';
     }
   }
@@ -52,8 +46,6 @@ function renderTables($arrYears,$bt,$arrSeries,$arrD,$arrS,$strTendaysago,$arrC)
 // ------
 // INITIALISE
 // ------
-include translate('lg_stat.php');
-
 $csv = '';
 $pan = 'g'; // panel: g=global, gt=globaltrend, d=detail, dt=detailtrend
 $bt  = 'm';
@@ -61,35 +53,31 @@ $s   = -1;
 $y   = (int)date('Y'); if ( (int)date('n')<2 ) --$y;
 $y0  = $y-1;
 $tag = '';
-qtArgs('pan bt int:s int:y int:y0 tag');
-
-$sqlSection='';
-$sqlTags = '';
+qtArgs('char2:pan char:bt int:s int:y int:y0 tag');
 
 // ------
 // Check and Initialise
 // ------
+$sqlSection = '';
+$sqlTags = '';
 if ( $s>=0 ) $sqlSection = 'forum='.$s.' AND '; // int to avoid injection
 if ( $y0>=$y ) $y0 = $y-1;
-if ( !empty($tag) )
-{
+if ( !empty($tag) ) {
   $tag = urldecode($tag); if ( substr($tag,-1,1)===';' ) $tag = substr($tag,0,-1);
   $arrTags = explode(';',$tag);
   $str = '';
-  foreach($arrTags as $strTag)
-  {
-  if ( !empty($str) ) $str .= ' OR ';
-  $str .= 'UPPER(tags) LIKE "%'.strtoupper($strTag).'%"';
+  foreach($arrTags as $strTag) {
+    if ( !empty($str) ) $str .= ' OR ';
+    $str .= 'UPPER(tags) LIKE "%'.strtoupper($strTag).'%"';
   }
   if ( !empty($str) ) $sqlTags = ' ('.$str.') AND ';
 }
 $arrYears = $pan=='gt' || $pan=='dt' ? array($y0,$y) : array($y);
-switch($bt)
-{
-case 'q': define('MAXBT',4); break; // quarters
-case 'd': define('MAXBT',10); break; // 10 days
-case 'm': define('MAXBT',12); break; // months
-default: die('Invalid blocktime');
+switch($bt) {
+  case 'q': define('MAXBT',4); break; // quarters
+  case 'd': define('MAXBT',10); break; // 10 days
+  case 'm': define('MAXBT',12); break; // months
+  default: die('Invalid blocktime');
 }
 
 $row = SMem::get('statG');

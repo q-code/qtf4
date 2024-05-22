@@ -67,35 +67,32 @@ $s   = -1;
 $y   = (int)date('Y'); if ( (int)date('n')<2 ) --$y;
 $y0  = $y-1;
 $tag = '';
-qtArgs('pan bt int:s int:y int:y0 tag');
+qtArgs('char2:pan char:bt int:s int:y int:y0 tag');
 
-$sqlSection='';
-$sqlTags = '';
 
 // ------
 // Check and Initialise
 // ------
+$sqlSection='';
+$sqlTags = '';
 if ( $s>=0 ) $sqlSection = 'forum='.$s.' AND '; // int to avoid injection
 if ( $y0>=$y ) $y0=$y-1;
-if ( !empty($tag) )
-{
+if ( !empty($tag) ) {
   $tag = urldecode($tag); if ( substr($tag,-1,1)===';' ) $tag = substr($tag,0,-1);
   $arrTags = explode(';',$tag);
   $str = '';
-  foreach($arrTags as $strTag)
-  {
-  if ( !empty($str) ) $str .= ' OR ';
-  $str .= 'UPPER(tags) LIKE "%'.strtoupper($strTag).'%"';
+  foreach($arrTags as $strTag) {
+    if ( !empty($str) ) $str .= ' OR ';
+    $str .= 'UPPER(tags) LIKE "%'.strtoupper($strTag).'%"';
   }
   if ( !empty($str) ) $sqlTags = ' ('.$str.') AND ';
 }
 $arrYears = $pan=='gt' || $pan=='dt' ? array($y0,$y) : array($y);
-switch($bt)
-{
-case 'q': define('MAXBT',4); break; // quarters
-case 'd': define('MAXBT',10); break; // 10 days
-case 'm': define('MAXBT',12); break; // months
-default: die('Invalid blocktime');
+switch($bt) {
+  case 'q': define('MAXBT',4); break; // quarters
+  case 'd': define('MAXBT',10); break; // 10 days
+  case 'm': define('MAXBT',12); break; // months
+  default: die('Invalid blocktime');
 }
 
 $row = SMem::get('statG');

@@ -16,14 +16,13 @@ require 'bin/init.php';
 $oH->selfurl = 'qtf_edit_preview.php';
 if ( !SUser::canView('V5') ) $oH->voidPage('user-lock.svg',11,true); //█
 
-$a='';
+// INITIALISE
+$a = '';
 $s = -1;
 $t = -1;
-qtArgs('int:s! a! int:t!',false,true); // in POST only
-if ( $s<0 ) die('Missing parameters: section id');
+qtArgs('char2:a! int:s! int:t!',false); // in POST only
 if ( !in_array($a,['nt','re','ed','qu','de']) ) die('Invalid parameter a');
-
-// INITIALISE
+if ( $s<0 ) die('Missing parameters: section id');
 
 $oH->error = '';
 $oH->selfname = L('Message');

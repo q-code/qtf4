@@ -208,26 +208,27 @@ function qtCtype_digit(string $str)
  * @param boolean $inPost read value from $_POST
  * @param boolean $trim trim value
  * @param boolean $striptags remove tags
- * @param boolean $dieOnCharOverflow die when value length is above charN, otherwhise returns substr
+ * @param boolean $dieOnCharSize die when value length is above charN, otherwhise returns substr
  * @return void global variables listed in $defs are re-assigned if the value exists in GET/POST
  */
-function qtArgs(string $defs, bool $inGet=true, bool $inPost=true, bool $trim=true, bool $striptags=true, bool $dieOnCharOverflow=true)
+function qtArgs(string $defs, bool $inGet=true, bool $inPost=true, bool $trim=true, bool $striptags=true, bool $dieOnCharSize=true)
 {
-  $defs = array_filter(explode(' ',$defs));
-  foreach($defs as $def) {
+  foreach(array_filter(explode(' ',$defs)) as $def) {
     if ( strpos($def,':')===false ) $def = 'str:'.$def; // no type is str
-    $d = explode(':',$def); if ( count($d)!==2 ) die(__FUNCTION__.' unknown definition ['.$def.']');
-    $type = strtolower(substr($d[0],0,3)); if ( !in_array($type,['str','int','boo','flo','cha']) ) die(__FUNCTION__.' unknown type ['.$d[0].']');
-    $var = trim($d[1]);
-    if ( substr($var,-1)==='!' ) { $var = substr($var,0,-1); $required = true; } else { $required = false; } // required becomes FALSE when a value exists in GET or POST
-    $post = null; // reset required
+    $def = explode(':',$def); if ( count($def)!==2 ) die(__FUNCTION__.' unknown definition ['.$def.']');
+    // reset
+    $type = strtolower(substr($def[0],0,3)); if ( !in_array($type,['str','int','boo','flo','cha']) ) die(__FUNCTION__.' unknown type ['.$type.']');
+    $required = false;
+    $var = $def[1]; if ( substr($var,-1)==='!' ) { $var = substr($var,0,-1); $required = true; }
+    $post = null;
     if ( $inGet && isset($_GET[$var]) ) $post = $_GET[$var];
     if ( $inPost && isset($_POST[$var]) ) $post = $_POST[$var]; // POST overwrites GET (ie. a variable well assigned by GET can become missing if set to '' here)
+    // check and cast
     if ( $required && ($post==='' || $post===null) ) die(__FUNCTION__.' required argument ['.$var.'] is missing or without value');
-    if ( $post===null ) continue;
+    if ( is_null($post) ) continue;
     if ( $trim ) $post = trim($post);
     if ( $striptags ) $post = strip_tags($post);
-    if ( ($type==='int' || $type==='flo') && !is_numeric($post) ) die(__FUNCTION__.' value ['.$var.'] cannot be casted as ['.$d[0].']');
+    if ( ($type==='int' || $type==='flo') && !is_numeric($post) ) die(__FUNCTION__.' value ['.$var.'] cannot be casted as ['.$type.']');
     global $$var;
     switch($type) {
       case 'str': $$var = $post; break;
@@ -235,18 +236,18 @@ function qtArgs(string $defs, bool $inGet=true, bool $inPost=true, bool $trim=tr
       case 'boo': $$var = $post==='1' || strtolower($post)==='true' ? true : false; break;
       case 'flo': $$var = (float)$post; break;
       case 'cha':
-        $size = substr($d[0],-1); // [optional] last character can be the length, between 1..9 (if other, uses 1)
+        $size = substr($def[0],-1); // [optional] last character can be the length, between 1..9 (if other, uses 1)
         $size = !is_numeric($size) ? 1 : (int)$size; if ( $size===0 ) $size = 1;
-        if ( $dieOnCharOverflow && isset($post[$size]) ) die(__FUNCTION__.' maximum '.$size.' char allowed for argument ['.$var.']');
+        if ( $dieOnCharSize && isset($post[$size]) ) die(__FUNCTION__.' maximum '.$size.' char allowed for argument ['.$var.']');
         $$var = substr($post,0,$size);
         break;
     }
   }
   // Initializing the variables before using qtArgs is recommended. GET/POST values are urldecoded (build-in php)
-  // Only variables in $defs are parsed. Other (url-injected) variables are skipped.
+  // Only variables in $defs are parsed and assigned. Other (url-injected) variables are skipped.
   // Supported types are [integer,float,boolean,string,char,charN] can be noted 'int:', 'flo:', 'boo:', 'str:', 'char:', 'charN:' in the $defs
-  // For type 'boo', TRUE is assigned when GET/POST is '1' or 'true'. FALSE is assigned for all other values.
-  // For type 'char' (N=1) or 'charN' (N=2..9), with $dieOnCharOverflow TRUE the script stops when the length exceed N, while FALSE assigns the N-first char.
+  // For type 'boo', TRUE is assigned when GET/POST is '1' or 'true', FALSE is assigned for all other values.
+  // For type 'char' (N=1) or 'charN' (N=2..9), $dieOnCharSize TRUE will stop the script when the length exceed N while FALSE assigns the N-first char.
   // Type 'char' is the same as 'char1'. Wrong type like 'char0' or 'charAZ' is casted as 'char1'.
   // For required variable (suffix !), script stops if the variable is not in GET/POST or is an empty string.
   // When a value is not in the GET/POST and not required, the initial variable remains unchanged (if not initialized, new variable is not created)
