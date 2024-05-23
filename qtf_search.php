@@ -8,8 +8,7 @@ session_start();
 require 'bin/init.php';
 
 // INITIALISE
-$oH->selfurl = 'qtf_search.php';
-$oH->selfname = L('Search');
+$oH->name = L('Search');
 $oH->exitname = L('Search');
 if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) $oH->voidPage('tools.svg',99,true,false); //█
 if ( !SUser::canAccess('search') ) $oH->voidPage('user-lock.svg',11,true); //█
@@ -98,7 +97,7 @@ echo '<h2>'.L('Search_criteria').'</h2>'.PHP_EOL;
 if ( !empty($criteriaError) ) echo '<p class="error">'.$criteriaError.'</p>';
 
 // SEARCH BY KEY
-echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
+echo '<form method="post" action="'.url($oH->php).'" autocomplete="off">
 <section class="search-box criteria">
 '.qtSVG('search', 'class=filigrane').'
 <div>'.L('Keywords').' <div id="ac-wrapper-kw"><input required type="text" id="kw" name="fv" size="40" maxlength="64" value="'.($q=='kw' ? qtAttr($fv,0,'&quot;') : '').'" data-multi="1"/></div>*</div>
@@ -120,7 +119,7 @@ foreach($_Sections as $mSec) {
   if ( $mSec['numfield']!=='N' ) { $refExists=true; break; }
 }
 if ( $refExists ) {
-echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
+echo '<form method="post" action="'.url($oH->php).'" autocomplete="off">
 <section class="search-box criteria">
 '.qtSVG('search', 'class=filigrane').'
 <div>'.L('Ref').' <div id="ac-wrapper-ref"><input required type="text" id="ref" name="fv" size="5" minlength="1" maxlength="10" value="'.($q=='ref' ? qtAttr($fv,0,'&quot;') : '').'"/>&nbsp;'.L('H_Reference').'</div></div>
@@ -136,7 +135,7 @@ echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
 }
 
 // SEARCH BY DATE & TAGS
-echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
+echo '<form method="post" action="'.url($oH->php).'" autocomplete="off">
 <section class="search-box criteria">
 '.qtSVG('search', 'class=filigrane').'
 <div>'.L('Date').' <select id="tf" name="fw" size="1">
@@ -159,7 +158,7 @@ echo '<div style="flex-grow:1;text-align:right">
 ';
 
 // SEARCH NAME
-echo '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">
+echo '<form method="post" action="'.url($oH->php).'" autocomplete="off">
 <section class="search-box criteria">
 '.qtSVG('search', 'class=filigrane').'
 <div><select name="q" size="1">'.qtTags( ['user'=>L('Item').' '.L('author'),'userm'=>L('Item').'/'.L('reply').' '.L('author')], $q ).'

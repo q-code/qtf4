@@ -9,8 +9,7 @@ require 'bin/init.php';
 
 // INITIALISE
 
-$oH->selfurl = APP.'_privacy.php';
-$oH->selfname = L('Legal');
+$oH->name = L('Legal');
 if ( !isset($_SESSION[QT]['admin_phone']) ) $_SESSION[QT]['admin_phone'] = '';
 
 // ------
@@ -18,7 +17,7 @@ if ( !isset($_SESSION[QT]['admin_phone']) ) $_SESSION[QT]['admin_phone'] = '';
 // ------
 include APP.'_inc_hd.php';
 
-CHtml::msgBox($oH->selfname);
+CHtml::msgBox($oH->name);
 
 include translate('app_rules.txt');
 if ( isset($_SESSION[QT]['register_coppa']) && $_SESSION[QT]['register_coppa']==='1' ) include translate('app_rules_coppa.txt');

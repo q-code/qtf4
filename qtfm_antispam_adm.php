@@ -14,12 +14,11 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 // INITIALISE
 
-$oH->selfurl = 'qtfm_antispam_adm.php';
-$oH->selfname = $L['Antispam']['Admin'];
-$oH->selfparent = L('Module');
-$oH->exiturl = $oH->selfurl;
-$oH->exitname = $oH->selfname;
-$oH->selfversion = $L['Antispam']['Version'].' 4.0<br>';
+$oH->name = $L['Antispam']['Admin'];
+$parentname = L('Module');
+$oH->exiturl = $oH->php;
+$oH->exitname = $oH->name;
+$moduleversion = $L['Antispam']['Version'].' 4.0<br>';
 
 // ------
 // SUBMITTED
@@ -90,7 +89,7 @@ $strIp       = substr($_SESSION[QT]['m_antispam_conf'],11,1);
 
 // FORM
 
-echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+echo '<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="config">'.$L['Antispam']['Basic_rules'].'</h2>
 <table class="t-conf">
 <tr>
@@ -160,8 +159,8 @@ echo '
 if ( isset($arrIp) )
 {
   $i = count($arrIp); if ( $i==1 && empty($arrIp[0]) ) $i=0; // one line but empty
-  echo ' ['.sprintf($L['Antispam']['Banned_ip'],$i).'] <a href="tool_txt.php?exit='.$oH->selfurl.'&file='.$file.'&help=qtfm_antispam_ip.txt">'.L('Edit').'...</a>';
-  if ( $i ) echo ' | <a href="tool_txt.php?a=delete&exit='.$oH->selfurl.'&file='.$file.'&help=qtfm_antispam_ip.txt">'.L('Delete').'</a>';
+  echo ' ['.sprintf($L['Antispam']['Banned_ip'],$i).'] <a href="tool_txt.php?exit='.$oH->php.'&file='.$file.'&help=qtfm_antispam_ip.txt">'.L('Edit').'...</a>';
+  if ( $i ) echo ' | <a href="tool_txt.php?a=delete&exit='.$oH->php.'&file='.$file.'&help=qtfm_antispam_ip.txt">'.L('Delete').'</a>';
 
 }
 echo '</td>
@@ -169,7 +168,7 @@ echo '</td>
 </table>
 ';
 echo '<p class="submit">
-<a href="'.$oH->selfurl.'?a=default" style="font-weight:normal;">'.$L['Antispam']['Default'].'</a>&nbsp;&middot;&nbsp;<button type="submit" name="ok" value="ok">'.L('Save').'</button>
+<a href="'.$oH->php.'?a=default" style="font-weight:normal;">'.$L['Antispam']['Default'].'</a>&nbsp;&middot;&nbsp;<button type="submit" name="ok" value="ok">'.L('Save').'</button>
 </p>
 </form>
 ';

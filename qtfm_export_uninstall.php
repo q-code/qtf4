@@ -27,8 +27,7 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v4.0';
-$oH->selfurl = 'qtfm_export_uninstall.php';
-$oH->selfname = 'Uninstall module EXPORT '.$strVersion;
+$oH->name = 'Uninstall module EXPORT '.$strVersion;
 
 // UNINSTALL
 

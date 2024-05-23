@@ -13,7 +13,6 @@ require 'bin/init.php';
 
 // Security and compliance
 
-$oH->selfurl = 'qtf_edit_preview.php';
 if ( !SUser::canView('V5') ) $oH->voidPage('user-lock.svg',11,true); //█
 
 // INITIALISE
@@ -25,7 +24,7 @@ if ( !in_array($a,['nt','re','ed','qu','de']) ) die('Invalid parameter a');
 if ( $s<0 ) die('Missing parameters: section id');
 
 $oH->error = '';
-$oH->selfname = L('Message');
+$oH->name = L('Message');
 $oS = new CSection($s);
 $oT = new CTopic($t);
 $oP = new CPost(); if ( isset($_POST['p']) ) $oP->id = (int)$_POST['p']; // id = -1 while preview
@@ -89,9 +88,9 @@ try {
 
 // PREPARE DISPLAY
 
-if ( $_POST['a']=='nt' ) { $oH->selfname = L('New_item'); $oP->type = 'P'; }
-if ( $_POST['a']=='ed' ) $oH->selfname = L('Edit_message');
-if ( $_POST['a']=='qu' || $_POST['a']=='re' ) $oH->selfname = L('Reply');
+if ( $_POST['a']=='nt' ) { $oH->name = L('New_item'); $oP->type = 'P'; }
+if ( $_POST['a']=='ed' ) $oH->name = L('Edit_message');
+if ( $_POST['a']=='qu' || $_POST['a']=='re' ) $oH->name = L('Reply');
 
 // get user info
 if ( empty($oP->userid) ) $oP->userid=$oP->modifuser;

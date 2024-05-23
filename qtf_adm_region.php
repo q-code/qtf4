@@ -11,11 +11,10 @@ include translate('lg_zone.php');
 
 // INITIALISE
 
-$oH->selfurl = APP.'_adm_region.php';
-$oH->selfname = L('Board_region');
-$oH->selfparent = L('Settings');
-$oH->exiturl = $oH->selfurl;
-$oH->exitname = $oH->selfname;
+$oH->name = L('Board_region');
+$parentname = L('Settings');
+$oH->exiturl = $oH->php;
+$oH->exitname = $oH->name;
 
 // ------
 // SUBMITTED
@@ -40,8 +39,8 @@ if ( isset($_POST['ok']) ) try {
   include translate('lg_main.php');
   include translate('lg_adm.php');
   include translate('lg_zone.php');
-  $oH->selfname = L('Board_region');
-  $oH->exitname = $oH->selfname;
+  $oH->name = L('Board_region');
+  $oH->exitname = $oH->name;
 
   // Successfull end
   SMem::set('settingsage',time());
@@ -65,7 +64,7 @@ foreach(LANGUAGES as $k=>$values) if ( is_dir('language/'.$k) ) $files[$k] = $va
 
 // FORM
 echo '
-<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="config">'.L('Language').'</h2>
 <table class="t-conf">
 <tr>

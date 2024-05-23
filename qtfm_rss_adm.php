@@ -29,9 +29,8 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 // INITIALISE
 
-$oH->selfurl = 'qtfm_rss_adm.php';
-$oH->selfname = $L['rss']['Admin'];
-$oH->selfversion = $L['Version'].' 4.0';
+$oH->name = $L['rss']['Admin'];
+$moduleversion = $L['Version'].' 4.0';
 
 // ------
 // SUBMITTED
@@ -80,7 +79,7 @@ $strSize = $arrConf[2];
 // FORM
 
 echo '
-<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="config">'.L('Status').'</h2>
 <table class="t-conf">
 <tr>

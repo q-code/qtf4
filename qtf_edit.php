@@ -46,12 +46,11 @@ if ( isset($_POST['text']) ) $oP->text = rtrim($_POST['text']); // right trim
 // Note: text can be forwarded (not yet submitted) when user changes from quickreply to advanced-reply form
 
 // Initialise $oH and check $a
-$oH->selfurl = APP.'_edit.php';
 switch($a) {
-  case 'nt': $oH->selfname = L('New_item'); break;
-  case 're': $oH->selfname = L('Reply'); break;
-  case 'qu': $oH->selfname = L('Reply'); break;
-  case 'ed': $oH->selfname = L('Edit_message'); break;
+  case 'nt': $oH->name = L('New_item'); break;
+  case 're': $oH->name = L('Reply'); break;
+  case 'qu': $oH->name = L('Reply'); break;
+  case 'ed': $oH->name = L('Edit_message'); break;
 }
 $oH->exiturl = APP.'_item.php?t='.$t; if ( $t<0 ) $oH->exiturl = 'qtf_items.php?s='.$s;
 $oH->exitname = L('Item+');
@@ -252,9 +251,9 @@ echo '<div id="message-preview"></div>
 
 // FORM START
 $oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
-echo '<form class="formsafe" id="form-edit" method="post" action="'.url($oH->selfurl).'" enctype="multipart/form-data">
+echo '<form class="formsafe" id="form-edit" method="post" action="'.url($oH->php).'" enctype="multipart/form-data">
 <div class="flex-sp">
-<h2>'.$oH->selfname.'</h2>
+<h2>'.$oH->name.'</h2>
 ';
 
 if ( SUser::isStaff() ) {

@@ -27,8 +27,7 @@ qtArgs('int:id!'); if ( $id<0 ) die('Missing parameter id...');
 // ------
 include translate('lg_reg.php');
 
-$oH->selfurl = APP.'_adm_section_img.php';
-$oH->selfname = L('Change_picture');
+$oH->name = L('Change_picture');
 $oH->exiturl = APP.'_adm_section.php?pan=2&s='.$id.'&up='.(empty($_POST['up']) ? '0' : '1'); // extra arg to indicate image is updated
 
 // ------
@@ -57,7 +56,7 @@ $strMimetypes    = 'image/pjpeg,image/jpeg,image/jpg,image/gif,image/png,image/x
 if ( isset($_POST['del']) && $_POST['del']=='del' )
 {
   CSection::deleteImage($id);
-  $oH->redirect($oH->selfurl.'?id='.$id);
+  $oH->redirect($oH->php.'?id='.$id);
 }
 
 // ------

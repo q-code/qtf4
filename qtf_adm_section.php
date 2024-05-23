@@ -16,9 +16,8 @@ $pan = 1; // TAB 1:definition, 2:display or 3:translation
 qtArgs('int:s! int:pan');
 if ( $pan<1 || $pan>3) $pan = 1;
 
-$oH->selfurl = 'qtf_adm_section.php';
-$oH->selfname = L('Section_upd');
-$oH->selfparent = L('Board_content');
+$oH->name = L('Section_upd');
+$parentname = L('Board_content');
 $oH->exiturl = 'qtf_adm_sections.php';
 $oH->exitname = L('Section+');
 
@@ -123,7 +122,7 @@ Unset($arrDest[$oS->pid]);
 $arrDest = array_map(function($str){ return L('Move_to').': '.$str;}, $arrDest);
 
 // DISPLAY TABS
-$m = []; $str = $oH->selfurl.'?s='.$s.'&pan=';
+$m = []; $str = $oH->php.'?s='.$s.'&pan=';
 $m['pan-1'] = L('Settings').       '|href='.$str.'1|id=pan-1|class=pan-tab';
 $m['pan-2'] = L('Display_options').'|href='.$str.'2|id=pan-2|class=pan-tab';
 $m['pan-3'] = L('Translations').   '|href='.$str.'3|id=pan-3|class=pan-tab';
@@ -138,7 +137,7 @@ echo '<div class="pan">
 // FORM 1
 if ( $pan===1 ) {
 
-echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+echo '<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="subconfig">'.L('Definition').'</h2>
 <table class="t-conf">
 <tr>
@@ -233,7 +232,7 @@ if ( !empty($strFile) ) {
   if ( !empty($_GET['up']) ) $oS->setMF('options','logo',$strFile,true); // save if uploaded
   $addOption = '<option value="'.$strFile.'"'.(empty($oS->getMF('options','logo')) ? '' : 'selected').'>'.L('Specific_image').'</option>';
 }
-echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+echo '<form class="formsafe" method="post" action="'.$oH->php.'">
 <table class="t-conf">
 <tr>
 <th><span class="texthead">Logo</span></th>
@@ -276,7 +275,7 @@ echo '<p class="submit">
 // FORM 3
 if ( $pan===3 ) {
 
-echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+echo '<form class="formsafe" method="post" action="'.$oH->php.'">
 <table class="t-conf input100">
 <tr>
 <th>'.L('Title').' *</th>

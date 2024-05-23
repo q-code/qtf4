@@ -27,13 +27,12 @@ if ( isset($_POST['t1-cb']) && is_array($_POST['t1-cb'])) $ids = array_map('intv
 $oH->links['css'] = '<link rel="stylesheet" type="text/css" href="bin/css/admin.css"/>';
 include translate('lg_adm.php');
 include translate('lg_reg.php');
-$oH->selfname = L('Users');
-$oH->selfparent = L('Board_content');
-$oH->selfurl = APP.'_adm_register.php';
+$oH->name = L('Users');
+$parentname = L('Board_content');
 $oH->exiturl = APP.'_adm_users.php';
 $oH->exitname = L('Exit');
 $frm_title = 'Multiple edit';
-$frm_action = $oH->selfurl.'?a='.$a; // when confirmed, ids must be in POST
+$frm_action = $oH->php.'?a='.$a; // when confirmed, ids must be in POST
 $frm_hd = '';
 $frm = [];
 $frm_ft = '';

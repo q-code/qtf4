@@ -124,11 +124,10 @@ $bDroptags = false;
 $bDropdate = false;
 $arrCounts = array('topic'=>0,'reply'=>0);
 
-$oH->selfurl = 'qtfm_import_adm.php';
-$oH->selfname = L('Import_Admin');
-$oH->exiturl = $oH->selfurl;
-$oH->exitname = $oH->selfname;
-$oH->selfversion = L('Import_Version').' 4.0';
+$oH->name = L('Import_Admin');
+$oH->exiturl = $oH->php;
+$oH->exitname = $oH->name;
+$moduleversion = L('Import_Version').' 4.0';
 
 // ------
 // SUBMITTED
@@ -198,7 +197,7 @@ if ( isset($_SESSION['m_import_xml']['droptags']) )  $bDroptags = $_SESSION['m_i
 if ( isset($_SESSION['m_import_xml']['dropdate']) )  $bDropdate = $_SESSION['m_import_xml']['dropdate'];
 
 
-echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'" enctype="multipart/form-data">
+echo '<form class="formsafe" method="post" action="'.$oH->php.'" enctype="multipart/form-data">
 <input type="hidden" name="maxsize" value="5242880"/>
 
 <h2 class="config">'.L('Import_File').'</h2>

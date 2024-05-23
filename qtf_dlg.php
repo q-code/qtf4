@@ -21,15 +21,14 @@ if ( SUser::role()==='V' ) die('Access denied'); // minimum access rights
 $a = '';
 $s = 0;
 $ids = '';
-$uri = '';
+$uri = ''; // with ? if not empty
 qtArgs('a! int:s ids uri');
 $ids = array_map('intval', explode(',',$ids));
 if ( isset($_POST['t1-cb']) && is_array($_POST['t1-cb'])) $ids = array_map('intval',$_POST['t1-cb']);
 $strIds = implode(',',$ids);
 
-$oH->selfname = L('Item+');
-$oH->selfurl = APP.'_dlg.php';
-$oH->exiturl = APP.'_items.php?'.(empty($uri) ? 's='.$s : $uri);
+$oH->name = L('Item+');
+$oH->exiturl = APP.'_items.php'.(empty($uri) ? '?s='.$s : $uri);
 $oH->exitname = L('Exit');
 
 $frm_title = 'Multiple edit';
@@ -112,7 +111,7 @@ case 'itemsType':
 
   // FORM (default type/status is U=unchanged)
   $frm_title = L('Change').' '.L('type').'/'.L('status');
-  $frm[] = '<form method="post" action="'.url($oH->selfurl).'" onsubmit="if (this.newtype.value+this.newstatus.value===``) { alert(`'.L('Nothing_selected').'`); return false; } return true;">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.url($oH->php).'" onsubmit="if (this.newtype.value+this.newstatus.value===``) { alert(`'.L('Nothing_selected').'`); return false; } return true;">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>';
   $frm[] = renderItems($ids,false,true);
@@ -152,7 +151,7 @@ case 'itemsTags':
 
   // FORM
   $frm_title = L('Change').' '.L('tags');
-  $frm[] = '<form method="post" action="'.url($oH->selfurl).'" autocomplete="off">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.url($oH->php).'" autocomplete="off">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>'.renderItems($ids,true);
   $frm[] = '</article>';
@@ -193,7 +192,7 @@ case 'itemsMove':
 
   // FORM
   $frm_title = L('Move').' '.L('item+');
-  $frm[] = '<form method="post" action="'.url($oH->selfurl).'">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.url($oH->php).'">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>';
   $frm[] = renderItems($ids,false,true,true);
@@ -249,7 +248,7 @@ case 'itemsDelete':
 
   // FORM
   $frm_title = L('Delete');
-  $frm[] = '<form method="post" action="'.url($oH->selfurl).'" onsubmit="if (this.deleteT.checked || this.deleteR.checked || this.deleteA.checked) return true; alert(`'.L('Nothing_selected').'`); return false;">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.url($oH->php).'" onsubmit="if (this.deleteT.checked || this.deleteR.checked || this.deleteA.checked) return true; alert(`'.L('Nothing_selected').'`); return false;">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>';
   $frm[] = renderItems($ids,false,true,true);
@@ -346,7 +345,7 @@ case 'replyDelete':
 
   // FORM
   $frm_title = L('Delete');
-  $frm[] = '<form method="post" action="'.url($oH->selfurl).'">'.$frm_dflt_args.'<input type="hidden" name="t" value="'.$t.'"/><input type="hidden" name="p" value="'.$p.'"/>';
+  $frm[] = '<form method="post" action="'.url($oH->php).'">'.$frm_dflt_args.'<input type="hidden" name="t" value="'.$t.'"/><input type="hidden" name="p" value="'.$p.'"/>';
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Reply').':</p>';
   $frm[] = renderReply($p);

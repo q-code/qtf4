@@ -29,8 +29,7 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v4.0';
-$oH->selfurl = 'qtfm_import_install.php';
-$oH->selfname = 'Installation module IMPORT '.$strVersion;
+$oH->name = 'Installation module IMPORT '.$strVersion;
 $bStep1 = true;
 
 // STEP 1

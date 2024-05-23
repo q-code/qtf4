@@ -21,9 +21,8 @@ include APP.'m_ldap_lib.php';
 // INITIALISE
 
 $pan=0;
-$oH->selfurl = APP.'m_ldap_adm.php';
-$oH->selfname = 'LDAP/AD stettings';
-$oH->selfparent = L('Module');
+$oH->name = 'LDAP/AD stettings';
+$parentname = L('Module');
 $oH->exiturl = APP.'_adm_secu.php';
 
 qtArgs('int:pan');
@@ -186,7 +185,7 @@ include APP.'_adm_inc_hd.php';
 // DISPLAY TABS
 $m = [];
 foreach(['Authority','Settings','Test'] as $k=>$str)
-$m['pan-'.$k] = $str.'|href='.$oH->selfurl.'?pan='.$k.'|id=pan-'.$k.'|class=pan-tab';
+$m['pan-'.$k] = $str.'|href='.$oH->php.'?pan='.$k.'|id=pan-'.$k.'|class=pan-tab';
 $m = new CMenu($m, '');
 echo '<div class="pan-tabs">'.$m->build('pan-'.$pan).'</div>';
 
@@ -206,7 +205,7 @@ if ( $_SESSION[QT]['login_addon']==='0')
 {
 echo '<p>Current authority is <span class="bold italic">Internal authority (default)</span>.<br>When module is on-line, change the authority in the page <a href="qtf_adm_secu.php">'.L('Board_security').'</a>.</p><br>';
 }
-echo '<form class="formsafe" method="post" action="'.url($oH->selfurl).'">
+echo '<form class="formsafe" method="post" action="'.url($oH->php).'">
 <h2 class="subconfig">Module status</h2>
 
 <table class="t-conf ldap">
@@ -248,7 +247,7 @@ echo '<tr>
 
 if ( $pan==1 || $pan==2 )
 {
-echo '<form class="formsafe" method="post" action="'.url($oH->selfurl).'">
+echo '<form class="formsafe" method="post" action="'.url($oH->php).'">
 <h2 class="subconfig">Connection and authentication</h2>
 <table class="t-conf ldap">
 <tr>

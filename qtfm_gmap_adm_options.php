@@ -31,12 +31,11 @@ include APP.'m_gmap_lib.php';
 
 // INITIALISE
 
-$oH->selfurl = APP.'m_gmap_adm_options.php';
-$oH->selfname = L('Gmap.Mapping_settings');
-$oH->selfparent = L('Module');
+$oH->name = L('Gmap.Mapping_settings');
+$parentname = L('Module');
 $oH->exiturl = APP.'m_gmap_adm.php';
 $oH->exitname = 'Gmap';
-$oH->selfversion = L('Gmap.Version').' 4.0<br>';
+$moduleversion = L('Gmap.Version').' 4.0<br>';
 
 // ------
 // SUBMITTED for save
@@ -75,7 +74,7 @@ $oH->links[]='<link rel="stylesheet" type="text/css" href="'.APP.'m_gmap.css"/>'
 include APP.'_adm_inc_hd.php';
 
 echo '
-<form class="formsafe" method="post" action="'.url($oH->selfurl).'">
+<form class="formsafe" method="post" action="'.url($oH->php).'">
 <h2 class="config">'.L('Gmap.Symbol_by_role').'</h2>
 <table class="t-conf">
 <tr><td colspan="3" class="right" style="background-color:transparent"><small>'.L('Gmap.Click_to_change').'</small></td></tr>

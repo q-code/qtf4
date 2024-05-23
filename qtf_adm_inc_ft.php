@@ -16,8 +16,8 @@ echo CHtml::pageEntity('/', 'page layout');
 echo CHtml::pageEntity('/', 'page admin');
 
 // Automatic add script {file.php.js} if existing and formsafe
-if ( file_exists($oH->selfurl.'.js') )
-$oH->scripts[] = '<script type="text/javascript" src="'.$oH->selfurl.'.js"></script>';
+if ( file_exists($oH->php.'.js') )
+$oH->scripts[] = '<script type="text/javascript" src="'.$oH->php.'.js"></script>';
 
 $oH->end();
 

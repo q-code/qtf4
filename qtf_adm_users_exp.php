@@ -13,9 +13,8 @@ include translate('lg_adm.php');
 $strTitle = APP.'-users.csv';
 $strSep = ';';
 
-$oH->selfurl = APP.'_adm_users_exp.php';
-$oH->selfname = L('Users_export_csv');
-$oH->selfparent = L('Board_content');
+$oH->name = L('Users_export_csv');
+$parentname = L('Board_content');
 $oH->exiturl = APP.'_adm_users.php';
 $oH->exitname = '&laquo; '.L('Users');
 
@@ -76,7 +75,7 @@ if ( isset($_POST['ok']) ) try {
 include APP.'_adm_inc_hd.php';
 
 echo '<h2 class="config">'.L('File').'</h2>
-<form class="formsafe" method="post" action="'.$oH->selfurl.'" enctype="multipart/form-data">
+<form class="formsafe" method="post" action="'.$oH->php.'" enctype="multipart/form-data">
 <input type="hidden" name="maxsize" value="5242880"/>
 <table class="t-conf">
 <tr>

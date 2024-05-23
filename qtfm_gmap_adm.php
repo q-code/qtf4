@@ -17,12 +17,11 @@ include translate(APP.'m_gmap_adm.php');
 include APP.'m_gmap_lib.php';
 
 // INITIALISE
-$oH->selfurl = APP.'m_gmap_adm.php';
-$oH->selfname = 'Gmap';
-$oH->selfparent = L('Module');
-$oH->exiturl = $oH->selfurl;
-$oH->exitname = $oH->selfname;
-$oH->selfversion = L('Gmap.Version').' 4.0';
+$oH->name = 'Gmap';
+$parentname = L('Module');
+$oH->exiturl = $oH->php;
+$oH->exitname = $oH->name;
+$moduleversion = L('Gmap.Version').' 4.0';
 $useMap = true;
 
 // check register initialized
@@ -95,7 +94,7 @@ function ValidateForm(theForm,enterkeyPressed) {
 include 'qtf_adm_inc_hd.php';
 
 echo '
-<form class="formsafe" method="post" action="'.url($oH->selfurl).'" onsubmit="return ValidateForm(this,enterkeyPressed);">
+<form class="formsafe" method="post" action="'.url($oH->php).'" onsubmit="return ValidateForm(this,enterkeyPressed);">
 <h2 class="config">'.L('Gmap.Mapping_settings').'</h2>
 <table class="t-conf">
 <tr>

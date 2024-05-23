@@ -14,8 +14,7 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 $strVersion='v4.0';
 
-$oH->selfurl = 'qtfm_gmap_install.php';
-$oH->selfname = 'Installation module Gmap '.$strVersion;
+$oH->name = 'Installation module Gmap '.$strVersion;
 
 $bStep1 = true;
 $bStepZ = true;

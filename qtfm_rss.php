@@ -33,8 +33,7 @@ if ( !SUser::canView(($strUser=='V' ? 'V' : 'U')) ) die('Access denied');
 
 include translate(APP.'m_rss.php');
 
-$oH->selfurl = APP.'m_rss.php';
-$oH->selfname = $L['rss']['Rss'];
+$oH->name = $L['rss']['Rss'];
 
 $strRssUrl = $_SESSION[QT]['site_url'].'/rss/';
 
@@ -48,7 +47,7 @@ if ( count($arrDS)==0 )
 {
   // end if no section
   include APP.'_inc_hd.php';
-  echo '<h2>'.$oH->selfname.'</h2><p>Format: '.($strForm==='atom' ? 'Atom' : 'Rss 2.0').'</p>'.PHP_EOL;
+  echo '<h2>'.$oH->name.'</h2><p>Format: '.($strForm==='atom' ? 'Atom' : 'Rss 2.0').'</p>'.PHP_EOL;
   echo '<p>'.$L['rss']['E_nosection'].'</p>';
   include APP.'_inc_ft.php';
   exit;
@@ -66,7 +65,7 @@ foreach($arrSections as $id=>$mSec) {
 include APP.'_inc_hd.php';
 
 // TITLE & version
-echo '<h2>'.$oH->selfname.'</h2><p>Format: '.($strForm=='atom' ? 'Atom' : 'Rss 2.0').'</p>'.PHP_EOL;
+echo '<h2>'.$oH->name.'</h2><p>Format: '.($strForm=='atom' ? 'Atom' : 'Rss 2.0').'</p>'.PHP_EOL;
 
 foreach($arrDS as $domId=>$arrSections) {
     echo '<table class="t-sec">'.PHP_EOL;

@@ -23,7 +23,6 @@ require 'bin/init.php';
 * @var CDatabase $oDB
 */
 include translate('lg_coppa.php');
-$oH->selfurl = 'qtf_form_coppa.php';
 
 // ------
 // HTML BEGIN

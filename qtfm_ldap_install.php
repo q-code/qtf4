@@ -28,8 +28,7 @@ include translate('lg_adm.php');
 // INITIALISE
 
 $strVersion='v1.0';
-$oH->selfurl = 'qtfm_ldap_install.php';
-$oH->selfname = 'Installation module LDAP '.$strVersion;
+$oH->name = 'Installation module LDAP '.$strVersion;
 
 $bStep1 = true;
 

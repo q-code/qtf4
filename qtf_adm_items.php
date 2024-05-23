@@ -15,9 +15,8 @@ if ( empty($_SESSION[QT]['unreplied_days']) ) $_SESSION[QT]['unreplied_days'] = 
 $d = (int)$_SESSION[QT]['unreplied_days']; // days
 qtArgs('int:d');
 
-$oH->selfurl = APP.'_adm_items.php';
-$oH->selfname = L('Item+');
-$oH->selfparent = L('Board_content');
+$oH->name = L('Item+');
+$parentname = L('Board_content');
 $oH->exitname = '&laquo; '.L('Item+');
 
 // ------
@@ -50,7 +49,7 @@ $stats = CSection::getSectionsStats(); // force recompute stats
 
 echo '<p class="right"><a id="tgl-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Unreplied').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></p>
 <div id="tgl-container" class="opt-unreplied right" style="display:none">
-<form method="post" action="'.$oH->selfurl.'">'.
+<form method="post" action="'.$oH->php.'">'.
 sprintf(L('Unreplied_def'),'<input type="number" name="d" min="1" max="99" value="'.$d.'"/>').
 '&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></form>
 </div>';

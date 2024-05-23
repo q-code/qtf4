@@ -13,9 +13,8 @@ if ( SUser::role()!=='A' ) die(L('E_13'));
 
 // INITIALISE
 
-$oH->selfurl = APP.'_adm_prefixicon.php';
 $oH->exiturl = APP.'_adm_sections.php';
-$oH->selfname = L('Item_prefix');
+$oH->name = L('Item_prefix');
 $oH->exitname = L('Section+');
 
 // ------

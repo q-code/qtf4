@@ -36,8 +36,7 @@ if ( $rows<15 || $rows>40 ) $rows=15;
 const HIDE_MENU_TOC = true;
 const HIDE_MENU_LANG = true;
 
-$oH->selfurl = 'tool_txt.php';
-$oH->selfname = empty($title) ? L('File') : $title;
+$oH->name = empty($title) ? L('File') : $title;
 $oH->exiturl = $exit;
 $oH->exitname = L('Exit');
 
@@ -120,7 +119,7 @@ if ( file_exists($file) ) {
   // read file
   $str = file_get_contents($file);
   // editor
-  echo '<form method="post" action="'.$oH->selfurl.'">'.PHP_EOL;
+  echo '<form method="post" action="'.$oH->php.'">'.PHP_EOL;
   if ( !empty($exit) ) echo '<input type="hidden" name="exit" value="'.$oH->exiturl.'"/>'.PHP_EOL;
   if ( !empty($file) ) echo '<input type="hidden" name="file" value="'.$file.'"/>'.PHP_EOL;
   if ( !empty($help) ) echo '<input type="hidden" name="help" value="'.$help.'"/>'.PHP_EOL;
@@ -133,8 +132,8 @@ if ( file_exists($file) ) {
 
   echo '<p>File not found: '.$file.'</p><br>';
   if ( file_exists($file.'.bck') )
-  echo '<p>File found: '.$file.'.bck <a class="button" href="'.$oH->selfurl.'?a=restore&exit='.$oH->exiturl.'&file='.$file.(empty($help) ? '' : '&help='.$help).'">Restore deleted file...</a></p><br>';
-  echo '<p class="submit"><a class="button" href="'.$oH->exiturl.'">'.L('Exit').'</a>',($readonly ? '' : ' &nbsp; <a class="button" href="'.$oH->selfurl.'?a=new&exit='.$oH->exiturl.'&file='.$file.(empty($help) ? '' : '&help='.$help).'">Create file...</a>') ,'</p>';
+  echo '<p>File found: '.$file.'.bck <a class="button" href="'.$oH->php.'?a=restore&exit='.$oH->exiturl.'&file='.$file.(empty($help) ? '' : '&help='.$help).'">Restore deleted file...</a></p><br>';
+  echo '<p class="submit"><a class="button" href="'.$oH->exiturl.'">'.L('Exit').'</a>',($readonly ? '' : ' &nbsp; <a class="button" href="'.$oH->php.'?a=new&exit='.$oH->exiturl.'&file='.$file.(empty($help) ? '' : '&help='.$help).'">Create file...</a>') ,'</p>';
 
 }
 

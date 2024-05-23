@@ -28,8 +28,7 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v4.0';
-$oH->selfurl = 'qtfm_export_install.php';
-$oH->selfname = 'Installation module EXPORT '.$strVersion;
+$oH->name = 'Installation module EXPORT '.$strVersion;
 
 $bStep1 = true;
 $bStep2 = true;

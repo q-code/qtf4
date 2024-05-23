@@ -12,9 +12,8 @@ $id = -1; qtArgs('int:id!'); if ( $id<0 ) die('Missing argument id');
 
 include translate('lg_adm.php');
 
-$oH->selfurl = APP.'_adm_domain.php';
-$oH->selfname = L('Domain_upd');
-$oH->selfparent = L('Board_content');
+$oH->name = L('Domain_upd');
+$parentname = L('Board_content');
 $oH->exiturl = APP.'_adm_sections.php';
 $oH->exitname = qtSVG('angle-left').' '.L('Section+');
 
@@ -55,7 +54,7 @@ if ( isset($_POST['ok']) ) try {
 include APP.'_adm_inc_hd.php';
 
 echo '
-<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="config">'.L('Domain').'</h2>
 <table class="t-conf input100">
 ';

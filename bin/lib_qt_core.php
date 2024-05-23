@@ -9,8 +9,8 @@
  */
 function url(string $url='', string $ext='.html', bool $hidePrefix=true)
 {
-  if ( !QT_URLREWRITE ) return $url;
   if ( empty($url) ) die(__FUNCTION__.' url empty');
+  if ( !defined('QT_URLREWRITE') || !QT_URLREWRITE ) return $url;
   if ( $hidePrefix ) {
     $i = strlen(APP.'_');
     if ( substr($url,0,$i)===APP.'_' ) $url = substr($url,$i);

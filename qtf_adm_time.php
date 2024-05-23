@@ -13,9 +13,8 @@ include translate('lg_zone.php');
 
 // INITIALISE
 
-$oH->selfurl = APP.'_adm_time.php';
-$oH->selfname = 'Server time';
-$oH->selfparent = L('Settings');
+$oH->name = 'Server time';
+$parentname = L('Settings');
 $oH->exiturl = APP.'_adm_region.php';
 $oH->exitname = qtSVG('angle-left').' '.L('Board_region');
 
@@ -61,7 +60,7 @@ include APP.'_adm_inc_hd.php';
 if ( $_SESSION[QT]['defaulttimezone']!=='' ) date_default_timezone_set($_SESSION[QT]['defaulttimezone']); // restore application timezone
 $oDT = new DateTime();
 
-echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+echo '<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="config">Server time zone</h2>
 <table class="t-conf">
 <tr>

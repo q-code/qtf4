@@ -24,8 +24,7 @@ if ( isset($_GET['a']) && $_GET['a']==='out' ) {
 // ------
 // INITIALISE
 // ------
-$oH->selfurl = APP.'_login.php';
-$oH->selfname = L('Login');
+$oH->name = L('Login');
 $strName = isset($_GET['dfltname']) ? qtAttr($_GET['dfltname']) : '';
 $certificate = makeFormCertificate('9db03580c02d0ac85d9d2d6611098fac');
 
@@ -76,10 +75,10 @@ if ( isset($_POST['ok']) ) try {
 // ------
 include 'qtf_inc_hd.php';
 
-CHtml::msgBox($oH->selfname, 'class=msgbox formLogin');
+CHtml::msgBox($oH->name, 'class=msgbox formLogin');
 
 $str = L('Username').(QT_LOGIN_WITH_EMAIL ? ' '.L('or').' '.L('email') : '');
-echo '<form method="post" action="'.url($oH->selfurl).'">'.PHP_EOL;
+echo '<form method="post" action="'.url($oH->php).'">'.PHP_EOL;
 echo '<p><a href="'.url('qtf_register.php?a=id').'">'.L('Forgotten_pwd').'</a></p>';
 echo '<p title="'.$str.'">'.qtSVG('user','class=svg-label').' <input required type="text" id="usr" name="usr" size="24" minlength="4" maxlength="50" value="'.qtAttr($strName).'" placeholder="'.$str.'"/></p>';
 echo '<p class="input-pwd" title="'.L('Password').'">'.qtSVG('lock','class=svg-label').' <input required type="password" id="pwd-1" name="pwd" size="24" minlength="4" maxlength="50" placeholder="'.L('Password').'" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';

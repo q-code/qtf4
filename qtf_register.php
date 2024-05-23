@@ -33,10 +33,9 @@ if ( empty($a) ) die('Missing argument');
 $id = empty($_GET['id']) ? 0 : (int)$_GET['id']; if ( !empty($_POST['id']) ) $id = (int)$_POST['id'];
 
 include translate('lg_reg.php');
-$oH->selfurl = APP.'_register.php';
 $oH->exiturl = APP.'_index.php';
 $oH->exitname = L('Exit');
-$frm_action = $oH->selfurl.'?a='.$a;
+$frm_action = $oH->php.'?a='.$a;
 $frm_attr = 'class=msgbox';
 $frm_hd = '';
 $frm = [];
@@ -50,7 +49,7 @@ switch($a) {
 case 'rules':
 //------
 
-$oH->selfname = L('Register');
+$oH->name = L('Register');
 $intY = empty($_GET['y']) ? 1970 : (int)$_GET['y'];
 $intM = empty($_GET['m']) ? 1 : (int)$_GET['m'];
 $intD = empty($_GET['d']) ? 1 : (int)$_GET['d'];
@@ -91,7 +90,7 @@ break;
 case 'in':
 //------
 
-$oH->selfname = L('Register').($_SESSION[QT]['register_mode']=='backoffice' ? ' ('.L('request').')' : '');
+$oH->name = L('Register').($_SESSION[QT]['register_mode']=='backoffice' ? ' ('.L('request').')' : '');
 $birthday = '';
 $intY = isset($_GET['y']) ? (int)$_GET['y'] : 0;
 $intM = isset($_GET['m']) ? (int)$_GET['m'] : 0;
@@ -307,7 +306,7 @@ case 'out':
 
 if ( $id<2 ) die('Admin and Visitor cannot be removed');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
-$oH->selfname = L('Unregister');
+$oH->name = L('Unregister');
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -357,7 +356,7 @@ case 'pwd':
 if ( $id<1 ) die('Invalid id');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
 include 'bin/class/class.phpmailer.php';
-$oH->selfname = L('Change_password');
+$oH->name = L('Change_password');
 $oH->exiturl = APP.'_user.php?id='.$id;
 $oH->exitname = L('Profile');
 
@@ -424,7 +423,7 @@ break;
 //------
 case 'id':
 //------
-$oH->selfname = L('Forgotten_pwd');
+$oH->name = L('Forgotten_pwd');
 
 // SUBMITTED
 
@@ -433,7 +432,7 @@ if ( isset($_POST['ok']) ) try {
   $_POST['username'] = trim($_POST['username']);
   if ( !qtIsPwd($_POST['username']) ) throw new Exception( L('Username').' '.L('invalid') );
   $oDB->query( "SELECT id FROM TABUSER WHERE name=?", [qtDb($_POST['username'])] );
-  if ( $row=$oDB->getRow() ) $oH->redirect( $oH->selfurl.'?a=reset&id='.$row['id'] ); //█ reset pwd
+  if ( $row=$oDB->getRow() ) $oH->redirect( $oH->php.'?a=reset&id='.$row['id'] ); //█ reset pwd
   throw new Exception( L('Username').' '.L('invalid') );
 
 } catch (Exception $e) {
@@ -458,7 +457,7 @@ case 'role':
 //------
 if ( $id<2 ) die('Guest and first administrator are protected');
 if ( SUser::role()!=='A' ) die('Access denied');
-$oH->selfname = L('Change_role');
+$oH->name = L('Change_role');
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -495,7 +494,7 @@ case 'ban':
 //------
 if ( $id<2 ) die('Guest and first administrator are protected');
 if ( SUser::role()!=='A' ) die('Access denied');
-$oH->selfname = L('Ban');
+$oH->name = L('Ban');
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -533,7 +532,7 @@ case 'delete':
 //------
 if ( $id<2 ) die('Wrong argument (guest and first administrator are protected)');
 if ( SUser::role()!=='A' ) die('Access denied');
-$oH->selfname = L('User_del');
+$oH->name = L('User_del');
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -561,7 +560,7 @@ case 'adm-reset':
 //------
 if ( $id<1 ) die('Missing argument');
 if ( SUser::role()!=='A' ) die('Access denied');
-$oH->selfname = L('Reset_pwd');
+$oH->name = L('Reset_pwd');
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -610,7 +609,7 @@ break;
 case 'reset':
 //------
 if ( $id<1 ) die('Visitor password can not be reset');
-$oH->selfname = L('Forgotten_pwd');
+$oH->name = L('Forgotten_pwd');
 
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
@@ -676,7 +675,7 @@ break;
 case 'qa':
 //------
 if ( $id<1 ) die('Missing argument');
-$oH->selfname = L('Secret_question');
+$oH->name = L('Secret_question');
 $oH->exiturl = APP.'_user.php?id='.$id;
 $oH->exitname = L('Profile');
 
@@ -722,7 +721,7 @@ case 'name':
 if ( $id<1 ) die('Missing parameters');
 if ( SUser::id()!==$id && SUser::role()!=='A' ) die('Access denied');
 
-$oH->selfname = L('Change_name');
+$oH->name = L('Change_name');
 $oH->exiturl = APP.'_user.php?id='.$id;
 $oH->exitname = L('Profile');
 
@@ -769,7 +768,7 @@ case 'sign':
 if ( $id<1 ) die('Visitor cannot be edited');
 if ( SUser::id()!==$id && !SUser::isStaff() ) die('Access denied.');
 
-$oH->selfname = L('Change_signature');
+$oH->name = L('Change_signature');
 $oH->exiturl = APP.'_user.php?id='.$id;
 
 // SUBMITTED
@@ -806,7 +805,7 @@ $frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_yo
 $frm[] = '<p>'.L('H_no_signature').'</p>';
 $frm[] = '<h2>'.L('Signature').'</h2>';
 $frm[] = '<div id="signature-preview">'.$strSign.'</div>';
-$frm[] = '<h2>'.$oH->selfname.'</h2>'.( !empty($oH->error) ? '<p class="error">'.$oH->error.'</p>' : '');
+$frm[] = '<h2>'.$oH->name.'</h2>'.( !empty($oH->error) ? '<p class="error">'.$oH->error.'</p>' : '');
 $frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<div id="signature">';
 $frm[] = '<div class="bbc-bar">'.bbcButtons(3).'</div>';
@@ -833,7 +832,7 @@ default: die('Unknown command');
 include APP.'_inc_hd.php';
 
 if ( $frm_hd ) echo $frm_hd.PHP_EOL;
-CHtml::msgBox($oH->selfname,$frm_attr);
+CHtml::msgBox($oH->name,$frm_attr);
 echo implode(PHP_EOL,$frm).PHP_EOL;
 CHtml::msgBox('/');
 if ( $frm_ft ) echo $frm_ft.PHP_EOL;

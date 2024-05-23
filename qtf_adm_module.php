@@ -12,8 +12,7 @@ include translate('lg_adm.php');
 // INITIALISE
 
 $a = isset($_GET['a']) ? $_GET['a'] : 'add';
-$oH->selfurl = APP.'_adm_module.php';
-$oH->selfname = L('Board_modules');
+$oH->name = L('Board_modules');
 
 // ------
 // SUBMITTED
@@ -48,7 +47,7 @@ include APP.'_adm_inc_hd.php';
 $arr = [];
 foreach(glob(APP.'m_*_install.php') as $name) $arr[] = '<a href="javascript:void(0)" onclick="addValue(this)">'.strtolower(substr($name,5,-12)).'</a>';
 
-echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+echo '<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="config">'.L($a==="rem" ? 'Remove' : 'Add').'</h2>
 <table class="t-conf">
 <tr>

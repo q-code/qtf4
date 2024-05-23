@@ -11,9 +11,8 @@ include translate('lg_adm.php');
 if ( SUser::role()!=='A' ) die('Access denied');
 
 // INITIALISE
-$oH->selfurl = 'qtf_adm_skin.php';
-$oH->selfname = L('Board_layout');
-$oH->selfparent = L('Settings');
+$oH->name = L('Board_layout');
+$parentname = L('Settings');
 
 // ------
 // SUBMITTED
@@ -77,7 +76,7 @@ $customCss = is_writable($_SESSION[QT]['skin_dir'].'custom.css') ? $_SESSION[QT]
 $welcomeTxt = is_writable('language/'.QT_LANG.'/app_welcome.txt') ? 'language/'.QT_LANG.'/app_welcome.txt' : '';
 
 // FORM
-echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+echo '<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="config">'.L('Skin').'</h2>
 <table class="t-conf">
 <tr title="'.L('H_Section_skin').'">

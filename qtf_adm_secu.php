@@ -42,9 +42,8 @@ if ( !isset($_SESSION[QT]['recaptcha2sk']) ) $_SESSION[QT]['recaptcha2sk']=''; /
 if ( !isset($_SESSION[QT]['recaptcha3pk']) ) $_SESSION[QT]['recaptcha3pk']=''; //public key (site key)
 if ( !isset($_SESSION[QT]['recaptcha3sk']) ) $_SESSION[QT]['recaptcha3sk']=''; //secret key (validation api access key)
 
-$oH->selfurl = 'qtf_adm_secu.php';
-$oH->selfname = L('Board_security');
-$oH->selfparent = L('Settings');
+$oH->name = L('Board_security');
+$parentname = L('Settings');
 switch(QDB_SYSTEM) {
   //Note utf-8 coding may consume 4bytes/character, that's why MAXCHAR < varchar limit of the database
   case 'pdo.sqlsrv' :
@@ -143,7 +142,7 @@ if ( isset($_POST['ok']) ) try {
 include 'qtf_adm_inc_hd.php';
 
 echo '
-<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="config">'.L('Public_access_level').'</h2>
 <table class="t-conf">
 <tr title="'.L('H_Visitors_can').'">

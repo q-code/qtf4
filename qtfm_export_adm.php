@@ -36,11 +36,10 @@ if ( !isset($_SESSION['m_export_xml']) )
   'dropbbc' => 'Y');
 }
 
-$oH->selfurl = 'qtfm_export_adm.php';
-$oH->selfname = L('Export_Admin');
-$oH->exiturl = $oH->selfurl;
-$oH->exitname = $oH->selfname;
-$oH->selfversion = L('Export_Version').' 4.0';
+$oH->name = L('Export_Admin');
+$oH->exiturl = $oH->php;
+$oH->exitname = $oH->name;
+$moduleversion = L('Export_Version').' 4.0';
 
 // ------
 // SUBMITTED
@@ -145,7 +144,7 @@ if ( isset($_POST['ok']) )
 // ------
 include 'qtf_adm_inc_hd.php';
 
-echo '<form class="formsafe" method="post" action="',$oH->selfurl,'">
+echo '<form class="formsafe" method="post" action="',$oH->php,'">
 <h2 class="config">',$L['Export_Content'],'</h2>
 <table class="t-conf">
 <tr>

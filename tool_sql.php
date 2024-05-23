@@ -8,8 +8,7 @@ session_start();
 require 'bin/init.php';
 if ( SUser::role()!=='A' ) die('Access denied');
 
-$oH->selfurl = 'tool_sql.php';
-$oH->selfname = 'SQL statement';
+$oH->name = 'SQL statement';
 
 $oDB->startStats();
 $q = ''; // query
@@ -32,7 +31,7 @@ echo '<style>
 // Dataset (form)
 
 echo '
-<h1>'.$oH->selfname.' '.qtSVG('user-a', 'title=Administrator only').'</h1>
+<h1>'.$oH->name.' '.qtSVG('user-a', 'title=Administrator only').'</h1>
 <p class="small">As tablename can have prefix in your database, use following alias to query the correct table:<br>
 TABSETTING TABDOMAIN TABSECTION TABTOPIC TABPOST TABUSER TABLANG</p>
 

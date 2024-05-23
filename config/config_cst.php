@@ -30,6 +30,7 @@ const BAN_DAYS = [0,1,7,15,30,90,365]; // Index 0..6 correspond to ban duration 
 // ------
 // Interface constants (can be changed by webmasters)
 // ------
+const QT_TITLE_WITH_PAGENAME = false; // add page name to the html title (eg. 'QT-cute Profile')
 const QT_COLOR_SCHEME = 'light dark'; // meta color-schemes for the browser
 const QT_LOGIN_WITH_EMAIL = true; // allow login with email (false to use only username)
 const QT_MENU_CONTRAST = true; // allow user to change css mode: contrast/normal
@@ -64,6 +65,10 @@ const QT_URLREWRITE = false;
 // URL rewriting (for expert only):
 // Rewriting url requires that your server is configured with following rule for your quicktalk folder: RewriteRule ^(.+)\.html(.*) qtf_$1.php$2 [L]
 // This can NOT be activated if your quicktalk folder contains html pages (they will not be accessible anymore when urlrewriting is acticated)
+const QT_URLCONST = false; // use 'forum' as url replacement or use FALSE to show url
+// When using Q_URLCONST, it's recommanded to add following .htaccess rewriting rule in the application folder:
+// RewriteEngine on
+// RewriteRule "forum" "qtf_index.php"
 
 // ------
 // MEMCACHE (this can be changed by webmaster)

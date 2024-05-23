@@ -14,7 +14,6 @@ session_start();
  */
 require 'bin/init.php';
 
-$oH->selfurl = APP.'_stats.php';
 if ( !SUser::canAccess('show_stats') ) $oH->voidPage('user-lock.svg',11,true); //█
 
 include translate('lg_stat.php');

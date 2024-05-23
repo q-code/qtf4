@@ -10,11 +10,10 @@ $pan = 'en';
 $dest = '';
 qtArgs('pan! dest!');
 $intSize = 100;
-$oH->selfurl = APP.'_adm_tags_upload.php';
-$oH->selfname = L('Tags');
+$oH->name = L('Tags');
 $oH->exiturl = APP.'_adm_tags.php';
 $oH->exitname = L('Tags');
-$oH->selfparent = L('Board_content');
+$parentname = L('Board_content');
 
 // ------
 // SUBMITTED FOR UPLOAD
@@ -42,7 +41,7 @@ include APP.'_adm_inc_hd.php';
 
 CHtml::msgBox(L('Add').' CSV '.L('file'));
 
-echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'" enctype="multipart/form-data">
+echo '<form class="formsafe" method="post" action="'.$oH->php.'" enctype="multipart/form-data">
 <p style="text-align:right">
 ';
 echo L('File').': <input type="hidden" name="max_file_size" value="'.($intSize*1024).'"/>';

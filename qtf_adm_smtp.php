@@ -10,9 +10,8 @@ include translate('lg_adm.php');
 
 // INITIALISE
 
-$oH->selfurl = APP.'_adm_smtp.php';
-$oH->selfname = 'SMTP test';
-$oH->selfparent = L('Board_info');
+$oH->name = 'SMTP test';
+$parentname = L('Board_info');
 
 if ( isset($_GET['h']) ) $_SESSION[QT]['smtp_host'] = qtDb($_GET['h']);
 if ( isset($_GET['p']) ) $_SESSION[QT]['smtp_port'] = qtDb($_GET['p']);
@@ -55,7 +54,7 @@ include APP.'_adm_inc_hd.php';
 // CONTENT
 
 echo '<br>
-<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="config">SMTP Settings</h2>
 <table class="t-conf">
 <tr>

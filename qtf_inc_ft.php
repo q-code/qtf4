@@ -33,8 +33,8 @@ echo '<div id="main-ft">
 if ( QT_SHOW_JUMPTO ) {
   echo '<select id="jumpto" size="1" onchange="window.location=this.value;">';
   echo '<option disabled selected hidden>'.L('Goto').'...</option>';
-  if ( $oH->selfurl=='qtf_search.php' ) echo '<option value="'.url('qtf_index.php').'">'.SLang::translate().'</option>';
-  if ( $oH->selfurl!='qtf_search.php' && SUser::canView('V4') ) echo '<option value="'.url('qtf_search.php').'">'.L('Advanced_search').'</option>';
+  if ( $oH->php==='qtf_search.php' ) echo '<option value="'.url('qtf_index.php').'">'.SLang::translate().'</option>';
+  if ( $oH->php!=='qtf_search.php' && SUser::canView('V4') ) echo '<option value="'.url('qtf_search.php').'">'.L('Advanced_search').'</option>';
   echo sectionsAsOption(-1,[],[],'',32,100,url('qtf_items.php').'?s='); // current section is not rejected (allow returning to page 1 or top page)
   echo '</select>';
 }
@@ -51,7 +51,7 @@ echo '
 // ASIDE INFO & LEGEND
 // ------
 if ( $_SESSION[QT]['show_legend']==='1' ) {
-if ( in_array($oH->selfurl,array('index.php','qtf_index.php','qtf_items.php','qtf_calendar.php','qtf_item.php')) ) {
+if ( in_array($oH->php,array('index.php','qtf_index.php','qtf_items.php','qtf_calendar.php','qtf_item.php')) ) {
 if ( !$_SESSION[QT]['board_offline'] ) {
 
 // Using stats ($_SectionsStats)
@@ -97,20 +97,20 @@ echo '</div>'.PHP_EOL;
 echo '<div id="aside__legend" style="display:none">'.PHP_EOL;
 echo '<h2>'.L('Legend').'</h2>'.PHP_EOL;
 echo '<p>';
-if ( $oH->selfurl==='qtf_index.php' ) {
+if ( $oH->php==='qtf_index.php' ) {
   echo asImg( QT_SKIN.'img/section_0_0.gif', 'title='.L('Ico_section_0_0') ) . ' ' . L('Ico_section_0_0') . '<br>';
   echo asImg( QT_SKIN.'img/section_2_0.gif', 'title='.L('Ico_section_2_0') ) . ' ' . L('Ico_section_2_0') . '<br>';
   echo asImg( QT_SKIN.'img/section_0_1.gif', 'title='.L('Ico_section_0_1') ) . ' ' . L('Ico_section_0_1') . '<br>';
 } else {
   echo asImg( QT_SKIN.'img/topic_a_0.gif', 'alt=N|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_a_0');
-  if ( QT_LIST_ME && $oH->selfurl!=='qtf_item.php' ) echo ' &nbsp;<svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"/></svg>'.' '.L('You_reply');
+  if ( QT_LIST_ME && $oH->php!=='qtf_item.php' ) echo ' &nbsp;<svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"/></svg>'.' '.L('You_reply');
   echo '<br>';
   echo asImg( QT_SKIN.'img/topic_t_0.gif', 'alt=T|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_t_0').' &nbsp;';
   echo asImg( QT_SKIN.'img/topic_t_0_h.gif', 'alt=T|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_t_0_h');
   echo '<br>';
   echo asImg( QT_SKIN.'img/topic_t_1.gif', 'alt=T|class=i-item|data-type=t|data-status=1' ) . ' '.L('Ico_item_t_1').' ';
   echo '<br>';
-  if ( $oH->selfurl==='qtf_item.php' ) echo qtSVG('comment-dots').' '.L('Ico_post_r').'<br>';
+  if ( $oH->php==='qtf_item.php' ) echo qtSVG('comment-dots').' '.L('Ico_post_r').'<br>';
 }
 echo '</p></div>'.PHP_EOL;
 echo '<div id="aside__status">'.$strStatusText.'</div>'.PHP_EOL;
@@ -149,7 +149,7 @@ if ( SUser::role()!=='V' || SUser::role().substr($_SESSION[QT]['m_rss_conf'],0,1
 $navMenu->separator = ' &middot; ';
 if ( SUser::role()==='A' ) $navMenu->add('admin', '['.L('Administration').']|id=menu-admin|href=qtf_adm_index.php');
 $skip = array_diff(array_keys($navMenu->menu), ['home','privacy','stats','rss','sign','admin']);
-echo '<p id="footer-menu">'.$navMenu->build($oH->selfurl, 'tag=span|onclick=return false', $skip).'</p>'.PHP_EOL;
+echo '<p id="footer-menu">'.$navMenu->build($oH->php, 'tag=span|onclick=return false', $skip).'</p>'.PHP_EOL;
 echo '<p id="footer-credit">powered by <a href="http://www.qt-cute.org">QT-cute</a> <span title="'.VERSION.' '.BUILD.'">v'.VERSION.'</span></p>
 </footer>
 ';
@@ -164,7 +164,7 @@ if ( isset($oDB->stats) ) {
 
 
 // Automatic add script {file.php.js} if existing
-if ( file_exists($oH->selfurl.'.js') )
-$oH->scripts[] = '<script type="text/javascript" src="'.$oH->selfurl.'.js"></script>';
+if ( file_exists($oH->php.'.js') )
+$oH->scripts[] = '<script type="text/javascript" src="'.$oH->php.'.js"></script>';
 
 $oH->end();

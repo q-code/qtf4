@@ -6,7 +6,6 @@ session_start();
  * @var CDatabase $oDB
  */
 require 'bin/init.php';
-$oH->selfurl = 'qtf_item.php';
 if ( !SUser::canView('V3') ) $oH->voidPage('user-lock.svg',11,true); //█
 
 // ------
@@ -38,17 +37,17 @@ if ( isset($_POST['Maction']) ) {
 $oS = new CSection($s);
 // access denied
 if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U') ) {
-  $oH->selfname = L('Section');
+  $oH->name = L('Section');
   $oH->exitname = SLang::translate();
   $oH->voidPage('', L('R_staff')); //█
 }
 if ( $oS->type==='2' && SUser::role()==='V' && $oT->type!=='A' ) {
-  $oH->selfname = L('Section');
+  $oH->name = L('Section');
   $oH->exitname = SLang::translate();
   $oH->voidPage('', L('R_member')); //█
 }
 if ( $oS->type==='2' && SUser::role()==='U' && $oT->firstpostuser != SUser::id() && $oT->type!=='A' ) {
-  $oH->selfname = L('Section');
+  $oH->name = L('Section');
   $oH->exitname = SLang::translate();
   $oH->voidPage('', L('R_member').'<br>'.L('E_item_private')); //█
 }
@@ -61,7 +60,7 @@ $limit = 0;
 $currentPage = 1;
 if ( isset($_GET['page']) ) { $limit = ($_GET['page']-1)*$_SESSION[QT]['replies_per_page']; $currentPage = (int)$_GET['page']; }
 if ( isset($_GET['view']) ) { $_SESSION[QT]['viewmode'] = $_GET['view']; }
-$oH->selfname = L('Messages');
+$oH->name = L('Messages');
 
 // SUBMITTED CHANGE TAGS (tag-edit can be empty to delete all tags)
 if ( isset($_POST['tag-ok']) && isset($_POST['tag-edit']) ) {
@@ -111,7 +110,7 @@ if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) ) {
     foreach($arrTags as $k=>$item) $tags .= empty($item) ? '' : '<span class="tag clickable" onclick="tagClick(this.innerHTML)" title="" data-tagdesc="'.$item.'">'.$item.'</span>';
     echo '<div id="tag-shown" style="display:inline-block">'.$tags.'</div>';
     echo ' &nbsp; <a href="javascript:void(0)" id="tag-ctrl" class="tgl-ctrl" onclick="qtToggle(`tag-container`,null,`tag-ctrl`)" title="'.L('Edit').'">'.qtSVG('pen').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>'.PHP_EOL;
-    echo '<div id="tag-container" style="display:none"><form method="post" action="'.url($oH->selfurl).'?s='.$s.'&t='.$t.'" onreset="qtFocus(`tag-edit`)">';
+    echo '<div id="tag-container" style="display:none"><form method="post" action="'.url($oH->php).'?s='.$s.'&t='.$t.'" onreset="qtFocus(`tag-edit`)">';
     echo '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/><input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
     echo '<input type="hidden" id="tag-saved" value="'.qtAttr($oT->descr).'"/>';
     echo '<input type="hidden" id="tag-new" name="tag-new" maxlength="255" value="'.qtAttr($oT->descr).'"/>';

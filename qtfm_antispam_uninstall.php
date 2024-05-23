@@ -28,8 +28,7 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v4.0';
-$oH->selfurl = 'qtfm_antispam_uninstall.php';
-$oH->selfname = 'Uninstall module ANTISPAM '.$strVersion;
+$oH->name = 'Uninstall module ANTISPAM '.$strVersion;
 
 // UNINSTALL
 

@@ -29,8 +29,7 @@ include translate('lg_reg.php');
 // ------
 // INITIALISE
 // ------
-$oH->selfurl = APP.'_user_img.php';
-$oH->selfname = L('Change_picture');
+$oH->name = L('Change_picture');
 $oH->exiturl = APP.'_user.php?id='.$id;
 $oH->exitname = '&laquo; '.L('Profile');
 
@@ -75,7 +74,7 @@ if ( isset($_POST['del']) && $_POST['del']=='del' )
 {
   unset($_SESSION['temp_key']);
   SUser::deletePicture($id);
-  $oH->redirect($oH->selfurl.'?id='.$id);
+  $oH->redirect($oH->php.'?id='.$id);
 }
 
 // ------

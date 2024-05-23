@@ -28,8 +28,7 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v1.0';
-$oH->selfurl = 'qtfm_ldap_uninstall.php';
-$oH->selfname = 'Uninstallation module LDAP '.$strVersion;
+$oH->name = 'Uninstallation module LDAP '.$strVersion;
 
 // UNINSTALL
 

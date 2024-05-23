@@ -10,9 +10,8 @@ include translate('lg_adm.php');
 
 // INITIALISE
 
-$oH->selfurl = APP.'_adm_site.php';
-$oH->selfname = L('Board_general');
-$oH->selfparent = L('Board_info');
+$oH->name = L('Board_general');
+$parentname = L('Board_info');
 $strHelper = false;
 
 // ------
@@ -30,7 +29,7 @@ if ( isset($_POST['ok']) ) try {
 
   // Register and save
   $_SESSION[QT]['site_name'] = $post['site_name'];
-  $oH->title = $_SESSION[QT]['site_name']; // refresh current title
+  $oH->metas[0] = '<title>'.$_SESSION[QT]['site_name'].'</title>'; // refresh current title
   $_SESSION[QT]['site_url'] = $post['site_url'];
   $_SESSION[QT]['index_name'] = $post['index_name'];
   $_SESSION[QT]['admin_email'] = $post['admin_mail'];
@@ -79,7 +78,7 @@ if ( !empty($oH->warning) ) $oH->warning = qtSVG('flag', 'style=font-size:1.4rem
 include APP.'_adm_inc_hd.php';
 
 // FORM
-echo '<form class="formsafe" method="post" action="'.$oH->selfurl.'">
+echo '<form class="formsafe" method="post" action="'.$oH->php.'">
 <h2 class="config">'.L('General_site').'</h2>
 <table class="t-conf input100">
 ';

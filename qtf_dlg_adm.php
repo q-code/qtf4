@@ -17,9 +17,8 @@ $a = '';
 $s = -1;
 qtArgs('a! int:s!'); if ( $s<0 ) die('Missing arg s');
 
-$oH->selfparent = L('Board_content');
-$oH->selfname = L('Section');
-$oH->selfurl = APP.'_dlg_adm.php';
+$parentname = L('Board_content');
+$oH->name = L('Section');
 $oH->exitname = L('Exit');
 $oH->exiturl = APP.'_adm_sections.php';
 
@@ -37,7 +36,7 @@ case 'deldom':
 
   // Caution: $s is the domain id in this case
   if ( $s===0 ) die('Domain 0 cannot be deleted');
-  $oH->selfname = L('Domain');
+  $oH->name = L('Domain');
 
   // SUBMITTED
   if ( isset($_POST['ok']) && isset($_POST['itemDelete']) ) try {
@@ -61,7 +60,7 @@ case 'deldom':
   if ( count($arrSections)>0 ) { $strSections = implode('<br>',$arrSections); }
 
   $frm_title = L('Domain_del');
-  $frm[] = '<form method="post" action="'.$oH->selfurl.'">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->php.'">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Domain').':</p><p class="ellipsis indent"><span class="bold">'.CDomain::translate($s).'</span><br><span class="minor">#'.$s.' &middot; '.(isset($_Domains[$s]['title']) ? $_Domains[$s]['title'] : 'Domain '.$s).'</span></p>';
   $frm[] = '</article>';
@@ -96,7 +95,7 @@ case 'delsec':
   $countA = $countT===0 ? 0 : $oDB->count( CSection::sqlCountItems($s,'','A') );
   $countR = $countT===0 ? 0 : $oDB->count( CSection::sqlCountItems($s,'replies') );
   $frm_title = L('Section_del');
-  $frm[] = '<form method="post" action="'.$oH->selfurl.'">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->php.'">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Section').':</p>';
   $frm[] = '<p class="ellipsis indent"><span class="bold">'.CSection::translate($s).'</span><br><span class="minor">'.L('item',$countT).', '.L('news',$countA).', '.L('reply',$countR).' &middot; #'.$s.' '.(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : 'Domain '.$s).'</span></p>';
@@ -116,7 +115,7 @@ case 'delsec':
 
 case 'delsecitems':
 
-  $oH->selfname = L('Item+');
+  $oH->name = L('Item+');
   $oH->exiturl = APP.'_adm_items.php';
 
   // SUBMITTED
@@ -161,7 +160,7 @@ case 'delsecitems':
   foreach(array_keys($arrYears) as $k) $arrYears[$k] .= ' ('.L('item',$arrCount[$k]['T']).')';
 
   $frm_title = L('Delete');
-  $frm[] = '<form method="post" action="'.$oH->selfurl.'" onsubmit="return validateForm()">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->php.'" onsubmit="return validateForm()">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Items_in_section').':</p>';
   $frm[] = '<p class="ellipsis indent"><span class="bold">'.CSection::translate($s).'</span><br><span class="minor">'.L('item',$arrCount['*']['T']).', '.L('news',$arrCount['*']['A']).', '.L('reply',$arrCount['*']['R']).' &middot; #'.$s.' '.(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : 'Domain '.$s).'</span></p>';
@@ -257,7 +256,7 @@ function submitSum(n="...") { document.getElementById("submit-sum").innerHTML = 
 
 case 'prune':
 
-  $oH->selfname = L('Item+');
+  $oH->name = L('Item+');
   $oH->exiturl = APP.'_adm_items.php';
 
   $days = 10;
@@ -282,7 +281,7 @@ case 'prune':
   $countU = $oDB->count( CSection::sqlCountItems($s,'unreplied','','','',$days) );
   $countUA = $countU===0 ? 0 : $oDB->count( CSection::sqlCountItems($s,'unreplied','0','A','',$days) );
   $frm_title = L('Prune');
-  $frm[] = '<form method="post" action="'.$oH->selfurl.'" onsubmit="validateForm();">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->php.'" onsubmit="validateForm();">'.$frm_dflt_args;
   $frm[] = '<input type="hidden" id="inDay" name="d" value="'.$days.'"/>';
   $frm[] = '<article>';
   $frm[] = '<p><span class="minor">'.qtSVG('info').' '.L('Unreplied').': '.sprintf(L('unreplied_def'),$days).'</span></p>';
@@ -330,7 +329,7 @@ function submitSum(n="...") { document.getElementById("submit-sum").innerHTML = 
 
 case 'moveitems':
 
-  $oH->selfname = L('Item+');
+  $oH->name = L('Item+');
   $oH->exiturl = APP.'_adm_items.php';
 
   // SUBMITTED
@@ -364,7 +363,7 @@ case 'moveitems':
   foreach(array_keys($arrYears) as $k) $arrYears[$k] .= ' ('.L('item',$arrCount[$k]['T']).')';
 
   $frm_title = L('Move');
-  $frm[] = '<form method="post" action="'.$oH->selfurl.'">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->php.'">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Items_in_section').':</p>';
   $frm[] = '<p class="ellipsis indent"><span class="bold">'.CSection::translate($s).'</span><br>';

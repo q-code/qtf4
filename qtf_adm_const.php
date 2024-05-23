@@ -7,8 +7,7 @@ session_start();
 */
 require 'bin/init.php';
 if ( SUser::role()!=='A' ) die('Access denied');
-$oH->selfurl = APP.'_adm_const.php';
-$oH->selfname ='PHP constants';
+$oH->name ='PHP constants';
 
 function constToString($str) {
   if ( is_string($str) ) return htmlentities($str);

@@ -33,7 +33,7 @@ $oH->links[] = '<link rel="stylesheet" type="text/css" href="bin/js/imagecrop.mi
 $oH->head();
 $oH->body();
 
-CHtml::msgBox($oH->selfname, 'class=msgbox|style=width:680px');
+CHtml::msgBox($oH->name, 'class=msgbox|style=width:680px');
 
 if ( !empty($oH->error) ) echo '<span class="error">',$oH->error,'</span>'.PHP_EOL;
 if ( !empty($oH->warning) ) echo $oH->warning.PHP_EOL;

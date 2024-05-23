@@ -8,7 +8,6 @@ session_start();
 */
 require 'bin/init.php';
 
-$oH->selfurl = 'qtf_user.php';
 if ( SUser::role()!=='A' && $_SESSION[QT]['board_offline'] ) $oH->voidPage('tools.svg',99,true,false); //█
 if ( SUser::role()==='V' ) $oH->voidPage('user-lock.svg',11,true); //█
 
@@ -27,7 +26,7 @@ if ( SUser::id()===$id || SUser::role()==='A' ) $canEdit = true;
 if ( SUser::role()==='M' ) $canEdit = true;
 if ( $id==0 ) $canEdit = false;
 if ( !$canEdit ) $edit = false;
-$oH->selfname = L('Profile');
+$oH->name = L('Profile');
 
 // MAP MODULE
 $useMap = false;

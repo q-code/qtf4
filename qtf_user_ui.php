@@ -19,4 +19,4 @@ echo '<form id="modaction" method="get" action="'.url(APP.'_register.php').'"><d
 </div></form>&nbsp;';
 
 if ( $canEdit )
-echo '<a class="button" href="'.url($oH->selfurl).'?id='.$id.'&edit='.($edit ? 0 : 1).'">'.qtSVG('pen','class=btn-prefix').L($edit ? 'Edit_stop' : 'Edit_start').'</a>';
+echo '<a class="button" href="'.url($oH->php).'?id='.$id.'&edit='.($edit ? 0 : 1).'">'.qtSVG('pen','class=btn-prefix').L($edit ? 'Edit_stop' : 'Edit_start').'</a>';

@@ -28,8 +28,7 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v4.0';
-$oH->selfurl = 'qtfm_rss_uninstall.php';
-$oH->selfname = 'Uninstall module RSS '.$strVersion;
+$oH->name = 'Uninstall module RSS '.$strVersion;
 
 // UNINSTALL
 

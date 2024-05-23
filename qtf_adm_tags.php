@@ -13,9 +13,8 @@ include translate('lg_adm.php');
 
 $pan = isset($_GET['pan']) ? $_GET['pan'] : 'en';
 
-$oH->selfurl = APP.'_adm_tags.php';
-$oH->selfname = L('Tags');
-$oH->selfparent = L('Board_content');
+$oH->name = L('Tags');
+$parentname = L('Board_content');
 
 // ------
 // HTML BEGIN
@@ -42,7 +41,7 @@ foreach (LANGUAGES as $iso=>$lang)
 {
   $lang = explode(' ',$lang);
   $lang = empty($lang[1]) ? strtoupper($iso) : $lang[1]; // uppercase iso code if no description
-  $m['pan-'.$iso] = $lang.'|href='.$oH->selfurl.'?pan='.$iso.'|id=pan-'.$iso.'|class=pan-tab|title='.L('Edit').' '.$lang;
+  $m['pan-'.$iso] = $lang.'|href='.$oH->php.'?pan='.$iso.'|id=pan-'.$iso.'|class=pan-tab|title='.L('Edit').' '.$lang;
 }
 $m = new CMenu($m,'');
 echo '<div class="pan-tabs">'.$m->build( 'pan-'.$pan ).'</div>';
@@ -70,14 +69,14 @@ $bFile = file_exists(QT_DIR_DOC.$file);
 
 echo '<tr style="height:35px">';
 echo '<td class="c-section" colspan="2">'.L('Common_all_sections').'</td>';
-echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
+echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->php.'?pan='.$pan.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.$oH->php.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
 echo '<td class="c-action">';
 
-echo $bFile ? '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'">'.L('Edit').'</a>' : '<span class="disabled">'.L('Edit').'</span>';
+echo $bFile ? '<a href="tool_txt.php?exit='.$oH->php.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'">'.L('Edit').'</a>' : '<span class="disabled">'.L('Edit').'</span>';
 echo '<br>';
 echo '<a href="'.APP.'_adm_tags_upload.php?pan='.$pan.'&dest='.$file.'">'.L('Upload').'</a>';
 echo '<br>';
-echo $bFile ? '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&a=delete&file='.QT_DIR_DOC.$file.'">'.L('Delete').'</a>' : '<span class="disabled">'.L('Delete').'</span>';
+echo $bFile ? '<a href="tool_txt.php?exit='.$oH->php.'&pan='.$pan.'&a=delete&file='.QT_DIR_DOC.$file.'">'.L('Delete').'</a>' : '<span class="disabled">'.L('Delete').'</span>';
 
 echo '</td></tr>'.PHP_EOL;
 
@@ -108,14 +107,14 @@ foreach($arrDomains as $idDom=>$strDomtitle)
     echo ' &middot; '.L('E_no_tag');
     }
     echo '</small></td>';
-    echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->selfurl.'?pan='.$pan.'&s='.$oS->id.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
+    echo '<td class="c-file">'.($bFile ? $file.' <a href="'.$oH->php.'?pan='.$pan.'&s='.$oS->id.'&a=view&file='.QT_DIR_DOC.$file.'" title="'.L('Preview').'">'.qtSVG('search').'</a> <a href="'.QT_DIR_DOC.$file.'" title="'.L('download').'">'.qtSVG('download').'</a>' : '<a href="tool_txt.php?exit='.$oH->php.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'" title="'.L('Add').'...">'.qtSVG('magic').'</a>').'</td>';
     echo '<td class="c-action">';
 
-    echo $bFile ? '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'">'.L('Edit').'</a>' : '<span class="disabled">'.L('Edit').'</span>';
+    echo $bFile ? '<a href="tool_txt.php?exit='.$oH->php.'&pan='.$pan.'&file='.QT_DIR_DOC.$file.'">'.L('Edit').'</a>' : '<span class="disabled">'.L('Edit').'</span>';
     echo '<br>';
     echo '<a href="'.APP.'_adm_tags_upload.php?pan='.$pan.'&dest='.$file.'">'.L('Upload').'</a>';
     echo '<br>';
-    echo $bFile ? '<a href="tool_txt.php?exit='.$oH->selfurl.'&pan='.$pan.'&a=delete&file='.QT_DIR_DOC.$file.'">'.L('Delete').'</a>' : '<span class="disabled">'.L('Delete').'</span>';
+    echo $bFile ? '<a href="tool_txt.php?exit='.$oH->php.'&pan='.$pan.'&a=delete&file='.QT_DIR_DOC.$file.'">'.L('Delete').'</a>' : '<span class="disabled">'.L('Delete').'</span>';
 
     echo '</td></tr>'.PHP_EOL;
   }

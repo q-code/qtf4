@@ -8,7 +8,6 @@ require 'bin/init.php';
  * @var string $bt
  * @var string $ft
  */
-$oH->selfurl = 'qtf_items_ids2csv.php';
 if ( !SUser::canView('V2') ) $oH->voidPage('user-lock.svg',11,true); //█
 
 // ------
@@ -35,19 +34,19 @@ if ( $q==='' || $s>=0 ) {
   $oS = new CSection($_Sections[$s]); // new CSection($s)
   // exit if user role not granted
   if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U')) {
-    $oH->selfname = L('Section');
+    $oH->name = L('Section');
     $oH->exitname = SLang::translate();
     $oH->voidPage('user-lock.svg',12,true); //█
   }
   if ( $oS->type==='2' && SUser::role()==='V') {
-    $oH->selfname = L('Section');
+    $oH->name = L('Section');
     $oH->exitname = SLang::translate();
     $oH->voidPage('user-lock.svg',11,true); //█
   }
-  $oH->selfname = L('Section').': '.$oS->title;
+  $oH->name = L('Section').': '.$oS->title;
 } else {
   $oS = new CSection(); // void-section in case of search query
-  $oH->selfname = L('Search_results');
+  $oH->name = L('Search_results');
 }
 
 // initialise others

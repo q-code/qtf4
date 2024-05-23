@@ -12,7 +12,7 @@ $strPrev = L('Back');
 $strNext = APPNAME;
 $urlPrev = 'setup_4.php';
 $urlNext = '../'.APP.'_login.php?dfltname=Admin';
-$selfurl = 'setup_9.php';
+$php = 'setup_9.php';
 $tools = '';
 if ( file_exists('tool_tables.php') ) $tools .= '<a href="tool_tables.php">Tool tables...</a>';
 if ( file_exists('tool_check.php') ) $tools .= ' | <a href="tool_check.php">Check installation...</a>';
@@ -92,7 +92,7 @@ echo '<h1>'.L('Prevent_install').'</h1>';
 
 echo '<p>'.L('Disable_install').'</p>';
 
-echo '<form action="'.$selfurl.'" method="post">';
+echo '<form action="'.$php.'" method="post">';
 echo '<p style="margin:10px 0"><input type="radio" id="m0" name="method" value="m0" checked>&nbsp;<label for="m0">'.L('Disable.0').'</label></p>';
 echo '<p style="margin:10px 0"><input type="radio" id="m1" name="method" value="m1">&nbsp;<label for="m1">'.L('Disable.1').'</label></p>';
 echo '<p style="margin:10px 0"><input type="radio" id="m2" name="method" value="m2">&nbsp;<label for="m2">'.L('Disable.2').'</label></p>';

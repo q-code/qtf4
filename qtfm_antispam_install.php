@@ -27,8 +27,7 @@ if ( SUser::role()!=='A' ) die('Access denied');
 // INITIALISE
 
 $strVersion='v4.0';
-$oH->selfurl = 'qtfm_antispam_install.php';
-$oH->selfname = 'Installation module ANTISPAM '.$strVersion;
+$oH->name = 'Installation module ANTISPAM '.$strVersion;
 
 $bStep0 = true;
 $bStep1 = true;

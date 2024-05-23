@@ -16,9 +16,8 @@ include translate('lg_reg.php');
 // INITIALISE
 // ------
 $intUsers = $oDB->count( TABUSER.' WHERE id>0' ); // Count all users
-$oH->selfurl = 'qtf_adm_users.php';
-$oH->selfname = L('Users').' ('.$intUsers.')';
-$oH->selfparent = L('Board_content');
+$oH->name = L('Users').' ('.$intUsers.')';
+$parentname = L('Board_content');
 $oH->exiturl = 'qtf_adm_users.php';
 $oH->exitname = '&laquo; '.L('Users');
 $fg = 'all';
@@ -173,7 +172,7 @@ if ( $strCateg=='SC' ) $sqlWhere .= ' AND children="2"'; //sleeping children
 $intCount = $oDB->count( TABUSER.' WHERE id>0 '.$sqlWhere );
 
 // Lettres bar
-if ( $intCount>$ipp || $fg!=='all' ) echo htmlLettres(url($oH->selfurl).qtURI('group|page'), $fg, L('All'), 'lettres', L('Username_starting').' ', $intCount>300 ? 1 : ($intCount>$ipp*2 ? 2 : 3));
+if ( $intCount>$ipp || $fg!=='all' ) echo htmlLettres(url($oH->php).qtURI('group|page'), $fg, L('All'), 'lettres', L('Username_starting').' ', $intCount>300 ? 1 : ($intCount>$ipp*2 ? 2 : 3));
 
 // End if no result
 if ( $intCount==0 ) {
@@ -206,20 +205,20 @@ echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 // Table definition
 $t = new TabTable('id=t1|class=t-item table-cb|data-content=users',$intCount);
 $t->activecol = $strOrder;
-$t->activelink = '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po='.$strOrder.'&pd='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
+$t->activelink = '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po='.$strOrder.'&pd='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
 // TH
 $t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" data-target="t1-cb[]"/>', 'class=c-checkbox');
-$t->arrTh['name'] = new TabHead(L('User'), 'class=c-name', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=name&pd=asc">%s</a>');
+$t->arrTh['name'] = new TabHead(L('User'), 'class=c-name', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=name&pd=asc">%s</a>');
 $t->arrTh['pic'] = new TabHead(qtSVG('camera'), 'class=c-pic|title='.L('Picture'));
-$t->arrTh['role'] = new TabHead(L('Role'), 'class=c-role ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=role&pd=asc">%s</a>');
-$t->arrTh['numpost'] = new TabHead(qtSVG('comments'), 'class=c-numpost|title='.L('Messages'), '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=numpost&pd=desc">%s</a>');
+$t->arrTh['role'] = new TabHead(L('Role'), 'class=c-role ellipsis', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=role&pd=asc">%s</a>');
+$t->arrTh['numpost'] = new TabHead(qtSVG('comments'), 'class=c-numpost|title='.L('Messages'), '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=numpost&pd=desc">%s</a>');
 if ( $strCateg=='FM' || $strCateg=='SC' ) {
-$t->arrTh['firstdate'] = new TabHead(L('Joined'), 'class=c-joined ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=firstdate&pd=desc">%s</a>');
+$t->arrTh['firstdate'] = new TabHead(L('Joined'), 'class=c-joined ellipsis', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=firstdate&pd=desc">%s</a>');
 } else {
-$t->arrTh['lastdate'] = new TabHead(L('Last_message').' (ip)', 'class=c-lastdate ellipsis', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=lastdate&pd=desc">%s</a>');
+$t->arrTh['lastdate'] = new TabHead(L('Last_message').' (ip)', 'class=c-lastdate ellipsis', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=lastdate&pd=desc">%s</a>');
 }
-$t->arrTh['closed'] = new TabHead(qtSVG('ban'), 'class=c-ban', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=closed&pd=desc" title="'.L('Banned').'">%s</a>');
-$t->arrTh['id'] = new TabHead('Id', 'class=c-id', '<a href="'.$oH->selfurl.'?cat='.$strCateg.'&fg='.$fg.'&po=id&pd=asc">%s</a>');
+$t->arrTh['closed'] = new TabHead(qtSVG('ban'), 'class=c-ban', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=closed&pd=desc" title="'.L('Banned').'">%s</a>');
+$t->arrTh['id'] = new TabHead('Id', 'class=c-id', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=id&pd=asc">%s</a>');
 // TD
 $t->cloneThTd();
 
@@ -284,7 +283,7 @@ if ( $strCateg!=='all' ) {
 }
 
 // Extra user preference ipp
-$m = new CMenu(['25|id=u25|href='.$oH->selfurl.'?ipp=25', '50|id=u50|href='.$oH->selfurl.'?ipp=50', '100|id=u100|href='.$oH->selfurl.'?ipp=100']);
+$m = new CMenu(['25|id=u25|href='.$oH->php.'?ipp=25', '50|id=u50|href='.$oH->php.'?ipp=50', '100|id=u100|href='.$oH->php.'?ipp=100']);
 echo '<p class="right" style="padding:0.3rem 0">'.L('Show').': '.$m->build('u'.$ipp, 'default|style=color:#444;text-decoration:underline').' / '.L('page').'</p>';
 
 // HTML END

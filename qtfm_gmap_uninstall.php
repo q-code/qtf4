@@ -13,8 +13,7 @@ if ( SUser::role()!=='A' ) die('Access denied');
 
 $strVersion='v4.0';
 
-$oH->selfurl = 'qtfm_gmap_uninstall.php';
-$oH->selfname = 'Uninstall module Gmap '.$strVersion;
+$oH->name = 'Uninstall module Gmap '.$strVersion;
 
 // UNINSTALL
 

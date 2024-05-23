@@ -8,7 +8,6 @@ require 'bin/init.php';
  * @var string $bt
  * @var string $ft
  */
-$oH->selfurl = 'qtf_items_csv.php';
 if ( !SUser::canView('V2') ) $oH->voidPage('user-lock.svg',11,true); //█
 
 // ------
@@ -62,23 +61,23 @@ if ( $q==='' || $s>=0 ) {
   $oS = new CSection($_Sections[$s]); // new CSection($s)
   // exit if user role not granted
   if ( $oS->type==='1' && (SUser::role()==='V' || SUser::role()==='U')) {
-    $oH->selfname = L('Section');
+    $oH->name = L('Section');
     $oH->exitname = SLang::translate();
     $oH->voidPage('user-lock.svg',12,true); //█
   }
   if ( $oS->type==='2' && SUser::role()==='V') {
-    $oH->selfname = L('Section');
+    $oH->name = L('Section');
     $oH->exitname = SLang::translate();
     $oH->voidPage('user-lock.svg',11,true); //█
   }
-  $oH->selfname = L('Section').': '.$oS->title;
+  $oH->name = L('Section').': '.$oS->title;
 } else {
   $oS = new CSection(); // void-section in case of search query
-  $oH->selfname = L('Search_results');
+  $oH->name = L('Search_results');
 }
 
 // initialise others
-$oH->selfuri = qtURI('pn|po|pd');
+$oH->arg = qtURI('pn|po|pd');
 $strLastcol = $oS->getMF('options','last'); if  ($strLastcol=='N' || strtolower($strLastcol)==='none' ) $strLastcol='0';
 if ( isset($_GET['cid']) ) $intChecked = (int)strip_tags($_GET['cid']); // allow checking an id in edit mode
 if ( isset($_POST['cid']) ) $intChecked = (int)strip_tags($_POST['cid']);
@@ -105,7 +104,7 @@ $sqlCount = "SELECT count(*) as countid FROM TABTOPIC t".$sqlWhere;
 $sqlCountAlt='';
 if ( $q!=='' ) {
   include 'bin/lib_qtf_query.php';
-  $oH->error = sqlQueryParts($sqlFrom,$sqlWhere,$sqlValues,$sqlCount,$sqlCountAlt,$oH->selfuri); //selfuri is not urldecoded
+  $oH->error = sqlQueryParts($sqlFrom,$sqlWhere,$sqlValues,$sqlCount,$sqlCountAlt,$oH->arg); //arg is not urldecoded
   if ( !empty($oH->error) ) die($oH->error);
   if ( $q==='adv' && !empty($fv) ) $strLastcol = 'tags'; // forces display column tags
 }
