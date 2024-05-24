@@ -23,7 +23,7 @@ $a = '';
 $d = -1;
 $s = -1;
 $add = false; // shows Add-Form
-qtArgs('a int:d int:s boo:add');
+qtArgs('a int+:d int+:s boo:add');
 
 $oH->name = L('Section+');
 $parentname = L('Board_content');

@@ -11,7 +11,7 @@ if ( !SUser::canView('V3') ) $oH->voidPage('user-lock.svg',11,true); //█
 // ------
 // PRE-INITIALISE
 // ------
-$t = -1; qtArgs('int:t!'); if ( $t<0 ) die('Invalid argument');
+$t = -1; qtArgs('int+:t!');
 $oT = new CTopic($t); //provide userid to update stats, after access granted, does not increment views
 $s = $oT->pid;
 $oH->exiturl = 'qtf_items.php?s='.$s; // used in next voidPage()

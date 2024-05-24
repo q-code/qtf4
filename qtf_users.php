@@ -19,7 +19,7 @@ if ( isset($_GET['view'])) $_SESSION[QT]['viewmode'] = substr($_GET['view'],0,1)
 $oH->name = L('Memberlist');
 $pn = 1; $po = 'name'; $pd = 'asc'; // page number,order,direction
 $fg = 'all'; // filter by group
-qtArgs('int:pn po char4:pd fg', true, false);
+qtArgs('int+:pn po char4:pd fg', true, false);
 
 // MAP MODULE
 $useMap=false;

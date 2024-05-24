@@ -19,9 +19,8 @@ if ( !SUser::canView('V5') ) $oH->voidPage('user-lock.svg',11,true); //█
 $a = '';
 $s = -1;
 $t = -1;
-qtArgs('char2:a! int:s! int:t!',false); // in POST only
+qtArgs('char2:a! int+:s! int+:t!',false); // in POST only
 if ( !in_array($a,['nt','re','ed','qu','de']) ) die('Invalid parameter a');
-if ( $s<0 ) die('Missing parameters: section id');
 
 $oH->error = '';
 $oH->name = L('Message');

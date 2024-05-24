@@ -19,23 +19,19 @@ include translate('lg_adm.php');
 include APP.'m_ldap_lib.php';
 
 // INITIALISE
-
-$pan=0;
+$pan = 0;
+qtArgs('int+:pan'); if ( $pan>2 ) $pan = 0; // {0|1|2}
 $oH->name = 'LDAP/AD stettings';
 $parentname = L('Module');
 $oH->exiturl = APP.'_adm_secu.php';
-
-qtArgs('int:pan');
-if ( $pan<0 || $pan>2) $pan=0;
-
 if ( !isset($_SESSION[QT]['m_ldap']) ) $_SESSION[QT]['m_ldap']='0';
 if ( !isset($_SESSION[QT]['login_addon']) ) $_SESSION[QT]['login_addon']='0';
 
 // ------
 // SUBMITTED
 // ------
-if ( isset($_POST['ok']) && $pan==0 )
-{
+if ( isset($_POST['ok']) && $pan===0 ) {
+
   $oDB->exec( "DELETE FROM TABSETTING WHERE param='m_ldap' OR param='m_ldap_users'" );
 
   $_SESSION[QT]['m_ldap_users'] = $_POST['m_ldap_users']; if ( $_SESSION[QT]['m_ldap_users']!=='ldap' ) $_SESSION[QT]['m_ldap_users']='all';
@@ -54,10 +50,11 @@ if ( isset($_POST['ok']) && $pan==0 )
 
   // exit
   $_SESSION[QT.'splash'] = empty($oH->error) ? L('S_save') : 'E|'.$oH->error;
+
 }
 
-if ( isset($_POST['ok']) && $pan>0 )
-{
+if ( isset($_POST['ok']) && $pan>0 ) {
+
   // register value used
   $_SESSION[QT]['m_ldap_host'] = $_POST['m_ldap_host'];
   $_SESSION[QT]['m_ldap_login_dn'] = $_POST['m_ldap_login_dn'];
@@ -87,8 +84,7 @@ if ( isset($_POST['ok']) && $pan>0 )
   }
 
   // TEST
-
-  if ( $pan==2 ) try {
+  if ( $pan===2 ) try {
 
     $test_conn='<span style="color:red">pending</span>';
     $test_find='<span style="color:red">pending</span>';

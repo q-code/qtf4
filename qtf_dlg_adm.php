@@ -15,7 +15,7 @@ include translate('lg_adm.php');
 
 $a = '';
 $s = -1;
-qtArgs('a! int:s!'); if ( $s<0 ) die('Missing arg s');
+qtArgs('a! int+:s!');
 
 $parentname = L('Board_content');
 $oH->name = L('Section');

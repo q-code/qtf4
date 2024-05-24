@@ -15,14 +15,13 @@ if ( !SUser::canView('V2') ) $oH->voidPage('user-lock.svg',11); //█
 // ------
 
 // init args
-$s = -1; // [int]
 $q = ''; // Search type ('' means section $s)
+$s = -1; // [int]
 $fs = ''; // Status [string] {''|status-key}, caution: can be '0'
 $fv = ''; // Searched [string] text (converted to array of strings)
 $fw = ''; // timeframe [string] or userid
 $pn = 1; $po = 'lastpostdate'; $pd = 'desc'; // page number,order,direction
-qtArgs('int:s q fs fv fw int:pn po char4:pd');
-if ( $q==='' && $s<0 ) die(__FILE__.' Missing argument $s');
+qtArgs('q int+:s fs fv fw int+:pn po char4:pd');
 $fv = qtCleanArray($fv); // [array]
 
 // initialise section or void-section and check specific access right
@@ -37,7 +36,7 @@ if ( $q==='' ) {
     $oH->name = L('Section');
     $oH->exitname = SLang::translate();
     $oH->voidPage('user-lock.svg',11); //█
-    }
+  }
   $oH->name = L('Section').': '.$oS->title;
 } else {
   $oS = new CSection();

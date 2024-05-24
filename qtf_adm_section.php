@@ -13,7 +13,7 @@ include translate('lg_adm.php');
 
 $s = -1; // Section id
 $pan = 1; // TAB 1:definition, 2:display or 3:translation
-qtArgs('int:s! int:pan');
+qtArgs('int+:s! int+:pan');
 if ( $pan<1 || $pan>3) $pan = 1;
 
 $oH->name = L('Section_upd');

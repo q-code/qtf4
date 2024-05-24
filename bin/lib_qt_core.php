@@ -232,9 +232,13 @@ function qtArgs(string $defs, bool $inGet=true, bool $inPost=true, bool $trim=tr
     global $$var;
     switch($type) {
       case 'str': $$var = $post; break;
-      case 'int': $$var = (int)$post; break;
       case 'boo': $$var = $post==='1' || strtolower($post)==='true' ? true : false; break;
-      case 'flo': $$var = (float)$post; break;
+      case 'flo':
+      case 'int':
+        $pos = substr($def[0],-1)==='+' ? true : false; // [optional] last character can be the '+' to indicate >=0
+        if ( $pos && (int)$post<0 ) die(__FUNCTION__.' negative value not allowed for argument ['.$var.']');
+        $$var = $type==='int' ? (int)$post : (float)$post;
+        break;
       case 'cha':
         $size = substr($def[0],-1); // [optional] last character can be the length, between 1..9 (if other, uses 1)
         $size = !is_numeric($size) ? 1 : (int)$size; if ( $size===0 ) $size = 1;
@@ -244,12 +248,17 @@ function qtArgs(string $defs, bool $inGet=true, bool $inPost=true, bool $trim=tr
     }
   }
   // Initializing the variables before using qtArgs is recommended. GET/POST values are urldecoded (build-in php)
-  // Only variables in $defs are parsed and assigned. Other (url-injected) variables are skipped.
-  // Supported types are [integer,float,boolean,string,char,charN] can be noted 'int:', 'flo:', 'boo:', 'str:', 'char:', 'charN:' in the $defs
-  // For type 'boo', TRUE is assigned when GET/POST is '1' or 'true', FALSE is assigned for all other values.
-  // For type 'char' (N=1) or 'charN' (N=2..9), $dieOnCharSize TRUE will stop the script when the length exceed N while FALSE assigns the N-first char.
-  // Type 'char' is the same as 'char1'. Wrong type like 'char0' or 'charAZ' is casted as 'char1'.
-  // For required variable (suffix !), script stops if the variable is not in GET/POST or is an empty string.
+  // Only variables in $defs are parsed and assigned (casted). Other (url-injected) variables are skipped.
+  // Supported types are [int,float,boolean,string,char,charN]
+  // In the $defs, the types are noted 'int:', 'flo:', 'boo:', 'str:', 'char:', 'charN:'
+  // Casting rules:
+  // For required variable (suffix !), the script stops if the variable is not in GET/POST or is an empty string.
+  // No type means the variable remains as [string]. Ex qtArgs('name!') means a GET/POST['name'] is required but not re-casted when assigned to $name.
+  // With [int] or [float], the script stops if the value cannot be casted as [int] or [float]. Note: casting '1.9' as [int] returns 1
+  // With [int] or [float], you can use 'int+:' or 'flo+:' to indicate >=0. The script stops on negative values.
+  // With [boolean], TRUE is assigned when GET/POST is '1' or 'true', FALSE is assigned for all other values.
+  // With [char] or [charN] (N=2..9), $dieOnCharSize TRUE will stop the script when the length exceed N while FALSE assigns the N-first char.
+  // 'char:' is the same as 'char1:'. 'char1:' is also used for wrong type like 'char0:' or 'charAZ:'.
   // When a value is not in the GET/POST and not required, the initial variable remains unchanged (if not initialized, new variable is not created)
   // When both GET and POST are used, the POST-values overwrite GET-values (or are added to those already defined by GET).
 }

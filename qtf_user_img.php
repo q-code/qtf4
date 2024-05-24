@@ -20,7 +20,7 @@ session_start();
 require 'bin/init.php';
 if ( !isset($_SESSION[QT]['formatpicture']) ) $_SESSION[QT]['formatpicture'] = 'mime=0;width=100;height=100';
 if ( empty(qtExplodeGet($_SESSION[QT]['formatpicture'], 'mime')) ) die('This board do not use profile picture.');
-$id = -1; qtArgs('int:id'); if ( $id<0 ) die('Missing parameter id...');
+$id = -1; qtArgs('int+:id');
 if ( SUser::id()!=$id && !SUser::isStaff() ) die('Access denied');
 
 include 'bin/class/class.phpmailer.php';

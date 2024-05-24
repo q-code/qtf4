@@ -25,9 +25,8 @@ $a = ''; // required
 $s = -1;
 $t = -1;
 $p = -1;
-qtArgs('char2:a! int:s int:t int:p'); // a,s,t,p can be send by GET or POST, others only by POST
+qtArgs('char2:a! int+:s int:t int:p'); // a,s,t,p can be send by GET or POST, others only by POST // $t,$p can be -1
 if ( !in_array($a,['nt','re','ed','qu']) ) die('Invalid parameter a');
-if ( $s<0 ) die('Missing parameters: section id');
 
 // Initialise containers and check $s
 $withDoc = false;

@@ -13,8 +13,7 @@ if ( SUser::role()==='V' ) $oH->voidPage('user-lock.svg',11,true); //█
 
 $id = -1;
 $edit = false;
-qtArgs('int:id! boo:edit');
-if ( $id<0 ) die('Wrong id');
+qtArgs('int+:id! boo:edit');
 
 // ------
 // INITIALISE

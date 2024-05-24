@@ -46,7 +46,7 @@ function ArraySwap($arr,$n=1)
 // ------
 $s = -1;
 $fv = 'birthday';
-qtArgs('int:s');
+qtArgs('int+:s');
 
 $intYear   = date('Y');  if ( isset($_GET['y']) ) $intYear = intval($_GET['y']);
 $intYearN  = $intYear; // year next month is this year except in december
