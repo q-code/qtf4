@@ -30,7 +30,7 @@ function __construct($ref=null, int $userid=-1)
   if ( empty($this->type) ) $this->type = 'T'; // topic
   if ( empty($this->status) ) $this->status = '0'; // open
 }
-public function setFrom($ref=null)
+private function setFrom($ref=null)
 {
   // $ref can be [null|int|array|obj-class], otherwhise die
   if ( $ref===null || $ref===-1 ) return; // exit with void-instance (default properties)

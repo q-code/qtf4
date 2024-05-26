@@ -140,6 +140,19 @@ function attrAddClass(array &$arr, string $value='')
   if ( empty($arr['class']) ) { $arr['class'] = $value; return; }
   if ( strpos($arr['class'],$value)===false ) $arr['class'] .= ' '.$value;
 }
+/*!!!*/
+function attrTagRender($attr=[], string $defaultTag='a')
+{
+  if ( empty($attr) ) return '';
+  if ( is_string($attr) ) $attr = attrDecode($attr);
+  if ( !is_array($attr) ) die(__FUNCTION__.' invalid argument');
+  $tag = empty($attr['tag']) ? $defaultTag : $attr['tag']; unset($attr['tag']);
+  // void tag
+  if ( in_array($tag,['area','base','br','col','embed','hr','img','input','keygen','link','menuitem','meta','source','track','wbr']) )
+  return '<'.$tag.' '.attrRender($attr).'/>';
+  // default tag
+  return '<'.$tag.' '.attrRender($attr).'>'.(isset($attr['text']) ? $attr['text'] : '').'</'.$tag.'>';
+}
 function qtExt($file, bool $lowercase=true)
 {
   $ext = strrpos($file,'.');

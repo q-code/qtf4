@@ -33,16 +33,16 @@ function memInit(string $key, $onUnknownKey=false)
   // Dataset memory
   switch($key) {
     case 'settingsage': return time();
-    case '_Domains': return CDomain::getProperties();
+    case '_Domains': return CDomain::getAllDomains();
       // all domains (including empty/invisible domains), array contains property=>value from CDomain class
     case '_SectionsTitle': return CSection::getTitles();
       // array of Id=>Title (translated)
-    case '_Sections': return CSection::getProperties();
+    case '_Sections': return CSection::getAllSections();
       // all sections (including empty/invisible sections), array contains property=>value from CSection class
       // items,replies,lastpost are recomputed for each section
     case '_SectionsStats': return CSection::getSectionsStats();
       // count topics and replies, by section (all)
-    case '_NewUser': global $oDB; return SUser::getLastMember($oDB);
+    case '_NewUser': return SUser::getLastMember();
       // last registered user
   }
   // Unknown key (false)

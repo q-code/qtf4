@@ -31,7 +31,7 @@ public function __construct($ref=null, int $intNum=-1, bool $text255=false)
   if ( $_SESSION[QT]['viewmode']=='C' ) $this->text = qtInline($this->text,510,'...',false);
   if ( $text255 && isset($this->text[255]) ) $this->text = substr($this->text,0,255);
 }
-public function setFrom($ref=null)
+private function setFrom($ref=null)
 {
   // $ref can be [null|int|array|obj-class], otherwhise die
   if ( $ref===null ) return; // exit with void-instance (default properties)

@@ -83,11 +83,9 @@ echo '<div id="aside__info" class="article" style="display:none">'.PHP_EOL;
   echo '</p>';
   // new user info (from memcache)
   $newuser = SMem::get('_NewUser');
-  if ( $newuser!==false && !empty($newuser['id']) && !empty($newuser['firstdate']) && !empty($newuser['name']) ) {
-    if ( addDate($newuser['firstdate'],30,'day')>Date('Ymd') ) {
-      echo '<p>'.L('Welcome_to').'<a href="'.url('qtf_user.php?id='.$newuser['id']).'">'.$newuser['name'].'</a></p>';
-    }
-  }
+  if ( !empty($newuser['id']) && !empty($newuser['firstdate']) && !empty($newuser['name']) && addDate($newuser['firstdate'],30,'day')>Date('Ymd') )
+  echo '<p>'.L('Welcome_to').'<a href="'.url('qtf_user.php?id='.$newuser['id']).'">'.$newuser['name'].'</a></p>';
+
 echo '</div>'.PHP_EOL;
 
 echo '<div id="aside__detail" class="secondary" style="display:none">'.PHP_EOL;

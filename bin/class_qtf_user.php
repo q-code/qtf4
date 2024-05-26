@@ -306,14 +306,13 @@ public static function rename(CDatabase $oDB, int $id=0, string $name='visitor')
   SMem::clear('_NewUser'); // clear memcache
   return $b; // return false in case of query error or transaction failled
 }
-public static function getLastMember(CDatabase $oDB,$sqlWhere='')
+public static function getLastMember()
 {
   $arr = [];
-  $id = $oDB->count( "SELECT max(id) as countid FROM TABUSER WHERE id>=0".$sqlWhere ); // can be 0 if nothing found
-  if ( $id ) {
-    $arr['id'] = $id;
-    $oDB->query( "SELECT name,firstdate FROM TABUSER WHERE id=".$id );
-    $row = $oDB->getRow();
+  global $oDB; $oDB->query( "SELECT max(u.id) as maxid,u.name,u.firstdate FROM TABUSER u WHERE u.id>0" );
+  if ( $row = $oDB->getRow() )
+  {
+    $arr['id'] = (int)$row['maxid'];
     $arr['name'] = $row['name'];
     $arr['firstdate'] = (empty($row['firstdate']) ? '0' : substr($row['firstdate'],0,8)); // date only
   }

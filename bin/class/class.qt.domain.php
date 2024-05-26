@@ -10,22 +10,25 @@ class CDomain extends AContainer implements IContainer {
 
 // AContainer properties: id,pid,title,descr,type,status,items
 // NOTE: descr and items are not used by CDomain
-public function __construct($ref=null, $translate=false) {
-  $this->setFrom($ref);
+
+public function __construct($ident=null, bool $translate=false)
+{
+  $this->setFrom($ident); // $ident [null|int|array|CDomain]
   if ( $translate) $this->title = SLang::translate('domain', 'd'.$this->id, $this->title);
 }
-public function setFrom($ref=null) {
-  // $ref can be [null|int|array|obj-class], otherwhise die
-  if ( $ref===null ) return; // exit with void-instance (default properties)
-  if ( is_int($ref) ) {
-    if ( $ref<0 ) die(__METHOD__.' Argument must be positive');
+private function setFrom($ident=null)
+{
+  // $ident [null|int|array|CDomain] otherwhise die
+  if ( $ident===null ) return; // exit with void-instance (default properties)
+  if ( is_int($ident) ) {
+    if ( $ident<0 ) die(__METHOD__.' negative identifier');
     global $oDB;
-    $oDB->query( "SELECT * FROM TABDOMAIN WHERE id=$ref" );
-    $row = $oDB->getRow(); if ( $row===false ) die(__METHOD__.' No id '.$ref);
-    $ref = $row; // continue as array
+    $oDB->query( "SELECT * FROM TABDOMAIN WHERE id=$ident" );
+    $row = $oDB->getRow(); if ( $row===false ) die(__METHOD__.' No id '.$ident);
+    $ident = $row; // continue as array
   }
-  if ( is_array($ref) ) {
-    foreach($ref as $k=>$value) {
+  if ( is_array($ident) ) {
+    foreach($ident as $k=>$value) {
       switch((string)$k) {
         case 'id':     $this->id     = (int)$value; break;
         case 'pid':    $this->pid    = (int)$value; break;
@@ -34,14 +37,15 @@ public function setFrom($ref=null) {
         case 'type':   $this->type   = $value; break;
         case 'status': $this->status = $value; break;
         case 'items':  $this->items  = (int)$value; break; // not used
-      } // Unit test: $k must be [string] otherwhise key 0 can change the first case (0=='id')
+      } // Unit test: $k requires [string] otherwhise a key 0 can change the first case (as 0=='id')
     }
     return;
   }
-  if ( is_a($ref,'CDomain') ) return $this->setFrom(get_object_vars($ref));
-  die(__METHOD__.' Invalid argument type');
+  if ( is_a($ident,'CDomain') ) return $this->setFrom(get_object_vars($ident)); // ie. copy the [CDomain] properties
+  die(__METHOD__.' envalid identifier');
 }
-public static function create(string $title='untitled', int $pid=-1, bool $uniquetitle=true) {
+public static function create(string $title='untitled', int $pid=-1, bool $uniquetitle=true)
+{
   $title = qtDb(trim($title)); if ( empty($title) ) throw new Exception( L('Name').' '.L('not_empty') );
   // unique title
   global $oDB;
@@ -54,11 +58,13 @@ public static function create(string $title='untitled', int $pid=-1, bool $uniqu
   // $pid not used as domain is top level (no parent)
   return $id;
 }
-public static function translate(int $id) {
+public static function translate(int $id)
+{
   // returns translated title (from session memory), uses config name if no translation
   return SLang::translate('domain', 'd'.$id, empty($GLOBALS['_Domains'][$id]['title']) ? '' : $GLOBALS['_Domains'][$id]['title']); //
 }
-public static function delete(int $id) {
+public static function delete(int $id)
+{
   if ( $id<1 ) die('CDomain::delete domain 0 cannot be deleted');
   global $oDB;
   // check is empty
@@ -69,7 +75,8 @@ public static function delete(int $id) {
   // clear cache
   SMem::clear('_Domains');
 }
-public static function rename(int $id, string $title='untitled', bool $uniquetitle=true) {
+public static function rename(int $id, string $title='untitled', bool $uniquetitle=true)
+{
   if ( $id<0 ) die('CDomain::rename arg #1 must be positive');
   if ( empty($title) ) die('CDomain::rename arg #2 must be a string');
   $title = qtDb($title);
@@ -80,7 +87,8 @@ public static function rename(int $id, string $title='untitled', bool $uniquetit
   // clear cache
   SMem::clear('_Domains');
 }
-public static function getTitles(array $arrReject=[], bool $translate=true, string $order='titleorder') {
+public static function getTitles(array $arrReject=[], bool $translate=true, string $order='titleorder')
+{
   global $oDB;
   $oDB->query( "SELECT id,title FROM TABDOMAIN ORDER BY $order");
   while($row=$oDB->getRow()) {
@@ -89,29 +97,32 @@ public static function getTitles(array $arrReject=[], bool $translate=true, stri
   }
   return $arr;
 }
-public static function getOwner(int $id) {
+public static function getOwner(int $id)
+{
   if ( $id<0 ) die('AContainer::getOwner Invalid argument');
   return 1; // top level container. The owner is the first administrator
 }
-public static function moveSections(int $id=-1, int $dest=-1) {
+public static function moveSections(int $id=-1, int $dest=-1)
+{
   if ( $id<0 || $dest<0 || $id===$dest ) die('CDomain::moveSections: invalid arguments');
   global $oDB;
   $oDB->exec( "UPDATE TABSECTION SET domainid=$dest WHERE domainid=$id" );
   // clear cache
   SMem::clear('_Sections');
 }
-public static function getProperties(string $order='titleorder') {
-  // Returns an array of all [CDomain] object-properties
+public static function getAllDomains(string $sqlOption='ORDER BY titleorder')
+{
+  // Returns an array of all [CDomain] as [id=>[properties]]
   $arr = [];
-  $oDB = new CDatabase();
-  $oDB->query( "SELECT * FROM TABDOMAIN ORDER BY ".$order );
+  global $oDB; $oDB->query( "SELECT * FROM TABDOMAIN ".$sqlOption );
   while($row=$oDB->getRow()) {
-    $oDom = new CDomain($row); // titles are not translated
-    $arr[$oDom->id] = (array)$oDom; // object-properties as ARRAY
+    $d = new CDomain($row); // titles are NOT translated
+    $arr[$d->id] = (array)$d;
   }
   return $arr;
 }
-public static function get_pSectionsVisible(int $pid) {
+public static function get_pSectionsVisible(int $pid)
+{
   // list visible sections in memory '_Sections' (hide type 1 section for non-staff)
   if ( !isset($GLOBALS['_Sections']) ) die('CDomain::get_pSectionsVisible missing _Sections');
   if ( $pid<0 ) die('CDomain::get_pSectionsVisible arg #1 must be a integer');

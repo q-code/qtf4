@@ -1,20 +1,17 @@
 <?php // v4.0 build:20240210
 
-// REQUIREMENTS:
-// Methods use typed-arguments (basic types)
-// Methods DONT use typed-return and typed-properties
-// Compatible with php 7.1 (typed-properties requires php 7.4, typed-return method requires php 8, mixed or pseudo-types requires php 8)
+// INCLUDED CLASSES: AContainer,IContainer,SMem,SLang,CStat,Splash
+
+/*
+REQUIREMENTS:
+Methods use typed-arguments (basic types)
+Methods DONT use typed-return and typed-properties
+Compatible with php 7.1 (typed-properties requires php 7.4, typed-return method requires php 8, mixed or pseudo-types requires php 8)
+*/
 
 /**
- * AContainer is a (abstract)class of generic properties: id, pid, title, descr, type, status, items
- * IContainer interface includes generic methods: create, delete, rename, setFrom
- * SMem class manages shared-memory (memcache/memcached)
- * SLang class manages application objects translations
- * CStat class provide basic statistics
- * Splash class to parse (then clear) a message coming from the previous page
- * @author qt-cute.org
+ * AContainer is a (abstract)class with generic properties: id, pid, title, descr, type, status, items
  */
-
 abstract class AContainer
 {
   public $id = -1;            // [int] unique id
@@ -28,16 +25,19 @@ abstract class AContainer
   public $status ='';         // [string] ex: '0'=default, '1'=closed
   public $items = 0;          // [int] number of child items
 }
-
+/**
+ * IContainer interface includes generic methods: create, delete, rename, getOwner
+ */
 interface IContainer
 {
-  public function setFrom($ref=null); // initialise
   static function create(string $title='untitled',int $pid=-1, bool $uniquetitle=true); // Add a new container in the storage-db
   static function delete(int $id);
   static function rename(int $id, string $title='untitled');
   static function getOwner(int $id);
 }
-
+/**
+ * SMem class manages shared-memory (memcache/memcached)
+ */
 class SMem
 {
   // Attention: Uses 'memcached' library (php>7.2) but automatically tries to use legacy 'memcache' when memcached is not available.
@@ -112,9 +112,8 @@ class SMem
     return self::$memory->delete(QT.$key);
   }
 }
-
 /**
- * Each method will lowercase arguments type/lang/id. Some method allows a list of type [csv-string] (argument $types).
+ * SLang class manages application objects translations
  */
 class SLang
 {
@@ -215,7 +214,9 @@ class SLang
     $oDB->exec( "DELETE FROM TABLANG WHERE objid='$id' AND objlang IN ('$lang') AND objtype IN ('$type')" );
   }
 }
-
+/**
+ * CStat class provide basic statistics
+ */
 class CStats
 {
   // This uses dynamic properties
@@ -243,7 +244,9 @@ class CStats
     if ( isset($this->$prop) ) unset($this->$prop);
   }
 }
-
+/**
+ * Splash class to parse (then clear) a message coming from the previous page
+ */
 class Splash
 {
   // Message can have 2 parts seprated by '|' (if no separator 'O|' is used):

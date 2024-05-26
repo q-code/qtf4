@@ -25,9 +25,9 @@ public $lastpostdate;
 public $lastpostuser;
 public $lastpostname;
 
-function __construct($ref=null, bool $translate=false)
+function __construct($ident=null, bool $translate=false)
 {
-  $this->setFrom($ref);
+  $this->setFrom($ident);
   if ( $translate ) {
     $this->title = SLang::translate('sec', 's'.$this->id, $this->title);
     $this->descr = SLang::translate('secdesc', 's'.$this->id, '');
@@ -43,10 +43,7 @@ function __construct($ref=null, bool $translate=false)
     $this->lastpostname = isset($GLOBALS['_SectionsStats'][$this->id]['lastpostname']) ? $GLOBALS['_SectionsStats'][$this->id]['lastpostname'] : '';
   }
 }
-// ------
-// IContainer methods
-// ------
-public function setFrom($ref=null)
+private function setFrom($ref=null)
 {
   // $ref can be [null|int|array|obj-class], otherwhise die
   if ( $ref===null ) return; // exit with void-instance (default properties, id=-1)
@@ -82,6 +79,9 @@ public function setFrom($ref=null)
   if ( is_a($ref,'CSection') ) return $this->setFrom(get_object_vars($ref)); //█
   die(__METHOD__.' Invalid argument type' );
 }
+// ------
+// IContainer methods
+// ------
 public static function create(string $title='untitled', int $pid=-1, bool $uniquetitle=true)
 {
   $title = qtDb(trim($title));
@@ -121,6 +121,9 @@ public static function getOwner(int $id)
   $row = $oDB->getRow();
   return (int)$row['moderator'];
 }
+// ------
+// Other methods
+// ------
 public static function getTitles($translate=true, $sqlWhere='')
 {
   $arr = [];
@@ -147,9 +150,6 @@ public static function getSections(string $role='V', int $domain=-1, array $reje
   }
   return $arrSections;
 }
-// ------
-// Other methods
-// ------
 public function logo(string $alt='')
 {
   return CSection::makeLogo($this->getMF('options','logo',$alt), $this->type, $this->status);
@@ -437,16 +437,13 @@ public static function sqlCountItems($s, string $q='items', string $status='',st
     default: die('CSection::sqlCountItems: Wrong argument (q) '.$q);
   }
 }
-public static function getProperties(string $order='d.titleorder,s.titleorder')
+public static function getAllSections(string $sqlOption='ORDER BY d.titleorder,s.titleorder')
 {
-  // Returns an array[pid] of [CSection] objects (array key is the object->id)
-  global $oDB;
   $arr = [];
-  $oDB->query( "SELECT s.* FROM TABSECTION s INNER JOIN TABDOMAIN d ON s.domainid=d.id ORDER BY $order" );
+  // Returns an array[pid] of [CSection] objects (array key is the object->id)
+  global $oDB; $oDB->query( "SELECT s.* FROM TABSECTION s INNER JOIN TABDOMAIN d ON s.domainid=d.id $sqlOption" );
   while($row=$oDB->getRow())  {
-    $oS = new CSection($row);
-    // title,descr,ptitle are not translated
-    // items,replies,lastpost come from memory
+    $oS = new CSection($row); // title,descr,ptitle are NOT translated. items,replies,lastpost come from memory
     $arr[$oS->id] = (array)$oS;
   }
   return $arr;
