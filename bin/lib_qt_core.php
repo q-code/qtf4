@@ -47,7 +47,7 @@ function L(string $k, int $n=null, string $format='n w', array $A=[], string $pk
     case 'n w': $f = '%2$d %1$s'; break;
     case 'k w': $f = '%2$s %1$s'; break;
     case 'w':
-    case '': $f = '$s'; break;
+    case '': $f = '%s'; break;
     default: $f = $format;
   }
   // Check if plural form must be searched (i.e. search for key with '+')
