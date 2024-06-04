@@ -353,7 +353,7 @@ if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P')
   }
   if ( $tagEditor ) {
     $tags = '';
-    foreach(explode(';',$oT->descr) as $k=>$item) $tags .= empty($item) ? '' : '<span class="tag" onclick="tagClick(this.innerHTML)">'.$item.'</span>';
+    foreach(explode(';',$oT->descr) as $k=>$item) $tags .= empty($item) ? '' : '<span class="tag clickable" onclick="tagClick(this.innerHTML)">'.$item.'</span>';
     echo '<div class="tags right" style="padding:4px 0">'.qtSVG('tag'.(count($arrTags)>1 ? 's' : ''), 'title='.L('Tags'));
     echo ' <div id="tag-container" style="display:inline-block">';
     echo '<span id="tag-shown" style="display:inline-block">'.$tags.'</span>';

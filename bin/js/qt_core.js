@@ -4,8 +4,9 @@ function qtFocus(id) {
 function qtFocusOut(id) {
   const e = document.getElementById(id); if ( e ) e.blur();
 }
-function qtFocusAfter(id) {
+function qtFocusAfter(id, clear=false) {
   const e = document.getElementById(id); if ( !e || e.value===undefined || e.value.length===0 ) return;
+  if ( clear ) { e.value=''; e.focus(); return; }
   // Focus the input and push cursor after the value to avoid having the value selected
   const value = e.value;
   e.value = ''; e.focus(); e.value = value;
@@ -62,14 +63,14 @@ function qtClipboard(value, useAlert=true, maxSize=255) {
 }
 /**
  * Hide an element when a table row count is less than [rows]
- * @param {string} id element to hide
- * @param {string} table parent table (t1)
+ * @param {string} element element (id) to hide
+ * @param {string} table parent table (id)
  * @param {boolean} inflow TRUE applies visiblity=hidden, FALSE applies display=none
  * @param {number} rows
  */
-function qtHideAfterTable(id, table='t1', inflow=false, rows=5) {
+function qtHideAfterTable(element, table='t1', inflow=false, rows=5) {
   const t = document.getElementById(table);
-  const e = document.getElementById(id);
+  const e = document.getElementById(element);
   if ( t && e && t.rows.length<rows ) inflow ? e.style.visibility = 'hidden' : e.style.display = 'none';
 }
 /**

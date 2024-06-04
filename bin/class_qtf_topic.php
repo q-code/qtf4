@@ -180,7 +180,7 @@ function setType(string $type='T')
 public static function tagsClear($str, bool $dropDuplicate=true)
 {
   if ( is_array($str) ) $str = implode(';',$str);
-  if ( !is_string($str) ) die('tagsClear: wrong argument #1');
+  if ( !is_string($str) ) die(__METHOD__.' wrong argument #1');
   // Returns a string 'tag1;tag2;tag3' (trimed, no empty entry, no-accent). Note: 0,'0','',' ' are also removed
   // Returns '' when $str is empty (or only ; , characters )
   // Dropping duplicate is case INsensitive (keeping the first). Exemple: 'Info;info;DATE;date;INFO;Date' returns 'Info;DATE'
@@ -212,10 +212,10 @@ public function tagsUpdate()
 public function tagsAdd(string $str, $oS=false)
 {
   // Check and format
-  $str = CTopic::tagsClear($str); // returns csv distinct tags [string] (can return '' or '*')
+  $str = self::tagsClear($str); // returns csv distinct tags [string] (can return '' or '*')
   if ( empty($str) || $str==='*' ) return false;
   // Append to current and clear (to remove duplicate)
-  $this->descr = CTopic::tagsClear($this->descr.';'.$str);
+  $this->descr = self::tagsClear($this->descr.';'.$str);
   // Save
   $this->tagsUpdate();
 }
@@ -223,7 +223,7 @@ public function tagsDel(string $str, $oS=false)
 {
   if  ( empty($this->descr) || empty($str) ) return false;
   // Check and format
-  $str = CTopic::tagsClear($str); // returns ssv distinct tags [string] (can return '' or '*')
+  $str = self::tagsClear($str); // returns ssv distinct tags [string] (can return '' or '*')
   if ( empty($str) ) return false;
   // Build new tags list
   if ( $str==='*' )
