@@ -53,6 +53,7 @@ const QT_CONVERT_AMP = false; // Store & as &#38; in the DB. True makes symbol &
 const QT_LIST_ME = true; // execute the 'i-replied' search in section list
 const QT_LIST_TAG = true; // display a the tag-list under the section (can be used as search tool).
 const QT_JAVA_MAIL = true; // Protect e-mail by a javascript
+const QT_LOWERCASE_TAG = true; // store tags as lowercase (true recommended). With false, tags are case sensitive (ie. user likely inputs "duplicate").
 const QT_WEEKSTART = 1; // Start of the week (use code 1=monday,...,7=sunday)
 const QT_STAFFEDITUSER = true; // Staff member can edit some profile info of a user (picture,signature,contact-info)
 const QT_STAFFEDITSTAFF = false; // Staff member can edit some profile info of an other staff member (picture,signature,contact-info)

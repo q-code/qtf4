@@ -405,11 +405,11 @@ function qtImplode(array $arr, string $sep='&', bool $skipNull=true, bool $skipV
   // TIPS: default separator is '&' because this function is MAINLY use to handle uri-arguments
 }
 /**
- * Explode, trim, remove empty values (also 0) and return unique values
+ * Explode, trim, remove empty values (also 0) and returns unique values
  * @param string $str
  * @param string $sep cannot be space
  * @param array $append optional array to append (before trimming and filtering)
- * @return array array of string
+ * @return array
  */
 function qtCleanArray(string $str, string $sep=';', array $append=[])
 {

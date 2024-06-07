@@ -8,21 +8,20 @@
 class CHtml
 {
 
-public $html = '<html>'; // can be use to include xml attributes
-public $metas = []; // [0] is the title
+public $html = '<html>';  // can be use to include xml attributes
+public $metas = [];       // can contains <title> as $metas[0]
 public $links = [];
-public $scripts_top = [];
-public $scripts = [];
-public $log = []; // Attention if not empty, is VISIBLE at the bottom of the page.
-
-public $php = ''; // script name (without path)
-public $arg = ''; // url arguments (with '?' if not empty)
+public $scripts_top = []; // scripts in the <head>
+public $scripts = [];     // scripts in the <body>
+public $scripts_end = []; // if scripts require to be after other scripts
+public $log = [];         // Attention if not empty, is VISIBLE at the bottom of the page.
+public $php = '';         // script name (without path)
+public $arg = '';         // url arguments (with '?' if not empty)
 public $name = '';
 public $exitname = 'Back';
 public $exiturl = APP.'_index.php';
-
-public $items = 0; // number of items in the page, visible (can be in several pages)
-public $itemsHidden = 0; // number of items in the page, hidden (by users preferences)
+public $items = 0;        // number of items in the page, visible (can be in several pages)
+public $itemsHidden = 0;  // number of items in the page, hidden (by users preferences)
 public $error = '';
 public $warning = '';
 
@@ -31,7 +30,6 @@ public function __construct()
   $this->php = substr($_SERVER['PHP_SELF'], strrpos($_SERVER['PHP_SELF'],'/')+1);
   if ( !empty($_SERVER['QUERY_STRING']) ) $this->arg = '?'.$_SERVER['QUERY_STRING'];
 }
-
 public function head()
 {
   //push cssContrast as last link
@@ -40,11 +38,8 @@ public function head()
     if ( end($arr)!=='cssContrast' ) { $this->links[] = $this->links['cssContrast']; unset($this->links['cssContrast']); }
   }
   // check/add <script> enclosing tag
-  foreach($this->scripts_top as $k=>$src) {
-    if ( substr($src,0,8)==='<script ' ) continue;
-    $this->scripts_top[$k] = '<script type="text/javascript">'.$src.'</script>';
-  }
-  // build title/metas/links/script_top
+  self::formatScripts($this->scripts_top);
+  // build links
   echo $this->html.PHP_EOL.'<head>'.PHP_EOL.implode(PHP_EOL,$this->metas).PHP_EOL.implode(PHP_EOL,$this->links).PHP_EOL.implode(PHP_EOL,$this->scripts_top).PHP_EOL.'</head>'.PHP_EOL;
 }
 public function body(string $attr='')
@@ -58,17 +53,23 @@ public function end(bool $allowSplash=true)
   $splash = '';
   if ( $allowSplash && !empty($_SESSION[QT.'splash']) ) $splash .= Splash::getSplash();
   // check/add <script> enclosing tag
-  foreach($this->scripts as $k=>$src) {
-    if ( substr($src,0,8)==='<script ' ) continue;
-    $this->scripts[$k] = '<script type="text/javascript">'.$src.'</script>';
-  }
+  if ( !empty($this->scripts) ) self::formatScripts($this->scripts);
+  if ( !empty($this->scripts_end) ) self::formatScripts($this->scripts_end);
   // output
-  echo $log.PHP_EOL.implode(PHP_EOL,$this->scripts).$splash.PHP_EOL.'</body>'.PHP_EOL.'</html>';
+  echo $log.PHP_EOL.implode(PHP_EOL,$this->scripts).implode(PHP_EOL,$this->scripts_end).$splash.PHP_EOL.'</body>'.PHP_EOL.'</html>';
 }
-public static function pageEntity(string $attr='', string $info='', string $entity='div')
+/** Add enclosing script if missing */
+private static function formatScripts(array &$codes) {
+  foreach($codes as $k=>$code) {
+    if ( substr($code,0,8)==='<script ' ) continue;
+    $codes[$k] = '<script type="text/javascript">'.$code.'</script>';
+  }
+}
+/** Open/close a div (or other) tag with (optionally) an html-comment before/after */
+public static function pageEntity(string $attr='', string $com='', string $entity='div')
 {
-  if ( $attr==='/' ) return '</'.$entity.'>'.PHP_EOL.($info ? '<!-- end '.$info.' -->'.PHP_EOL : '');
-  return ($info ? PHP_EOL.'<!-- start '.$info.' -->' : '').PHP_EOL.'<'.$entity.''.attrRender($attr).'>'.PHP_EOL;
+  if ( $attr==='/' ) return '</'.$entity.'>'.PHP_EOL.($com ? '<!-- end '.$com.' -->'.PHP_EOL : '');
+  return ($com ? PHP_EOL.'<!-- start '.$com.' -->' : '').PHP_EOL.'<'.$entity.''.attrRender($attr).'>'.PHP_EOL;
 }
 /**
  * Redirect

@@ -12,11 +12,12 @@ class CSection extends AContainer implements IContainer
 
 // AContainer properties: id,title,pid,ptitle,ownerid,ownername,descr,type,status,items
 // (v4.0) $stats is removed and removed from table structure
-public $notify = 1;        // Notify: 0=disable, 1=enabled
-public $numfield = 'N';    // Format of the ref number: 'N' means no ref number
-public $titlefield = 1;    // Topic title: 0=None, 1=Optional, 2=Mandatory
-public $prefix = 'a';      // Prefix icon from the serie 'a'
-public $options = '';      // Several options: order=Ticket default sort order | last=Last column in the topic list: 'none' means no last column | logo=Ovewrite icon with an image-logo named s_x.gif/.jpeg/.jpg/.png (where x is the section id)
+public $notify = 1;     // Notify: 0=disable, 1=enabled
+public $numfield = 'N'; // Format of the ref number: 'N' means no ref number
+public $titlefield = 1; // Topic title: 0=None, 1=Optional, 2=Mandatory
+public $prefix = 'a';   // Prefix icon from the serie 'a'
+public $options = '';   // Several options: order=Ticket default sort order | last=Last column in the topic list: 'none' means no last column | logo=Ovewrite icon with an image-logo named s_x.gif/.jpeg/.jpg/.png (where x is the section id)
+public $stats = 0;      // Several statistics
 // computed values
 public $replies = 0;
 public $lastpostid;
@@ -452,6 +453,24 @@ public function updEachItemReplies()
 {
   global $oDB;
   $oDB->exec( "UPDATE TABTOPIC SET replies=(SELECT COUNT(*) FROM TABPOST WHERE TABTOPIC.id=TABPOST.topic AND TABPOST.type<>'P') WHERE forum=$this->id" );
+}
+/** Recompute stats, except for provided values */
+public function updStats(array $values=[], bool $bLastPostDate=false, bool $bReplies=false)
+{
+  if ( $this->id<0 ) die(__METHOD__.' Wrong id');
+  // Process (provided values are not recomputed)
+  global $oDB;
+  if ( !isset($values['items']) )    $values['items'] = $oDB->count( self::sqlCountItems($this->id,'topics') );
+  if ( !isset($values['replies']) )  $values['replies'] = $oDB->count( self::sqlCountItems($this->id,'replies') );
+  if ( !isset($values['tags']) )     $values['tags'] = $oDB->count( self::sqlCountItems($this->id,'tags') );
+  if ( !isset($values['itemsZ']) )   $values['itemsZ'] = $oDB->count( self::sqlCountItems($this->id,'topics','1') );
+  if ( !isset($values['repliesZ']) ) $values['repliesZ']= $oDB->count( self::sqlCountItems($this->id,'repliesZ') );
+  $this->stats = qtImplode($values,';');
+  $this->updateMF('stats'); // also send sse
+  // Update lastpostdate or replies of EACH item in this section
+  //!!!if ( $bLastPostDate ) self::updLastPostDate($this->id); // used after import or prune
+  if ( $bReplies ) self::updEachItemReplies($this->id);  // used after import
+  return $this->stats;
 }
 
 // ------

@@ -540,15 +540,13 @@ echo '
 ';
 
 // CSV
-if ( file_exists('qtf_stats_csv.php') ) {
-  echo '<p class="right table-ui-export"><a class="csv" href="qtf_stats_csv.php?'.parse_url($_SERVER['REQUEST_URI'],PHP_URL_QUERY).'" title="'.L('H_Csv').'">'.L('Csv').'</a></p>';
-}
+if ( file_exists('qtf_stats_csv.php') )
+echo '<p class="right table-ui-export"><a class="csv" href="qtf_stats_csv.php?'.parse_url($_SERVER['REQUEST_URI'],PHP_URL_QUERY).'" title="'.L('H_Csv').'">'.L('Csv').'</a></p>';
 
 // ------
 // HTML END
 // ------
 if ( $_SESSION[QT]['tags']!='0' )
-$oH->scripts['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script>
-<script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
+$oH->scripts_end['ac-api'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
 
 include 'qtf_inc_ft.php';
