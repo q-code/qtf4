@@ -394,11 +394,11 @@ if ( $a=='re' || $a=='qu' ) {
 // HTML END
 
 if ( $tagEditor || SUser::isStaff() ) {
-  $oH->scripts_end['ac-api'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
   $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_tags.js"></script>';
-  $oH->scripts['ac-ini'] = 'const acOnClicks = [];'; // required (in case acOnClicks not yet defined)
-  $oH->scripts['ac-src'] = 'acOnClicks["behalf"] = function(focusInput,btn) {
-  if ( focusInput.id=="behalf" ) document.getElementById("behalfid").value = btn.dataset.id; }
+  $oH->scripts['ac'] = 'if ( typeof acOnClicks==="undefined" ) { var acOnClicks = []; }
+  acOnClicks["behalf"] = function(focusInput,btn) {
+    if ( focusInput.id=="behalf" ) document.getElementById("behalfid").value = btn.dataset.id;
+  }
   function changeIcon() {
     const type = document.getElementById("newtopictype").value.toLowerCase();
     const status = document.getElementById("newtopicstatus").value.toLowerCase();
@@ -409,6 +409,7 @@ if ( $tagEditor || SUser::isStaff() ) {
       d.setAttribute("src", d.getAttribute("src").replace(/topic_._./, "topic_"+type+"_"+status));
     }
   }';
+  $oH->scripts_end['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
 }
 $oH->scripts[] = 'const btnPreview = document.getElementById("form-edit-preview");
 btnPreview.addEventListener("click", (e) => {

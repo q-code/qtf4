@@ -31,7 +31,8 @@ function addHrefData(d, args) {
     d.href += "&"+arg+"="+d.dataset[arg];
   }
 }
-// Specific autocomplete-click
+// Specific autocomplete-click, requires acOnclicks exist (must be VAR to be global)
+if ( typeof acOnClicks==="undefined" ) { var acOnClicks = []; }
 acOnClicks["ref"] = function(focusInput,btn) {
   if ( focusInput.id=="ref" && focusInput.value.substring(0,1)=="#") window.location="qtf_item.php?t="+focusInput.value.substring(1);
 }

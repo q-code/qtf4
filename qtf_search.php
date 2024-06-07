@@ -175,7 +175,6 @@ echo '* <small>'.sprintf(L('Multiple_input'),QSEPARATOR).'</small>';
 
 // HTML END
 
-$oH->scripts['ac-ini'] = 'const acOnClicks = [];'; // required, acOnClicks is used in _search.php.js
-$oH->scripts_end['ac-api'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
+$oH->scripts_end['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
 
 include APP.'_inc_ft.php';
