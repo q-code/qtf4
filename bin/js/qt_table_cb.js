@@ -1,10 +1,12 @@
 // Checkbox-events (and command-events) are added if the table has the class "table-cb"
+// The table must includes [data-formid]=formid (ie. the id of the form around the table). If missing uses "form-items".
 // Top checkbox with [data-target] attribute is linked to row checkboxes by the [name] attribute
 // ShiftClick event works when checkboxes include an data-row attribute
 const cbTables = document.querySelectorAll('table.table-cb');
 const noselect = document.currentScript.dataset['noselect'] ?? 'Nothing selected';
-const formid = document.currentScript.dataset['formid'] ?? 'form-items';
 cbTables.forEach( cbTable => {
+  // form
+  const formid = cbTable.dataset.formid ?? 'form-items';
   // top and rows checkbox event
   const cbTop = cbTable.querySelector('input[type="checkbox"][data-target]');
   const cbRows = cbTable.querySelectorAll('input[type="checkbox"][name]');

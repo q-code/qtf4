@@ -239,7 +239,7 @@ $t->arrTh['replies'] = new TabHead(L('Reply+'), '', '<a href="'.$oH->php.$oH->ar
 if ( in_array($strLastcol,['id','views','status','tags']) )
 $t->arrTh[$strLastcol] = new TabHead(L(ucfirst($strLastcol)), '', '<a href="'.$oH->php.$oH->arg.'&po='.$strLastcol.'&pd=desc">%s</a>');
 // add default class {c-$k}
-foreach(array_keys($t->arrTh) as $k) $t->arrTh[$k]->add('class', 'c-'.$k);
+foreach(array_keys($t->arrTh) as $k) $t->arrTh[$k]->set('class', 'c-'.$k);
 // append class secondary
 foreach(['firstpostname','tags','views'] as $k) if ( isset($t->arrTh[$k])) $t->arrTh[$k]->append('class', 'secondary');
 // append class ellipsis
@@ -324,7 +324,7 @@ while( $row = $oDB->getRow() ) {
   if ( $useNewsOnTop && !empty($row['typea']) && $row['typea']==='Z' ) {
     $useNewsOnTop = false; // end of news on top
     echo $t->tbody->end();
-    $t->tbody->add('data-dataset', 'items');
+    $t->tbody->set('data-dataset', 'items');
     echo $t->tbody->start();
   }
 
@@ -332,7 +332,7 @@ while( $row = $oDB->getRow() ) {
   $t->setTDcontent(formatItemRow('t1', $t->getTHnames(), $row, $oS, $arrOptions), false); // adding extra columns not allowed
   // dynamic style (class c-status open|closed)
   if ( isset($t->arrTd['status']) )
-  $t->arrTd['status']->add('class', 'c-status '.($row['status'] ? 'closed' : 'opened'));
+  $t->arrTd['status']->set('class', 'c-status '.($row['status'] ? 'closed' : 'opened'));
   // add checkbox if edit mode
   if ( $_SESSION['EditByRows'] && $row['posttype']==='P' )
   $t->arrTd['checkbox']->content = '<input type="checkbox" name="t1-cb[]" id="t1-cb-'.$row['id'].'" value="'.$row['id'].'" data-row="'.$intRow.'"/>';

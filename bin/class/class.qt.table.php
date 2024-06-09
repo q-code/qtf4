@@ -31,56 +31,48 @@ class TabItem
   public $attr = []; // array of attribute=>value (constructor can generate this array from a compacted-string)
   public $eolc = false; // add PHP_EOL after the closing tag
   public $eolo = false; // add PHP_EOL after the opening tag
-  public function __construct(string $tag='', $attr=[])
-  {
-    $this->tag = strtolower($tag); if ( !in_array($this->tag,['table','caption','tr','td','th','tbody','thead','tfoot']) ) die('TabItem: unsupported entity '.$this->tag);
+  public function __construct(string $tag='', $attr=[]) {
+    $this->tag = strtolower($tag); if ( !in_array($this->tag,['table','caption','tr','td','th','tbody','thead','tfoot']) ) die(__METHOD__.' unsupported entity '.$this->tag);
     // Add attributes
     if ( is_string($attr) ) $attr = self::attrDecode($attr); // support for compacted-string
-    if ( !is_array($attr)) die('TabItem::attr must be an array or a compacted-string');
-    foreach($attr as $key=>$value) $this->add((string)$key, (string)$value);
+    if ( !is_array($attr)) die(__METHOD__.' must be an array or a compacted-string');
+    foreach($attr as $key=>$value) $this->set((string)$key, (string)$value);
   }
-  public function add(string $key='', string $value='')
-  {
-    if ( empty($key) ) die('TabItem::add invalid argument');
+  public function set(string $key='', string $value='') {
+    if ( empty($key) ) die(__METHOD__.' invalid argument');
     $this->attr[$key] = $value;
   }
-  public function append(string $key='', string $value='', string $sep=' ', bool $unique=false)
-  {
-    if ( empty($key) ) die('TabItem::append invalid argument');
-    if ( !isset($this->attr[$key]) ) { $this->add($key,$value); return; } // create attribute if not yet existing
+  public function append(string $key='', string $value='', string $sep=' ', bool $unique=false) {
+    if ( empty($key) ) die(__METHOD__.' invalid argument');
+    if ( !isset($this->attr[$key]) ) { $this->set($key,$value); return; } // create attribute if not yet existing
     if ( $unique && strpos($this->attr[$key],$value)!==false ) return; // skip if value already in
     $this->attr[$key] .= (strlen($this->attr[$key])===0 ? '' : $sep).$value;
   }
-  public function remove(string $key='')
-  {
-    if ( empty($key) ) die('TabItem::remove invalid argument');
+  public function remove(string $key='') {
+    if ( empty($key) ) die(__METHOD__.' invalid argument');
     if ( !isset($this->attr[$key]) ) return; // attribute not existing
     unset($this->attr[$key]);
   }
-  public function setAttributes($attr=[])
-  {
+  public function setAttributes($attr=[]) {
     if ( is_string($attr) ) $attr = self::attrDecode($attr); // support for compacted-string
-    if ( !is_array($attr)) die('TabItem::setAttributes must be an array');
-    foreach($attr as $key=>$value) $this->add($key,$value);
+    if ( !is_array($attr)) die(__METHOD__.' must be an array');
+    foreach($attr as $key=>$value) $this->set($key,$value);
   }
-  public function unsetAttributes($attr=[])
-  {
+  public function unsetAttributes($attr=[]) {
     if ( is_string($attr) ) $attr = self::attrDecode($attr); // support for compacted-string
-    if ( !is_array($attr)) die('TabItem::unsetAttributes must be an array');
+    if ( !is_array($attr)) die(__METHOD__.' must be an array');
     foreach(array_keys($attr) as $key) $this->remove($key);
   }
   public function start() { return '<'.$this->tag.self::attrRender($this->attr).'>'.($this->eolo ? PHP_EOL : ''); }
   public function end() { return '</'.$this->tag.'>'.($this->eolc ? PHP_EOL : ''); }
-  private static function attrDecode(string $str, string $sep='|')
-  {
+  private static function attrDecode(string $str, string $sep='|') {
     // Explode a compacted-string 'x1=y1|x2=y2|x3' into an array of attribute value [x1=>y1,...]
     // Values are un-quoted. Attributes are lowercase. An attribute without value is possible (value is null)
     // Note: For an unformatted $str, the array [0=>$str] is returned
     if ( empty($str) ) return [];
     if ( substr_count($str,$sep)===0 && substr_count($str,'=')>1 ) return [$str]; // check if $str is compacted
     $attr = [];
-    foreach(qtCleanArray($str,$sep)as $str)
-    {
+    foreach(qtCleanArray($str,$sep) as $str) {
       $a = array_map('trim',explode('=',$str,2)); // cut on first '=' only
       if ( !isset($a[1]) || $a[1]==='' || $a[1]==='"' || $a[1]==='""' ) $a[1] = null; // support for attribute without value
       if ( isset($a[1]) ) {
@@ -92,7 +84,7 @@ class TabItem
     }
     return array_change_key_case($attr); // W3C recommends attribute-names in lowercase, strict XHTML requires lowercase
   }
-  private static function attrRender(array $attr=[]){
+  private static function attrRender(array $attr=[]) {
     $str = '';
     foreach ($attr as $key=>$value) $str .= ' '.$key.'="'.str_replace('"','\"',$value).'"';
     return $str;
@@ -102,9 +94,8 @@ class TabItem
 class TabData extends TabItem
 {
   public $content;
-  public function __construct(string $content='', $attr=[], string $tag='td')
-  {
-    if ( !in_array($tag,['td','caption']) ) die('TabData::construct invalid entity '.$tag);
+  public function __construct(string $content='', $attr=[], string $tag='td') {
+    if ( !in_array($tag,['td','caption']) ) die(__METHOD__.' invalid entity '.$tag);
     parent::__construct($tag,$attr);
     $this->content = $content;
   }
@@ -118,8 +109,7 @@ class TabHead extends TabItem
 {
   public $content = ''; // [string]  Content of the <th></th> entity
   public $link = '';    // [string]  Pattern to apply to $content (e.g. '<a href="your-url">%s</a>'). If $link=='', the initial $content will be used.
-  public function __construct(string $content='', $attr=[], string $link='')
-  {
+  public function __construct(string $content='', $attr=[], string $link='') {
     parent::__construct('th',$attr);
     $this->content = $content;
     $this->link = $link;
@@ -143,8 +133,7 @@ class TabTable extends TabItem
    * @param int $countDataRows number of td rows
    * @param int $minimumDataRows number of td rows to trigger th link changes
    */
-  public function __construct($attr=[], int $countDataRows=0, int $minimumDataRows=2)
-  {
+  public function __construct($attr=[], int $countDataRows=0, int $minimumDataRows=2) {
     parent::__construct('table',$attr);
     $this->countDataRows = $countDataRows;
     $this->minimumDataRows = $minimumDataRows;
@@ -157,8 +146,7 @@ class TabTable extends TabItem
    * {@inheritDoc}
    * @see TabItem::start()
    */
-  public function start()
-  {
+  public function start() {
     return parent::start() . (empty($this->caption) ? '' : $this->caption->get());
   }
   /**
@@ -166,8 +154,7 @@ class TabTable extends TabItem
    * {@inheritDoc}
    * @see TabItem::end()
    */
-  public function end(bool $unsetData=false, bool $unsetHead=false, bool $unsetRow=false)
-  {
+  public function end(bool $unsetData=false, bool $unsetHead=false, bool $unsetRow=false) {
     // allow resetting properties before using parent TabItem::end
     if ( $unsetData )  $this->arrTd = [];   // removes the <td> cells
     if ( $unsetHead )  $this->arrTh = [];   // removes the <th> cells
@@ -183,8 +170,7 @@ class TabTable extends TabItem
 
   public function getTHrow($attr=[]) { return $this->getRow($this->arrTh,$attr,'th'); }
   public function getTDrow($attr=[]) { return $this->getRow($this->arrTd,$attr,'td'); }
-  public function getTHnames()
-  {
+  public function getTHnames() {
     $arr = [];
     foreach($this->arrTh as $key=>$objTh) $arr[$key] = $objTh->content;
     return $arr;
@@ -197,27 +183,30 @@ class TabTable extends TabItem
     $str .= $this->end();
     return $str;
   }
-  public function getEmptyTable(string $content='No data...', bool $showHeaders=false, $attr=[])
-  {
+  public function getEmptyTable(string $content='No data...', bool $showHeaders=false, $attr=[]) {
     // Single row table (support only th and td rows, without thead|tbody|tfoot)
     // $attr are the attributes of the <td>
     // The <tr> tag uses the current row attributes (or create a <tr> entity without attributes)
     $cols = 1; // total number of th columns use as td colspan
     $row = '';
     // th
-    if ( $showHeaders )
-    {
+    if ( $showHeaders ) {
       $i = $this->countDataRows; // ensure that countDataRows is null to disable the header links (if any)
       $this->countDataRows = 0;
       if ( empty($this->arrTh) ) $this->arrTh[] = new TabHead();
+      $row .= empty($this->thead) ? '' : $this->thead->start();
       $row .= $this->getTHrow();
+      $row .= empty($this->thead) ? '' : $this->thead->end();
       $this->countDataRows = $i;
       $cols = count($this->arrTh);
     }
     // td, single cell containing $content
-    $objTd = new TabData($content,$attr); if ( $cols>1 ) $objTd->add('colspan',$cols);
+    $objTd = new TabData($content,$attr); if ( $cols>1 ) $objTd->set('colspan',$cols);
     $this->arrTd = [$objTd];
+    $row .= empty($this->tbody) ? '' : $this->tbody->start();
     $row .= $this->getTDrow();
+    $row .= empty($this->tbody) ? '' : $this->tbody->end();
+
     // build table
     return $this->start().$row.$this->end();
   }
@@ -225,12 +214,12 @@ class TabTable extends TabItem
   // Advanced methods: allows creating/changing all columns at once (tag, inner-content or an attribute)
   // Tips: When $values is a string, change is apply to all columns
   //       When $values is an array, change is apply to specific columns (the array index indicates the column)
-  public function setTHtag($values=[], bool $createCol=true, bool $namedCol=true) { $this->set('arrTh','[tag]',$values,$createCol,$namedCol); }
-  public function setTDtag($values=[], bool $createCol=true, bool $namedCol=true) { $this->set('arrTd','[tag]',$values,$createCol,$namedCol); }
-  public function setTHcontent($values=[], bool $createCol=true, bool $namedCol=true) { $this->set('arrTh','[content]',$values,$createCol,$namedCol); }
-  public function setTDcontent($values=[], bool $createCol=true, bool $namedCol=true) { $this->set('arrTd','[content]',$values,$createCol,$namedCol); }
-  public function setTHattr(string $attr, $values=[], bool $createCol=true, bool $namedCol=true) { $this->set('arrTh',$attr,$values,$createCol,$namedCol); }
-  public function setTDattr(string $attr, $values=[], bool $createCol=true, bool $namedCol=true) { $this->set('arrTd',$attr,$values,$createCol,$namedCol); }
+  public function setTHtag($values=[], bool $createCol=true, bool $namedCol=true) { $this->make('arrTh','[tag]',$values,$createCol,$namedCol); }
+  public function setTDtag($values=[], bool $createCol=true, bool $namedCol=true) { $this->make('arrTd','[tag]',$values,$createCol,$namedCol); }
+  public function setTHcontent($values=[], bool $createCol=true, bool $namedCol=true) { $this->make('arrTh','[content]',$values,$createCol,$namedCol); }
+  public function setTDcontent($values=[], bool $createCol=true, bool $namedCol=true) { $this->make('arrTd','[content]',$values,$createCol,$namedCol); }
+  public function setTHattr(string $attr, $values=[], bool $createCol=true, bool $namedCol=true) { $this->make('arrTh',$attr,$values,$createCol,$namedCol); }
+  public function setTDattr(string $attr, $values=[], bool $createCol=true, bool $namedCol=true) { $this->make('arrTd',$attr,$values,$createCol,$namedCol); }
 
   // About functions setTHcompactAttr() and setTDcompcatAttr()
   // They can use ONE compacted-string (to apply the attributes to each column)
@@ -240,12 +229,11 @@ class TabTable extends TabItem
   // Tips #2: You can apply several time the function setTDcompactAttr() in sequence,
   //          for example, first with ONE compacted-string to apply attributes to all columns,
   //          then with an ARRAY indicating some specific columns where attributes must be changed or added.
-  public function setTHcompactAttr($values='', bool $namedCol=true) { $this->set('arrTh','[attr]',$values,false,$namedCol); }
-  public function setTDcompactAttr($values='', bool $namedCol=true) { $this->set('arrTd','[attr]',$values,false,$namedCol); }
+  public function setTHcompactAttr($values='', bool $namedCol=true) { $this->make('arrTh','[attr]',$values,false,$namedCol); }
+  public function setTDcompactAttr($values='', bool $namedCol=true) { $this->make('arrTd','[attr]',$values,false,$namedCol); }
 
   // tools
-  public function cloneThTd(bool $withContent=false, string $withAttr='class')
-  {
+  public function cloneThTd(bool $withContent=false, string $withAttr='class') {
     // Clone each th to create new td {$this->arrTd}
     // use option $withAttr={'*'|''|'class'} to copy all attributes, none, or one attribute
     foreach(array_keys($this->arrTh) as $k) {
@@ -260,8 +248,7 @@ class TabTable extends TabItem
   }
 
   private function setRow($attr=[]) { $this->row = new TabItem('tr',$attr); $this->row->eolc = true; }
-  private function getRow(array $arrObjTab=[], $attr=[], string $dfltTag='td')
-  {
+  private function getRow(array $arrObjTab=[], $attr=[], string $dfltTag='td') {
     // If not yet defined, the method create a new TabItem <tr> object.
     // Attention, if $row is alreay set, $attr are not used
     if ( !isset($this->row) ) $this->setRow($attr);
@@ -292,9 +279,8 @@ class TabTable extends TabItem
     $this->row = null;
     return $str;
   }
-  private function set(string $property, string $entity, $values=[], bool $createCol=true, bool $namedCol=true)
-  {
-    if ( $property!=='arrTh' && $property!=='arrTd' ) die('TabTable::set invalid property, must be arrTh or arrTd');
+  private function make(string $property, string $entity, $values=[], bool $createCol=true, bool $namedCol=true) {
+    if ( $property!=='arrTh' && $property!=='arrTd' ) die(__METHOD__.' invalid property, must be arrTh or arrTd');
 
     // When $values is 1 value, it will be inserted in each column
     if ( !is_array($values) ) {
@@ -314,7 +300,7 @@ class TabTable extends TabItem
           case '[tag]':     $this->$property[$key]->tag = $value; break;
           case '[content]': $this->$property[$key]->content = $value; break;
           case '[attr]':    $this->$property[$key]->setAttributes($value); break;
-          default:          $this->$property[$key]->add($entity,$value);
+          default:          $this->$property[$key]->set($entity,$value);
         }
       }
       ++$i;

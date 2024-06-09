@@ -68,7 +68,7 @@ small, .small, .minor, .error, .warning{font-size:0.85rem}
 .minor{color:#888}
 .error{color:#ff0000;font-weight:bold;text-shadow:-1px 0 #ffeaea,0 1px #ffeaea,1px 0 #ffeaea,0 -1px #ffeaea}
 .warning{color:#888;font-weight:bold;font-style:italic}
-.disabled{color:#aaa}
+.disabled{color:#aaa} a.disabled, a.disabled:hover{text-decoration:none;color:#aaa}
 .b, .bold{font-weight:bold}
 .i, .italic{font-style:italic}
 .u, .underline{text-decoration:underline}
