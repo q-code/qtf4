@@ -5,22 +5,20 @@
 const cbTables = document.querySelectorAll('table.table-cb');
 const noselect = document.currentScript.dataset['noselect'] ?? 'Nothing selected';
 cbTables.forEach( cbTable => {
-  // form
   const formid = cbTable.dataset.formid ?? 'form-items';
-  // top and rows checkbox event
-  const cbTop = cbTable.querySelector('input[type="checkbox"][data-target]');
   const cbRows = cbTable.querySelectorAll('input[type="checkbox"][name]');
-  if ( !cbTop || cbRows.length===0 ) return;
+  if ( cbRows.length===0 ) return;
+  const cbTop = cbTable.querySelector('input[type="checkbox"][data-target]'); // can be null
   const cbName = cbRows[0].name;
-  cbTop.addEventListener('click', qtCheckboxAll);
   cbRows.forEach( cb => {
     cb.addEventListener('click', qtCheckboxShiftClick);
-    cb.addEventListener('click', qtCheckboxAllUpdate);
-  });
+    if ( cbTop ) cb.addEventListener('click', qtCheckboxAllUpdate);
+   });
+  if ( cbTop ) { cbTop.addEventListener('click', qtCheckboxAll); }
   // commands event, search for commands in block menu having [data-table=tableid]
   document.querySelectorAll('.rowcmds[data-table="'+cbTable.id+'"] a.rowcmd').forEach( cmd => {
     cmd.addEventListener('click', ()=>{
-      if ( document.querySelectorAll(`input[name="${cbName}"]:checked`).length===0 ) {
+      if ( cbTable.querySelectorAll(`input[name="${cbName}"]:checked`).length===0 ) {
         alert( noselect );
         return false;
       }
