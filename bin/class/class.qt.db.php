@@ -355,11 +355,15 @@ public function nextId(string $table='', string $field='id', string $where='')
   if ( empty($table) || empty($field) ) die(__METHOD__.' invalid argument');
   return $this->count( "SELECT max($field)+1 as countid FROM $table $where" );
 }
-public function getRows(int $max=999)
+public function getRows(string $fld='', int $max=250)
 {
   $rows = [];
   $i=0;
-  while($row = $this->getRow()) { $rows[] = $row; ++$i; if ( $i===$max ) break; }
+  while($row = $this->getRow()) {
+    $rows[] = isset($row[$fld] ) ? $row[$fld] : $row;
+    ++$i;
+    if ( $i===$max ) break;
+  }
   return $rows;
 }
 public function getRow()
