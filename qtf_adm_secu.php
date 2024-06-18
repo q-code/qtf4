@@ -257,8 +257,8 @@ echo '<h2 class="config">'.L('User_interface').'</h2>
 <table class="t-conf">
 <tr>
 <th>'.L('Allow_picture').'</th>
-<td>
-<select id="avatar" name="mime" onchange="toggleParams(this.id,this.value);">
+<td id="config-picture">
+<select name="mime" onchange="qtToggle(`#avatar-params`,this.value===`0` ? `none` : `inline-block`,`#config-picture`);">
 <option value="0"'.(empty($format['mime']) ? ' selected' : '').'>'.L('N').'</option>
 <option value="jpg jpeg"'.($format['mime']=='jpg jpeg' ? ' selected' : '').'>'.L('Y').' ('.L('Jpg_only').')</option>
 <option value="gif jpg jpeg png"'.($format['mime']=='gif jpg jpeg png' ? ' selected' : '').'>'.L('Y').' ('.L('Gif_jpg_png').')</option>
@@ -277,8 +277,8 @@ $arr = array(
 $i = round((int)$_SESSION[QT]['upload_size']/1024);
 echo '<tr title="'.L('H_Allow_upload').'">
 <th>'.L('Allow_upload').'</th>
-<td>
-<select id="upload" name="upload" onchange="toggleParams(this.id,this.value);">
+<td id="config-upload">
+<select id="upload" name="upload" onchange="qtToggle(`#upload-params`,this.value===`0` ? `none` : `inline-block`,`#config-upload`);">
 '.qtTags($arr,$_SESSION[QT]['upload']).'
 </select> <div id="upload-params" style="display:'.($_SESSION[QT]['upload']=='0' ? 'none' : 'inline-block').'">Max.<input required type="number" id="uploadsize" name="uploadsize" min="1" max="'.QT_UPLOAD_MAXSIZE.'" value="'.$i.'"/>Mb<small> (server limit '.(function_exists('ini_get') ? max_fileuploadbytes().'Mb' : 'unknown').')</small></div>
 </td>

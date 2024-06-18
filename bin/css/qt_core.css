@@ -20,14 +20,16 @@ input:focus, select:focus, textarea:focus{outline:none; border:1px solid #000}
 @keyframes cblabel{from{outline-color:#000} to{outline-color:#FFF}}
 
 /* LAYOUT */
-@media screen and (max-width:840px){.secondary{display:none !important}}
+@media screen and (max-width:840px){ .secondary{display:none !important} }
+
 /* grid gap and padding */
 :root{--gap:6px}
 @media screen and (max-width:1023px) {:root{--gap:4px}}
 /* Responsive design flex (left-right)*/
+.flex-1{display:flex;flex-direction:row;gap:1rem;align-items:center}
 .flex-sp{display:flex;flex-direction:row;justify-content:space-between;align-items:center}
-.flex-sp.top{align-items:flex-start}
-.flex-sp.bot{align-items:flex-end}
+.flex-1.top, .flex-sp.top{align-items:flex-start}
+.flex-1.bot, .flex-sp.bot{align-items:flex-end}
 @media screen and (max-width:959px){.flex-sp{display:block} .flex-sp :last-child{justify-content:flex-end}}
 /* Responsive design user/register dialogs (center) */
 .user-dlg{display:flex;justify-content:center;gap:20px}
@@ -41,7 +43,7 @@ input:focus, select:focus, textarea:focus{outline:none; border:1px solid #000}
 .table-ui{display:flex;flex-direction:row;justify-content:space-between;align-items:center}
 .table-ui.top{margin:0.6rem 0 0.4rem 0;align-items:flex-end}
 .table-ui.bot{margin:0.4rem 0 0.6rem 0;align-items:flex-start}
-.table-ui .arrow-icon{display:inline-block;width:40px;text-align:center}
+.table-ui .arrow-icon{display:inline-block;width:36px;text-align:center}
 .table-ui.top .arrow-icon{transform:translateY(0.25rem)}
 @media print{.table-ui .rowcmds{visibility:hidden}}
 
@@ -60,11 +62,13 @@ article p, .article p, p.article, .msgboxbody p{margin-bottom:0.5rem}
 p.submit, .msgboxbody p.submit{margin:1rem 0 0 0;text-align:center}
 p.error{margin:0.3rem}
 p.list{margin-bottom:2px}
+.inline-block{display:inline-block}
 .indent{margin-left:1rem} .indent2{margin-left:2rem}
 @media screen and (max-width:1024px){.indent{margin-left:0.6rem} .indent2{margin-left:1.2rem}}
 .ellipsis{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .ellipsis20{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:20ch}
 small, .small, .minor, .error, .warning{font-size:0.85rem}
+.s80{font-size:0.8rem}
 .minor{color:#888}
 .error{color:#ff0000;font-weight:bold;text-shadow:-1px 0 #ffeaea,0 1px #ffeaea,1px 0 #ffeaea,0 -1px #ffeaea}
 .warning{color:#888;font-weight:bold;font-style:italic}
@@ -97,7 +101,6 @@ small, .small, .minor, .error, .warning{font-size:0.85rem}
 .msgboxbody article{margin-bottom:1.2rem}
 /* Msgbox in void page */
 body > .msgbox{margin:2vw auto}
-
 
 /* TABLE */
 tr.hover:hover{background-color:#F8F8F8}

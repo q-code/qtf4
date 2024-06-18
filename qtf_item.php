@@ -107,14 +107,14 @@ echo $oP->render($oS,$oT,true,true,QT_SKIN,'r1');
 if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) ) {
 
   $tags = qtCleanArray($oT->descr);
-  echo '<div class="tags right" style="padding:4px 0">'.qtSVG('tag'.(count($tags)>1 ? 's' : ''), 'title='.L('Tags')).' ';
+  echo '<div id="tags-handler" class="tags right" style="padding:4px 0">'.qtSVG('tag'.(count($tags)>1 ? 's' : ''), 'title='.L('Tags')).' ';
   if ( $tagEditor ) {
 
     echo '<div id="tag-shown" style="display:inline-block">';
     foreach($tags as $tag)
     echo '<span class="tag clickable" onclick="tagClick(this.innerHTML)" title="" data-tagdesc="'.$tag.'">'.$tag.'</span>';
     echo '</div>';
-    echo ' &nbsp; <a href="javascript:void(0)" id="tag-ctrl" class="tgl-ctrl" onclick="qtToggle(`tag-container`,null,`tag-ctrl`)" title="'.L('Edit').'">'.qtSVG('pen').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>'.PHP_EOL;
+    echo ' &nbsp; <a href="javascript:void(0)" id="tag-ctrl" class="tgl-ctrl" onclick="qtToggle(`#tag-container`,``,`#tags-handler`);this.classList.toggle(`expanded`);" title="'.L('Edit').'">'.qtSVG('pen').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>'.PHP_EOL;
     echo '<div id="tag-container" style="display:none">';
     echo '<div id="ac-wrapper-tag-edit">';
     echo '<input required type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/>';

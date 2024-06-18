@@ -19,7 +19,7 @@ $navMenu->add('privacy', 'text='.L('Legal').'|href=qtf_privacy.php');
 $navMenu->add('index', 'text='. SLang::translate().'|href=qtf_index.php|class=secondary|activewith=qtf_items.php qtf_item.php qtf_edit.php');
 $navMenu->add('search', 'text='.L('Search').'|id=nav-search|activewith=qtf_search.php');
 if ( $oH->php!=='qtf_search.php' )
-$navMenu->menu['search'] .= '|href=qtf_search.php'.(QT_SIMPLESEARCH ? '|onclick=if ( document.getElementById(`searchbar`).style.display===`flex`) return true; qtToggle(`searchbar`,`flex`); qtFocusAfter(`qkw`); return false' : '');
+$navMenu->menu['search'] .= '|href=qtf_search.php'.(QT_SIMPLESEARCH ? '|onclick=if ( document.getElementById(`searchbar`).style.display===`flex`) return true; qtToggle(`#searchbar`,`flex`); qtFocusAfter(`qkw`); return false' : '');
   // SUser::canAccess('search') not included here... We want the searchbar/page shows a message for not granted users
 if ( SUser::canAccess('show_memberlist') )
 $navMenu->add('users', 'text='.L('Memberlist').'|href=qtf_users.php');
@@ -124,7 +124,7 @@ if ( QT_SIMPLESEARCH && $oH->php!==APP.'_search.php' ) {
     acOnClicks["qkw"] = function(focusInput,btn){ if ( focusInput.id=="qkw" && focusInput.value.substring(0,1)==="#" ) window.location="'.APP.'_item.php?t="+focusInput.value.substring(1); }';
     $oH->scripts_end['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/'.APP.'_config_ac.js"></script>';
   }
-  echo '<a class="button button-x" href="javascript:void(0)" onclick="qtToggle(`searchbar`);" title="'.L('Close').'">'.qtSVG('times').'</a>'.PHP_EOL;
+  echo '<a class="button button-x" href="javascript:void(0)" onclick="qtToggle(`#searchbar`,`none`);" title="'.L('Close').'">'.qtSVG('times').'</a>'.PHP_EOL;
   echo '</div>'.PHP_EOL;
 }
 

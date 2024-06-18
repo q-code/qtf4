@@ -69,7 +69,7 @@ echo '<div id="ct-title" class="fix-sp top">
 <div><h2>'.$oH->name.'</h2>
 <p>'.( $fg=='all' ? $intTotal.' '.L('Members') : $intCount.' / '.$intTotal.' '.L('Members') );
 if ( SUser::canAccess('show_calendar') )echo ' &middot; <a href="'.url('qtf_calendar.php').'" style="white-space:nowrap">'.L('Birthdays_calendar').'</a>';
-if ( !empty($formAddUser) ) echo ' &middot; <span style="white-space:nowrap">'.SUser::getStamp(SUser::role(), 'class=stamp08').' <a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle(`participants`,`block`,``);qtToggle();">'.L('User_add').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></span>';
+if ( !empty($formAddUser) ) echo ' &middot; <span style="white-space:nowrap">'.SUser::getStamp(SUser::role(), 'class=stamp08').' <a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle(`#participants,#tgl-container`);this.classList.toggle(`expanded`);">'.L('User_add').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></span>';
 echo '</p>
 </div>
 ';

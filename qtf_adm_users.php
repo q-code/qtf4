@@ -133,7 +133,7 @@ echo '</div>
 
 // Add user(s) form
 echo '<p style="margin:12px 0">'.($strCateg=='all' ? '' : '<a href="qtf_adm_users.php">'.qtSVG('chevron-left').L('Show').' '.L('all').'</a> | ');
-if ( !empty($formAddUser) ) echo '<a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle();">'.L('User_add').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a> | ';
+if ( !empty($formAddUser) ) echo '<a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle();this.classList.toggle(`expanded`);">'.L('User_add').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a> | ';
 echo '<a href="qtf_adm_users_imp.php">'.L('Users_import_csv').'...</a> | <a href="qtf_adm_users_exp.php">'.L('Users_export_csv').'...</a></p>';
 if ( !empty($formAddUser) ) echo $formAddUser;
 

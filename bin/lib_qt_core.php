@@ -28,7 +28,7 @@ function url(string $url='', string $ext='.html', bool $hidePrefix=true)
  * @param array $A dictionnary (global $L by default)
  * @param string $pk parentkey (automatically assigned when accessing sub-dictionnary)
  * @param bool $dropDoublequote (default true)
- * @return string|array (can be an array of all sub-items when 'key.*' is requested)
+ * @return string|array (can be an array of all subitems when 'key.*' is requested)
  */
 function L(string $k, int $n=null, string $format='n w', array $A=[], string $pk='', bool $dropDoublequote=true)
 {

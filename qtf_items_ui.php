@@ -5,7 +5,7 @@
 * @var string $forceShowClosed
 * @var int $intCount
 */
-$ui = '<button id="optionsbar-ctrl" class="nostyle square42'.($_SESSION['EditByRows'] ? ' expanded' : '').'" onclick="qtToggle(`optionsbar`,`flex`,this.id);qtFocusOut(this.id);qtFocus(`pref`);" title="'.L('My_preferences').'">'.qtSVG('cog').'</button>'.PHP_EOL;
+$ui = '<button id="optionsbar-ctrl" class="nostyle square42'.($_SESSION['EditByRows'] ? ' expanded' : '').'" onclick="qtToggle(`#optionsbar`,`flex`,`#title-top`);qtFocusOut(this.id);qtFocus(`pref`);" title="'.L('My_preferences').'">'.qtSVG('cog').'</button>'.PHP_EOL;
 
 $ui .= '<div id="optionsbar"'.($_SESSION['EditByRows'] ? '' : ' style="display:none"').'>
 <form method="post" action="'.url($oH->php).qtURI('page').'" id="formPref">

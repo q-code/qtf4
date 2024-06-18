@@ -59,7 +59,7 @@ $stats = isset($_SectionsStats) ? $_SectionsStats : SMem::get('_SectionsStats');
 $strStatusText = '';
 
 echo '<aside>'.PHP_EOL;
-echo '<a id="aside-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="toggleAside(); return false;" title="'.L('Showhide_legend').'" role="switch" aria-checked="false">'.qtSVG('info').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>'.PHP_EOL;
+echo '<a id="aside-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="toggleAside();this.classList.toggle(`expanded`);" title="'.L('Showhide_legend').'" role="switch" aria-checked="false">'.qtSVG('info').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>'.PHP_EOL;
 echo '<div id="aside__info" class="article" style="display:none">'.PHP_EOL;
   echo '<h2>'.L('Information').'</h2>'.PHP_EOL;
   // section info
@@ -117,10 +117,7 @@ echo '</aside>'.PHP_EOL.PHP_EOL;
 $oH->scripts[] = 'function toggleAside(){
   const d = document.getElementById("aside-ctrl"); if ( !d ) return;
   d.setAttribute("aria-checked", d.getAttribute("aria-checked")==="false" ? "true" : "false" );
-  qtToggle("aside__status");
-  qtToggle("aside__legend");
-  qtToggle("aside__detail");
-  qtToggle("aside__info","block","aside-ctrl");
+  qtToggle(`div`,``,`#site aside`);
   qtAttrStorage("aside-ctrl","qt-aside");
   d.blur();
 }

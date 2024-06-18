@@ -11,20 +11,25 @@ function qtFocusAfter(id, clear=false) {
   const value = e.value;
   e.value = ''; e.focus(); e.value = value;
 }
-/**
- * @param {string} id
- * @param {string} display
- * @param {string} idctrl
- * @param {string} attr
- */
-function qtToggle(id='tgl-container', display='block', idctrl='tgl-ctrl', attr='expanded') {
-  const e = document.getElementById(id); if ( !e ) return;
-  e.style.display = e.style.display==='none' ? display : 'none';
-  // if attr and idctrl are not empty, adds/removes the class [attr] to the controller (i.e. container is visible/hidden)
-  if ( attr!=='' ) {
-    const ctrl = document.getElementById(idctrl);
-    if ( ctrl ) ctrl.classList.toggle(attr);
-  }
+/** Toggle child(s) between "mode1 mode2 display|visibilty|data-state" inside one parent */
+function qtToggle(childsSelector='#tgl-container', args='', parentSelector='body') {
+  const arg = args==='' ? ['block','none','display'] : args.split(' ');
+  if ( arg.length===1 ) arg.push('none');
+  if ( arg.length===2 ) arg.push('display');
+  if ( arg.length!==3 ) { console.log('qtToggle: arg requires 3 arguments'); return; }
+  const parent = parentSelector==='' || parentSelector==='document' ? document : document.querySelector(parentSelector);
+  if ( !parent ) { console.log('qtToggle: parent ['+parentSelector+'] not found'); return; }
+  const childs = parent.querySelectorAll(childsSelector);
+  if ( !childs ) { console.log('qtToggle: childs ['+childsSelector+'] not found'); return; }
+  childs.forEach( (child)=>{
+    switch(arg[2]) {
+      case 'display': child.style.display = window.getComputedStyle(child,null).display===arg[0] ? arg[1] : arg[0]; break;
+      case 'visibility': child.style.visibility = window.getComputedStyle(child,null).visibility===arg[0] ? arg[1] : arg[0]; break;
+      case 'data-state':
+      case 'state': child.dataset.state = child.dataset.state===arg[0] ? arg[1] : arg[0]; break;
+      default: console.log('qtToggle: unknown mode ['+arg[2]+']'); return;
+    }
+  });
 }
 /**
  * @param {HTMLAnchorElement} a

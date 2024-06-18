@@ -125,7 +125,7 @@ echo $oH->pageEntity('style=position:relative','main relative');
 // Add domain/section
 echo '
 <p class="right">
-<a id="tgl-ctrl" class="tgl-ctrl'.($add ? ' expanded' : '' ).'" href="javascript:void(0)" onclick="qtToggle(); return false;">'.L('Add').' '.L('domain').'/'.L('section').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>
+<a id="tgl-ctrl" class="tgl-ctrl'.($add ? ' expanded' : '' ).'" href="javascript:void(0)" onclick="qtToggle();this.classList.toggle(`expanded`);">'.L('Add').' '.L('domain').'/'.L('section').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>
 </p>
 ';
 echo '<div id="tgl-container" class="add-dom-sec" style="display:'.($add ? 'block' : 'none' ).'">
@@ -160,7 +160,7 @@ echo '</table>
 <form method="post" action="'.$oH->php.'">
 <p class="submit">
 <input type="hidden" id="neworder" name="neworder" />
-<button type="button" onclick="qtToggle(`dlg-reorder`)">'.L('Cancel').'</button> <button type="submit" id="neworder-save" name="save" value="save">'.L('Save').'</button>
+<button type="button" onclick="qtToggle(`#dlg-reorder`);">'.L('Cancel').'</button> <button type="submit" id="neworder-save" name="save" value="save">'.L('Save').'</button>
 </p>
 </form>
 </div>
@@ -186,7 +186,7 @@ foreach($arrDomains as $idDomain=>$domain) {
 
   echo '<tbody>'.PHP_EOL;
   echo '<tr data-dragid="d'.$idDomain.'">'.PHP_EOL;
-  echo '<td class="group handler">'.(count($arrDomains)<2 ? '' : '<span class="draghandler" title="'.L('Move').'" onclick="qtToggle(`dlg-reorder`)">'.qtSVG('arrows-v').'</span>').'</td>'.PHP_EOL;
+  echo '<td class="group handler">'.(count($arrDomains)<2 ? '' : '<span class="draghandler" title="'.L('Move').'" onclick="qtToggle(`#dlg-reorder`);">'.qtSVG('arrows-v').'</span>').'</td>'.PHP_EOL;
   echo '<td class="group c-section" colspan="2">'.$domain.'</td>'.PHP_EOL;
   echo '<td class="group">&nbsp;</td>'.PHP_EOL;
   echo '<td class="group">&nbsp;</td>'.PHP_EOL;
