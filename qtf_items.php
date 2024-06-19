@@ -401,14 +401,12 @@ if ( $q!=='' ) $oH->scripts[] = 'qtHideEmptyColumn();';
 $oH->scripts[] = 'qtHideAfterTable("t1-nav-bot");qtHideAfterTable("tablebot");';
 
 // Symbols
-echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL;
-echo qtSVG('symbol-caret-square-right').PHP_EOL;
-if ( QT_LIST_ME ) echo qtSVG('symbol-ireplied').PHP_EOL;
-if ( $_SESSION[QT]['upload']!=='0' ) echo qtSVG('symbol-paperclip').PHP_EOL;
+$oH->symbols[] = qtSVG('symbol-caret-square-right');
+if ( QT_LIST_ME ) $oH->symbols[] = qtSVG('symbol-ireplied');
+if ( $_SESSION[QT]['upload']!=='0' ) $oH->symbols[] = qtSVG('symbol-paperclip');
 if ( !empty($_SESSION[QT]['tags']) ) {
-  echo qtSVG('symbol-tag').PHP_EOL;
-  echo qtSVG('symbol-tags').PHP_EOL;
+  $oH->symbols[] = qtSVG('symbol-tag');
+  $oH->symbols[] = qtSVG('symbol-tags');
 }
-echo '</svg>'.PHP_EOL;
 
 include APP.'_inc_ft.php';

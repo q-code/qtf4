@@ -14,7 +14,8 @@ public $links = [];
 public $scripts_top = []; // scripts in the <head>
 public $scripts = [];     // scripts in the <body>
 public $scripts_end = []; // if scripts require to be after other scripts
-public $log = [];         // Attention if not empty, is VISIBLE at the bottom of the page.
+public $symbols = [];     // list of svg <symbol> (not displayed) can be served with <use>
+public $log = [];         // Attention if not empty, is VISIBLE at the bottom of the page
 public $php = '';         // script name (without path)
 public $arg = '';         // url arguments (with '?' if not empty)
 public $name = '';
@@ -50,13 +51,20 @@ public function end(bool $allowSplash=true)
 {
   $log = empty($this->log) ? '' : '<p id="pagelog">'.implode('<br>',$this->log).(SUser::auth() ? '<br><small>Sign out to stop debugging</small>' : '').'</p>'.PHP_EOL;
   $this->log = []; // clear log
-  $splash = '';
-  if ( $allowSplash && !empty($_SESSION[QT.'splash']) ) $splash .= Splash::getSplash();
   // check/add <script> enclosing tag
-  if ( !empty($this->scripts) ) self::formatScripts($this->scripts);
-  if ( !empty($this->scripts_end) ) self::formatScripts($this->scripts_end);
+  if ( $this->scripts ) self::formatScripts($this->scripts);
+  if ( $this->scripts_end ) self::formatScripts($this->scripts_end);
   // output
-  echo $log.PHP_EOL.implode(PHP_EOL,$this->scripts).implode(PHP_EOL,$this->scripts_end).$splash.PHP_EOL.'</body>'.PHP_EOL.'</html>';
+  echo $log.PHP_EOL;
+  if ( $this->symbols )
+  echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL.implode(PHP_EOL,$this->symbols).PHP_EOL.'</svg>'.PHP_EOL;
+  if ( $this->scripts )
+  echo implode(PHP_EOL,$this->scripts).PHP_EOL;
+  if ( $this->scripts_end )
+  echo implode(PHP_EOL,$this->scripts_end).PHP_EOL;
+  if ( $allowSplash && !empty($_SESSION[QT.'splash']) )
+  echo Splash::getSplash().PHP_EOL;
+  echo '</body>'.PHP_EOL.'</html>';
 }
 /** Add enclosing script if missing */
 private static function formatScripts(array &$codes) {

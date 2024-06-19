@@ -398,9 +398,7 @@ if ( $useMap ) {
 }
 
 // Symbols
-echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL;
-echo qtSVG('symbol-key').PHP_EOL;
-echo qtSVG('symbol-door-open').PHP_EOL;
-echo '</svg>'.PHP_EOL;
+$oH->symbols[] = qtSVG('symbol-key');
+$oH->symbols[] = qtSVG('symbol-door-open');
 
 include 'qtf_inc_ft.php';

@@ -306,13 +306,11 @@ if ( $useMap && !$_SESSION[QT]['m_gmap_hidelist'] ) {
 }
 
 // Symbols
-echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL;
-echo qtSVG('symbol-envelope').PHP_EOL;
-echo qtSVG('symbol-home').PHP_EOL;
-echo qtSVG('symbol-map-marker-alt').PHP_EOL;
-echo qtSVG('symbol-key').PHP_EOL;
-echo qtSVG('symbol-door-open').PHP_EOL;
-echo '</svg>'.PHP_EOL;
+$oH->symbols[] = qtSVG('symbol-envelope');
+$oH->symbols[] = qtSVG('symbol-home');
+$oH->symbols[] = qtSVG('symbol-map-marker-alt');
+$oH->symbols[] = qtSVG('symbol-key');
+$oH->symbols[] = qtSVG('symbol-door-open');
 
 // hide fix-sp-bottom-controls if less than 5 table rows
 $oH->scripts[] = 'qtHideAfterTable("tablebot");';

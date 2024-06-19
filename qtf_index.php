@@ -102,8 +102,6 @@ if ( isset($oS) ) unset($oS);
 if ( isset($_SESSION['QTdebugsse']) && $_SESSION['QTdebugsse'] ) echo '<div id="serverData"></div>';
 
 // Symbols
-echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">'.PHP_EOL;
-echo qtSVG('symbol-caret-square-right').PHP_EOL;
-echo '</svg>'.PHP_EOL;
+$oH->symbols[] = qtSVG('symbol-caret-square-right');
 
 include 'qtf_inc_ft.php';
