@@ -69,7 +69,8 @@ echo '<div id="ct-title" class="fix-sp top">
 <div><h2>'.$oH->name.'</h2>
 <p>'.( $fg=='all' ? $intTotal.' '.L('Members') : $intCount.' / '.$intTotal.' '.L('Members') );
 if ( SUser::canAccess('show_calendar') )echo ' &middot; <a href="'.url('qtf_calendar.php').'" style="white-space:nowrap">'.L('Birthdays_calendar').'</a>';
-if ( !empty($formAddUser) ) echo ' &middot; <span style="white-space:nowrap">'.SUser::getStamp(SUser::role(), 'class=stamp08').' <a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle(`#participants,#tgl-container`);this.classList.toggle(`expanded`);">'.L('User_add').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a></span>';
+if ( !empty($formAddUser) )
+echo ' &middot; <span style="white-space:nowrap">'.SUser::getStamp(SUser::role(), 'class=stamp08').' <a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl" onclick="qtToggle(`#participants,#tgl-container`);qtToggle(`svg`,`nodisplay toggle`,this);">'.L('User_add').qtSvg('angle-down', isset($_POST['title']) ? 'class=nodisplay' : '').qtSvg('angle-up', isset($_POST['title']) ? '' : 'class=nodisplay').'</a></span>';
 echo '</p>
 </div>
 ';
@@ -125,17 +126,17 @@ $t = new TabTable('id=t1|class=t-user',$intCount);
 $t->thead();
 $t->tbody();
 $t->activecol = 'user'.$po;
-$t->activelink = '<a href="'.$oH->php.'?fg='.$fg.'&po='.$po.'&pd='.($pd=='asc' ? 'desc' : 'asc').'">%s</a> '.qtSVG('caret-'.($pd==='asc' ? 'down' : 'up'));
+$t->activelink = '<a href="'.$oH->php.'?fg='.$fg.'&po='.$po.'&pd='.($pd=='asc' ? 'desc' : 'asc').'">%s</a> '.qtSvg('caret-'.($pd==='asc' ? 'down' : 'up'));
 // TH
 if ( !$bCompact )
-$t->arrTh['userphoto'] = new TabHead(qtSVG('camera'), 'title='.L('Picture'));
+$t->arrTh['userphoto'] = new TabHead(qtSvg('camera'), 'title='.L('Picture'));
 $t->arrTh['username'] = new TabHead(L('Username'), '', '<a href="'.$oH->php.'?fg='.$fg.'&po=name&pd=asc">%s</a>');
 $t->arrTh['userrole'] = new TabHead(L('Role'), '', '<a href="'.$oH->php.'?fg='.$fg.'&po=role&pd=asc">%s</a>');
 $t->arrTh['usercontact'] = new TabHead(L('Contact'));
 $t->arrTh['userlocation'] = new TabHead(L('Location'), '', '<a href="'.$oH->php.'?fg='.$fg.'&po=location&pd=asc">%s</a>');
-$t->arrTh['usernumpost'] = new TabHead(qtSVG('comments'), 'title="'.L('Messages').'"', '<a href="'.$oH->php.'?fg='.$fg.'&po=numpost&pd=desc">%s</a>');
+$t->arrTh['usernumpost'] = new TabHead(qtSvg('comments'), 'title="'.L('Messages').'"', '<a href="'.$oH->php.'?fg='.$fg.'&po=numpost&pd=desc">%s</a>');
 if ( SUser::isStaff() )
-$t->arrTh['userpriv'] = new TabHead(qtSVG('info'), 'title="'.L('Privacy').'"');
+$t->arrTh['userpriv'] = new TabHead(qtSvg('info'), 'title="'.L('Privacy').'"');
 foreach(array_keys($t->arrTh) as $key) $t->arrTh[$key]->append('class','c-'.$key);
 // TD
 $t->cloneThTd();
@@ -228,9 +229,9 @@ if ( $useMap ) {
 
     // Show/Hide
     if ( $_SESSION[QT]['m_gmap_hidelist'] ) {
-    echo '<div class="canvashandler"><a class="canvashandler" href="'.url($oH->php).'?showmap">'.qtSVG('chevron-down').' '.$L['Gmap']['Show_map'].'</a></div>'.PHP_EOL;
+    echo '<div class="canvashandler"><a class="canvashandler" href="'.url($oH->php).'?showmap">'.qtSvg('chevron-down').' '.$L['Gmap']['Show_map'].'</a></div>'.PHP_EOL;
     } else {
-    echo '<div class="canvashandler"><a class="canvashandler" href="'.url($oH->php).'?hidemap">'.qtSVG('chevron-up').' '.$L['Gmap']['Hide_map'].'</a></div>'.PHP_EOL;
+    echo '<div class="canvashandler"><a class="canvashandler" href="'.url($oH->php).'?hidemap">'.qtSvg('chevron-up').' '.$L['Gmap']['Hide_map'].'</a></div>'.PHP_EOL;
     }
   }
 }
@@ -306,11 +307,11 @@ if ( $useMap && !$_SESSION[QT]['m_gmap_hidelist'] ) {
 }
 
 // Symbols
-$oH->symbols[] = qtSVG('symbol-envelope');
-$oH->symbols[] = qtSVG('symbol-home');
-$oH->symbols[] = qtSVG('symbol-map-marker-alt');
-$oH->symbols[] = qtSVG('symbol-key');
-$oH->symbols[] = qtSVG('symbol-door-open');
+$oH->symbols[] = qtSvg('symbol-envelope');
+$oH->symbols[] = qtSvg('symbol-home');
+$oH->symbols[] = qtSvg('symbol-map-marker-alt');
+$oH->symbols[] = qtSvg('symbol-key');
+$oH->symbols[] = qtSvg('symbol-door-open');
 
 // hide fix-sp-bottom-controls if less than 5 table rows
 $oH->scripts[] = 'qtHideAfterTable("tablebot");';

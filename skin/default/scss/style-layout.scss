@@ -113,8 +113,6 @@ aside{padding:0.5rem;display:flex;gap:1rem;background-color:#efefef;color:#888}
 @media print{.optionsbar-container{display:none}}
 #optionsbar-ctrl{opacity:1;font-size:min(40px,2.5rem);color:#CCC}
   #optionsbar-ctrl:hover{color:var(--bgadmin)}
-  #optionsbar-ctrl.expanded{color:var(--bgadmin)}
-  #optionsbar-ctrl.expanded:hover{color:#CCC}
 #optionsbar{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem;background-color:var(--bgadmin);color:#fff}
   #optionsbar input[type=text]{padding:2px 4px;border:1px solid var(--bgadmin)}
   #optionsbar select{padding:2px 5px 2px 2px;border:1px solid var(--bgadmin)}

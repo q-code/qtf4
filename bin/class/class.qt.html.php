@@ -116,7 +116,7 @@ public function voidPage(string $title='!', string $content='Access denied', boo
   if ( empty($content) ) die(__METHOD__.' invalid argument [content]');
   if ( empty($title) ) $title = $this->name;
   if ( empty($this->exiturl) ) $this->exiturl = APP.'_index.php';
-  if ( substr($title,-4)==='.svg' ) $title = qtSVG(substr($title,0,-4)); // title can be a svg
+  if ( substr($title,-4)==='.svg' ) $title = qtSvg(substr($title,0,-4)); // title can be a svg
   $inAdm = strpos($this->php, APP.'_adm')===0; // detect if in admin pages
 
   // Start app page or blanko page

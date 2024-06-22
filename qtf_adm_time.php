@@ -16,7 +16,7 @@ include translate('lg_zone.php');
 $oH->name = 'Server time';
 $parentname = L('Settings');
 $oH->exiturl = APP.'_adm_region.php';
-$oH->exitname = qtSVG('angle-left').' '.L('Board_region');
+$oH->exitname = qtSvg('angle-left').' '.L('Board_region');
 
 // Default time zone setting
 

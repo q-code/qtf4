@@ -239,7 +239,7 @@ public static function getPicture(int $id=0, $attr=[], string $altSrc='bin/css/u
 }
 public static function getStamp(string $role, string $attr='class=stamp', bool $addDefaultTitle=true, string $alt='') {
   if ( $addDefaultTitle ) $attr = attrDecode($attr, '|', 'title='.L('Role_'.$role));
-  if ( in_array($role,['A','M','U','V']) ) return '<span'.attrRender($attr).'>'.qtSVG('user-'.$role).'</span>';
+  if ( in_array($role,['A','M','U','V']) ) return '<span'.attrRender($attr).'>'.qtSvg('user-'.$role).'</span>';
   return $alt;
 }
 public static function registerUser(CDatabase $oDB, string $name='', string $password='', bool $sha=true)

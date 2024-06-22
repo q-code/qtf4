@@ -69,7 +69,7 @@ if ( $_SESSION[QT]['register_coppa']=='1' ) {
   $intSleepchild = $oDB->count( TABUSER." WHERE id>1 AND children='2'" ); // without agreement only
 }
 
-$icon = [' ', qtSVG('chevron-circle-right'), qtSVG('circle', 'class=disabled')];
+$icon = [' ', qtSvg('chevron-circle-right'), qtSvg('circle', 'class=disabled')];
 echo '<div id="users-metadata">
 <div id="users-filter">
 ';
@@ -132,8 +132,9 @@ echo '</div>
 ';
 
 // Add user(s) form
-echo '<p style="margin:12px 0">'.($strCateg=='all' ? '' : '<a href="qtf_adm_users.php">'.qtSVG('chevron-left').L('Show').' '.L('all').'</a> | ');
-if ( !empty($formAddUser) ) echo '<a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl'.(isset($_POST['title']) ? ' expanded' : '').'" onclick="qtToggle();this.classList.toggle(`expanded`);">'.L('User_add').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a> | ';
+echo '<p style="margin:12px 0">'.($strCateg=='all' ? '' : '<a href="qtf_adm_users.php">'.qtSvg('chevron-left').L('Show').' '.L('all').'</a> | ');
+if ( !empty($formAddUser) )
+echo '<a id="tgl-ctrl" href="javascript:void(0)" class="tgl-ctrl" onclick="qtToggle();qtToggle(`svg`,`nodisplay toggle`,this);">'.L('User_add').qtSvg('angle-down', isset($_POST['title']) ? 'class=nodisplay' : '').qtSvg('angle-up', isset($_POST['title']) ? '' : 'class=nodisplay').'</a> | ';
 echo '<a href="qtf_adm_users_imp.php">'.L('Users_import_csv').'...</a> | <a href="qtf_adm_users_exp.php">'.L('Users_export_csv').'...</a></p>';
 if ( !empty($formAddUser) ) echo $formAddUser;
 
@@ -199,25 +200,25 @@ $rowCommands = L('selection').': '.$m->build();
 
 echo PHP_EOL.'<form id="form-items" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-items-action" name="a" />'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
-echo '<div id="t1-edits-top" class="left rowcmds" data-table="t1">'.qtSVG('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
+echo '<div id="t1-edits-top" class="left rowcmds" data-table="t1">'.qtSvg('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // Table definition
 $t = new TabTable('id=t1|class=t-item table-cb|data-content=users',$intCount);
 $t->activecol = $strOrder;
-$t->activelink = '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po='.$strOrder.'&pd='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSVG('caret-'.($strDirec==='asc' ? 'up' : 'down'));
+$t->activelink = '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po='.$strOrder.'&pd='.($strDirec=='asc' ? 'desc' : 'asc').'">%s</a>&nbsp;'.qtSvg('caret-'.($strDirec==='asc' ? 'up' : 'down'));
 // TH
 $t->arrTh['checkbox'] = new TabHead($t->countDataRows<2 ? '&nbsp;' : '<input type="checkbox" data-target="t1-cb[]"/>', 'class=c-checkbox');
 $t->arrTh['name'] = new TabHead(L('User'), 'class=c-name', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=name&pd=asc">%s</a>');
-$t->arrTh['pic'] = new TabHead(qtSVG('camera'), 'class=c-pic|title='.L('Picture'));
+$t->arrTh['pic'] = new TabHead(qtSvg('camera'), 'class=c-pic|title='.L('Picture'));
 $t->arrTh['role'] = new TabHead(L('Role'), 'class=c-role ellipsis', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=role&pd=asc">%s</a>');
-$t->arrTh['numpost'] = new TabHead(qtSVG('comments'), 'class=c-numpost|title='.L('Messages'), '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=numpost&pd=desc">%s</a>');
+$t->arrTh['numpost'] = new TabHead(qtSvg('comments'), 'class=c-numpost|title='.L('Messages'), '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=numpost&pd=desc">%s</a>');
 if ( $strCateg=='FM' || $strCateg=='SC' ) {
 $t->arrTh['firstdate'] = new TabHead(L('Joined'), 'class=c-joined ellipsis', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=firstdate&pd=desc">%s</a>');
 } else {
 $t->arrTh['lastdate'] = new TabHead(L('Last_message').' (ip)', 'class=c-lastdate ellipsis', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=lastdate&pd=desc">%s</a>');
 }
-$t->arrTh['closed'] = new TabHead(qtSVG('ban'), 'class=c-ban', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=closed&pd=desc" title="'.L('Banned').'">%s</a>');
+$t->arrTh['closed'] = new TabHead(qtSvg('ban'), 'class=c-ban', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=closed&pd=desc" title="'.L('Banned').'">%s</a>');
 $t->arrTh['id'] = new TabHead('Id', 'class=c-id', '<a href="'.$oH->php.'?cat='.$strCateg.'&fg='.$fg.'&po=id&pd=asc">%s</a>');
 // TD
 $t->cloneThTd();
@@ -273,7 +274,7 @@ while($row=$oDB->getRow())
 echo '</tbody>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
 echo '<div id="tablebot" class="table-ui bot">';
-echo $rowCommands ? '<div id="t1-edits-bot" class="left rowcmds" data-table="t1">'.qtSVG('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo $rowCommands ? '<div id="t1-edits-bot" class="left rowcmds" data-table="t1">'.qtSvg('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 echo '</form>'.PHP_EOL;
 

@@ -258,10 +258,10 @@ $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'">';
 $frm[] = '<div class="flex-sp top">';
 $frm[] = '<div style="min-width:65%;padding:0 20px 0 0">';
 $frm[] = '<fieldset class="register"><legend>'.L('Username').' '.L('and').' '.L('password').'</legend>';
-$frm[] = '<p>'.qtSVG('user','class=svg-label|title='.L('Username')).' <input required type="text" id="rename" name="username" size="25" minlength="3" maxlength="64" value="'.$_POST['username'].'" placeholder="'.L('Username').'"/></p><p id="rename-error" class="error"></p>';
+$frm[] = '<p>'.qtSvg('user','class=svg-label|title='.L('Username')).' <input required type="text" id="rename" name="username" size="25" minlength="3" maxlength="64" value="'.$_POST['username'].'" placeholder="'.L('Username').'"/></p><p id="rename-error" class="error"></p>';
 if ( $_SESSION[QT]['register_mode']==='direct' ) {
-  $frm[] = '<p class="input-pwd">'.qtSVG('lock','class=svg-label|title='.L('Password')).' <input required type="password" id="pwd-1" name="pwd" size="25" minlength="4" maxlength="50" value="'.$_POST['pwd'].'" placeholder="'.L('Password').'"/>'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
-  $frm[] = '<p class="input-pwd">'.qtSVG('lock','class=svg-label|title='.L('Confirm_password')).' <input required type="password" id="pwd-2" name="conpwd" size="25" minlength="4" maxlength="50" value="'.$_POST['conpwd'].'" placeholder="'.L('Confirm_password').'"/>'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
+  $frm[] = '<p class="input-pwd">'.qtSvg('lock','class=svg-label|title='.L('Password')).' <input required type="password" id="pwd-1" name="pwd" size="25" minlength="4" maxlength="50" value="'.$_POST['pwd'].'" placeholder="'.L('Password').'"/>'.qtSvg('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
+  $frm[] = '<p class="input-pwd">'.qtSvg('lock','class=svg-label|title='.L('Confirm_password')).' <input required type="password" id="pwd-2" name="conpwd" size="25" minlength="4" maxlength="50" value="'.$_POST['conpwd'].'" placeholder="'.L('Confirm_password').'"/>'.qtSvg('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
   $oH->scripts[] = 'function togglePwd(id) {
     var d = document.getElementById("pwd-"+id);
     if ( d.type==="password" ) { d.type="text"; } else { d.type="password"; }
@@ -272,9 +272,9 @@ if ( $_SESSION[QT]['register_mode']==='direct' ) {
 }
 $frm[] = '</fieldset>';
 $frm[] = '<fieldset class="register"><legend>'.L('Email').'</legend>';
-$frm[] = qtSVG('envelope','class=svg-label').'&nbsp;<input type="email" name="email" size="25" maxlength="64" value="'.$_POST['email'].'" placeholder="'.L('Your_mail').'"/><span id="mail_err" class="error"></span><br>';
+$frm[] = qtSvg('envelope','class=svg-label').'&nbsp;<input type="email" name="email" size="25" maxlength="64" value="'.$_POST['email'].'" placeholder="'.L('Your_mail').'"/><span id="mail_err" class="error"></span><br>';
 if ( $_SESSION[QT]['register_coppa']=='1' && $strChild!='0' )
-$frm[] = qtSVG('envelope','class=svg-label').'&nbsp;<input type="email" name="parentmail" size="32" maxlength="64" value="'.$_POST['parentmail'].'" placeholder="'.L('Parent_mail').'"/><br>';
+$frm[] = qtSvg('envelope','class=svg-label').'&nbsp;<input type="email" name="parentmail" size="32" maxlength="64" value="'.$_POST['parentmail'].'" placeholder="'.L('Parent_mail').'"/><br>';
 $frm[] = '</fieldset>';
 $frm[] = '<fieldset class="register"><legend>'.L('Secret_question').'</legend>'.L('H_Secret_question').'<br>';
 $frm[] = '<select name="secret_q">'.qtTags($L['Secret_q'],$_POST['secret_q']).'</select><br><input required type="text" name="secret_a" size="25" maxlength="255" value="'.qtAttr($_POST['secret_a'],255).'"/>';
@@ -338,10 +338,10 @@ if ( $row['role']!='U' ) {
 $frm[] = '<p>'.$row['name'].L('Unregister_staff').'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button></p>';
 } else {
-if ( SUser::id()!==$id ) $frm[] = '<p class="right">'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+if ( SUser::id()!==$id ) $frm[] = '<p class="right">'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<p>'.L('H_Unregister').'</p>';
 $frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
-$frm[] = '<p>'.qtSVG('lock','class=svg-label').'&nbsp;<input required type="password" name="pwd" size="20" minlength="4" maxlength="50" placeholder="'.L('Password').'" /></p>';
+$frm[] = '<p>'.qtSvg('lock','class=svg-label').'&nbsp;<input required type="password" name="pwd" size="20" minlength="4" maxlength="50" placeholder="'.L('Password').'" /></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Unregister').'</button></p>';
 $frm[] = '</form>';
 }
@@ -401,11 +401,11 @@ $frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
 $frm_attr = 'class=msgbox formPwd';
 $frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 if ( SUser::id()!==$id )
-$frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+$frm[] = '<p>'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'">';
-$frm[] = '<p class="right input-pwd">'.L('Old_password').'&nbsp;<input required id="pwd-1" type="password" name="oldpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
-$frm[] = '<p class="right input-pwd">'.L('New_password').'&nbsp;<input required id="pwd-2" type="password" name="newpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
-$frm[] = '<p class="right input-pwd">'.L('Confirm_password').'&nbsp;<input required id="pwd-3" type="password" name="conpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSVG('eye', 'class=toggle-pwd clickable|onclick=togglePwd(3)|title='.L('Show')).'</p>';
+$frm[] = '<p class="right input-pwd">'.L('Old_password').'&nbsp;<input required id="pwd-1" type="password" name="oldpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSvg('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
+$frm[] = '<p class="right input-pwd">'.L('New_password').'&nbsp;<input required id="pwd-2" type="password" name="newpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSvg('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
+$frm[] = '<p class="right input-pwd">'.L('Confirm_password').'&nbsp;<input required id="pwd-3" type="password" name="conpwd" pattern="^.{4}.*" size="22" maxlength="24" />'.qtSvg('eye', 'class=toggle-pwd clickable|onclick=togglePwd(3)|title='.L('Show')).'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="save">'.L('Save').'</button></p>';
 $frm[] = '<input type="hidden" name="name" value="'.$row['name'].'"/>';
 $frm[] = '<input type="hidden" name="child" value="'.$row['children'].'"/>';
@@ -446,7 +446,7 @@ if ( isset($_POST['ok']) ) try {
 
 $frm[] = '<form method="post" action="'.url($frm_action).'">';
 $frm[] = '<p>'.L('Reg_pass').'</p>';
-$frm[] = '<p>'.qtSVG('user','class=svg-label').'&nbsp;<input required type="text" name="username" pattern="^.{2}.*" size="24" maxlength="24" placeholder="'.L('Username').'" /></p>';
+$frm[] = '<p>'.qtSvg('user','class=svg-label').'&nbsp;<input required type="text" name="username" pattern="^.{2}.*" size="24" maxlength="24" placeholder="'.L('Username').'" /></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok">'.L('Ok').'</button></p>';
 $frm[] = '</form>';
 
@@ -703,7 +703,7 @@ $frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
 $frm_attr = 'class=msgbox formQa';
 $frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 if ( SUser::id()!==$id )
-$frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
+$frm[] = '<p>'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
 $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'" autocomplete="off">';
 $frm[] = '<p class="center">'.L('H_Secret_question').'</p>';
 $frm[] = '<p class="center"><select name="secret_q">'.qtTags($L['Secret_q'],$secret_q).'</select></p>';
@@ -751,9 +751,9 @@ $frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
 $frm_attr = 'class=msgbox formName';
 $frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 if ( SUser::id()!==$id )
-$frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+$frm[] = '<p>'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'">';
-$frm[] = '<p class="center">'.qtSVG('user','class=svg-label').'&nbsp;<input required type="text" id="rename" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
+$frm[] = '<p class="center">'.qtSvg('user','class=svg-label').'&nbsp;<input required type="text" id="rename" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
 $frm[] = '<p id="rename-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="rename-submit" name="ok" value="ok">'.L('Save').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
@@ -801,7 +801,7 @@ $frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
 $frm_attr = 'class=msgbox formSign';
 $frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
 if ( SUser::id()!==$id )
-$frm[] = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+$frm[] = '<p>'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<p>'.L('H_no_signature').'</p>';
 $frm[] = '<h2>'.L('Signature').'</h2>';
 $frm[] = '<div id="signature-preview">'.$strSign.'</div>';

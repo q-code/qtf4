@@ -74,7 +74,7 @@ foreach(array_keys($_Domains) as $idDom) {
     $logofile = empty($mSec['options']) ? '' : qtExplodeGet($mSec['options'],'logo',''); // specific logo, or '' for default logo
     if ( $mSec['items']>0 ) {
       $strLastpost = qtDate($mSec['lastpostdate'],'$','$',true,true,true);
-      $strLastpost .= '<a class="lastitem" href="'.url('qtf_item.php').'?t='.$mSec['lastpostpid'].'#p'.$mSec['lastpostid'].'" title="'.L('Goto_message').'"><svg class="svg-symbol symbol-caret-square-right"><use href="#symbol-caret-square-right" xlink:href="#symbol-caret-square-right"/></svg></a><br><small>'.L('by').' <a href="'.url('qtf_user.php').'?id='.$mSec['lastpostuser'].'">'.$mSec['lastpostname'].'</a></small>';
+      $strLastpost .= '<a class="lastitem" href="'.url('qtf_item.php').'?t='.$mSec['lastpostpid'].'#p'.$mSec['lastpostid'].'">'.qtSvg('#caret-square-right').'</a><br><small>'.L('by').' <a href="'.url('qtf_user.php').'?id='.$mSec['lastpostuser'].'">'.$mSec['lastpostname'].'</a></small>';
     }
     $t->arrTd[0]->content = asImg( CSection::makeLogo($logofile,$mSec['type'],$mSec['status']), 'title='.L('Ico_section_'.$mSec['type'].'_'.$mSec['status']), url('qtf_items.php?s='.$idSec) );
     $t->arrTd[1]->content = '<p><a class="section" href="'.url('qtf_items.php?s='.$idSec).'">'.$mSec['title'].'</a></p>'.(empty($mSec['descr']) ? '' : '<p class="sectiondesc">'.$mSec['descr'].'</p>');
@@ -102,6 +102,6 @@ if ( isset($oS) ) unset($oS);
 if ( isset($_SESSION['QTdebugsse']) && $_SESSION['QTdebugsse'] ) echo '<div id="serverData"></div>';
 
 // Symbols
-$oH->symbols[] = qtSVG('symbol-caret-square-right');
+$oH->symbols[] = qtSvgSymbol('caret-square-right.svg', L('Goto_message'));
 
 include 'qtf_inc_ft.php';

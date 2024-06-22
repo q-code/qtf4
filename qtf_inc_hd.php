@@ -53,7 +53,7 @@ if ( defined('HIDE_MENU_LANG') && HIDE_MENU_LANG ) $hideMenuLang = true;
 if ( !$hideMenuLang ) {
   $langMenu = new CMenu();
   // user
-  $langMenu->add( '!'.qtSVG('user-'.SUser::role(), 'title='.L('Role_'.SUser::role())) );
+  $langMenu->add( '!'.qtSvg('user-'.SUser::role(), 'title='.L('Role_'.SUser::role())) );
   $langMenu->add( SUser::id()>0 ? 'text='.SUser::name().'|id=logname|href='.url(APP.'_user.php').'?id='.SUser::id() : 'text='.L('Role_V').'|tag=span|id=logname');
   // lang
   if ( $_SESSION[QT]['userlang'] ) {
@@ -69,7 +69,7 @@ if ( !$hideMenuLang ) {
   }
   // contrast
   if ( QT_MENU_CONTRAST ) {
-    $langMenu->add( 'text='.qtSVG('adjust').'|href=javascript:void(0)|id=contrast-ctrl|aria-label=High contrast|title=High contrast display|role=switch|aria-checked=false' );
+    $langMenu->add( 'text='.qtSvg('adjust').'|href=javascript:void(0)|id=contrast-ctrl|aria-label=High contrast|title=High contrast display|role=switch|aria-checked=false' );
     $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/contrast.css" disabled/>';
     $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', tglContrast);
       qtApplyStoredState('contrast');
@@ -114,17 +114,17 @@ if ( QT_SIMPLESEARCH && $oH->php!==APP.'_search.php' ) {
     echo '<a href="'.url(APP.'_search.php').'">'.L('Advanced_search').'...</a>';
     echo asImg( QT_SKIN.'img/topic_t_0.gif', 'alt=T|class=img|title='.L('Recent_items'), url(APP.'_items.php').'?q=last' );
     echo asImg( QT_SKIN.'img/topic_a_0.gif', 'alt=T|class=img|title='.L('All_news'), url(APP.'_items.php').'?q=news' );
-    if ( SUser::role()!=='V' ) echo '<a href="'.url(APP.'_items.php').'?q=user&fw='.SUser::id().'&fv='.urlencode(SUser::name()).'" title="'.L('All_my_items').'">'.qtSVG('user').'</a>';
+    if ( SUser::role()!=='V' ) echo '<a href="'.url(APP.'_items.php').'?q=user&fw='.SUser::id().'&fv='.urlencode(SUser::name()).'" title="'.L('All_my_items').'">'.qtSvg('user').'</a>';
     echo '<form method="post" action="'.url(APP.'_search.php').'" style="display:inline">';
     echo '<button id="searchSubmit" type="submit" style="display:none" name="ok" value="'.makeFormCertificate('a2038e83fd6618a444a5de51bf2313de').'">ok</button>';
     echo '<input type="hidden" name="q" value="qkw">';
-    echo '<div id="ac-wrapper-qkw"><input required id="qkw" name="fv" type="text" size="25" placeholder="'.L('Number_or_keyword').'" autocomplete="off" /></div> <a class="btn-search" href="javascript:void(0)" title="'.L('Search').' '.L('in_all_sections').'" onclick="document.getElementById(`searchSubmit`).click();">'.qtSVG('search').'</a>';
+    echo '<div id="ac-wrapper-qkw"><input required id="qkw" name="fv" type="text" size="25" placeholder="'.L('Number_or_keyword').'" autocomplete="off" /></div> <a class="btn-search" href="javascript:void(0)" title="'.L('Search').' '.L('in_all_sections').'" onclick="document.getElementById(`searchSubmit`).click();">'.qtSvg('search').'</a>';
     echo '</form>';
     $oH->scripts['ac'] = 'if ( typeof acOnClicks==="undefined" ) { var acOnClicks = []; }
     acOnClicks["qkw"] = function(focusInput,btn){ if ( focusInput.id=="qkw" && focusInput.value.substring(0,1)==="#" ) window.location="'.APP.'_item.php?t="+focusInput.value.substring(1); }';
     $oH->scripts_end['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/'.APP.'_config_ac.js"></script>';
   }
-  echo '<a class="button button-x" href="javascript:void(0)" onclick="qtToggle(`#searchbar`,`none`);" title="'.L('Close').'">'.qtSVG('times').'</a>'.PHP_EOL;
+  echo '<a class="button button-x" href="javascript:void(0)" onclick="qtToggle(`#searchbar`,`none`);" title="'.L('Close').'">'.qtSvg('times').'</a>'.PHP_EOL;
   echo '</div>'.PHP_EOL;
 }
 
@@ -144,37 +144,34 @@ if ( $showWelcome && $oH->php!==APP.'_register.php' ) {
 // ------
 echo '
 <main>
-';
-
-echo '
 <div id="main-hd">
-<p id="crumbtrail"><a href="',url('qtf_index.php'),'"',($oH->php==='qtf_index.php' ? ' onclick="return false;"' : ''),'>',SLang::translate(),'</a>';
-if ( isset($oS) && $oS->id>=0 ) { // $oS->id=-1 in case of 'void'-section
-  if ( QT_SHOW_DOMAIN ) echo QT_CRUMBTRAIL.CDomain::translate($oS->pid);
-  echo QT_CRUMBTRAIL.'<a href="'.url('qtf_items.php').'?s='.$oS->id.'">'.CSection::translate($oS->id).'</a>';
-  if ( $oS->type==='2' && !SUser::isStaff() ) echo QT_CRUMBTRAIL.'<small>'.L('all_my_items').'</small>';
-  if ( $oH->php===APP.'_item.php' && $oS->numfield!=='N' && $oS->numfield!=='' && isset($oT) ) echo QT_CRUMBTRAIL.'<small>'.sprintf($oS->numfield,$oT->numid).'</small>';
+';
+// CRUMBTRAIL
+$crumb[] = '<a href="'.url('qtf_index.php').'"'.($oH->php==='qtf_index.php' ? ' onclick="return false;"' : '').'>'.SLang::translate().'</a>';
+if ( (isset($oS) && $oS->id>=0) ) {
+  $crumb[] = (QT_SHOW_DOMAIN && $oS->pid>=0 ? CDomain::translate($oS->pid) : '').'<a href="'.url('qtf_items.php').'?s='.$oS->id.'">'.CSection::translate($oS->id).'</a>';
+  switch($oH->php) {
+  case APP.'_user.php': $crumb[] = L('Profile'); break;
+  case APP.'_stats.php': $crumb[] = L('Statistics'); break;
+  case APP.'_search.php': $crumb[] = L('Search'); break;
+  case APP.'_items.php': if ( $oS->type==='2' && !SUser::isStaff() ) $crumb[] = '<small>'.L('all_my_items').'</small>' ; break;
+  case APP.'_item.php': if ( $oS->numfield!=='N' && $oS->numfield!=='' && isset($oT) ) $crumb[] = '<small>'.sprintf($oS->numfield,$oT->numid).'</small>'; break;
+  }
 }
-if ( $oH->php===APP.'_user.php' ) echo QT_CRUMBTRAIL.L('Profile');
-if ( $oH->php===APP.'_stats.php' ) echo QT_CRUMBTRAIL.L('Statistics');
-if ( $oH->php===APP.'_search.php' ) echo QT_CRUMBTRAIL.L('Search');
-echo '</p>
-<p id="page-ui">';
+echo '<p id="crumbtrail">'.implode(QT_CRUMBTRAIL,$crumb).'</p>';
 
-switch($oH->php)
-{
-case 'qtf_stats.php':
-  break;
+echo '<p id="page-ui">';
+switch($oH->php) {
 case 'qtf_item.php':
   if ( $_SESSION[QT]['viewmode']=='C' ) {
-    echo '<a id="viewmode" href="'.url($oH->php).qtURI('view').'&view=N" title="'.L('View_n').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-down').'</a>';
+    echo '<a id="viewmode" href="'.url($oH->php).qtURI('view').'&view=N" title="'.L('View_n').'">'.qtSvg('window-maximize').' '.qtSvg('long-arrow-alt-down').'</a>';
   } else {
-    echo '<a id="viewmode" href="'.url($oH->php).qtURI('view').'&view=C" title="'.L('View_c').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-up').'</a>';
+    echo '<a id="viewmode" href="'.url($oH->php).qtURI('view').'&view=C" title="'.L('View_c').'">'.qtSvg('window-maximize').' '.qtSvg('long-arrow-alt-up').'</a>';
   }
   break;
 case 'qtf_items.php':
   if ( !empty($oH->items) ) {
-    $crumbtrail = empty($q) ? '' : qtSVG('search').' ';
+    $crumbtrail = empty($q) ? '' : qtSvg('search').' ';
     $crumbtrail .= L( in_array($q,['qkw','kw','userm']) ? 'message' : 'item', $oH->items);
     if ( !empty($oH->itemsHidden) ) $crumbtrail .= ' ('.L('hidden',$oH->itemsHidden).')';
     echo '<span id="crumbtrail-info">'.$crumbtrail.'</span>';
@@ -184,9 +181,9 @@ case 'qtf_users.php':
   if ( empty($_SESSION[QT]['formatpicture']) ) $_SESSION[QT]['formatpicture']='mime=0;width=100;height=100';
   if ( !empty(qtExplodeGet($_SESSION[QT]['formatpicture'], 'mime')) ) {
     if ( $_SESSION[QT]['viewmode']==='C' ) {
-      echo '<a id="viewmode" href="'.url($oH->php).'?view=N" title="'.L('View_n').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-down').'</a>';
+      echo '<a id="viewmode" href="'.url($oH->php).'?view=N" title="'.L('View_n').'">'.qtSvg('window-maximize').' '.qtSvg('long-arrow-alt-down').'</a>';
     } else {
-      echo '<a id="viewmode" href="'.url($oH->php).'?view=C" title="'.L('View_c').'">'.qtSVG('window-maximize').' '.qtSVG('long-arrow-alt-up').'</a>';
+      echo '<a id="viewmode" href="'.url($oH->php).'?view=C" title="'.L('View_c').'">'.qtSvg('window-maximize').' '.qtSvg('long-arrow-alt-up').'</a>';
     }
   }
   break;

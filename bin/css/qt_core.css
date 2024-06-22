@@ -83,14 +83,11 @@ small, .small, .minor, .error, .warning{font-size:0.85rem}
 .ban{color:red}
 .stamp{font-size:1rem}
 .stamp08{font-size:0.8rem}
-.tgl-ctrl .svg-angle-up{display:none}
-.tgl-ctrl.expanded .svg-angle-up{display:inline}
-.tgl-ctrl.expanded .svg-angle-down{display:none}
+.nodisplay{display:none}
 .debug{padding:2px;background-color:#fff;color:#1364B7;font-size:9pt;font-weight:normal;font-family:system-ui,Arial}
 .debug.red{color:#cc0000}
 @media print {
-  .tgl-ctrl .svg-angle-up, .tgl-ctrl .svg-angle-down, .tgl-ctrl.expanded .svg-angle-up,.tgl-ctrl.expanded .svg-angle-down,
-  [id^="lang-"], #contrast-ctrl {display:none}
+  .tgl-ctrl .svg-angle-up, .tgl-ctrl .svg-angle-down, [id^="lang-"], #contrast-ctrl {display:none}
 }
 .square42{display:flex;width:42px;height:42px;align-items:center;justify-content:center}
 .square32{display:flex;width:32px;height:32px;align-items:center;justify-content:center}
@@ -104,10 +101,9 @@ body > .msgbox{margin:2vw auto}
 
 /* TABLE */
 tr.hover:hover{background-color:#F8F8F8}
-.svg-symbol{display:inline-block;width:1em;height:1em;vertical-align:-0.125em}
-.disabled .svg-symbol{color:#BBB}
+.disabled svg{color:#BBB}
 .svg-125{width:1.25em}
-.c-replies .symbol-ireplied{margin-right:2px;opacity:0.5}
+.c-replies svg{opacity:0.5}
 
 /* TAB PANELS */
 /* Tab menu */

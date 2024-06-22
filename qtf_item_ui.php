@@ -3,7 +3,7 @@
 * @var CTopic $oT
 */
 echo '<div id="optionsbar">
-'.qtSVG('user-m').'
+'.qtSvg('user-m').'
 <form method="post" action="'.url('qtf_item.php').'" id="modaction">
 <select name="Maction" onchange="document.getElementById(`modaction`).submit()">
 <option hidden disabled selected>'.L('Staff').' '.L('commands').'...</option>

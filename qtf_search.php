@@ -85,7 +85,7 @@ include APP.'_search_ui.php'; // SEARCH SHORTCUTS
 // SEARCH OPTIONS
 echo '<h2>'.L('Search_option').'</h2>'.PHP_EOL;
 echo '<section class="search-box options" id="broadcasted-options">'.PHP_EOL;
-echo qtSVG('cog', 'id=opt-icon|class=filigrane'.($s<0 && $fs==='' ? '' : ' spinning'));
+echo qtSvg('cog', 'id=opt-icon|class=filigrane'.($s<0 && $fs==='' ? '' : ' spinning'));
 echo '<div>'.L('Section').' <select id="opt-s" name="s" size="1" autocomplete="off">'.sectionsAsOption($s,[],[],L('In_all_sections')).'</select></div>';
 echo '<div>'.L('Status').'&nbsp;<select id="opt-fs" name="fs" size="1" autocomplete="off"><option value=""'.($fs==='' ? ' selected' : '').'>'.L('Any_status').'</option>'.qtTags(CTopic::getStatuses(),$fs).'</select></div>'.PHP_EOL;
 echo '</section>'.PHP_EOL;
@@ -99,7 +99,7 @@ if ( !empty($criteriaError) ) echo '<p class="error">'.$criteriaError.'</p>';
 // SEARCH BY KEY
 echo '<form method="post" action="'.url($oH->php).'" autocomplete="off">
 <section class="search-box criteria">
-'.qtSVG('search', 'class=filigrane').'
+'.qtSvg('search', 'class=filigrane').'
 <div>'.L('Keywords').' <div id="ac-wrapper-kw"><input required type="text" id="kw" name="fv" size="40" maxlength="64" value="'.($q=='kw' ? qtAttr($fv,0,'&quot;') : '').'" data-multi="1"/></div>*</div>
 <div><span class="cblabel"><input type="checkbox" id="to" name="to"'.($to ? ' checked' : '').' value="1"/> <label for="to">'.L('In_title_only').'</label></span></div>
 <div style="flex-grow:1;text-align:right">
@@ -121,7 +121,7 @@ foreach($_Sections as $mSec) {
 if ( $refExists ) {
 echo '<form method="post" action="'.url($oH->php).'" autocomplete="off">
 <section class="search-box criteria">
-'.qtSVG('search', 'class=filigrane').'
+'.qtSvg('search', 'class=filigrane').'
 <div>'.L('Ref').' <div id="ac-wrapper-ref"><input required type="text" id="ref" name="fv" size="5" minlength="1" maxlength="10" value="'.($q=='ref' ? qtAttr($fv,0,'&quot;') : '').'"/>&nbsp;'.L('H_Reference').'</div></div>
 <div style="flex-grow:1;text-align:right">
 <input type="hidden" name="q" value="ref"/>
@@ -137,7 +137,7 @@ echo '<form method="post" action="'.url($oH->php).'" autocomplete="off">
 // SEARCH BY DATE & TAGS
 echo '<form method="post" action="'.url($oH->php).'" autocomplete="off">
 <section class="search-box criteria">
-'.qtSVG('search', 'class=filigrane').'
+'.qtSvg('search', 'class=filigrane').'
 <div>'.L('Date').' <select id="tf" name="fw" size="1">
 <option value=""'.($fw==='' ? ' selected' : '').'>'.L('Any_time').'</option>
 <option value="w"'.($fw==='w' ? ' selected' : '').'>&nbsp; '.L('This_week').'</option>
@@ -160,7 +160,7 @@ echo '<div style="flex-grow:1;text-align:right">
 // SEARCH NAME
 echo '<form method="post" action="'.url($oH->php).'" autocomplete="off">
 <section class="search-box criteria">
-'.qtSVG('search', 'class=filigrane').'
+'.qtSvg('search', 'class=filigrane').'
 <div><select name="q" size="1">'.qtTags( ['user'=>L('Item').' '.L('author'),'userm'=>L('Item').'/'.L('reply').' '.L('author')], $q ).'
 </select> <div id="ac-wrapper-user"><input type="hidden" id="userid" type="text" name="fw" value="'.$fw.'"/><input required id="user" type="text" name="fv" value="'.(empty($fv) || substr($q,0,4)!=='user' ? '' : qtAttr($fv,0,'&quot;')).'" size="32" maxlenght="64"/></div></div>
 <div style="flex-grow:1;text-align:right">

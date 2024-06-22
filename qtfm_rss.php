@@ -80,8 +80,8 @@ foreach($arrDS as $domId=>$arrSections) {
       echo '<tr class="t-sec hover">';
       echo '<td class="c-icon">'.asImg( QT_SKIN.'img/section_'.$mSec['type'].'_'.$mSec['status'].'.gif', 'title='.L('Ico_section_'.$mSec['type'].'_'.$mSec['status']) ).'</td>';
       echo '<td class="c-section"><span class="section">'.$mSec['title'].'</span><br><span class="sectiondesc">'.$mSec['descr'].'</span></td><td>';
-      echo '<a href="'.$strRssUrl.APP.'_'.$strForm.'_'.$id.'.xml" title="syndication">'.qtSVG('rss-square').' rss</a> &middot; '.$strRssUrl.APP.'_'.$strForm.'_'.$id.'.xml';
-      if ( !file_exists('rss/'.APP.'_'.$strForm.'_'.$id.'.xml') ) echo '<p class="minor">'.qtSVG('exclamation-triangle').' '.L('rss.File_not_available').'</p>';
+      echo '<a href="'.$strRssUrl.APP.'_'.$strForm.'_'.$id.'.xml" title="syndication">'.qtSvg('rss-square').' rss</a> &middot; '.$strRssUrl.APP.'_'.$strForm.'_'.$id.'.xml';
+      if ( !file_exists('rss/'.APP.'_'.$strForm.'_'.$id.'.xml') ) echo '<p class="minor">'.qtSvg('exclamation-triangle').' '.L('rss.File_not_available').'</p>';
       echo '</td></tr>';
     }
     echo '</table>'.PHP_EOL;

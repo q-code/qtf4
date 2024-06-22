@@ -284,7 +284,7 @@ case 'prune':
   $frm[] = '<form method="post" action="'.$oH->php.'" onsubmit="validateForm();">'.$frm_dflt_args;
   $frm[] = '<input type="hidden" id="inDay" name="d" value="'.$days.'"/>';
   $frm[] = '<article>';
-  $frm[] = '<p><span class="minor">'.qtSVG('info').' '.L('Unreplied').': '.sprintf(L('unreplied_def'),$days).'</span></p>';
+  $frm[] = '<p><span class="minor">'.qtSvg('info').' '.L('Unreplied').': '.sprintf(L('unreplied_def'),$days).'</span></p>';
   $frm[] = '</article>';
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Items_in_section').':</p>';

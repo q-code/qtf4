@@ -52,8 +52,8 @@ function renderItems(array $ids, bool $tags=false, bool $replies=false, bool $at
     $str .= '<p class="list ellipsis">';
     if ( $typeIcon ) $str .= $oT->getIcon(QT_SKIN).' ';
     $str .= qtQuote(qtTrunc($oT->title,32), '&"');
-    if ( $replies && $oT->items ) $str .= ' '.qtSVG('comments', 'title='.L('reply',$oT->items));
-    if ( $attach && !empty($oT->attachinfo) ) $str .= ' '.qtSVG('paperclip', 'title='.L('Attachment'));
+    if ( $replies && $oT->items ) $str .= ' '.qtSvg('comments', 'title='.L('reply',$oT->items));
+    if ( $attach && !empty($oT->attachinfo) ) $str .= ' '.qtSvg('paperclip', 'title='.L('Attachment'));
     if ( $tags ) $str .= ' '.$oT->getTagIcon();
     $str .= ' <span class="minor">'.L('by').' '.qtTrunc($oT->firstpostname,20).' ('.qtDate($oT->firstpostdate,'j M').')</span>';
     $str .= '</p>';
@@ -163,7 +163,7 @@ case 'itemsTags':
   $frm[] = '<div id="ac-wrapper-tag-edit">';
   $frm[] = '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/>';
   $frm[] = '<input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
-  $frm[] = '<input required type="text" id="tag-edit" name="tag-edit" size="15" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/><button type="reset" class="tag-btn" title="'.L('Reset').'" onclick="qtFocus(`tag-edit`)">'.qtSVG('backspace').'</button>&nbsp;<button type="submit" name="tag-ok" class="tag-btn" value="addtag" title="'.L('Add').'">'.qtSVG('plus').'</button><button type="submit" name="tag-ok" class="tag-btn" value="deltag" title="'.L('Delete_tags').'">'.qtSVG('minus').'</button>';
+  $frm[] = '<input required type="text" id="tag-edit" name="tag-edit" size="15" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/><button type="reset" class="tag-btn" title="'.L('Reset').'" onclick="qtFocus(`tag-edit`)">'.qtSvg('backspace').'</button>&nbsp;<button type="submit" name="tag-ok" class="tag-btn" value="addtag" title="'.L('Add').'">'.qtSvg('plus').'</button><button type="submit" name="tag-ok" class="tag-btn" value="deltag" title="'.L('Delete_tags').'">'.qtSvg('minus').'</button>';
   $frm[] = '</div>';
   $frm[] = '</article>';
   $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button></p>';

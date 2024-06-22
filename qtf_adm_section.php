@@ -320,7 +320,7 @@ echo '<p class="submit">
 
 echo '
 </div>
-<p>'.qtSVG('angle-left').' <a href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>
+<p>'.qtSvg('angle-left').' <a href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>
 ';
 
 // HTML END

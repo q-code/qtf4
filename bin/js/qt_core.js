@@ -11,14 +11,20 @@ function qtFocusAfter(id, clear=false) {
   const value = e.value;
   e.value = ''; e.focus(); e.value = value;
 }
-/** Toggle child(s) between "mode1 mode2 display|visibilty|data-state" inside one parent */
-function qtToggle(childsSelector='#tgl-container', args='', parentSelector='body') {
+/** Toggle child(s) between "state1 state2 display|visibilty|data-state|toggle" inside one parent */
+function qtToggle(childsSelector='#tgl-container', args='', parentObj='body') {
   const arg = args==='' ? ['block','none','display'] : args.split(' ');
   if ( arg.length===1 ) arg.push('none');
+  if ( arg[1]==='toggle') arg.push('toggle');
   if ( arg.length===2 ) arg.push('display');
   if ( arg.length!==3 ) { console.log('qtToggle: arg requires 3 arguments'); return; }
-  const parent = parentSelector==='' || parentSelector==='document' ? document : document.querySelector(parentSelector);
-  if ( !parent ) { console.log('qtToggle: parent ['+parentSelector+'] not found'); return; }
+  let parent;
+  if ( typeof parentObj==='string' ) {
+    parent = parentObj==='' || parentObj==='document' ? document : document.querySelector(parentObj);
+    if ( !parent ) { console.log('qtToggle: parent ['+parentObj+'] not found'); return; }
+  } else {
+    parent = parentObj;
+  }
   const childs = parent.querySelectorAll(childsSelector);
   if ( !childs ) { console.log('qtToggle: childs ['+childsSelector+'] not found'); return; }
   childs.forEach( (child)=>{
@@ -27,6 +33,7 @@ function qtToggle(childsSelector='#tgl-container', args='', parentSelector='body
       case 'visibility': child.style.visibility = window.getComputedStyle(child,null).visibility===arg[0] ? arg[1] : arg[0]; break;
       case 'data-state':
       case 'state': child.dataset.state = child.dataset.state===arg[0] ? arg[1] : arg[0]; break;
+      case 'toggle': child.classList.toggle(arg[0]); break;
       default: console.log('qtToggle: unknown mode ['+arg[2]+']'); return;
     }
   });
@@ -116,8 +123,13 @@ function qtApplyStoredState(casename) {
       e = document.getElementById('aside-ctrl'); if ( !e ) throw new Error('no element with id=aside-ctrl');
       try {
         const isOn = localStorage.getItem('qt-aside')==='true';
-        e.classList.toggle('expanded', isOn);
         e.setAttribute('aria-checked', isOn ? 'true' : 'false');
+        const icons = e.querySelectorAll('.tgl-ico');
+        if ( icons.length===2 ) {
+          icons[0].classList.remove('nodisplay');
+          icons[1].classList.remove('nodisplay');
+          icons[isOn ? 0 : 1].classList.add('nodisplay');
+        }
         e = document.getElementById('aside__status'); if (e) e.style.display = isOn ? 'none' : 'block';
         e = document.getElementById('aside__info'); if (e) e.style.display = isOn ? 'block' : 'none';
         e = document.getElementById('aside__detail'); if (e) e.style.display = isOn ? 'block' : 'none';

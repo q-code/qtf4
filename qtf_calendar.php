@@ -141,13 +141,13 @@ for ($i=1;$i<13;$i++)
 echo '<option'.($i==date('n') ? ' class="bold"' : '').' value="'.$i.'"'.($i==$intMonth ? ' selected' : '').'>'.$L['dateMMM'][$i].'</option>'.PHP_EOL;
 echo '</select>&nbsp;';
 if ( date('n',$dCurrentDate)>1 )
-  echo '<a class="button" href="'.$oH->php.'?m='.(date('n',$dCurrentDate)-1).'">'.qtSVG('chevron-left').'</a>&thinsp;';
+  echo '<a class="button" href="'.$oH->php.'?m='.(date('n',$dCurrentDate)-1).'">'.qtSvg('chevron-left').'</a>&thinsp;';
   else
-  echo '<a class="button disabled">'.qtSVG('chevron-left').'</a>&thinsp;';
+  echo '<a class="button disabled">'.qtSvg('chevron-left').'</a>&thinsp;';
 if ( date('n',$dCurrentDate)<12 )
-  echo '<a class="button" href="'.$oH->php.'?m='.(date('n',$dCurrentDate)+1).'">'.qtSVG('chevron-right').'</a>';
+  echo '<a class="button" href="'.$oH->php.'?m='.(date('n',$dCurrentDate)+1).'">'.qtSvg('chevron-right').'</a>';
   else
-  echo '<a class="button disabled">'.qtSVG('chevron-right').'</a>';
+  echo '<a class="button disabled">'.qtSvg('chevron-right').'</a>';
 echo '</form>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 
@@ -186,7 +186,7 @@ echo '</tr>'.PHP_EOL;
             if ( $intDayEvents<4 ) {
               echo '<a class="ajaxmouseover" id="u'.$arrValues['id'].'" href="'.url(APP.'_user.php').'?id='.$arrValues['id'].'">'.$arrValues['name'].'</a> ('.$intAge.')<br>';
             } else {
-              echo '<a class="ajaxmouseover" id="u'.$arrValues['id'].'" href="'.url(APP.'_user.php').'?id='.$arrValues['id'].'" title="'.$arrValues['name'].' ('.$intAge.')">'.qtSVG('user').'</a> ';
+              echo '<a class="ajaxmouseover" id="u'.$arrValues['id'].'" href="'.url(APP.'_user.php').'?id='.$arrValues['id'].'" title="'.$arrValues['name'].' ('.$intAge.')">'.qtSvg('user').'</a> ';
             }
             if ( $intDayEvents>7 ) break;
           }

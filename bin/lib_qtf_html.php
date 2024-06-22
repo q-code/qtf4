@@ -62,7 +62,7 @@ function htmlLettres(string $baseFile, string $current='ALL', string $all='All',
   if ( $filterForm ) {
   $group .= ' <form method="get" action="'.$baseFile.'">';
   $group .= '<input required type="text" value="'.($current==='ALL' || in_array($current,$arr) ? '' : qtAttr($current)).'" name="group" size="3" maxlength="10" title="'.qtAttr($title).'"/>';
-  $group .= '<button type="submit" value="submit">'.qtSVG('search').'</button>';
+  $group .= '<button type="submit" value="submit">'.qtSvg('search').'</button>';
   $group .= qtTags(array_map('urldecode',qtExplodeUri($baseFile,'page|group')), '', 'tag=hidden');
   $group .= '</form>';
   }
@@ -72,16 +72,16 @@ function htmlLettres(string $baseFile, string $current='ALL', string $all='All',
 function bbcButtons(int $size=1, string $id='text-area')
 {
   if ( !QT_BBC || $size===0 ) return '';
-  $str = '<a class="bbc" onclick="qtBbc(`b`,`'.$id.'`)" title="'.L('Bbc.bold').'">'.qtSVG('bold').'</a>';
-  $str .= '<a class="bbc" onclick="qtBbc(`i`,`'.$id.'`)" title="'.L('Bbc.italic').'">'.qtSVG('italic').'</a>';
-  $str .= '<a class="bbc" onclick="qtBbc(`u`,`'.$id.'`)" title="'.L('Bbc.under').'">'.qtSVG('underline').'</a>';
-  $str .= '<a class="bbc" onclick="qtBbc(`quote`,`'.$id.'`)" title="'.L('Bbc.quote').'">'.qtSVG('quote-right').'</a>';
+  $str = '<a class="bbc" onclick="qtBbc(`b`,`'.$id.'`)" title="'.L('Bbc.bold').'">'.qtSvg('bold').'</a>';
+  $str .= '<a class="bbc" onclick="qtBbc(`i`,`'.$id.'`)" title="'.L('Bbc.italic').'">'.qtSvg('italic').'</a>';
+  $str .= '<a class="bbc" onclick="qtBbc(`u`,`'.$id.'`)" title="'.L('Bbc.under').'">'.qtSvg('underline').'</a>';
+  $str .= '<a class="bbc" onclick="qtBbc(`quote`,`'.$id.'`)" title="'.L('Bbc.quote').'">'.qtSvg('quote-right').'</a>';
   if ( $size>1 ) {
-  $str .= '<a class="bbc" onclick="qtBbc(`code`,`'.$id.'`)" title="'.L('Bbc.code').'">'.qtSVG('code').'</a>';
-  $str .= '<a class="bbc" onclick="qtBbc(`url`,`'.$id.'`)" title="'.L('Bbc.url').'">'.qtSVG('link').'</a>';
-  $str .= '<a class="bbc" onclick="qtBbc(`mail`,`'.$id.'`)" title="'.L('Bbc.mail').'">'.qtSVG('envelope').'</a>';
+  $str .= '<a class="bbc" onclick="qtBbc(`code`,`'.$id.'`)" title="'.L('Bbc.code').'">'.qtSvg('code').'</a>';
+  $str .= '<a class="bbc" onclick="qtBbc(`url`,`'.$id.'`)" title="'.L('Bbc.url').'">'.qtSvg('link').'</a>';
+  $str .= '<a class="bbc" onclick="qtBbc(`mail`,`'.$id.'`)" title="'.L('Bbc.mail').'">'.qtSvg('envelope').'</a>';
   }
-  if ( $size>2 ) $str .= '<a class="bbc" onclick="qtBbc(`img`,`'.$id.'`)" title="'.L('Bbc.image').'">'.qtSVG('image').'</a>';
+  if ( $size>2 ) $str .= '<a class="bbc" onclick="qtBbc(`img`,`'.$id.'`)" title="'.L('Bbc.image').'">'.qtSvg('image').'</a>';
   return $str;
 }
 function icoPrefix(string $serie, int $i, string $src='config/prefix/')
@@ -92,7 +92,7 @@ function icoPrefix(string $serie, int $i, string $src='config/prefix/')
       // svg
       if ( substr($prefixIcon[$i],-4)==='.svg' ) {
 
-        return '<span class="prefix_icon" title="'.L('PrefixIcon.'.$serie.'0'.$i).'"'.(isset($prefixStyle[$i]) ? ' style="'.$prefixStyle[$i].'"' : '').'>'.qtSVG(substr($prefixIcon[$i],0,-4)).'</span>';
+        return '<span class="prefix_icon" title="'.L('PrefixIcon.'.$serie.'0'.$i).'"'.(isset($prefixStyle[$i]) ? ' style="'.$prefixStyle[$i].'"' : '').'>'.qtSvg(substr($prefixIcon[$i],0,-4)).'</span>';
       }
       // image
       return '<img class="prefix_icon" src="'.$src.$prefixIcon[$i].'" alt="'.$i.'" title="'.L('PrefixIcon.'.$serie.'0'.$i).'"'.(isset($prefixStyle[$i]) ? ' style="'.$prefixStyle[$i].'"' : '').'/>';
@@ -261,18 +261,18 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
       }
       if ( !empty($arrTags) ) {
         if ( count($arrTags)>1 ) {
-          $arr[$k] .= ' <span class="tags" title="'.implode(', ',$arrTags).(empty($arrMoreTags) ? '' : '...').'"><svg class="svg-symbol svg-125"><use href="#symbol-tags" xlink:href="#symbol-tags"/></svg></span>';
+          $arr[$k] .= ' <span class="tags" title="'.implode(', ',$arrTags).(empty($arrMoreTags) ? '' : '...').'">'.qtSvg('#tags').'</span>';
         } else {
-          $arr[$k] .= ' <span class="tags" title="'.$arrTags[0].'" data-tagdesc="'.$arrTags[0].'"><svg class="svg-symbol"><use href="#symbol-tag" xlink:href="#symbol-tag"/></svg></span>';
+          $arr[$k] .= ' <span class="tags" title="'.$arrTags[0].'" data-tagdesc="'.$arrTags[0].'">'.qtSvg('#tag').'</span>';
         }
       }
       if ( !empty($row['textmsg']) && $_SESSION[QT]['item_firstline']>0 && $showFirstline ) {
-      $arr[$k] .= '&nbsp;<small class="item-msg-preview">'.qtTrunc(qtBBclean($row['textmsg'],true,L('Bbc.*')),QT_FIRSTLINE_SIZE).(empty($row['attach']) ? '' : ' '.qtSVG('paperclip', 'title='.L('Attachment'))).'</small>';
+      $arr[$k] .= '&nbsp;<small class="item-msg-preview">'.qtTrunc(qtBBclean($row['textmsg'],true,L('Bbc.*')),QT_FIRSTLINE_SIZE).(empty($row['attach']) ? '' : ' '.qtSvg('paperclip')).'</small>';
       }
       break;
     case 'replies':
       // youreply merged in replies
-      $arr[$k] = $row['replies']==='0' ? '0' : '<span id="'.$strTableId.'re'.$row['id'].'"><svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"/></svg></span><span>'.qtK((int)$row['replies']).'</span>';
+      $arr[$k] = $row['replies']==='0' ? '0' : '<span id="'.$strTableId.'re'.$row['id'].'">'.qtSvg('#ireplied').'</span>&thinsp;<span>'.qtK((int)$row['replies']).'</span>';
       break;
     case 'views':
       $arr[$k] = $row['views']==='0' ? '0' : qtK((int)$row['views']);
@@ -289,7 +289,7 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
       if ( empty($row['lastpostdate']) ) {
         $arr[$k] = '&nbsp;';
       } else {
-        $arr[$k] = qtDate($row['lastpostdate'],'$','$').'<a class="lastitem" href="'.url('qtf_item.php').'?t='.$row['id'].'#p'.$row['lastpostid'].'" title="'.L('Goto_message').'"><svg class="svg-symbol symbol-caret-square-right"><use href="#symbol-caret-square-right" xlink:href="#symbol-caret-square-right"/></svg></a>';
+        $arr[$k] = qtDate($row['lastpostdate'],'$','$').'<a class="lastitem" href="'.url('qtf_item.php').'?t='.$row['id'].'#p'.$row['lastpostid'].'">'.qtSvg('#caret-square-right').'</a>';
         $arr[$k] .= '<br><small>'.L('by').' <a href="'.url('qtf_user.php').'?id='.$row['lastpostuser'].'" title="'.qtAttr($row['lastpostname']).'">'.$row['lastpostname'].'</a></small>';
       }
       break;

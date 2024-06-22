@@ -73,7 +73,7 @@ $str = parse_url($_SESSION[QT]['site_url']); $str = empty($str['path']) ? '' : $
 $cur = parse_url($_SERVER['REQUEST_URI']); $cur = empty($cur['path']) ? '' : $cur['path']; // current url
 if ( strpos($cur,$str)===false ) $oH->warning .= 'Url do not match with current site url';
 if ( $strHelper ) $oH->warning .= $strHelper;
-if ( !empty($oH->warning) ) $oH->warning = qtSVG('flag', 'style=font-size:1.4rem;color:#1364B7').' '.$oH->warning;
+if ( !empty($oH->warning) ) $oH->warning = qtSvg('flag', 'style=font-size:1.4rem;color:#1364B7').' '.$oH->warning;
 
 include APP.'_adm_inc_hd.php';
 

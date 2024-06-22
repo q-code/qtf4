@@ -109,7 +109,7 @@ function renderEmail($emails, string $mode='txt', int $size=0, string $failed=''
   switch($mode) {
     case 'txt': return '<a href="mailto:'.$mailto.'">'.implode(', ',$emails).'</a>';
     case 'ico':
-    case 'img': return '<a href="mailto:'.$mailto.'" title="'.$emails[0].(isset($emails[1]) ? ', ...' : '').'">'.qtSVG('envelope').'</a>';
+    case 'img': return '<a href="mailto:'.$mailto.'" title="'.$emails[0].(isset($emails[1]) ? ', ...' : '').'">'.qtSvg('envelope').'</a>';
     case 'symbol': return '<a href="mailto:'.$mailto.'" title="'.$emails[0].(isset($emails[1]) ? ', ...' : '').'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"/></svg></a>';
   }
   // Render reverse-human-readable mailto (javascript converts on mouseover)
@@ -117,7 +117,7 @@ function renderEmail($emails, string $mode='txt', int $size=0, string $failed=''
   switch($mode) {
     case 'txtjava': return '<script type="text/javascript">const m = "'.$mailto.'"; document.write(`<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="${m}">${qtDecodeEmails(m)}</a>`);</script>';
     case 'icojava':
-    case 'imgjava': return '<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="'.$mailto.'">'.qtSVG('envelope').'</a>';
+    case 'imgjava': return '<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="'.$mailto.'">'.qtSvg('envelope').'</a>';
     case 'symboljava': return '<a href="javascript:void(0)" onmouseover="qtEmailShow(this);" onmouseout="qtEmailHide(this);" data-emails="'.$mailto.'"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"/></svg></a>';
   }
   die('invalid render mode');

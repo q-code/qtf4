@@ -59,7 +59,7 @@ $stats = isset($_SectionsStats) ? $_SectionsStats : SMem::get('_SectionsStats');
 $strStatusText = '';
 
 echo '<aside>'.PHP_EOL;
-echo '<a id="aside-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="toggleAside();this.classList.toggle(`expanded`);" title="'.L('Showhide_legend').'" role="switch" aria-checked="false">'.qtSVG('info').qtSVG('angle-down','','',true).qtSVG('angle-up','','',true).'</a>'.PHP_EOL;
+echo '<a id="aside-ctrl" class="tgl-ctrl" href="javascript:void(0)" onclick="toggleAside();" title="'.L('Showhide_legend').'" role="switch" aria-checked="false">'.qtSvg('info').qtSvg('angle-down','class=tgl-ico').qtSvg('angle-up','class=tgl-ico').'</a>'.PHP_EOL;
 echo '<div id="aside__info" class="article" style="display:none">'.PHP_EOL;
   echo '<h2>'.L('Information').'</h2>'.PHP_EOL;
   // section info
@@ -101,25 +101,27 @@ if ( $oH->php==='qtf_index.php' ) {
   echo asImg( QT_SKIN.'img/section_0_1.gif', 'title='.L('Ico_section_0_1') ) . ' ' . L('Ico_section_0_1') . '<br>';
 } else {
   echo asImg( QT_SKIN.'img/topic_a_0.gif', 'alt=N|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_a_0');
-  if ( QT_LIST_ME && $oH->php!=='qtf_item.php' ) echo ' &nbsp;<svg class="svg-symbol symbol-ireplied"><use href="#symbol-ireplied" xlink:href="#symbol-ireplied"/></svg>'.' '.L('You_reply');
+  if ( QT_LIST_ME && $oH->php!=='qtf_item.php' ) echo ' &nbsp;'.qtSvg('#ireplied').' '.L('You_reply');
   echo '<br>';
   echo asImg( QT_SKIN.'img/topic_t_0.gif', 'alt=T|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_t_0').' &nbsp;';
   echo asImg( QT_SKIN.'img/topic_t_0_h.gif', 'alt=T|class=i-item|data-type=t|data-status=0' ) . ' '.L('Ico_item_t_0_h');
   echo '<br>';
   echo asImg( QT_SKIN.'img/topic_t_1.gif', 'alt=T|class=i-item|data-type=t|data-status=1' ) . ' '.L('Ico_item_t_1').' ';
   echo '<br>';
-  if ( $oH->php==='qtf_item.php' ) echo qtSVG('comment-dots').' '.L('Ico_post_r').'<br>';
+  if ( $oH->php==='qtf_item.php' ) echo qtSvg('comment-dots').' '.L('Ico_post_r').'<br>';
 }
 echo '</p></div>'.PHP_EOL;
 echo '<div id="aside__status">'.$strStatusText.'</div>'.PHP_EOL;
 echo '</aside>'.PHP_EOL.PHP_EOL;
 
-$oH->scripts[] = 'function toggleAside(){
-  const d = document.getElementById("aside-ctrl"); if ( !d ) return;
-  d.setAttribute("aria-checked", d.getAttribute("aria-checked")==="false" ? "true" : "false" );
-  qtToggle(`div`,``,`#site aside`);
+$oH->scripts[] = 'function toggleAside() {
+  const el = document.getElementById("aside-ctrl"); if ( !el ) return;
+  const isOn = el.getAttribute("aria-checked")==="true";
+  el.setAttribute("aria-checked", isOn ? "false" : "true" );
   qtAttrStorage("aside-ctrl","qt-aside");
-  d.blur();
+  qtToggle(`div`,``,`#site aside`);
+  qtToggle(`.tgl-ico`,`nodisplay toggle`,el);
+  el.blur();
 }
 qtApplyStoredState("aside");';
 
@@ -137,7 +139,7 @@ echo '<footer class="flex-sp">
 // MODULE RSS
 if ( !$_SESSION[QT]['board_offline'] && qtModule('rss') && $_SESSION[QT]['m_rss']=='1' ) {
 if ( SUser::role()!=='V' || SUser::role().substr($_SESSION[QT]['m_rss_conf'],0,1)==='VV' ) {
-  $navMenu->add('rss', 'text='.qtSVG('rss-square').'|id=menu-rss|href=qtfm_rss.php');
+  $navMenu->add('rss', 'text='.qtSvg('rss-square').'|id=menu-rss|href=qtfm_rss.php');
 }}
 
 // footer menu extra definition

@@ -174,13 +174,13 @@ echo '</div>
 if ( $edit ) {
 // -- EDIT PROFILE --
 
-if ( SUser::id()!==$id ) echo '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+if ( SUser::id()!==$id ) echo '<p>'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 
 $oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
 echo '<form class="formsafe" method="post" action="'.url(APP.'_user.php').'">
 <table class="t-profile">
 <tr><th>'.L('Username').'</th><td clss="c-name">'.$row['name'].'</td></tr>
-<tr><th>'.L('Role').'</th><td>'.L('Role_'.$row['role']).($row['role']==='A' ? ' <small>'.qtSVG('user-a', 'title='.L('Role_A')).'</small>' : '').'</td></tr>
+<tr><th>'.L('Role').'</th><td>'.L('Role_'.$row['role']).($row['role']==='A' ? ' <small>'.qtSvg('user-a', 'title='.L('Role_A')).'</small>' : '').'</td></tr>
 <tr><th>'.L('Location').'</th><td><input type="text" name="location" size="35" maxlength="24" value="'.$row['location'].'"/></td></tr>
 <tr><th>'.L('Email').'</th><td><input required type="email" name="emails" size="35" maxlength="255" value="'.$row['mail'].'" multiple/></td></tr>
 <tr><th>'.L('Website').'</th><td><input type="text" name="www" pattern="^(http://|https://).*" size="35" maxlength="64" value="'.(empty($row['www']) ? '' : $row['www']).'" title="'.L('H_Website').'"/></td></tr>
@@ -244,7 +244,7 @@ if ( $useMap ) {
   if ( !empty(gmapOption('gc')) ) {
     $strPosition .= '< class="small commands" style="margin:4px 0 2px 2px;text-align:right">'.$L['Gmap']['addrlatlng'].' ';
     $strPosition .= '<input type="text" size="24" id="find" name="find" class="small" value="'.$_SESSION[QT]['m_gmap_gfind'].'" title="'.$L['Gmap']['H_addrlatlng'].'" onkeypress="if ((event.key!==undefined && event.key==`Enter`) || (event.keyCode!==undefined && event.keyCode==13)) showLocation(this.value,null);"/>';
-    $strPosition .= qtSVG('search', 'id=btn-geocode|class=clickable|onclick=showLocation(document.getElementById(`find`).value,null)|title='.L('Search') );
+    $strPosition .= qtSvg('search', 'id=btn-geocode|class=clickable|onclick=showLocation(document.getElementById(`find`).value,null)|title='.L('Search') );
     $strPosition .= '</p>'.PHP_EOL;
   }
   echo '<tr>'.PHP_EOL;
@@ -280,7 +280,7 @@ if ( $countmessages>0 ) {
   $strParticip .= ', '.strtolower($L['Last_message']).' '.qtDate($row['lastdate'],'$','$',true);
   $oDB->query( "SELECT p.id,p.topic,p.forum FROM TABPOST p WHERE p.userid=$id ORDER BY p.issuedate DESC" );
   $row2 = $oDB->getRow();
-  $strParticip .= ' <a href="'.url('qtf_item.php').'?t='.$row2['topic'].'#p'.$row2['id'].'" title="'.L('Goto_message').'">'.qtSVG('caret-square-right').'</a>';
+  $strParticip .= ' <a href="'.url('qtf_item.php').'?t='.$row2['topic'].'#p'.$row2['id'].'" title="'.L('Goto_message').'">'.qtSvg('caret-square-right').'</a>';
 }
 echo '
 <table class="t-profile">
@@ -309,7 +309,7 @@ if ( SUser::id()===$id || SUser::isStaff() ) {
   echo $strPriv.' '.L('Privacy_visible_'.$row['privacy']);
   $intBan = empty($row['closed']) ? 0 : (int)$row['closed'];
   $days = BAN_DAYS;
-  if ( $intBan && array_key_exists($intBan,$days) ) echo ' &middot; '.qtSVG('ban').' '.$row['name'].' '.strtolower(sprintf(L('Is_banned_since'),L('day',$days[$intBan])));
+  if ( $intBan && array_key_exists($intBan,$days) ) echo ' &middot; '.qtSvg('ban').' '.$row['name'].' '.strtolower(sprintf(L('Is_banned_since'),L('day',$days[$intBan])));
   echo '</p>';
 }
 
@@ -398,7 +398,7 @@ if ( $useMap ) {
 }
 
 // Symbols
-$oH->symbols[] = qtSVG('symbol-key');
-$oH->symbols[] = qtSVG('symbol-door-open');
+$oH->symbols[] = qtSvg('symbol-key');
+$oH->symbols[] = qtSvg('symbol-door-open');
 
 include 'qtf_inc_ft.php';

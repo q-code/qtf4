@@ -258,7 +258,7 @@ class Splash
   {
     if ( empty($_SESSION[QT.'splash']) ) return '';
     $type = self::getType();
-    return '<div id="splash"><p id="splash-ico" style="'.self::getIconStyle($type).'">'.qtSVG(self::getIconClass($type)).'</p><p id="splash-txt"></p></div>'.
+    return '<div id="splash"><p id="splash-ico" style="'.self::getIconStyle($type).'">'.qtSvg(self::getIconClass($type)).'</p><p id="splash-txt"></p></div>'.
     '<script type="text/javascript">
     const splash = document.getElementById("splash");
     const splashtxt = document.getElementById("splash-txt");

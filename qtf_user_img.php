@@ -80,6 +80,6 @@ if ( isset($_POST['del']) && $_POST['del']=='del' )
 // ------
 // HTML BEGIN
 // ------
-if ( SUser::id()!==$id ) $oH->warning = '<p>'.qtSVG('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
+if ( SUser::id()!==$id ) $oH->warning = '<p>'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 
 include APP.'_upload_img.php';

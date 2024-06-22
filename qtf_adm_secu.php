@@ -166,7 +166,7 @@ foreach($oDB->getSettings('param LIKE "m_%:login"') as $param=>$alias) {
   if ( isset($_SESSION[QT][$addon]) && $_SESSION[QT][$addon]!=='0' ) $arrAddons[$addon] = 'Module '.$alias;
 }
 echo '<h2 class="config">'.L('Registration').'</h2>
-<table class="t-conf">
+<table class="t-conf" id="config-registration">
 <tr>
 <th>'.L('Authority').'</th>
 <td>'.(count($arrAddons)===1 ? $arrAddons[0] : '<select id="login_addon" name="login_addon">'.qtTags($arrAddons, $_SESSION[QT]['login_addon']).'</select>').'</td>

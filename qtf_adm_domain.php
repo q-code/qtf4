@@ -15,7 +15,7 @@ include translate('lg_adm.php');
 $oH->name = L('Domain_upd');
 $parentname = L('Board_content');
 $oH->exiturl = APP.'_adm_sections.php';
-$oH->exitname = qtSVG('angle-left').' '.L('Section+');
+$oH->exitname = qtSvg('angle-left').' '.L('Section+');
 
 // ------
 // INITIALISE (no cache)

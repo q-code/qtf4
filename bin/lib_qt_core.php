@@ -174,18 +174,47 @@ function qtK(int $n, string $unit='k', string $unit2='M')
   if ( $n<1000000 ) return round(floor($n/100)/10, 1).$unit; // Thousands: 1 decimal no round-up (9999 is 9.9k not 10k)
   return round($n/1000000,2).$unit2; // Millions: 2 decimals
 }
-function qtSVG(string $ref='info', string $attr='', string $wrapper='', bool $addSvgClass=false)
+function qtSvg(string $ref='info', string $attr='')
 {
-  if ( !file_exists('bin/svg/'.$ref.'.svg') ) return '#';
-  $svg = file_get_contents('bin/svg/'.$ref.'.svg');
-  if ( $addSvgClass) $svg = '<svg class="svg-'.$ref.'" '.substr($svg,4);
-  if ( !empty($attr) && empty($wrapper) ) $wrapper = 'span'; // force span when attribute exists
-  if ( !empty($wrapper) ) $svg = '<'.$wrapper.attrRender($attr).'>'. $svg.'</'.$wrapper.'>';
+  // use id referrer
+  if ( $ref[0]==='#' ) return qtSvgUse($ref,$attr);
+  // use file content
+  if ( substr($ref,-4)!=='.svg' ) $ref .= '.svg'; // referrer must use id ending with '.svg'
+  $svg = qtSvgCode($ref);
+  if ( $attr ) $svg = '<svg'.attrRender($attr).' '.substr($svg,4);
   return $svg;
 }
-/**
- * Returns the language path (with final /)
- */
+function qtSvgUse(string $ref='#info', string $attr='')
+{
+  if ( substr($ref,-4)!=='.svg' ) $ref .= '.svg'; // referrer must use id ending with '.svg'
+  return '<svg'.attrRender($attr).'><use href="'.$ref.'"></use></svg>';
+}
+function qtSvgCode(string $file)
+{
+  if ( !file_exists('bin/svg/'.$file) ) return '#';
+  return file_get_contents('bin/svg/'.$file);
+}
+/** Convert svg [filename] to symbol (id required, uses filename if empty) */
+function qtSvgSymbol(string $svg, string $title='', string $id='', bool $addCss=true)
+{
+  if ( substr($svg,-4)!=='.svg' ) $svg .= '.svg';// referrer must use id ending with '.svg'
+  if ( empty($id) ) $id = $svg;
+  $svg = qtSvgCode($svg);
+  // convert
+  if ( $title ) $title = '<title>'.$title.'</title>';
+  $svg = str_replace(['<svg','</svg>'], ['<symbol id="'.$id.'"',$title.'</symbol>'], $svg);
+  // add style width,height,style
+  if ( $addCss ) {
+    $i = strpos($svg,'>'); if ( $i===false )$i=360;
+    $def = qtExplode(substr(str_replace('"','',$svg), 0, $i),' ');
+    $w = $def['width'] ?? '1em';
+    $h = $def['height'] ?? '1em';
+    $s = $def['style'] ?? '';
+    $svg .= '<style>svg:has(use[href="#'.$id.'"]){width:'.$w.';height:'.$h.';'.$s.'}</style>';
+  }
+  return $svg;
+}
+/** Returns the language path (with final /) */
 function qtDirLang(string $iso='')
 {
   if ( !empty($iso) ) return 'language/'.$iso.'/';
