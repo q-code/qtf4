@@ -58,6 +58,7 @@ select{max-width:260px} select[name="secret_q"]{max-width:360px}
 .cblabel .prefix_icon{vertical-align:baseline}
 
 /* INLINE (p has margin in article and msgbox) */
+svg {width:1.1em;height:1em} /* protection required, if symbol style is missing */
 article p, .article p, p.article, .msgboxbody p{margin-bottom:0.5rem}
 p.submit, .msgboxbody p.submit{margin:1rem 0 0 0;text-align:center}
 p.error{margin:0.3rem}

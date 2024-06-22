@@ -398,7 +398,7 @@ if ( $useMap ) {
 }
 
 // Symbols
-$oH->symbols[] = qtSvg('symbol-key');
-$oH->symbols[] = qtSvg('symbol-door-open');
+$oH->symbols[] = qtSvgSymbol('key');
+$oH->symbols[] = qtSvgSymbol('door-open');
 
 include 'qtf_inc_ft.php';

@@ -179,9 +179,9 @@ while($row=$oDB->getRow()) {
 		if ( !empty($arrSymbolByRole[$row['role']]) ) $oMapPoint->marker = $arrSymbolByRole[$row['role']];
 		$arrMapData[(int)$row['id']] = $oMapPoint;
 		if ( $_SESSION[QT]['m_gmap_hidelist'] ) {
-		  $t->arrTd['userlocation']->content .= ' <svg class="svg-symbol"><use href="#symbol-map-marker-alt" xlink:href="#symbol-map-marker-alt"/></svg>';
+		  $t->arrTd['userlocation']->content .= ' '.qtSvg('#map-marker-alt');
 		} else {
-		  $t->arrTd['userlocation']->content .= ' <span class="clickable" data-coord="'.$y.','.$x.'" onclick="gmapPan(this.dataset.coord)" title="'.L('Show').'"><svg class="svg-symbol"><use href="#symbol-map-marker-alt" xlink:href="#symbol-map-marker-alt"/></svg></span>';
+		  $t->arrTd['userlocation']->content .= ' <span class="clickable" data-coord="'.$y.','.$x.'" onclick="gmapPan(this.dataset.coord)" title="'.L('Show').'">'.qtSvg('#map-marker-alt').'</span>';
 		}
 	}
 
@@ -307,11 +307,11 @@ if ( $useMap && !$_SESSION[QT]['m_gmap_hidelist'] ) {
 }
 
 // Symbols
-$oH->symbols[] = qtSvg('symbol-envelope');
-$oH->symbols[] = qtSvg('symbol-home');
-$oH->symbols[] = qtSvg('symbol-map-marker-alt');
-$oH->symbols[] = qtSvg('symbol-key');
-$oH->symbols[] = qtSvg('symbol-door-open');
+$oH->symbols[] = qtSvgSymbol('envelope');
+$oH->symbols[] = qtSvgSymbol('home');
+$oH->symbols[] = qtSvgSymbol('map-marker-alt');
+$oH->symbols[] = qtSvgSymbol('key');
+$oH->symbols[] = qtSvgSymbol('door-open');
 
 // hide fix-sp-bottom-controls if less than 5 table rows
 $oH->scripts[] = 'qtHideAfterTable("tablebot");';

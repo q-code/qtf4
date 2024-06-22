@@ -168,7 +168,7 @@ function renderUserMailSymbol($row)
 {
   // required $row['id|privacy|mail']
   if ( empty($row['mail']) || empty($row['id']) || !isset($row['privacy']) )
-  return '<span class="disabled" title="no e-mail"><svg class="svg-symbol"><use href="#symbol-envelope" xlink:href="#symbol-envelope"/></svg></span>';
+  return '<span class="disabled" title="no e-mail"><svg class="svg-symbol">'.qtSvg('#envelope').'</span>';
   $str = '';
   if ( (int)$row['privacy']===2 ) $str = renderEmail($row['mail'],'symbol'.(QT_JAVA_MAIL ? 'java' : ''));
   if ( (int)$row['privacy']===1 && SUser::role()!=='V' ) $str = renderEmail($row['mail'],'symbol'.(QT_JAVA_MAIL ? 'java' : ''));
@@ -178,8 +178,8 @@ function renderUserMailSymbol($row)
 function renderUserWwwSymbol($row)
 {
   if ( empty($row['www']) || !isset($row['privacy']) )
-  return '<span class="disabled" title="no web site"><svg class="svg-symbol svg-125"><use href="#symbol-home" xlink:href="#symbol-home"/></svg></span>';
-  return '<a href="'.$row['www'].'" title="web site"><svg class="svg-symbol svg-125"><use href="#symbol-home" xlink:href="#symbol-home"/></svg></a>';
+  return '<span class="disabled" title="no web site">'.qtSvg('#home').'</span>';
+  return '<a href="'.$row['www'].'" title="web site">'.qtSvg('#home').'</a>';
 }
 function renderUserPrivSymbol(array $row=[], string $empty='')
 {
@@ -187,8 +187,8 @@ function renderUserPrivSymbol(array $row=[], string $empty='')
   if ( empty($row['id']) || !isset($row['privacy']) ) return $empty;
   if ( SUser::isStaff() || SUser::id()===(int)$row['id'] ) {
     if ( (int)$row['privacy']===2 )
-    return '<span data-private="2" title="'.L('Privacy_visible_2').'"><svg class="svg-symbol svg-125"><use href="#symbol-door-open" xlink:href="#symbol-door-open"/></svg></span>';
-    return '<span data-private="'.$row['privacy'].'" title="'.L('Privacy_visible_'.$row['privacy']).'"><svg class="svg-symbol"><use href="#symbol-key" xlink:href="#symbol-key"/></svg></span>';
+    return '<span data-private="2" title="'.L('Privacy_visible_2').'">'.qtSVG('#door-open').'</span>';
+    return '<span data-private="'.$row['privacy'].'" title="'.L('Privacy_visible_'.$row['privacy']).'">'.qtSVG('#key').'</span>';
   }
   return $empty;
 }
