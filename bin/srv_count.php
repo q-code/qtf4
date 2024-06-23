@@ -109,9 +109,10 @@ $q = $_GET['q'];
 
 // errors
 $L = []; include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
-$e0 = empty($L['No_result'])           ? 'No result'           : $L['No_result'];
-$e1 = empty($L['E_try_other_lettres'])   ? 'Try other lettres'   : $L['E_try_other_lettres'];
-$e2 = empty($L['E_try_without_options']) ? 'Try without options' : $L['E_try_without_options'];
+if ( empty($L['No_result']) )           $L['No_result'] = 'No result';
+if ( empty($L['Try_other_lettres']) )   $L['Try_other_lettres'] = 'Try other lettres';
+if ( empty($L['Try_without_options']) ) $L['Try_without_options'] = 'Try without options';
+if ( empty($L['E_failed']) )            $L['E_failed'] = 'Action failed';
 
 // options
 $s = isset($_GET['s']) ? (int)$_GET['s'] : -1; // section [int]
@@ -168,4 +169,4 @@ switch($q) {
 
 // RESPONSE FAILED
 
-echo json_encode( array(array('rItem'=>'', 'rInfo'=>$e0.', '.($s.$ft.$fs==='-1' ? $e1 : $e2))) );
+echo json_encode( array(array('rItem'=>'', 'rInfo'=>$L['No_result'].', '.($s.$ft.$fs==='-1' ? $L['Try_other_lettres'] : $L['Try_without_options']))) );

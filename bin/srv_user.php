@@ -42,7 +42,7 @@ const TABTABLES = ['TABUSER'];
 
 // SERVICE ARGUMENTS
 $L = []; include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
-$e0 = empty($L['No_result']) ? 'No result' : $L['No_result'];
+if ( empty($L['No_result']) ) $L['No_result'] = 'No result';
 $q = isset($_GET['q']) ? $_GET['q'] : 'u';
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0; // 0 visitor
 $dir = isset($_GET['dir']) ? $_GET['dir'] : '';
@@ -72,4 +72,4 @@ switch($q) {
 
 // RESPONSE
 
-echo empty($data) ? $e0 : $data;
+echo empty($data) ? $L['No_result'] : $data;

@@ -122,7 +122,7 @@ if ( QT_SIMPLESEARCH && $oH->php!==APP.'_search.php' ) {
     echo '</form>';
     $oH->scripts['ac'] = 'if ( typeof acOnClicks==="undefined" ) { var acOnClicks = []; }
     acOnClicks["qkw"] = function(focusInput,btn){ if ( focusInput.id=="qkw" && focusInput.value.substring(0,1)==="#" ) window.location="'.APP.'_item.php?t="+focusInput.value.substring(1); }';
-    $oH->scripts_end['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/'.APP.'_config_ac.js"></script>';
+    $oH->scripts_end['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js" data-lang="'.QT_LANG.'"></script><script type="text/javascript" src="bin/js/'.APP.'_config_ac.js"></script>';
   }
   echo '<a class="button button-x" href="javascript:void(0)" onclick="qtToggle(`#searchbar`,`none`);" title="'.L('Close').'">'.qtSvg('times').'</a>'.PHP_EOL;
   echo '</div>'.PHP_EOL;

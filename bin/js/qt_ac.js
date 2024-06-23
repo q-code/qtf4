@@ -11,7 +11,7 @@ function acInputChange(e) {
   const value = multiInput ? acExtractLast(e.target.value.toLowerCase()) : e.target.value.toLowerCase();
   if ( value.length<minInputLength ) return;
   // query the url build by the function acUrlConfig(method,value) [ must be defined in the application! ] Note: here the method is just the id of the input
-  fetch( acUrlConfig(focusInput.id,value) )
+  fetch( acUrlConfig(focusInput.id,value,lang) )
   .then( response => response.json() )
   .then( data => {
     acCreateDropdown(data);
@@ -57,6 +57,7 @@ function acCreateDropdown(responses) {
 
 let focusInput = null;
 let multiInput = false;
+let lang = document.currentScript.dataset['lang'] ?? '';
 document.querySelectorAll('[id^="ac-wrapper"]').forEach( (wrapper) => {
   const id = wrapper.id.substring(11);
   const input = document.getElementById(id);

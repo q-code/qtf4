@@ -162,7 +162,7 @@ case 'itemsTags':
   $frm[] = '<p class="row-confirm">'.L('Change').' '.L('item',count($ids)).':</p>';
   $frm[] = '<div id="ac-wrapper-tag-edit">';
   $frm[] = '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/>';
-  $frm[] = '<input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
+  //!!!$frm[] = '<input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
   $frm[] = '<input required type="text" id="tag-edit" name="tag-edit" size="15" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/><button type="reset" class="tag-btn" title="'.L('Reset').'" onclick="qtFocus(`tag-edit`)">'.qtSvg('backspace').'</button>&nbsp;<button type="submit" name="tag-ok" class="tag-btn" value="addtag" title="'.L('Add').'">'.qtSvg('plus').'</button><button type="submit" name="tag-ok" class="tag-btn" value="deltag" title="'.L('Delete_tags').'">'.qtSvg('minus').'</button>';
   $frm[] = '</div>';
   $frm[] = '</article>';
@@ -170,7 +170,7 @@ case 'itemsTags':
   $frm[] = '</form>';
   $oH->scripts[] = 'qtFocus(`tag-edit`);';
   $oH->scripts['tags'] = '<script type="text/javascript" src="bin/js/qt_tags.js"></script>';
-  $oH->scripts_end['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
+  $oH->scripts_end['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js" data-lang="'.QT_LANG.'"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
   $oH->scripts_end['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
 
   break;

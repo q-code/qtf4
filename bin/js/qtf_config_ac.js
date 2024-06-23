@@ -1,8 +1,8 @@
-function acUrlConfig(method,value) {
+function acUrlConfig(method,value,lang='') {
   let s = '';
   let fs = '';
   let dir = '';
-  let lang = '';
+  if ( lang.length>0 ) lang = '&lang='+lang;
   switch(method) {
     case 'qkw': break;
     case 'ref':
@@ -15,7 +15,6 @@ function acUrlConfig(method,value) {
       break;
     case 'tag-edit':
       if ( document.getElementById('tag-dir') ) dir = '&dir='+document.getElementById('tag-dir').value;
-      if ( document.getElementById('tag-lang') ) lang = '&lang='+document.getElementById('tag-lang').value;
       break;
     case 'behalf':
     case 'user':

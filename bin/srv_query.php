@@ -104,12 +104,12 @@ $q = isset($_GET['q']) ? $_GET['q'] : 's'; // search type {s|qkw|tag|username|us
 
 // errors
 $L = []; include '../language/'.(isset($_GET['lang']) ? $_GET['lang'] : 'en').'/app_error.php';
-$e0 = empty($L['No_result'])             ? 'No result'           : $L['No_result'];
-$e1 = empty($L['E_try_other_lettres'])   ? 'Try other lettres'   : $L['E_try_other_lettres'];
-$e2 = empty($L['E_try_without_options']) ? 'Try without options' : $L['E_try_without_options'];
-$e4 = empty($L['E_failed'])              ? 'Action failed'       : $L['E_failed'];
+if ( empty($L['No_result']) )           $L['No_result'] = 'No result';
+if ( empty($L['Try_other_lettres']) )   $L['Try_other_lettres'] = 'Try other lettres';
+if ( empty($L['Try_without_options']) ) $L['Try_without_options'] = 'Try without options';
+if ( empty($L['E_failed']) )            $L['E_failed'] = 'Action failed';
 
-if ( substr($fv,0,1)==='*' ) { echo $e4,'|',$e1.PHP_EOL; return; }
+if ( substr($fv,0,1)==='*' ) { echo $L['E_failed'],'|',$L['Try_other_lettres'].PHP_EOL; return; }
 // options
 $s = isset($_GET['s']) ? (int)$_GET['s'] : -1; // section [int]
 $ft = isset($_GET['ft']) ? $_GET['ft'] : ''; // item type {A|T|...} or user type {A|M|U}
@@ -142,7 +142,7 @@ case 'username':
   $where = 'id>0';
   if ( $ft==='A' ) $where = "role='A'";
   if ( $ft==='M' ) $where = "(role='A' OR role='M')";
-  $e2=$e1; //on no result forces 'try other lettres'
+  $L['Try_without_options']=$L['Try_other_lettres']; //on no result forces 'try other lettres'
   $oDB->query( "SELECT id,name,role FROM TABUSER WHERE $where AND UPPER(name) LIKE ?", ['%'.$fv.'%'] );
   while($row=$oDB->getRow())
   {
@@ -302,7 +302,7 @@ default: // posts
 // RESPONSE
 if ( count($arr)==0 )
 {
-  echo json_encode( array(array('rItem'=>'', 'rInfo'=>$e0.', '.($s.$ft.$fs==='-1' ? $e1 : $e2))) );
+  echo json_encode( array(array('rItem'=>'', 'rInfo'=>$L['No_result'].', '.($s.$ft.$fs==='-1' ? $L['Try_other_lettres'] : $L['Try_without_options']))) );
 }
 else
 {
