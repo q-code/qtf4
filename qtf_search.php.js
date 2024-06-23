@@ -4,13 +4,12 @@ qtFocusAfter("kw");
   if ( document.getElementById(id) && document.getElementById(id).value.length>0 ) qtFocusAfter(id);
 });
 
-// Search options
+// Search options (for each SELECT changed)
 const optionsEl = document.getElementById("broadcasted-options");
 optionsEl.addEventListener("change", (e)=>{
   e.stopPropagation();
   if ( e.target.tagName==="SELECT") broadcastOption(e.target.name,e.target.value);
 });
-
 function iconSpin() {
   const icon = document.getElementById("opt-icon");
   icon.classList.remove("spinning");

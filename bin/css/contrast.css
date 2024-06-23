@@ -133,7 +133,7 @@ tbody[data-dataset="newsontop"] tr:last-of-type td{border-bottom:solid 5px #333}
 .t-sec, .t-data, .t-item, .t-user,
 .search-box{background-color:#000;border:solid 3px #000}
 .search-box:hover{background-color:#080808}
-.search-box .filigrane svg{color:#aaa}
+.search-box .filigrane{color:#aaa}
 tr.hover:hover{background-color:#222}
 .section:hover{text-decoration:underline}
 table th,table th a{color:#CCC}
