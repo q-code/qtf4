@@ -30,8 +30,8 @@ p.iso{font-size:0.8rem;font-weight:bold;color:#888;white-space:nowrap;overflow:h
 img.sectioninfo-left.compact{max-height:50px;margin:0 10px 5px 0}
 p.sectioninfo.compact{margin:0 0 3px 0;font-size:1.1rem}
 p.sectiondesc.compact{margin:0 0 3px 0;font-size:0.9rem}
-a.rowcmd{text-decoration:underline;color:#000}
-a.rowcmd:hover{color:#0000FF}
+a.cmd-cb{text-decoration:underline;color:#000}
+a.cmd-cb:hover{color:#0000FF}
 p.row-confirm{padding-top:6px;border-top:1px solid #1364B7}
 
 img.i-sec{max-width:40px;max-height:40px;}

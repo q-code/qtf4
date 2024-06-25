@@ -45,7 +45,8 @@ input:focus, select:focus, textarea:focus{outline:none; border:1px solid #000}
 .table-ui.bot{margin:0.4rem 0 0.6rem 0;align-items:flex-start}
 .table-ui .arrow-icon{display:inline-block;width:36px;text-align:center}
 .table-ui.top .arrow-icon{transform:translateY(0.25rem)}
-@media print{.table-ui .rowcmds{visibility:hidden}}
+.cmds-cb{position:relative}
+@media print{.table-ui .cmds-cb{visibility:hidden}}
 
 /* FORM */
 input, select, textarea{background-color:#fff}

@@ -251,10 +251,10 @@ $t->cloneThTd();
 if ( $_SESSION['EditByRows'] ) {
 
   $m = new CMenu([
-  L('Type').'/'.L('Status').'|class=rowcmd|data-action=itemsType',
-  L('Tags').'|class=rowcmd|data-action=itemsTags',
-  L('Move').'|class=rowcmd|data-action=itemsMove',
-  L('Delete').'|class=rowcmd|data-action=itemsDelete|title='.L('Delete').' '.L('item+').', '.L('reply+').' '.L('or').' '.L('attachment+')
+  L('Type').'/'.L('Status').'|class=cmd-cb|data-action=itemsType',
+  L('Tags').'|class=cmd-cb|data-action=itemsTags',
+  L('Move').'|class=cmd-cb|data-action=itemsMove',
+  L('Delete').'|class=cmd-cb|data-action=itemsDelete|title='.L('Delete').' '.L('item+').', '.L('reply+').' '.L('or').' '.L('attachment+')
   ], ' &middot; ');
   $rowCommands = $m->build();
   $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js" data-noselect="'.L('Nothing_selected').'"></script>';
@@ -274,7 +274,7 @@ if ( $_SESSION['EditByRows'] ) {
 // Buttons and paging
 echo '<div id="t1-nav-top" class="nav-top">'.$navCommands.'</div>'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
-echo $rowCommands ? '<div id="t1-edits-top" class="left rowcmds" data-table="t1">'.qtSvg('corner-up-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo $rowCommands ? '<div id="t1-edits-top" class="cmds-cb" data-table="t1">'.qtSvg('corner-up-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // TABLE START DISPLAY
@@ -360,7 +360,7 @@ $strCsv = '';
 if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) $strCsv .= '<a id="cmd-export-selected" class="csv" href="javascript:void(0)" title="'.L('H_Csv').' ('.L('selected').')">'.L('Export').qtSvg('check-square').'</a> &middot; ';
 $strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(url('qtf_items_csv.php').$oH->arg, $intCount, $pn);
 echo '<div id="tablebot" class="table-ui bot">';
-echo $rowCommands ? '<div id="t1-edits-bot" class="left rowcmds" data-table="t1">'.qtSvg('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo $rowCommands ? '<div id="t1-edits-bot" class="cmds-cb" data-table="t1">'.qtSvg('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 echo '<p class="right table-ui-export">'.$strCsv.'</p>'.PHP_EOL;
 echo '<div id="t1-nav-bot" class="nav-bot">'.$navCommands.'</div>'.PHP_EOL;

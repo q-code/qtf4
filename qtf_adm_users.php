@@ -191,16 +191,16 @@ if ( $intCount<$intUsers ) $strPaging = '<small>'.L('user',$intCount).' '.L('fro
 // Memberlist
 // ------
 $m = new CMenu([
-L('role').'|class=rowcmd|data-action=usersrole',
-L('delete').'|class=rowcmd|data-action=usersdel',
-strtolower(L('Ban')).'|class=rowcmd|data-action=usersban',
-L('picture').'|class=rowcmd|data-action=userspic'
+L('role').'|class=cmd-cb|data-action=usersrole',
+L('delete').'|class=cmd-cb|data-action=usersdel',
+strtolower(L('Ban')).'|class=cmd-cb|data-action=usersban',
+L('picture').'|class=cmd-cb|data-action=userspic'
 ], ' &middot; ');
 $rowCommands = L('selection').': '.$m->build();
 
 echo PHP_EOL.'<form id="form-items" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-items-action" name="a" />'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
-echo '<div id="t1-edits-top" class="left rowcmds" data-table="t1">'.qtSvg('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
+echo '<div id="t1-edits-top" class="cmds-cb" data-table="t1">'.qtSvg('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 
 // Table definition
@@ -274,7 +274,7 @@ while($row=$oDB->getRow())
 echo '</tbody>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
 echo '<div id="tablebot" class="table-ui bot">';
-echo $rowCommands ? '<div id="t1-edits-bot" class="left rowcmds" data-table="t1">'.qtSvg('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
+echo $rowCommands ? '<div id="t1-edits-bot" class="cmds-cb" data-table="t1">'.qtSvg('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
 echo '</form>'.PHP_EOL;
 
