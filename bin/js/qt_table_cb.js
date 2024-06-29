@@ -69,12 +69,10 @@ function cbShowMore(el,dataset)
   const formid = cbTable.dataset.formid ?? 'form-items';
   const box = document.createElement('div');
   box.id = 'cmd-cb-dlg';
-  box.style = 'position:absolute;z-index:2;top:-8px;right:-1rem;display:flex;gap:0.2rem;align-items:start;font-size:0.85rem;background-color:#fff;padding:0.2rem;border:solid 1px var(--bgadmin);border-radius:5px;box-shadow:0 0 5px #aaa';
+  box.style = 'position:absolute;z-index:2;top:-5px;right:-1rem;display:flex;gap:0.2rem;align-items:start';
   const select = document.createElement('select');
   select.setAttribute('size','8');
-  select.setAttribute('multiple','');
   select.onchange = function() {
-    console.log('onchange event');//!!!
     document.getElementById(formid+'-action').value = select.value;
     document.getElementById(formid).submit();
   };
@@ -89,14 +87,10 @@ function cbShowMore(el,dataset)
     });
     select.appendChild(optgroup);
   });
-
-  const button = document.createElement('button');
-  button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" style="vertical-align:-0.125em" width="0.69em" height="1em" viewBox="0 0 352 512"><path fill="currentColor" d="m242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28L75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256L9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>';
+  const button = cbXbutton();
   button.onclick = function(){ box.remove(); };
-  button.style = 'padding:1px 4px;background-color:var(--bgadmin);border-color:var(--bgadmin)';
   box.appendChild(select);
   select.after(button);
-
   el.after(box);
   select.focus();
 }
@@ -105,13 +99,11 @@ function cbShowAlert(el,msg,postfix='...')
   cbHideDlg();
   const box = document.createElement('div');
   box.id = 'cmd-cb-dlg';
-  box.style = 'position:absolute;z-index:2;top:-8px;right:-1rem;display:flex;gap:0.2rem;align-items:center;font-size:0.85rem;background-color:#fff;padding:0.2rem;border:solid 1px var(--bgadmin);border-radius:5px;box-shadow:0 0 5px #aaa';
+  box.style = 'position:absolute;z-index:2;top:-5px;right:-1rem;display:flex;gap:0.2rem;align-items:center';
   const select = document.createElement('span');
   select.innerText = msg+postfix;
-  const button = document.createElement('button');
-  button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" style="vertical-align:-0.125em" width="0.69em" height="1em" viewBox="0 0 352 512"><path fill="currentColor" d="m242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28L75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256L9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>';
+  const button = cbXbutton();
   button.onclick = function(){ box.remove(); };
-  button.style = 'padding:1px 4px;background-color:var(--bgadmin);border-color:var(--bgadmin)';
   box.appendChild(select);
   select.after(button);
   el.after(box);
@@ -120,4 +112,11 @@ function cbHideDlg()
 {
   const el = document.getElementById('cmd-cb-dlg');
   if ( el ) el.remove();
+}
+function cbXbutton()
+{
+  const button = document.createElement('button');
+  button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" style="vertical-align:-0.125em" width="0.69em" height="1em" viewBox="0 0 352 512"><path fill="currentColor" d="m242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28L75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256L9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>';
+  button.style = 'padding:1px 4px';
+  return button;
 }

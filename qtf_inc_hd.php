@@ -68,17 +68,20 @@ if ( !$hideMenuLang ) {
     }
   }
   // contrast
-  if ( QT_MENU_CONTRAST ) {
+  if ( QT_CONTRAST_CSS ) {
     $langMenu->add( 'text='.qtSvg('adjust').'|href=javascript:void(0)|id=contrast-ctrl|aria-label=High contrast|title=High contrast display|role=switch|aria-checked=false' );
-    $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/contrast.css" disabled/>';
     $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', tglContrast);
-      qtApplyStoredState('contrast');
     function tglContrast(){
       this.setAttribute('aria-checked', this.getAttribute('aria-checked')==='true' ? 'false' : 'true');
       qtAttrStorage('contrast-ctrl','qt-contrast');
       qtApplyStoredState('contrast');
     }";
   }
+}
+
+if ( QT_CONTRAST_CSS ) {
+  $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/contrast.css" disabled/>';
+  $oH->scripts[] = "qtApplyStoredState('contrast');";
 }
 
 // ------
