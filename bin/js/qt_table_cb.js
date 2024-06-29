@@ -98,7 +98,7 @@ function cbShowMore(el,dataset)
   select.after(button);
 
   el.after(box);
-  //select.focus();
+  select.focus();
 }
 function cbShowAlert(el,msg,postfix='...')
 {

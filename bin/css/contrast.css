@@ -1,14 +1,14 @@
 /* IMPORTANT: contrast is inside @media screen{}, thus NOT applied @media print */
-/* Contrast is loaded after others css. It can overwrite/transform previous rules having the same specificity */
+/* Contrast is loaded after others css. It will overwrite/transform previous rules having the same specificity */
 
 @media screen {
 
-:root{
-  color-scheme:dark;
-  --c:#FFF; --a:#FFFF00; --ah:#FFFF00;
-  --bgbanner:#125faf; --bgbtn:#1364B7; --bgform:#002140;
-  --bgadmin:#009dff; --rowlight:#071b38; --rowlighthover:#002e4b;
-}
+  :root{
+    color-scheme:dark;
+    --c:#FFF; --a:#FFFF00; --ah:#FFFF00;
+    --bgbanner:#125faf; --bgbtn:#1364B7; --bgform:#002140;
+    --bgadmin:#00e1ff; --rowlight:#071b38; --rowlighthover:#002e4b;
+  }
 
 /* TYPO */
 body{font-size:min(110%,22px)}
@@ -37,9 +37,8 @@ div.lettres a:not(.active):hover{background-color:#000;color:#FFFF00;border-colo
 .toggle-pwd:has(.svg-eye):hover{color:#000}
 
 /* BANNER */
-#banner[data-layout="0"] {padding:0;background-color: transparent; border:none}
-#banner[data-layout="0"] #menulang{background-color: transparent; border:none}
-#banner[data-layout="0"] nav{background-color: var(--bgbanner);border-radius:0}
+#banner[data-layout="0"] #menulang{background-color: #333; border:none}
+#banner[data-layout="0"] nav{background-color: var(--bgbanner);border-radius:5px}
 #banner[data-layout="1"],
 #banner[data-layout="2"] {background:linear-gradient(to bottom, #0b4783 20%, var(--bgbanner));border:2px solid var(--bgbanner);border-radius:5px 5px 0 0;border-bottom:none}
   /* LANG */
@@ -49,15 +48,15 @@ div.lettres a:not(.active):hover{background-color:#000;color:#FFFF00;border-colo
   #menulang a:hover{color:var(--ah)}               #banner[data-layout="0"] #menulang a:hover {color:var(--ah)}
   /* NAV */
   :root{--nav-c:#DDD; --nav-a:#DDD; --nav-ah:#FFFF00}
-  nav a{background-color:transparent;border-color:transparent}
-  nav a.active{color:var(--c)}
+  nav a{background-color:transparent}
 
 /* WELCOME and SEARCH */
-#intro{margin:0;background:none;background-color:#094178;border:none;border-radius:0}
+#intro{margin:0;background:none;background-color:#094178;border:none}
 #intro a{color:#FFF}
-#searchbar{background:none;background-color:#094178;border:none;border-bottom:2px solid #222;border-radius:0}
+#searchbar{background:none;background-color:#094178;border:none;border-bottom:2px solid var(--bgbanner)}
   #searchbar a{color:var(--a)}
   #searchbar a.button-x:hover{color:var(--a)}
+
 #viewmode{padding:4px 6px;background-color:transparent;border:solid 1px #fff;color:#FFF} #viewmode:hover{color:#FFFF00;border-color:#FFFF00}
 
 aside{background-color:#444;color:#ccc;border:none}
@@ -92,11 +91,10 @@ a.bbc:hover{color:var(--ah);border:1px solid var(--ah);background-color:var(--bg
 .msgboxbody img.ico{background-color:#999;padding:5px;border-radius:50%}
   fieldset.register{border-color:#00ffff}
   fieldset.register legend{color:#00ffff}
-.tag-box{border:none}
-.tag-box .svg-search{display:none}
-.tag-box .svg-symbol{color:#EEE}
-
 .msgboxbody p.list small {color:#ccc}
+.tag-box{border:none}
+.tag-box .filigrane{display:none}
+.tag-box .svg-symbol{color:#EEE}
 
 /* TAB PANELS (inherit base style) */
 .pan-tab{background-color:transparent}
@@ -129,11 +127,11 @@ div.pan{background-color:#222}
 #calendar .outdate, #calendarnext .outdate{background-color:#777}
 
 /* TABLE and SEARCH PAGE*/
-tbody[data-dataset="newsontop"] tr:last-of-type td{border-bottom:solid 5px #333}
+tbody[data-dataset="newsontop"] tr:last-of-type td{border-bottom:solid 5px #ffe6e7}
 .t-sec, .t-data, .t-item, .t-user,
 .search-box{background-color:#000;border:solid 3px #000}
 .search-box:hover{background-color:#080808}
-.search-box .filigrane{color:#aaa}
+.search-box .filigrane svg{color:#aaa}
 tr.hover:hover{background-color:#222}
 .section:hover{text-decoration:underline}
 table th,table th a{color:#CCC}
@@ -146,15 +144,35 @@ img.prefix_icon{background-color:#888;padding:4px;border-radius:4px}
 .t-item td.c-checkbox{background-color:var(--rowlight)}
 .t-item .item{text-decoration:none}
 .t-item .item:visited{color:#FFFF88}
-.t-item .c-icon{width:40px;max-width:40px}
-.t-item .c-icon a img{transform:scale(1.3);padding:4px;background-color:#333;border-radius:5px}
+.t-item .c-icon{width:40px;max-width:40px;text-wrap:nowrap;overflow:hidden}
+img.ne-class{padding:2px;background-color:#eee;border-radius:4px}
+a.lastitem i:hover{color:#FFFF00}
 .t-item .c-status{color:black}
 .t-profile th{background-color:transparent;border-color:transparent;color:#DDD}
 .t-profile td{background-color:transparent;border-color:#555}
 .t-data.horiz th{background-color:#333;color:#fff}
 .t-data.horiz td{background-color:#000;color:#fff}
+/* item */
+table.nefields{border-width:2px;border-color:#444}
+td.nefields{border-width:2px;border-color:#111}
+td.nefields:first-of-type{background-color:#111}
+.box-item-id{background-color:#111;border-color:#444;border-width:2px}
+.framechilds section{background-color:#111;border-color:#444;border-width:2px}
+.pg-form-link #title-top, .pg-item #title-top{border-color:#444;border-width:2px}
+.link.filigrane{color:#555}
 
-/* Special */
+#item-available{background-color:#111;border:solid 2px #444}
+#item-available .form-filter{background-color:#222;border:solid 1px #444}
+#item-available .form-filter [type=button], #item-available .form-filter [type=submit]{background-color:#666;border-color:#666}
+#item-available .form-filter [type=button]:hover, #item-available .form-filter [type=submit]:hover{border-color:var(--a)}
+
+tbody.borderlines tr:first-of-type td{border-top:solid 2px #444}
+tbody.borderlines tr:last-of-type td{border-bottom:solid 2px #444}
+
+/* Row highlight */
+tr.rowlight:has(:checked){background-color:var(--rowlight);}
+tr.rowlight:has(:checked):hover{background-color:var(--rowlighthover);}
+
 div.post, div.edit-post, div.post:hover{background-color:#000;border-color:#000}
 div.g-p-title{border-color:#555}
 .quickreply, .quickreply:hover{background-color:#000;border-color:#000}
@@ -165,7 +183,8 @@ p.post-title-l:after{background-color:transparent;content:" (" attr(data-num) ")
 section.code, section.quote{background-color:#444;color:#fff}
 #tag-ctrl{color:#FFF} #tag-ctrl:hover{color:#FFFF00}
 
-/* AJAX AUTOCOMPETE*/
+/* AJAX AUTOCOMPETE */
+#cmd-cb-dlg{background-color:#222;border:solid 2px var(--bgbtn);box-shadow:none}
 .ac-list{background-color:#000;border:solid 1px #ffff00}
 .ac-list li{border:1px solid #222}
 .ac-list button{opacity:1;background-color:#000;color:#fff}

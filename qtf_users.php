@@ -99,14 +99,14 @@ echo '</div>
 // Button line and paging
 // ------
 // -- build paging --
-$strPaging = makePager( url('qtf_users.php?fg='.$fg.'&po='.$po.'&pd='.$pd), $intCount, (int)$_SESSION[QT]['items_per_page'], $pn );
-if ( !empty($strPaging) ) $strPaging = L('Page').$strPaging;
-if ( $intCount<$intTotal ) $strPaging = L('user',$intCount).' '.L('from').' '.$intTotal.(empty($strPaging) ? '' : ' | '.$strPaging);
+$paging = makePager( url('qtf_users.php?fg='.$fg.'&po='.$po.'&pd='.$pd), $intCount, (int)$_SESSION[QT]['items_per_page'], $pn );
+if ( !empty($paging) ) $paging = L('Page').$paging;
+if ( $intCount<$intTotal ) $paging = L('user',$intCount).' '.L('from').' '.$intTotal.(empty($paging) ? '' : ' | '.$paging);
 
 // -- Display button line (if more that tpp users) and paging --
 if ( $intCount>$_SESSION[QT]['items_per_page'] || $fg!=='all' ) echo htmlLettres(url($oH->php),$fg,L('All'),'lettres',L('Username_starting').' ', $intTotal>300 ? 1 : ($intTotal>2*$_SESSION[QT]['items_per_page'] ? 2 : 3)).PHP_EOL;
 
-if ( !empty($strPaging) ) echo '<p id="tabletop" class="paging">'.$strPaging.'</p>'.PHP_EOL;
+if ( !empty($paging) ) echo '<p id="tabletop" class="paging">'.$paging.'</p>'.PHP_EOL;
 
 // end if no result
 if ( $intCount==0) {
@@ -200,7 +200,7 @@ echo $t->end();
 
 // -- Display paging --
 
-if ( !empty($strPaging) ) echo '<p id="tablebot" class="paging">'.$strPaging.'</p>'.PHP_EOL;
+if ( !empty($paging) ) echo '<p id="tablebot" class="paging">'.$paging.'</p>'.PHP_EOL;
 
 // MAP MODULE, Show map
 

@@ -183,9 +183,9 @@ if ( $intCount==0 ) {
 }
 
 // Build paging
-$strPaging = makePager("qtf_adm_users.php?cat=$strCateg&fg=$fg&po=$strOrder&pd=$strDirec",$intCount,$ipp,$pn);
-if ( !empty($strPaging) ) $strPaging = L('Page').$strPaging;
-if ( $intCount<$intUsers ) $strPaging = '<small>'.L('user',$intCount).' '.L('from').' '.$intUsers.'</small>'.(empty($strPaging) ? '' : ' | '.$strPaging);
+$paging = makePager("qtf_adm_users.php?cat=$strCateg&fg=$fg&po=$strOrder&pd=$strDirec",$intCount,$ipp,$pn);
+if ( !empty($paging) ) $paging = L('Page').$paging;
+if ( $intCount<$intUsers ) $paging = '<small>'.L('user',$intCount).' '.L('from').' '.$intUsers.'</small>'.(empty($paging) ? '' : ' | '.$paging);
 
 // ------
 // Memberlist
@@ -201,7 +201,7 @@ $rowCommands = L('selection').': '.$m->build();
 echo PHP_EOL.'<form id="form-items" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-items-action" name="a" />'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
 echo '<div id="t1-edits-top" class="cmds-cb" data-table="t1">'.qtSvg('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
-echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
+echo '<div class="right">'.$paging.'</div></div>'.PHP_EOL;
 
 // Table definition
 $t = new TabTable('id=t1|class=t-item table-cb|data-content=users',$intCount);
@@ -275,7 +275,7 @@ echo '</tbody>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
 echo '<div id="tablebot" class="table-ui bot">';
 echo $rowCommands ? '<div id="t1-edits-bot" class="cmds-cb" data-table="t1">'.qtSvg('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
-echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
+echo '<div class="right">'.$paging.'</div></div>'.PHP_EOL;
 echo '</form>'.PHP_EOL;
 
 // Extra command

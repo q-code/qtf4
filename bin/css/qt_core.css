@@ -43,8 +43,8 @@ input:focus, select:focus, textarea:focus{outline:none; border:1px solid #000}
 .table-ui{display:flex;flex-direction:row;justify-content:space-between;align-items:center}
 .table-ui.top{margin:0.6rem 0 0.4rem 0;align-items:flex-end}
 .table-ui.bot{margin:0.4rem 0 0.6rem 0;align-items:flex-start}
-.table-ui .arrow-icon{display:inline-block;width:36px;text-align:center}
-.table-ui.top .arrow-icon{transform:translateY(0.25rem)}
+.arrow-icon{display:inline-block;width:36px;text-align:center}
+.cmds-cb .arrow-icon{transform:translateY(0.25rem)}
 .cmds-cb{position:relative}
 @media print{.table-ui .cmds-cb{visibility:hidden}}
 
@@ -131,6 +131,9 @@ background:#ffc;border:1px solid #666;border-radius:8px;box-shadow:0 0 5px 5px #
 #splash-ico{margin-right:20px}
 
 /* AJAX AUTOCOMPLETE */
+#cmd-cb-dlg{font-size:0.85rem;background-color:#fff;padding:0.2rem;border:solid 1px var(--bgbtn);border-radius:5px;box-shadow:0 0 5px #aaa}
+#cmd-cb-dlg select, #cmd-cb-dlg select:focus{border-color:transparent;scrollbar-width:thin;}
+#cmd-cb-dlg select option:hover{color:white;background:var(--bgbtn)}
 [id^="ac-wrapper"]{display:inline-block;position:relative}
 .ac-list{list-style:none;z-index:2;padding:unset;margin:unset;position:absolute;width:100%;background-color:white;box-shadow:0 0 5px #aaa}
 .ac-list li{border:1px solid #aaa; border-top:unset}

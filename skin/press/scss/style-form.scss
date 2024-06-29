@@ -65,7 +65,7 @@ div.formHelp p{margin:0 0 0.8rem 0}
 
 /* TAGS and tags edit */
 .tag-box{position:relative;margin:1rem auto 0 auto;padding:0.5rem;width:60%;text-align:center;border:2px solid #EEE}
-.tag-box .svg-search{display:block;position:absolute;right:0;top:0;padding:0.4rem;background-color:#EEE;font-size:2rem;color:#d0d0d0;border-radius:0 0 0 10px;z-index:1}
+.tag-box .filigrane{display:block;position:absolute;right:0;top:0;padding:0.4rem;background-color:#EEE;font-size:2rem;color:#d0d0d0;border-radius:0 0 0 10px;z-index:1}
 .tag-box p{position:relative;margin-bottom:0.3rem;z-index:2}
 .tag-box a{position:relative;z-index:2}
 @media print{.tag-box{width:auto}}

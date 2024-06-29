@@ -119,8 +119,8 @@ if ( $q==='' ) {
 }
 $navCommands .= '<a class="button btn-search" href="'.url('qtf_search.php').$oH->arg.'" title="'.L('Search').'">'.qtSvg('search').'</a>';
 
-$strPaging = makePager( url($oH->php).$oH->arg, $intCount, (int)$_SESSION[QT]['items_per_page'], $pn);
-if ( $strPaging!='' ) $strPaging = L('Page').$strPaging;
+$paging = makePager( url($oH->php).$oH->arg, $intCount, (int)$_SESSION[QT]['items_per_page'], $pn);
+if ( $paging!='' ) $paging = L('Page').$paging;
 
 // MAP
 $useMap = false; // map is only used for user's location
@@ -275,7 +275,7 @@ if ( $_SESSION['EditByRows'] ) {
 echo '<div id="t1-nav-top" class="nav-top">'.$navCommands.'</div>'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
 echo $rowCommands ? '<div id="t1-edits-top" class="cmds-cb" data-table="t1">'.qtSvg('corner-up-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
-echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
+echo '<div class="right">'.$paging.'</div></div>'.PHP_EOL;
 
 // TABLE START DISPLAY
 if ( $_SESSION['EditByRows']) {
@@ -361,7 +361,7 @@ if ( SUser::isStaff() && !empty($_SESSION['EditByRows']) ) $strCsv .= '<a id="cm
 $strCsv .= SUser::role()==='V' ? '' : htmlCsvLink(url('qtf_items_csv.php').$oH->arg, $intCount, $pn);
 echo '<div id="tablebot" class="table-ui bot">';
 echo $rowCommands ? '<div id="t1-edits-bot" class="cmds-cb" data-table="t1">'.qtSvg('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
-echo '<div class="right">'.$strPaging.'</div></div>'.PHP_EOL;
+echo '<div class="right">'.$paging.'</div></div>'.PHP_EOL;
 echo '<p class="right table-ui-export">'.$strCsv.'</p>'.PHP_EOL;
 echo '<div id="t1-nav-bot" class="nav-bot">'.$navCommands.'</div>'.PHP_EOL;
 
@@ -371,7 +371,7 @@ if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && $arrTags ) {
   echo '<div class="tag-box"><p>'.qtSvg('#tags','class=svg-symbol svg-125').' '.L('Show_only_tag').'</p>';
   foreach($arrTags as $strTag)
   echo '<a class="tag" href="'.url('qtf_items.php').'?s='.$s.'&q=adv&fv='.urlencode($strTag).'" title="..." data-tagdesc="'.$strTag.'">'.$strTag.'</a>';
-  echo qtSvg('search','class=svg-search').'</div>';
+  echo qtSvg('search','class=filigrane').'</div>';
   $oH->scripts_end['tagdesc'] = '<script type="text/javascript" src="bin/js/qt_tagdesc.js" data-dir="'.QT_DIR_DOC.'" data-lang="'.QT_LANG.'"></script>';
 }
 

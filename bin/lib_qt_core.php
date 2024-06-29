@@ -174,14 +174,15 @@ function qtK(int $n, string $unit='k', string $unit2='M')
   if ( $n<1000000 ) return round(floor($n/100)/10, 1).$unit; // Thousands: 1 decimal no round-up (9999 is 9.9k not 10k)
   return round($n/1000000,2).$unit2; // Millions: 2 decimals
 }
-function qtSvg(string $ref='info', string $attr='')
+function qtSvg(string $ref='info', string $attr='', array $mod=[])
 {
-  // use id referrer
+  // use id referrer (no mod allowed)
   if ( $ref[0]==='#' ) return qtSvgUse($ref,$attr);
   // use file content
   if ( substr($ref,-4)!=='.svg' ) $ref .= '.svg'; // referrer must use id ending with '.svg'
   $svg = qtSvgCode($ref);
   if ( $attr ) $svg = '<svg'.attrRender($attr).' '.substr($svg,4);
+  if ( $mod ) qtSvgMod($svg, $mod);
   return $svg;
 }
 function qtSvgUse(string $ref='#info', string $attr='')
@@ -194,15 +195,39 @@ function qtSvgCode(string $file)
   if ( !file_exists('bin/svg/'.$file) ) return '#';
   return file_get_contents('bin/svg/'.$file);
 }
+function qtSvgMod(string &$svg, string $id='', array $mod=[])
+{
+  if ( !empty($mod['rect']) ) $svg = str_replace('</svg>', '<rect width="24" height="24" fill="transparent"/></svg>', $svg);
+  if ( !empty($mod['title']) ) $svg = str_replace('</svg>', '<title>'.$mod['title'].'</title></svg>', $svg);
+  if ( !empty($mod['css']) && !empty($id) ) {
+    $i = strpos($svg,'>'); if ( $i===false )$i=360;
+    $def = qtExplode(substr(str_replace('"','',$svg), 0, $i),' ');
+    $w = $def['width'] ?? '1em';
+    $h = $def['height'] ?? '1em';
+    $s = $def['style'] ?? '';
+    $svg .= '<style>svg:has(use[href="#'.$id.'"]){width:'.$w.';height:'.$h.';'.$s.'}</style>';
+  }
+}
 /** Convert svg [filename] to symbol (id required, uses filename if empty) */
-function qtSvgSymbol(string $svg, string $title='', string $id='', bool $addCss=true)
+function qtSvgSymbol(string $svg, string $attr='', array $mod=[])
+{
+  if ( substr($svg,-4)!=='.svg' ) $svg .= '.svg'; // referrer must use id ending with '.svg'
+  $attr = attrDecode($attr, '|' , 'id='.$svg);
+  $svg = qtSvgCode($svg);
+  // mod
+  if ( $mod ) qtSvgMod($svg, $attr['id'], $mod);
+  $svg = str_replace(['<svg', '</svg>'], ['<symbol'.attrRender($attr), '</symbol>'], $svg);
+  return $svg;
+}
+function qtSvgSymbolOld(string $svg, string $title='', string $id='', bool $addCss=true, bool $rec = false)
 {
   if ( substr($svg,-4)!=='.svg' ) $svg .= '.svg';// referrer must use id ending with '.svg'
   if ( empty($id) ) $id = $svg;
   $svg = qtSvgCode($svg);
   // convert
   if ( $title ) $title = '<title>'.$title.'</title>';
-  $svg = str_replace(['<svg','</svg>'], ['<symbol id="'.$id.'"',$title.'</symbol>'], $svg);
+  $rec = $rec ? '<rect width="24" height="24" fill="transparent"/>' : '';
+  $svg = str_replace(['<svg', '</svg>'], ['<symbol id="'.$id.'"', $rec.$title.'</symbol>'], $svg);
   // add style width,height,style
   if ( $addCss ) {
     $i = strpos($svg,'>'); if ( $i===false )$i=360;
