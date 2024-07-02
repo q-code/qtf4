@@ -1,22 +1,44 @@
-/* TYPO */
-a.button{display:inline-block;padding:0.4rem 0.6rem;opacity:0.7;background-color:#e5e5e5;color:var(--c);text-decoration:none;border:solid 1px #aaa;border-radius:3px}
-  a.button:hover{opacity:1}
-  a.button:focus{opacity:1; outline:1px solid #000; outline-offset:-2px}
-  a.button.disabled, a.button.disabled:hover{opacity:0.7;color:#AAA}
-.nav-top a.button,
-.nav-bot a.button{font-weight:bold}
+/* Buttons */
+button, .button{
+  display:inline-block; padding:0.2rem 0.4rem; opacity:0.7;
+  background-color:var(--btn-bg); color:var(--btn-color); text-decoration:none;
+  border:var(--btn-border); border-radius:3px;
+}
+button.disabled, .button.disabled{
+  opacity:0.5;
+}
+button:hover:not(.disabled), .button:hover:not(.disabled),
+button:focus:not(.disabled), .button:focus:not(.disabled){
+  opacity:1; color:var(--btn-color); text-decoration:none;
+}
+.nav button, .nav .button{
+  padding:0.3rem 0.6rem;
+  background-color:#e5e5e5; color:var(--c);
+  border:solid 1px #c0c0c0;
+}
+.nav button.disabled, .nav .button.disabled{
+  opacity:0.5; color:#aaa;
+}
+.nav button:hover:not(.disabled), .nav .button:hover:not(.disabled),
+.nav button:focus:not(.disabled), .nav .button:focus:not(.disabled){
+  opacity:1; color:var(--c); text-decoration:none;
+}
+/* Buttons specific */
+.nav button, .nav .button{padding:0.4rem 0.6rem;font-weight:bold}
+.post-cmd{display:flex;gap:var(--gap);align-items:baseline;font-size:max(0.8rem,9pt)}
+.post-cmd .button{padding:3px;background-color:#f4f4f4;color:var(--c);border:1px solid #d8d7c0;border-radius:2px}
+.post-cmd .button:hover{border:1px solid var(--btn-bg);color:var(--btn-bg);text-decoration:none}
+
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
 input,textarea{padding:3px 5px}
 input[type=radio]{margin:0 4px 0 2px;padding:0}
 select{padding:2px 5px 2px 2px}
-button{padding:5px 10px;background-color:var(--bgbtn);color:white;border:none;text-decoration:none;border-radius:3px}
-button.inline{padding:3px 8px}
-button:hover{background-color:#e84d4f}
+
 #jumpto{width:120px;color:#BBB} #jumpto option:disabled{color:#BBB}
 @media print{#jumpto{display:none}}
-p.row-confirm{padding-top:6px;border-top:1px solid var(--bgbtn)}
+p.row-confirm{padding-top:6px;border-top:1px solid var(--btn-bg)}
 #cmd-export-selected svg{margin-left:3px}
-.btn-prefix{margin:0 0.5rem 2px 0}
+.btn-prefix{margin-right:0.5rem}#btn-news .btn-prefix{margin-bottom:2px}
 .spinning{animation:rotation 3.75s infinite linear} @keyframes rotation{from{transform: rotate(359deg)}to{transform: rotate(0deg)}}
 
 /* TYPO specific */
@@ -25,24 +47,24 @@ p.row-confirm{padding-top:6px;border-top:1px solid var(--bgbtn)}
 .toggle-pwd:hover{color:#000}
 #text-area{width:95%;resize:vertical}
 .rules{margin:0 auto 20px auto;padding:4px 8px;background-color:#FFF;border:solid 1px #AAA;height:200px;overflow:auto}
-fieldset.register{margin:0 0 15px 0;padding:15px 0 0 8px;text-align:right;border:solid 1px var(--bgbtn);border-width:1px 0 0 0}
-fieldset.register legend{color:var(--bgbtn);font-weight:bold;text-align:left}
+fieldset.register{margin:0 0 15px 0;padding:15px 0 0 8px;text-align:right;border:solid 1px var(--btn-bg);border-width:1px 0 0 0}
+fieldset.register legend{color:var(--btn-bg);font-weight:bold;text-align:left}
 fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 #secu-txt-code{font-family:Courrier;padding:4px 8px;color:#000;background-color:#DDD}
 
 /* SEARCH BAR */
 #searchbar{padding:0.5rem;background-color:#f0f0f0;justify-content:flex-end;gap:0.5rem;align-items:center}
 #searchbar .img{vertical-align:baseline}
-#searchbar .button-x{padding:0.1rem 0.4rem;font-size:1.2rem}
+#searchbar .button-x{padding:0.2rem 0.3rem}
 @media print{#searchbar{display:none !important}}
 
 /* MSGBOX general */
-.msgbox{width:450px;margin:0 auto;background-color:var(--bgform);border:1px solid var(--bgbtn);box-shadow:2px 2px 4px #DDD}
+.msgbox{width:450px;margin:0 auto;background-color:var(--bgform);border:1px solid var(--btn-bg);box-shadow:2px 2px 4px #DDD}
 .msgbox + .msgbox{margin-top:1.5rem}
 .msgbox.short{width:350px}
 @media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:475px} .msgbox.short{width:380px}}
 @media screen and (min-width:1280px){.msgbox{width:500px}  .msgbox.short{width:400px}}
-.msgboxtitle{padding:0.75rem 1.5rem;color:#FFF;background:linear-gradient(130deg,var(--bgbtn) 40%,#fd595b);font-size:1.6rem;font-weight:bold}
+.msgboxtitle{padding:0.75rem 1.5rem;color:#FFF;background:linear-gradient(130deg,var(--btn-bg) 40%,#fd595b);font-size:1.6rem;font-weight:bold}
 .msgboxbody{padding:1.5rem}
 .msgboxbody p.list small{color:#888}
 
@@ -129,7 +151,7 @@ a.bbc:hover{cursor:pointer;color:var(--ah);border-color:var(--ah)}
 div.lettres{padding:0.5rem 0}
 div.lettres span.label{display:inline-block;padding:4px 6px 1px 6px}
 div.lettres a{display:inline-block;padding:3px 6px 1px 6px;vertical-align:middle;background-color:#f0f0f0;border:solid 1px #e5e5e5;border-radius:2px;color:#666;text-decoration:none}
-div.lettres a:not(.active):hover{background-color:#FFF;border-color:var(--bgbtn);cursor:pointer;color:var(--bgbtn)}
+div.lettres a:not(.active):hover{background-color:#FFF;border-color:var(--btn-bg);cursor:pointer;color:var(--btn-bg)}
 div.lettres .active{color:#000;background:#FFF;cursor:default;text-decoration:none}
 div.lettres input[type=text]{margin-left:5px;width:30px;border:solid 1px #AAA;border-radius:0}
 div.lettres button{margin-left:3px;border:none}

@@ -1,10 +1,12 @@
 /* VARIABLES */
 :root{
---c:#444; --svg:#888;
---a:#15C; --ah:#0000FF; --av:#3198ff;
---bgbtn:#1364B7; --bgform:#f6f6f6; --bgbanner:#156AC2;
---font:"Lucida Sans Unicode",Verdana,Arial;
---bgadmin:#0088a1; --rowlight:#eafcff; --rowlighthover:#d7f8ff;
+  --c:#444; --svg:#888;
+  --a:#15C; --ah:#0000FF; --av:#3198ff;
+  --bgform:#f6f6f6; --bgbanner:#156AC2;
+  --font:"Lucida Sans Unicode",Verdana,Arial;
+  --adm-bg:#0088a1; --rowlight:#eafcff; --rowlighthover:#d7f8ff;
+  --btn-bg:#1364B7; --btn-color:white;
+  --btn-border:1px solid #1364B7;
 }
 
 /* LAYOUT */
@@ -108,16 +110,16 @@ aside{padding:0.5rem;display:flex;gap:1rem;background-color:#efefef;color:#888}
 /* data titles and data options */
 #title-top{margin:1rem 0}
 #title-top-r{text-align:right}
-/* optionsbar */
-.optionsbar-container{display:flex;min-height:46px;align-items:center;justify-content:flex-end}
-@media print{.optionsbar-container{display:none}}
-#optionsbar-ctrl{opacity:1;font-size:min(40px,2.5rem);color:#CCC}
-  #optionsbar-ctrl:hover{color:var(--bgadmin)}
-#optionsbar{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem;background-color:var(--bgadmin);color:#fff}
-  #optionsbar input[type=text]{padding:2px 4px;border:1px solid var(--bgadmin)}
-  #optionsbar select{padding:2px 5px 2px 2px;border:1px solid var(--bgadmin)}
-  #optionsbar select:focus, #optionsbar input[type=text]:focus{background-color:var(--rowlight);border-color:#000}
-#showeditor-ctrl{font-size:1.5rem;color:#FFF;border:solid 2px white;border-radius:3px;opacity:0.75}
+/* optionbar */
+.optionbar-container{display:flex;min-height:min(50px,3rem);align-items:center;justify-content:flex-end}
+@media print{.optionbar-container{display:none}}
+#optionbar-ctrl{display:flex;opacity:1;font-size:min(40px,2.5rem);color:#CCC}
+  #optionbar-ctrl:hover{color:var(--adm-bg)}
+#optionbar{display:flex;align-items:center;gap:0.4rem;padding:0.4rem;background-color:var(--adm-bg);color:#fff}
+  #optionbar input[type=text]{padding:2px 4px;border:1px solid var(--adm-bg)}
+  #optionbar select{padding:2px 5px 2px 2px;border:1px solid var(--adm-bg)}
+  #optionbar select:focus, #optionbar input[type=text]:focus{background-color:var(--rowlight);border-color:#000}
+#showeditor-ctrl{display:flex;width:32px;height:32px;align-items:center;justify-content:center;font-size:1.5rem;background-color:#00adab;color:#FFF;border:solid 2px white;border-radius:3px;opacity:0.8}
   #showeditor-ctrl[data-state="0"]{transform:rotate(90deg)}
   #showeditor-ctrl[data-state="0"]:hover{transform:rotate(0deg)}
   #showeditor-ctrl[data-state="1"]{transform:rotate(0deg)}

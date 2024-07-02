@@ -102,6 +102,6 @@ if ( isset($oS) ) unset($oS);
 if ( isset($_SESSION['QTdebugsse']) && $_SESSION['QTdebugsse'] ) echo '<div id="serverData"></div>';
 
 // Symbols
-$oH->symbols[] = qtSvgSymbol('caret-square-right.svg', L('Goto_message'));
+$oH->symbols[] = qtSvgSymbol('caret-square-right','',['title'=>L('Goto_message'),'rect'=>true,'css'=>true]);
 
 include 'qtf_inc_ft.php';

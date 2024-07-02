@@ -1,12 +1,12 @@
 /* WELCOME */
-#intro{font-size:1.1rem;padding:1.2vw;color:#FFF;background-color:var(--bgbtn)}
+#intro{font-size:1.1rem;padding:1.2vw;color:#FFF;background-color:var(--btn-bg)}
 #intro p{color:#FFF;margin:0 0 0.5rem 0}
 #intro a{color:#FFF;text-decoration:underline}
 
 /* PAGING and ROWCOMMANDS */
 p.paging{padding:0.5rem 0;text-align:right}
-.cmd-cb{color:var(--bgadmin);text-decoration:none}
-a.cmd-cb:hover{color:var(--bgadmin);text-decoration:underline}
+.cmd-cb{color:var(--adm-bg);text-decoration:none}
+a.cmd-cb:hover{color:var(--adm-bg);text-decoration:underline}
 a.page{padding:0 0.2rem;border:solid 1px #ddd}
 a.page.current{background-color:#eee;color:var(--c);text-decoration:none;cursor:default}
 a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
@@ -70,7 +70,7 @@ div.post:hover{background-color:var(--bgform)}
 div.post-R, div.post-F, div.post-D{margin:10px 0 10px 30px}
   @media screen and (max-width:860px){div.post-R, div.post-F, div.post-D{margin:10px 0}}
 .g-p-type{grid-area:g-p-type;padding-top:16px}
-.g-p-title{grid-area:g-p-title;padding:0 0 var(--gap) var(--gap);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bgbtn)}
+.g-p-title{grid-area:g-p-title;padding:0 0 var(--gap) var(--gap);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--btn-bg)}
   p.post-title-l:after{content:" [" attr(data-num) "]"}
   p.post-title-r{font-size:1.1rem}
 .g-p-msg{grid-area:g-p-msg;padding:var(--gap)}
@@ -78,9 +78,9 @@ div.post-R, div.post-F, div.post-D{margin:10px 0 10px 30px}
   p.post-attachment{font-size:0.8rem}
 .g-p-status{grid-area:g-p-status}
   .post-cmd{display:flex;gap:var(--gap);align-items:baseline;font-size:max(0.8rem,9pt)}
-  .post-cmd a.button{padding:1px 4px;border-radius:0}
-  .post-cmd a.button:hover{box-shadow:2px 2px 2px #CCC}
-.i-container{display:flex;width:35px;height:35px;align-items:center;justify-content:center;background-color:#FFF;color:#aaa;border:1px solid var(--bgbtn);border-radius:50%}
+  .post-cmd .button{padding:1px 4px;border-radius:0}
+  .post-cmd .button:hover{box-shadow:2px 2px 2px #CCC}
+.i-container{display:flex;width:35px;height:35px;align-items:center;justify-content:center;background-color:#FFF;color:#aaa;border:1px solid var(--btn-bg);border-radius:50%}
 
 p.quotetitle,
 p.codetitle{margin:1px;max-width:600px;color:#888;font-style:italic;font-size:0.9rem}

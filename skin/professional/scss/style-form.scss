@@ -1,20 +1,41 @@
-/* TYPO */
-a.button{display:inline-block;padding:0.3rem 0.6rem;opacity:0.7;background-color:#e5e5e5;color:var(--c);text-decoration:none;border:solid 1px #c0c0c0;border-radius:4px}
-  a.button:hover{opacity:1}
-  a.button:focus{opacity:1;outline:1px solid #000; outline-offset:-2px}
-  a.button.disabled, a.button.disabled:hover{opacity:0.7;color:#AAA}
+/* Buttons */
+button, .button{
+  display:inline-block; padding:0.2rem 0.4rem; opacity:0.7;
+  background-color:var(--btn-bg); color:var(--btn-color); text-decoration:none;
+  border:var(--btn-border); border-radius:3px;
+}
+button.disabled, .button.disabled{
+  opacity:0.5;
+}
+button:hover:not(.disabled), .button:hover:not(.disabled),
+button:focus:not(.disabled), .button:focus:not(.disabled){
+  opacity:1; color:var(--btn-color); text-decoration:none;
+}
+/* Navigation buttons */
+.nav button, .nav .button{
+  padding:0.3rem 0.6rem;
+  background-color:#e5e5e5; color:var(--c);
+  border:solid 1px #c0c0c0; border-radius:4px
+}
+.nav button.disabled, .nav .button.disabled{
+  opacity:0.5; color:#aaa;
+}
+.nav button:hover:not(.disabled), .nav .button:hover:not(.disabled),
+.nav button:focus:not(.disabled), .nav .button:focus:not(.disabled){
+  opacity:1; color:var(--c); text-decoration:none;
+}
+
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
 input,textarea{padding:3px 5px}
 input[type=radio]{margin:0 4px 0 2px;padding:0}
 select{padding:2px 5px 2px 2px}
-button{padding:2px 8px;background-color:var(--bgbtn);opacity:0.8;color:white;border:2px solid var(--bgbtn);text-decoration:none;border-radius:3px}
-  button.inline{padding:3px 8px}
+
   #jumpto{width:120px;color:#BBB} #jumpto option:disabled{color:#BBB}
 @media print{#jumpto{display:none}}
-p.row-confirm{padding-top:6px;border-top:1px solid var(--bgbtn)}
+p.row-confirm{padding-top:6px;border-top:1px solid var(--btn-bg)}
 #cmd-export-selected svg{margin-left:0.3rem}
 .spinning{animation:rotation 3.75s infinite linear} @keyframes rotation{from{transform: rotate(359deg)} to{transform: rotate(0deg)}}
-.btn-prefix{margin:0 0.5rem 2px 0}
+.btn-prefix{margin-right:0.5rem}#btn-news .btn-prefix{margin-bottom:2px}
 
 /* TYPO specific */
 .input-pwd{position:relative}
@@ -22,17 +43,17 @@ p.row-confirm{padding-top:6px;border-top:1px solid var(--bgbtn)}
 .toggle-pwd:hover{color:#000}
 #text-area{width:95%;resize:vertical}
 .rules{margin:0 auto 20px auto;padding:4px 8px;background-color:#FFF;border:solid 1px #AAA;height:200px;overflow:auto}
-fieldset.register{margin:0 0 15px 0;padding:15px 0 0 8px;text-align:right;border:solid 1px var(--bgbtn);border-width:1px 0 0 0}
-fieldset.register legend{color:var(--bgbtn);font-weight:bold;text-align:left}
+fieldset.register{margin:0 0 15px 0;padding:15px 0 0 8px;text-align:right;border:solid 1px var(--btn-bg);border-width:1px 0 0 0}
+fieldset.register legend{color:var(--btn-bg);font-weight:bold;text-align:left}
 fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 #secu-txt-code{padding:4px 8px;color:#000;background-color:#DDD}
 
 /* SEARCH BAR */
-#searchbar{padding:0.5rem;justify-content:flex-end;gap:0.5rem;align-items:center;background:linear-gradient(to right, var(--bgbtn) 0%, #5fb1ff 50%)}
+#searchbar{padding:0.5rem;justify-content:flex-end;gap:0.5rem;align-items:center;background:linear-gradient(to right, var(--btn-bg) 0%, #5fb1ff 50%)}
 #searchbar .img{vertical-align:baseline}
-#searchbar .button-x{padding:0 0.5rem;font-size:1.2rem;opacity:1;background-color:var(--bgbtn);border:1px solid var(--bgbtn)}
-#searchbar a{color:#fff}
+#searchbar .button-x{padding:0.1rem 0.4rem;opacity:1;border:1px solid var(--btn-bg)}
 #searchbar .button-x:hover{border-color:#fff}
+#searchbar a{color:#fff}
 @media print{#searchbar{display:none !important}}
 
 /* MSGBOX general */
@@ -41,7 +62,7 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 .msgbox.short{width:350px}
 @media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:475px} .msgbox.short{width:375px}}
 @media screen and (min-width:1280px){.msgbox{width:500px}  .msgbox.short{width:400px}}
-.msgboxtitle{padding:0.75rem 1.5rem;color:#FFF;background:linear-gradient(to right, var(--bgbtn) 30%, #5fb1ff);font-size:1.6rem}
+.msgboxtitle{padding:0.75rem 1.5rem;color:#FFF;background:linear-gradient(to right, var(--btn-bg) 30%, #5fb1ff);font-size:1.6rem}
 .msgboxbody{padding:1.5rem}
 .msgboxbody p.list small{color:#888}
 

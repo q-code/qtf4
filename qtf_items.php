@@ -189,7 +189,7 @@ include APP.'_inc_hd.php';
 if ( !empty($pageTitle) || !empty($ui) ) {
   echo '<div id="title-top" class="flex-sp top">'.PHP_EOL;
   echo '<div id="title-top-l">'.$pageTitle.'</div>'.PHP_EOL;
-  echo '<div id="title-top-r" class="optionsbar-container">'.$ui.'</div>'.PHP_EOL;
+  echo '<div id="title-top-r" class="optionbar-container">'.$ui.'</div>'.PHP_EOL;
   echo '</div>'.PHP_EOL;
 }
 
@@ -202,7 +202,7 @@ $navCommands = $oH->backButton().$navCommands.$navCommandsRefine;
 if ( $intCount===0 ) {
   // if no result with sqlHideClosed, re-count without
   if ( !empty($sqlHideClosed) ) $intCount = $oDB->count($sqlCount, $sqlValues);
-  echo '<div class="nav-top">'.$navCommands.'</div>'.PHP_EOL;
+  echo '<div class="nav nav-top">'.$navCommands.'</div>'.PHP_EOL;
   echo '<p class="center" style="margin:1rem 0">'.L('No_result').'...</p>';
   if ( $oS->type==='2' && !SUser::isStaff() ) echo '<p class="center">'.L('Only_your_items').'</p>';
   if ( $intCount ) echo '<p class="center">'.qtSvg('exclamation-triangle').' '.L('Closed_item', $intCount).'. '.L('Closed_hidden_by_pref').' (<a href="javascript:void(0)" onclick="let d=document.getElementById(`pref`); if ( d) {d.value=`toggleclosed`;doSubmit(`formPref`);}">'.L('show').' '.L('closed_items').'</a>).</p>';
@@ -272,7 +272,7 @@ if ( $_SESSION['EditByRows'] ) {
 }
 
 // Buttons and paging
-echo '<div id="t1-nav-top" class="nav-top">'.$navCommands.'</div>'.PHP_EOL;
+echo '<div id="t1-nav-top" class="nav nav-top">'.$navCommands.'</div>'.PHP_EOL;
 echo '<div id="tabletop" class="table-ui top">';
 echo $rowCommands ? '<div id="t1-edits-top" class="cmds-cb" data-table="t1">'.qtSvg('corner-up-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$paging.'</div></div>'.PHP_EOL;
@@ -363,7 +363,7 @@ echo '<div id="tablebot" class="table-ui bot">';
 echo $rowCommands ? '<div id="t1-edits-bot" class="cmds-cb" data-table="t1">'.qtSvg('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$paging.'</div></div>'.PHP_EOL;
 echo '<p class="right table-ui-export">'.$strCsv.'</p>'.PHP_EOL;
-echo '<div id="t1-nav-bot" class="nav-bot">'.$navCommands.'</div>'.PHP_EOL;
+echo '<div id="t1-nav-bot" class="nav nav-bot">'.$navCommands.'</div>'.PHP_EOL;
 
 // TAGS FILTRING
 if ( QT_LIST_TAG && !empty($_SESSION[QT]['tags']) && $arrTags ) {
@@ -401,7 +401,7 @@ if ( $q!=='' ) $oH->scripts[] = 'qtHideEmptyColumn();';
 $oH->scripts[] = 'qtHideAfterTable("t1-nav-bot");qtHideAfterTable("tablebot");';
 
 // Symbols referrer
-$oH->symbols[] = qtSvgSymbol('caret-square-right', L('Goto_message'));
+$oH->symbols[] = qtSvgSymbol('caret-square-right','',['title'=>L('Goto_message'),'rect'=>true,'css'=>true]);
 if ( QT_LIST_ME )
 $oH->symbols[] = qtSvgSymbol('ireplied');
 if ( $_SESSION[QT]['upload']!=='0' )

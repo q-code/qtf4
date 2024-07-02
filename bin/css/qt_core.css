@@ -57,6 +57,14 @@ optgroup{background-color:#EEE;color:#444}
 option:disabled{color:#888}
 select{max-width:260px} select[name="secret_q"]{max-width:360px}
 .cblabel .prefix_icon{vertical-align:baseline}
+/* Buttons core */
+button, .button{
+  display:inline-block;padding:0.2rem 0.4rem;opacity:0.7;
+  border-width:1px;border-radius:3px;font-weight:100;text-decoration:none
+}
+button.disabled, .button.disabled{opacity:0.5}
+button:hover:not(.disabled), .button:hover:not(.disabled),
+button:focus:not(.disabled), .button:focus:not(.disabled){opacity:1;text-decoration:none}
 
 /* INLINE (p has margin in article and msgbox) */
 svg {width:1.1em;height:1em} /* protection required, if symbol style is missing */
@@ -91,8 +99,6 @@ small, .small, .minor, .error, .warning{font-size:0.85rem}
 @media print {
   .tgl-ctrl .svg-angle-up, .tgl-ctrl .svg-angle-down, [id^="lang-"], #contrast-ctrl {display:none}
 }
-.square42{display:flex;width:42px;height:42px;align-items:center;justify-content:center}
-.square32{display:flex;width:32px;height:32px;align-items:center;justify-content:center}
 .bg-flash{animation:bgFlash 1s ease-in 0s 2 alternate;}
 @keyframes bgFlash{from{background-color:transparent} to{background-color:rgb(255, 255, 146)} }
 

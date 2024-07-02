@@ -2,7 +2,7 @@
 /**
 * @var CTopic $oT
 */
-echo '<div id="optionsbar">
+echo '<div id="optionbar">
 '.qtSvg('user-m').'
 <form method="post" action="'.url('qtf_item.php').'" id="modaction">
 <select name="Maction" onchange="document.getElementById(`modaction`).submit()">

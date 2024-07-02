@@ -1,17 +1,43 @@
-/* TYPO */
-a.button{display:inline-block;padding:6px 10px;color:var(--bgbtn);background-color:#e8e7d7;font-weight:bold;text-shadow:-1px -1px 0 white;text-decoration:none}
-  a.button:hover{color:var(--ah);text-decoration:none}
-  a.button.disabled, a.button.disabled:hover{opacity:0.7;color:#AAA}
-.btn-prefix{margin:0 0.5rem 2px 0}
+/* Buttons */
+button, .button{
+  display:inline-block; padding:0.2rem 0.4rem; opacity:0.7;
+  background-color:var(--btn-bg); color:var(--btn-color); text-decoration:none;
+  border:var(--btn-border); border-radius:3px;
+}
+button.disabled, .button.disabled{
+  opacity:0.5; text-decoration:none;
+}
+button:hover:not(.disabled), .button:hover:not(.disabled),
+button:focus:not(.disabled), .button:focus:not(.disabled){
+  opacity:1; color:var(--btn-color); text-decoration:none;
+}
+/* Navigation buttons */
+.nav button, .nav .button{
+  padding:0.4rem 0.7rem;
+  opacity:1;
+  background-color:#e8e7d7; color:var(--btn-bg); font-weight:bold; text-shadow:-1px -1px 0 white;
+  border:none; border-radius: 0;
+}
+.nav button.disabled, .nav .button.disabled{
+  opacity:0.7; color:#aaa;
+}
+.nav button:hover:not(.disabled), .nav .button:hover:not(.disabled),
+.nav button:focus:not(.disabled), .nav .button:focus:not(.disabled){
+  opacity:1; color:var(--ah);
+}
+.post-cmd{display:flex;gap:0.5rem;align-items:baseline;font-size:max(0.9rem,9pt)}
+.post-cmd .button{padding:0;opacity:1;background-color:transparent;color:var(--a);border:none;text-shadow:none}
+.post-cmd .button:hover:not(.disabled){color:var(--ah);text-decoration:none}
+
+.btn-prefix{margin-right:0.5rem} #btn-news .btn-prefix{margin-bottom:2px}
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
 input,textarea{padding:3px 5px}
 input[type=radio]{margin:0 4px 0 2px;padding:0}
 select{padding:2px 5px 2px 2px}
-button{padding:2px 8px;background-color:var(--bgbtn);opacity:0.8;color:white;border:2px solid var(--bgbtn);text-decoration:none;border-radius:3px}
-button.inline{padding:3px 8px}
+
 #jumpto{width:120px;color:#BBB} #jumpto option:disabled{color:#BBB}
 @media print{#jumpto{display:none}}
-p.row-confirm{padding-top:6px;border-top:1px solid var(--bgbtn)}
+p.row-confirm{padding-top:6px;border-top:1px solid var(--btn-bg)}
 #cmd-export-selected svg{margin-left:3px}
 .spinning{animation:rotation 3.75s infinite linear} @keyframes rotation{from{transform: rotate(359deg)}to{transform: rotate(0deg)}}
 
@@ -20,20 +46,19 @@ p.row-confirm{padding-top:6px;border-top:1px solid var(--bgbtn)}
 .toggle-pwd{position:absolute;padding:0 8px;top:50%;transform:translate(-100%,-50%);color:#999}
 .toggle-pwd:hover{color:var(--ah);cursor:pointer}
 .rules{margin:0 auto 20px auto;padding:4px 8px;background-color:#FFF;border:solid 1px #AAA;height:200px;overflow:auto}
-fieldset.register{margin:0 0 15px 0;padding:15px 0 0 8px;text-align:right;border:solid 1px var(--bgbtn);border-width:1px 0 0 0}
-fieldset.register legend{color:var(--bgbtn);font-weight:bold;text-align:left}
+fieldset.register{margin:0 0 15px 0;padding:15px 0 0 8px;text-align:right;border:solid 1px var(--btn-bg);border-width:1px 0 0 0}
+fieldset.register legend{color:var(--btn-bg);font-weight:bold;text-align:left}
 fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 #secu-txt-code{font-family:Courrier;padding:4px 8px;color:#000;background-color:#DDD}
 
 /* SEARCH BAR */
 #searchbar{padding:0.7rem 0.5rem 0.5rem 0.5rem;background-color:#f0f0f0;justify-content:flex-end;gap:0.5rem;align-items:center}
 #searchbar .img{vertical-align:baseline}
-#searchbar .button-x{padding:0.1rem 0.5rem;font-size:1.2rem;border:none;color:var(--c)}
-#searchbar .button-x:hover{color:var(--ah)}
+#searchbar .button-x{padding:0.1rem 0.5rem;}
 @media print{#searchbar{display:none !important}}
 
 /* MSGBOX general */
-.msgbox{width:450px;margin:0 auto;background-color:var(--bgform);border:solid 1px var(--bgbtn);box-shadow:3px 3px 4px #CCC}
+.msgbox{width:450px;margin:0 auto;background-color:var(--bgform);border:solid 1px var(--btn-bg);box-shadow:3px 3px 4px #CCC}
 .msgbox + .msgbox{margin-top:1.5rem}
 .msgbox.short{width:350px}
 @media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:475px} .msgbox.short{width:375px}}
@@ -121,20 +146,18 @@ input#edit-form-title{width:100%}
 a.bbc{display:inline-block;padding:0.1rem 0.4rem;border:1px solid #CCC}
 a.bbc:hover{cursor:pointer;background-color:#FFF;color:var(--ah)}
 
-/* search page */
+/* SEARCH */
 div.lettres{padding:0.5rem 0}
 div.lettres span.label{display:inline-block;padding:4px 6px 4px 0}
 div.lettres a{display:inline-block;padding:3px 6px;vertical-align:middle;background-color:#e5e5e5;border:solid 1px #fff;border-radius:2px;color:#000;text-decoration:none}
-div.lettres a:not(.active):hover{background-color:var(--bgbtn);border-color:#c5c5c5;cursor:pointer;color:#fff}
-div.lettres a.active{color:var(--bgbtn);background:#FFF;cursor:default;text-decoration:none;font-weight:bold}
+div.lettres a:not(.active):hover{background-color:var(--btn-bg);border-color:#c5c5c5;cursor:pointer;color:#fff}
+div.lettres a.active{color:var(--btn-bg);background:#FFF;cursor:default;text-decoration:none;font-weight:bold}
 div.lettres input[type=text]{margin:0 0 0 5px;padding:2px 5px;width:30px;border:solid 1px #AAA;border-radius:0}
 div.lettres button{margin-left:3px;padding:3px 5px;border:none}
-
 #searchcmd{display:flex;gap:0.4rem;justify-content:flex-end}
 .search-box{display:flex;align-items:center;gap:0.5rem;margin:1rem 0;padding:8px;background-color:#F8F8F8;border:solid 1px #DFDFDF;border-radius:5px}
 .search-box.options{width:max-content;margin:0 0 2rem 0}
 .search-box #opt-s{max-width:250px}
-.search-box:hover{background-color:#F4F4F4}
-.search-box.criteria:hover{background-color:#e8e7d7}
-.search-box .filigrane{display:inline-block;vertical-align:middle;margin-right:5px;font-size:min(38px,2.2rem);color:#CCC}
+.search-box:hover{background-color:#e8e7d7}
+.search-box .filigrane{display:inline-block;vertical-align:middle;margin-right:5px;font-size:min(38px,2.2rem);color:var(--btn-bg);opacity:0.6}
 .search-box table td{padding:1px}

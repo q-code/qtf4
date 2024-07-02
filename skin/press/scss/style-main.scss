@@ -1,14 +1,14 @@
 a.button:focus{outline:1px solid black !important}
 
 /* WELCOME */
-#intro{font-size:1.2rem;margin-top:1vw;padding:1.5vw;border:1px solid var(--bgbtn);background:linear-gradient(130deg,var(--bgbtn) 40%,#fd595b);color:#fff}
+#intro{font-size:1.2rem;margin-top:1vw;padding:1.5vw;border:1px solid var(--btn-bg);background:linear-gradient(130deg,var(--btn-bg) 40%,#fd595b);color:#fff}
 #intro p{color:#fff;margin:0 0 0.5rem 0}
 #intro a{color:#fff;text-decoration:underline}
 
 /* PAGING and ROWCOMMANDS */
 p.paging{padding:0.5rem 0;text-align:right}
-.cmd-cb{color:var(--bgadmin);text-decoration:none}
-a.cmd-cb:hover{color:var(--bgadmin);text-decoration:underline}
+.cmd-cb{color:var(--adm-bg);text-decoration:none}
+a.cmd-cb:hover{color:var(--adm-bg);text-decoration:underline}
 a.page{padding:0.1rem 0.2rem;border:solid 1px #ddd;font-family:Verdana,sans-serif}
 a.page.current{background-color:#eee;color:var(--c);text-decoration:none;cursor:default}
 a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
@@ -79,9 +79,6 @@ div.post-R,div.post-F,div.post-D{margin:10px 0 10px 50px}
 .post-title-l:after{content:" [" attr(data-num) "]"}
 .post-title-r{font-size:1.1rem}
 .post-attachment{font-size:0.8rem}
-.post-cmd{display:flex;gap:var(--gap);align-items:baseline;font-size:max(0.8rem,9pt)}
-.post-cmd a.button{padding:3px;background-color:#f4f4f4;border:1px solid #d8d7c0;border-radius:2px;text-shadow:none}
-.post-cmd a.button:hover{border:1px solid var(--bgbtn);color:var(--bgbtn);text-decoration:none}
 p.quotetitle{margin:1px;font-style:italic;font-weight:bold;color:#888;font-size:0.9rem}
 section.quote{padding:3px;margin:1px 1px 6px 1px;color:inherit;background-color:#EEE;border-style:solid;border-width:0 0 0 8px;border-color:#888}
 p.codetitle{margin:1px;font-style:italic;font-weight:bold;color:#007a00;font-size:0.9rem}

@@ -1,27 +1,31 @@
-/* IMPORTANT: contrast is inside @media screen{}, thus NOT applied @media print */
+/* IMPORTANT: contrast is inside @media screen{}, thus NOT applied to @media print */
 /* Contrast is loaded after others css. It will overwrite/transform previous rules having the same specificity */
-
 @media screen {
 
   :root{
     color-scheme:dark;
     --c:#FFF; --a:#FFFF00; --ah:#FFFF00;
     --bgbanner:#125faf; --bgbtn:#1364B7; --bgform:#002140;
-    --bgadmin:#00e1ff; --rowlight:#071b38; --rowlighthover:#002e4b;
+    --adm-bg:#00c6cf; --rowlight:#071b38; --rowlighthover:#002e4b;
+    --btn-bg:#1364B7; --btn-color:#fff;
+    --btn-border:1px solid #388cdf
   }
 
 /* TYPO */
 body{font-size:min(110%,22px)}
-*{box-shadow:none !important}
+*{box-shadow:none !important; text-shadow:none !important}
 
 /* LAYOUT */
 body{background:revert;background-image:none;background-color:#222}
 #site,main{background-color:transparent;border:none}
 #main-hd,#main-ct,#main-ft{padding:1vw 0}
 
-input, button, textarea, select, option, .rules{background-color:#222;color:#ffffcc}
+input, textarea, select, option, .rules{background-color:#222;color:#ffffcc}
 input:focus, button:focus, textarea:focus, select:focus{outline:none; border:1px solid #ffff00}
-optgroup{background-color:#000;color:#ffff55}
+optgroup{background-color:#888;color:#fff}
+input, select, textarea{border:solid 1px #888}
+input::placeholder, select::placeholder{color:#888}
+
 a{text-decoration:none}
 a:hover{text-decoration:underline}
 .tag{background-color:#d4ebff;border:1px solid #d4ebff;color:black}
@@ -53,9 +57,7 @@ div.lettres a:not(.active):hover{background-color:#000;color:#FFFF00;border-colo
 /* WELCOME and SEARCH */
 #intro{margin:0;background:none;background-color:#094178;border:none}
 #intro a{color:#FFF}
-#searchbar{background:none;background-color:#094178;border:none;border-bottom:2px solid var(--bgbanner)}
-  #searchbar a{color:var(--a)}
-  #searchbar a.button-x:hover{color:var(--a)}
+#searchbar{background:none;background-color:#094178;border:none;border-bottom:3px solid #222}
 
 #viewmode{padding:4px 6px;background-color:transparent;border:solid 1px #fff;color:#FFF} #viewmode:hover{color:#FFFF00;border-color:#FFFF00}
 
@@ -67,23 +69,31 @@ footer a{color:#bbb} footer a:hover{color:#FFF}
 
 .pg-title{color:#DDD}
 
-/* BUTTON */
-button,
-a.button,
-.tag-btn,
-.post-cmd a.button{opacity:1;background-color:var(--bgbtn);color:var(--c);border:1px solid #388cdf;border-radius:5px;text-decoration:none;text-shadow:none}
-button:hover, button:focus,
-a.button:hover, a.button:focus,
-.post-cmd a.button:hover, .post-cmd a.button:focus,
-.tag-btn:hover, .tag-btn:focus{background-color:var(--bgbtn);color:var(--a);border:1px solid var(--ah)}
-button.disabled, a.button.disabled{opacity:0.8;color:#AAA}
+/* Buttons and Navigation buttons */
+button, .button, .nav button, .nav .button, .post-cmd .button{
+  background-color:var(--btn-bg); color:var(--btn-color); border:var(--btn-border);
+}
+.post-cmd .button{padding:0 0.3rem}
+button.disabled, .button.disabled, .nav button.disabled, .nav .button.disabled, .post-cmd .button.disabled{
+  opacity:0.7; color:var(--c)
+}
+button:hover:not(.disabled), .button:hover:not(.disabled),
+button:focus:not(.disabled), .button:focus:not(.disabled),
+.nav button:hover:not(.disabled), .nav .button:hover:not(.disabled),
+.nav button:focus:not(.disabled), .nav .button:focus:not(.disabled)
+.post-cmd button:hover:not(.disabled), .post-cmd .button:hover:not(.disabled),
+.post-cmd button:focus:not(.disabled), .post-cmd .button:focus:not(.disabled){
+  color:var(--a); border:var(--btn-border); border-color:var(--a)
+}
 a.bbc{color:var(--c);border:1px solid #ccc;background-color:transparent}
 a.bbc:hover{color:var(--ah);border:1px solid var(--ah);background-color:var(--bgbtn)}
 
-/* OPTIONSBAR */
-#optionsbar-ctrl:hover, #optionsbar-ctrl:focus{background-color:transparent;color:var(--bgadmin)}
-#showeditor-ctrl:hover, #showeditor-ctrl:focus{background-color:transparent;color:var(--a)}
-#optionsbar select:focus, #optionsbar input[type=text]:focus{background-color:#000;border-color:#ffff00}
+/* optionbar */
+#optionbar{background-color:#00858b}
+#optionbar-ctrl:hover, #optionbar-ctrl:focus{background-color:transparent;color:var(--adm-bg);border:none}
+#showeditor-ctrl{background-color:transparent;}
+#showeditor-ctrl:hover, #showeditor-ctrl:focus{background-color:transparent;color:var(--a);border-color:var(--a);opacity:1}
+#optionbar select:focus, #optionbar input[type=text]:focus{background-color:#222;border-color:var(--a)}
 
 /* MSGBOX */
 .msgbox{border:solid 2px var(--bgbanner)}
@@ -127,19 +137,23 @@ div.pan{background-color:#222}
 #calendar .outdate, #calendarnext .outdate{background-color:#777}
 
 /* TABLE and SEARCH PAGE*/
-tbody[data-dataset="newsontop"] tr:last-of-type td{border-bottom:solid 5px #ffe6e7}
-.t-sec, .t-data, .t-item, .t-user,
-.search-box{background-color:#000;border:solid 3px #000}
+tbody[data-dataset="newsontop"] tr:last-of-type td{border-bottom:solid 5px #346087}
+.t-sec, .t-data, .t-item, .t-user, .search-box{background-color:transparent;border:none}
+
+.search-box{background-color:#111; border:2px solid #000}
 .search-box:hover{background-color:#080808}
-.search-box .filigrane svg{color:#aaa}
-tr.hover:hover{background-color:#222}
+
+.search-box .filigrane{color:#999}
+
+tr.hover:hover{background-color:#333}
 .section:hover{text-decoration:underline}
 table th,table th a{color:#CCC}
 table th a:hover{color:#FFF}
-.i-sec{background-color:#ddd;padding:5px;border-radius:10px}
-img.prefix_icon{background-color:#888;padding:4px;border-radius:4px}
+.i-sec{background-color:#666;padding:5px;border-radius:10px}
+.i-item{background-color:#eee;padding:5px;border-radius:5px}
+
 .item-msg-preview{color:#CCC}
-.t-sec td, .t-data td, .t-item td, .t-user td{border-top:solid 2px #222}
+.t-sec td, .t-data td, .t-item td, .t-user td{border-top:solid 2px #444}
 .t-item th.c-checkbox{background-color:transparent}
 .t-item td.c-checkbox{background-color:var(--rowlight)}
 .t-item .item{text-decoration:none}

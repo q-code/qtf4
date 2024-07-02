@@ -256,7 +256,7 @@ echo '<form class="formsafe" id="form-edit" method="post" action="'.url($oH->php
 ';
 
 if ( SUser::isStaff() ) {
-  echo '<div id="optionsbar" title="'.L('Staff').' '.L('commands').'">'.qtSvg('user-m');
+  echo '<div id="optionbar" title="'.L('Staff').' '.L('commands').'">'.qtSvg('user-m');
   if ( $oP->type==='P' ) {
     echo '<span>'.L('Type').' <select name="topictype" size="1" id="newtopictype" onchange="changeIcon()">';
     echo qtTags(CTopic::getTypes(),$oT->type);

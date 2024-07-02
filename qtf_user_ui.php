@@ -6,7 +6,7 @@
 * @var boolean $edit
 */
 if ( SUser::role()==='A' )
-echo '<form id="modaction" method="get" action="'.url(APP.'_register.php').'"><div id="optionsbar">
+echo '<form id="modaction" method="get" action="'.url(APP.'_register.php').'"><div id="optionbar">
 '.qtSvg('user-a', 'title='.L('Role_A')).'
 <select name="a" onchange="if ( this.value!=`` ) document.getElementById(`modaction`).submit();">
 <option value="" disabled selected hidden>'.L('Role_A').' '.L('commands').'</option>

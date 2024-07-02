@@ -19,7 +19,7 @@ function broadcastOption(option,value) {
   ["ref-","id-","kw-","adv-","user-"].forEach( id => {
      if ( document.getElementById(id+option) ) document.getElementById(id+option).setAttribute("value", value);
   });
-  ["btn_recent","btn_news","btn_my"].forEach( id => {
+  ["btn-recent","btn-news","btn-my"].forEach( id => {
     if ( document.getElementById(id) ) document.getElementById(id).setAttribute("data-"+option, value);
   });
   iconSpin();

@@ -8,8 +8,8 @@ a.button:focus{outline:1px solid red !important}
 
 /* PAGING and ROWCOMMANDS */
 p.paging{padding:0.5rem 0;text-align:right}
-.cmd-cb{color:var(--bgadmin);text-decoration:none}
-a.cmd-cb:hover{color:var(--bgadmin);text-decoration:underline}
+.cmd-cb{color:var(--adm-bg);text-decoration:none}
+a.cmd-cb:hover{color:var(--adm-bg);text-decoration:underline}
 a.page{padding:0 3px;border:solid 1px #ddd;text-decoration:none}
 a.page.current{background-color:#eee;color:var(--c);cursor:default}
 a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
@@ -78,9 +78,7 @@ div.post-R, div.post-F, div.post-D{margin:10px 0 10px 50px}
   .post-user{float:right;margin:var(--gap);padding:5px;max-width:100px;background-color:#FFF;border-radius:20px}
   p.post-attachment{font-size:0.8rem}
 .g-p-status{grid-area:g-p-status}
-  .post-cmd{display:flex;gap:6px;align-items:baseline;font-size:max(0.9rem,9pt)}
-  .post-cmd a.button{padding:0;background-color:transparent;color:#b69c84;border:none;text-shadow:none}
-  .post-cmd a.button:hover{color:var(--ah);text-decoration:none}
+
 .i-container{display:flex;width:35px;height:35px;align-items:center;justify-content:center;background-color:#f1dbc6;color:#888;border:3px solid #b69c84;border-radius:10px}
 
 p.quotetitle{margin:1px;font-style:italic;font-weight:bold;color:#888;font-size:0.9rem}

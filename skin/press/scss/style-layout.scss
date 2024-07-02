@@ -1,9 +1,12 @@
 /* VARIABLES */
 :root{
---c:#444; --a:#900B09; --ah:var(--a);
---bgbtn:#900B09; --bgform:#fff; --bgbanner:#fff;
---font:Georgia,Verdana,sans-serif;
---bgadmin:#0088a1; --rowlight:#eafcff; --rowlighthover:#d7f8ff;
+  --c:#444; --a:#900B09; --ah:var(--a);
+  --bgform:#fff; --bgbanner:#fff;
+  --font:Georgia,Verdana,sans-serif;
+  --adm-bg:#0088a1; --rowlight:#eafcff; --rowlighthover:#d7f8ff;
+
+  --btn-bg:#900B09; --btn-color:#fff;
+  --btn-border:2px solid #900B09;
 }
 
 /* LAYOUT */
@@ -93,10 +96,10 @@ main>div{padding:1vw 1.7vw}
 #main-ft{display:flex;justify-content:space-between;align-items:center}
 
 #crumbtrail-info{font-size:max(0.8rem,9pt)}
-aside{padding:0.5rem 0.7rem;display:flex;gap:1rem;color:#888;border-top:solid 1px var(--bgbtn)}
+aside{padding:0.5rem 0.7rem;display:flex;gap:1rem;color:#888;border-top:solid 1px var(--btn-bg)}
 
 #aside-ctrl{align-self: flex-end;white-space:nowrap}
-#aside-ctrl:hover{cursor:pointer;color:var(--bgbtn)}
+#aside-ctrl:hover{cursor:pointer;color:var(--btn-bg)}
 #aside__info{flex-grow:1;min-width:200px}
 #aside__detail{min-width:200px}
 #aside__legend{flex-grow:1;min-width:200px}
@@ -104,16 +107,16 @@ aside{padding:0.5rem 0.7rem;display:flex;gap:1rem;color:#888;border-top:solid 1p
 /* data titles and data options */
 #title-top{margin:1rem 0}
 #title-top-r{text-align:right}
-/* optionsbar */
-.optionsbar-container{display:flex;min-height:46px;align-items:center;justify-content:flex-end}
-@media print{.optionsbar-container{display:none}}
-#optionsbar-ctrl{opacity:1;font-size:min(40px,2.5rem);color:#CCC}
-  #optionsbar-ctrl:hover{color:var(--bgadmin)}
-#optionsbar{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem;background-color:var(--bgadmin);color:#fff}
-  #optionsbar input[type=text]{padding:2px 4px;border:1px solid var(--bgadmin)}
-  #optionsbar select{padding:2px 5px 2px 2px;border:1px solid var(--bgadmin)}
-  #optionsbar select:focus, #optionsbar input[type=text]:focus{background-color:var(--rowlight);border-color:#000}
-#showeditor-ctrl{font-size:1.5rem;color:#FFF;border:solid 2px white;border-radius:3px;opacity:0.75}
+/* optionbar */
+.optionbar-container{display:flex;min-height:min(50px,3rem);align-items:center;justify-content:flex-end}
+@media print{.optionbar-container{display:none}}
+#optionbar-ctrl{opacity:1;font-size:min(40px,2.5rem);color:#CCC;border:none}
+  #optionbar-ctrl:hover{color:var(--adm-bg)}
+#optionbar{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem;background-color:var(--adm-bg);color:#fff}
+  #optionbar input[type=text]{padding:2px 4px;border:1px solid var(--adm-bg)}
+  #optionbar select{padding:2px 5px 2px 2px;border:1px solid var(--adm-bg)}
+  #optionbar select:focus, #optionbar input[type=text]:focus{background-color:var(--rowlight);border-color:#000}
+  #showeditor-ctrl{display:flex;width:32px;height:32px;align-items:center;justify-content:center;font-size:1.5rem;background-color:#00adab;color:#FFF;border:solid 2px white;border-radius:3px;opacity:0.8}
   #showeditor-ctrl[data-state="0"]{transform:rotate(90deg)}
   #showeditor-ctrl[data-state="0"]:hover{transform:rotate(0deg)}
   #showeditor-ctrl[data-state="1"]{transform:rotate(0deg)}
@@ -121,7 +124,7 @@ aside{padding:0.5rem 0.7rem;display:flex;gap:1rem;color:#888;border-top:solid 1p
   #showeditor-ctrl:hover, #showeditor-ctrl:focus{opacity:1}
 /* CONTENT */
 a.lastitem{margin-left:3px;color:#AAA;text-decoration:none}
-a.lastitem:hover{color:var(--bgbtn)}
+a.lastitem:hover{color:var(--btn-bg)}
 @media print{a.lastitem{display:none}}
 i.disabled{color:#DDD}
 p.csv{margin:3px 0;text-align:right}

@@ -1,10 +1,12 @@
 /* VARIABLES */
 :root{
   --c:#444; --a:#90765e; --ah:#cc3234;
-  --bgbtn:#90765e; --bgform:#fff; --bgbanner:#b69c84;
+  --bgform:#fff; --bgbanner:#b69c84;
   --font:"Lucida Sans Unicode",Verdana,Arial;
-  --bgadmin:#009d58; --rowlight:#e3fff3; --rowlighthover:#d0ffea;
-  }
+  --adm-bg:#009d58; --rowlight:#e3fff3; --rowlighthover:#d0ffea;
+  --btn-bg:#90765e; --btn-color:#fff;
+  --btn-border:2px solid #90765e;
+}
 
 /* LAYOUT */
 body{background-color:#d1d1d1}
@@ -34,7 +36,7 @@ h1{font-size:1.6rem;font-weight:bold} #aside h1{font-size:1.2rem}
 h2{font-size:1.4rem;font-weight:bold} #aside h2{font-size:1.1rem}
 nav a{font-size:1.2rem;font-weight:normal;text-decoration:none;text-shadow: 1px 1px #90765e}
 #crumbtrail{font-size:1.2rem} #crumbtrail small{font-size:0.9rem}
-#viewmode{font-family:"Font Awesome 5 Free";font-weight:900;color:var(--bgbtn);text-decoration:none;padding:0 3px} #viewmode{padding:3px 5px}
+#viewmode{font-family:"Font Awesome 5 Free";font-weight:900;color:var(--btn-bg);text-decoration:none;padding:0 3px} #viewmode{padding:3px 5px}
 #viewmode:hover{color:var(--ah);text-decoration:none}
 .pg-title{color:#bbb;font-family:"Times new roman", Verdana, Arial, sans-serif;font-size:1.8rem;font-weight:bold;font-style:italic}
 .pg-subtitle{font-size:1.2rem}
@@ -101,7 +103,7 @@ div.nav-top, div.nav-bot{display:flex;gap:5px}
 
 aside{padding:0.5rem;display:flex;gap:1rem;background-color:#efefef;color:#888}
   @media print{aside{background-color:#fff}}
-#aside-ctrl{align-self: flex-end;white-space:nowrap;color:var(--bgbtn)}
+#aside-ctrl{align-self: flex-end;white-space:nowrap;color:var(--btn-bg)}
 #aside-ctrl:hover{cursor:pointer;color:var(--ah)}
 #aside__info{flex-grow:1;min-width:200px}
 #aside__detail{min-width:200px}
@@ -110,16 +112,17 @@ aside{padding:0.5rem;display:flex;gap:1rem;background-color:#efefef;color:#888}
 /* data titles and data options */
 #title-top{margin:1rem 0}
 #title-top-r{text-align:right}
-/* optionsbar */
-.optionsbar-container{display:flex;min-height:46px;align-items:center;justify-content:flex-end}
-@media print{.optionsbar-container{display:none}}
-#optionsbar-ctrl{opacity:1;font-size:min(40px,2.5rem);color:#CCC}
-  #optionsbar-ctrl:hover{color:var(--bgadmin)}
-#optionsbar{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem;background-color:var(--bgadmin);color:#fff}
-  #optionsbar input[type=text]{padding:2px 4px;border:1px solid var(--bgadmin)}
-  #optionsbar select{padding:2px 5px 2px 2px;border:1px solid var(--bgadmin)}
-  #optionsbar select:focus, #optionsbar input[type=text]:focus{background-color:var(--rowlight);border-color:#000}
-#showeditor-ctrl{font-size:1.5rem;color:#FFF;border:solid 2px white;border-radius:3px;opacity:0.75}
+
+/* optionbar */
+.optionbar-container{display:flex;min-height:min(50px,3rem);align-items:center;justify-content:flex-end}
+@media print{.optionbar-container{display:none}}
+#optionbar-ctrl{opacity:1;font-size:min(40px,2.5rem);color:#CCC}
+  #optionbar-ctrl:hover{color:var(--adm-bg)}
+#optionbar{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem;background-color:var(--adm-bg);color:#fff}
+  #optionbar input[type=text]{padding:2px 4px;border:1px solid var(--adm-bg)}
+  #optionbar select{padding:2px 5px 2px 2px;border:1px solid var(--adm-bg)}
+  #optionbar select:focus, #optionbar input[type=text]:focus{background-color:var(--rowlight);border-color:#000}
+  #showeditor-ctrl{display:flex;width:32px;height:32px;align-items:center;justify-content:center;font-size:1.5rem;background-color:#14a900;color:#FFF;border:solid 2px white;border-radius:3px;opacity:0.8}
   #showeditor-ctrl[data-state="0"]{transform:rotate(90deg)}
   #showeditor-ctrl[data-state="0"]:hover{transform:rotate(0deg)}
   #showeditor-ctrl[data-state="1"]{transform:rotate(0deg)}
