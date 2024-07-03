@@ -7,7 +7,8 @@
 p.paging{padding:0.5rem 0;text-align:right}
 .cmd-cb{color:var(--adm-bg);text-decoration:none}
 a.cmd-cb:hover{color:var(--adm-bg);text-decoration:underline}
-a.page{padding:0 0.2rem;border:solid 1px #ddd}
+a.page{padding:0 0.25rem;border:solid 1px #ddd}
+a.page:hover:not(.current){border-color:var(--a);text-decoration:none}
 a.page.current{background-color:#eee;color:var(--c);text-decoration:none;cursor:default}
 a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
 a.page.last{border-radius:0 3px 3px 0}

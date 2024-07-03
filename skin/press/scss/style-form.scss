@@ -104,7 +104,7 @@ div.tags{margin:3px 0 6px 0;padding:3px 0 1px 0;width:100%}
 /* QUICK REPLY */
 .pg-item #message-preview:not(:empty){margin:10px 0 0 0}
 .pg-form-edit #message-preview:not(:empty){margin:0 0 10px 0}
-.quickreply{
+#quickreply{
   width:600px;margin:15px auto;padding:4px;
   display:grid;
   grid-template-columns:min-content 1.5fr 1fr 1.5fr;
@@ -113,16 +113,16 @@ div.tags{margin:3px 0 6px 0;padding:3px 0 1px 0;width:100%}
   gap:4px;
   background-color:#f3f3f3;border:solid 1px #e5e5e5;
 }
-@media screen and (min-width:1024px){.quickreply{gap:6px;padding:6px}}
-@media print{div.quickreply{display:none}}
 .g-qr-icon{grid-area:g-qr-icon}
 .g-qr-title{grid-area:g-qr-title;font-weight:bold;color:#AAA;text-align:center;align-self:center}
 .g-qr-bbc{grid-area:g-qr-bbc;align-self:end}
 .g-qr-btn{grid-area:g-qr-btn;text-align:right} .g-qr-btn button{margin-left:4px}
 .g-qr-text{grid-area:g-qr-text}
 .g-qr-text textarea{display:block;min-height:100px;resize:vertical}
-#quickreply-footer{padding:0;font-size:smaller;text-align:center;opacity:0.25}
-.g-qr-text textarea:focus + #quickreply-footer{opacity:1}
+#quickreply-footer{padding:0.2rem 0 0 0;font-size:0.8rem;text-align:center;color:var(--c)}
+#quickreply-footer a, #quickreply-footer a:hover{color:var(--c)}
+@media screen and (max-width:900px){#quickreply{width:100%}}
+@media print{#quickreply{display:none}}
 
 /* edit post */
 div.edit-post{
@@ -143,7 +143,7 @@ input#edit-form-title,
 #signature-preview{margin:5px 0;padding:0.5rem;background-color:#f6f6f6;border:solid 1px #DDD}
 
 /* bbc */
-.bbc-bar{display:flex;gap:0.3rem;margin-bottom:4px} .quickreply .bbc-bar{margin-bottom:0}
+.bbc-bar{display:flex;gap:0.3rem;margin-bottom:4px} #quickreply .bbc-bar{margin-bottom:0}
 a.bbc{display:inline-block;padding:0.1rem 0.4rem;color:#888;border:1px solid #CCC}
 a.bbc:hover{cursor:pointer;color:var(--ah);border-color:var(--ah)}
 

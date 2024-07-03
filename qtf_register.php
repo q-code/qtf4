@@ -258,7 +258,7 @@ $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'">';
 $frm[] = '<div class="flex-sp top">';
 $frm[] = '<div style="min-width:65%;padding:0 20px 0 0">';
 $frm[] = '<fieldset class="register"><legend>'.L('Username').' '.L('and').' '.L('password').'</legend>';
-$frm[] = '<p>'.qtSvg('user','class=svg-label|title='.L('Username')).' <input required type="text" id="rename" name="username" size="25" minlength="3" maxlength="64" value="'.$_POST['username'].'" placeholder="'.L('Username').'"/></p><p id="rename-error" class="error"></p>';
+$frm[] = '<p>'.qtSvg('user','class=svg-label|title='.L('Username')).' <input required type="text" id="rename" name="username" size="25" minlength="3" maxlength="64" value="'.$_POST['username'].'" placeholder="'.L('Username').'"/></p><p id="rename-error" class="right"></p>';
 if ( $_SESSION[QT]['register_mode']==='direct' ) {
   $frm[] = '<p class="input-pwd">'.qtSvg('lock','class=svg-label|title='.L('Password')).' <input required type="password" id="pwd-1" name="pwd" size="25" minlength="4" maxlength="50" value="'.$_POST['pwd'].'" placeholder="'.L('Password').'"/>'.qtSvg('eye', 'class=toggle-pwd clickable|onclick=togglePwd(1)|title='.L('Show')).'</p>';
   $frm[] = '<p class="input-pwd">'.qtSvg('lock','class=svg-label|title='.L('Confirm_password')).' <input required type="password" id="pwd-2" name="conpwd" size="25" minlength="4" maxlength="50" value="'.$_POST['conpwd'].'" placeholder="'.L('Confirm_password').'"/>'.qtSvg('eye', 'class=toggle-pwd clickable|onclick=togglePwd(2)|title='.L('Show')).'</p>';
@@ -399,7 +399,7 @@ $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
 $frm_attr = 'class=msgbox formPwd';
-$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+$frm_hd .= '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'">';
@@ -476,7 +476,7 @@ $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id );
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 
 $frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
-$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
+$frm_hd .= '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'. $row['name'].' <select name="role" size="1">
 <option value="A"'.($row['role']=='A' ? ' selected' : '').(SUser::role()!=='A' ? ' disabled' : '').'>'.L('Role_A').'</option>
@@ -513,7 +513,7 @@ $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $currentban = !empty($row['closed']) && array_key_exists((int)$row['closed'],BAN_DAYS) ? (int)$row['closed'] : 0;
 
 $frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
-$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+$frm_hd .= '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'.$row['name'].' <small>('.L('Role_'.$row['role']).')</small></p>';
 $frm[] = '<p>'.L('H_ban').'</p>';
@@ -546,7 +546,8 @@ if ( isset($_POST['ok']) && isset($_POST['confirm']) ) {
 // FORM
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
-$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section').'<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
+$frm_hd .= '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p><input required type="checkbox" name="confirm"/> '.$row['name'].' <small>('.L('Role_'.$row['role']).')</small></p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="delete">'.L('Delete').'</button></p>';
@@ -596,7 +597,8 @@ if ( isset($_POST['ok']) ) {
 // FORM
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
-$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section').'<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+$frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
+$frm_hd .= '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm[] = '<form method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p>'.L('Reset_pwd').' - '.$row['name'].'</p>';
 $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" name="ok" value="ok">'.L('Ok').'</button></p>';
@@ -701,7 +703,7 @@ $secret_q = empty($row['secret_q']) ? '' : $row['secret_q'];
 
 $frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
 $frm_attr = 'class=msgbox formQa';
-$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
+$frm_hd .= '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p><br>';
 $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'" autocomplete="off">';
@@ -748,13 +750,13 @@ if ( isset($_POST['ok']) ) try {
 $oDB->query( "SELECT * FROM TABUSER WHERE id=".$id);
 $row = $oDB->getRow(); if ( !$row ) die('invalid id');
 $frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
+$frm_hd .= '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 $frm_attr = 'class=msgbox formName';
-$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'.$row['name'].'</p></div>';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<form class="formsafe" method="post" action="'.url($frm_action).'&id='.$id.'">';
 $frm[] = '<p class="center">'.qtSvg('user','class=svg-label').'&nbsp;<input required type="text" id="rename" name="username" size="20" minlength="3" maxlength="32" placeholder="'.L('Username').'" /></p>';
-$frm[] = '<p id="rename-error" class="error center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="rename-submit" name="ok" value="ok">'.L('Save').'</button></p>';
+$frm[] = '<p id="rename-error" class="center"></p><p class="submit"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button>&nbsp;<button type="submit" id="rename-submit" name="ok" value="ok">'.L('Save').'</button></p>';
 $frm[] = '</form>';
 $frm_ft = CHtml::pageEntity('/', 'user dlg', 'section');
 $oH->scripts['formsafe'] = '<script type="text/javascript" src="bin/js/qt_formsafe.js" data-safemsg="'.L('Quit_without_saving').'"></script>';
@@ -798,8 +800,8 @@ if ( empty($row['signature']) ) $row['signature']='';
 $strSign = qtBBcode($row['signature']); if ( empty($strSign) ) $strSign='&nbsp;';
 
 $frm_hd = CHtml::pageEntity('class=user-dlg', 'user dlg', 'section');
+$frm_hd .= '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
 $frm_attr = 'class=msgbox formSign';
-$frm[] = '<div class="aside">'.SUser::getPicture($id,'id=userimg').'<p class="ellipsis">'. $row['name'].'</p></div>';
 if ( SUser::id()!==$id )
 $frm[] = '<p>'.qtSvg('exclamation-triangle', 'style=color:orange').' '.L('Not_your_account').'</p>';
 $frm[] = '<p>'.L('H_no_signature').'</p>';

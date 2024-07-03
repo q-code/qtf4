@@ -70,7 +70,6 @@ button:focus:not(.disabled), .button:focus:not(.disabled){opacity:1;text-decorat
 svg {width:1.1em;height:1em} /* protection required, if symbol style is missing */
 article p, .article p, p.article, .msgboxbody p{margin-bottom:0.5rem}
 p.submit, .msgboxbody p.submit{margin:1rem 0 0 0;text-align:center}
-p.error{margin:0.3rem}
 p.list{margin-bottom:2px}
 .inline-block{display:inline-block}
 .indent{margin-left:1rem} .indent2{margin-left:2rem}
@@ -80,7 +79,7 @@ p.list{margin-bottom:2px}
 small, .small, .minor, .error, .warning{font-size:0.85rem}
 .s80{font-size:0.8rem}
 .minor{color:#888}
-.error{color:#ff0000;font-weight:bold;text-shadow:-1px 0 #ffeaea,0 1px #ffeaea,1px 0 #ffeaea,0 -1px #ffeaea}
+.error{padding:0.1rem 0.4rem;border-radius:4px;background-color:#ffe6e6;color:#ff0000;font-weight:bold}
 .warning{color:#888;font-weight:bold;font-style:italic}
 .disabled{color:#aaa} a.disabled, a.disabled:hover{text-decoration:none;color:#aaa}
 .b, .bold{font-weight:bold}
@@ -137,7 +136,9 @@ background:#ffc;border:1px solid #666;border-radius:8px;box-shadow:0 0 5px 5px #
 #splash-ico{margin-right:20px}
 
 /* AJAX AUTOCOMPLETE */
-#cmd-cb-dlg{font-size:0.85rem;background-color:#fff;padding:0.2rem;border:solid 1px var(--bgbtn);border-radius:5px;box-shadow:0 0 5px #aaa}
+#cmd-cb-dlg{font-size:0.85rem;background-color:#fff;padding:0.2rem;border:solid 1px var(--adm-bg);border-radius:5px;box-shadow:0 0 5px #aaa}
+#cmd-cb-dlg button{background-color:var(--adm-bg);border:solid 1px var(--adm-bg);border-radius:3px}
+#cmd-cb-dlg button:hover{border-color:var(--adm-bg)}
 #cmd-cb-dlg select, #cmd-cb-dlg select:focus{border-color:transparent;scrollbar-width:thin;}
 #cmd-cb-dlg select option:hover{color:white;background:var(--bgbtn)}
 [id^="ac-wrapper"]{display:inline-block;position:relative}

@@ -10,8 +10,9 @@ a.button:focus{outline:1px solid red !important}
 p.paging{padding:0.5rem 0;text-align:right}
 .cmd-cb{color:var(--adm-bg);text-decoration:none}
 a.cmd-cb:hover{color:var(--adm-bg);text-decoration:underline}
-a.page{padding:0 3px;border:solid 1px #ddd;text-decoration:none}
-a.page.current{background-color:#eee;color:var(--c);cursor:default}
+a.page{padding:0 0.25rem;border:solid 1px #ddd;text-decoration:none}
+a.page:hover:not(.current){border-color:var(--a);text-decoration:none}
+a.page.current{background-color:#e8e7d7;color:var(--c);cursor:default}
 a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
 a.page.last{border-radius:0 3px 3px 0}
 @media screen and (max-width:840px){ .cmd-cb.secondary + .sepcmd{display:none !important} }

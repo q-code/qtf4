@@ -99,7 +99,7 @@ aside{padding:0.3rem;display:flex;gap:1rem;color:#888;border-bottom:solid 1px #B
 
 /* data titles and data options */
 #title-top{margin:1rem 0}
-#title-top-r{text-align:right}
+#title-top-r{display:flex;text-align:right}
 
 /* optionbar */
 .optionbar-container{display:flex;min-height:min(50px,3rem);align-items:center;justify-content:flex-end}

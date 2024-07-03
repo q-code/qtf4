@@ -14,8 +14,8 @@ th a:hover{color:#666;text-decoration:underline}
 .t-sec .sectiondesc{font-style:italic}
 
 /* Row highlight */
-tr.rowlight:has(:checked){background-color:var(--rowlight)}
-tr.rowlight:has(:checked):hover{background-color:var(--rowlighthover)}
+.rowlight:has(:checked){background-color:var(--rowlight)}
+.rowlight:has(:checked):hover{background-color:var(--rowlighthover)}
 
 /* SECTION/ITEM TABLE */
 .t-sec th, .t-sec td, .t-item th, .t-item td{text-align:center}

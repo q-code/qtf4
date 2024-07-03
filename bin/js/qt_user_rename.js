@@ -8,7 +8,10 @@ inputRename.addEventListener('keyup', (e) => {
   if ( inputRename.value.length>2 ) {
     fetch( `bin/srv_query.php?q=userexists&fv=${inputRename.value}` )
     .then( response => response.json() )
-    .then( data => { if ( data ) { submitRename.disabled = true; outputRename.innerHTML = err_used;} } )
+    .then( data => { if ( data ) {
+      submitRename.disabled = true;
+      outputRename.innerHTML = `<span class="error">${err_used}</span>`;
+    } } )
     .catch( err => console.log(err) );
   }
 });
