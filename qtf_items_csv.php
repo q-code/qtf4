@@ -145,7 +145,7 @@ $csv = toCsv($t->getTHnames()).PHP_EOL;
 // ========
 $oDB->query(sqlLimit(
   $sqlFields.$sqlFrom.$sqlWhere.$sqlHideClosed,
-  ($_SESSION[QT]['news_on_top'] ? 'typea ASC, ' : '').($strOrder=='title' ? 'p.title' : 't.'.$strOrder).' '.strtoupper($strDirec),
+  ($_SESSION[QT]['news_on_top'] ? 'typea ASC, ' : '').($strOrder=='title' ? 'p.title' : 't.'.$strOrder).' '.strtoupper($pd),
   $sqlStart,
   $_SESSION[QT]['items_per_page'],
   $intCount

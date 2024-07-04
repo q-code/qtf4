@@ -104,9 +104,11 @@ if ( !empty($paging) ) $paging = L('Page').$paging;
 if ( $intCount<$intTotal ) $paging = L('user',$intCount).' '.L('from').' '.$intTotal.(empty($paging) ? '' : ' | '.$paging);
 
 // -- Display button line (if more that tpp users) and paging --
-if ( $intCount>$_SESSION[QT]['items_per_page'] || $fg!=='all' ) echo htmlLettres(url($oH->php),$fg,L('All'),'lettres',L('Username_starting').' ', $intTotal>300 ? 1 : ($intTotal>2*$_SESSION[QT]['items_per_page'] ? 2 : 3)).PHP_EOL;
+if ( $intCount>$_SESSION[QT]['items_per_page'] || $fg!=='all' )
+echo htmlLettres(url($oH->php), $fg, L('All'), L('Username_starting').' ', $intTotal>300 ? 1 : ($intTotal>2*$_SESSION[QT]['items_per_page'] ? 2 : 3)).PHP_EOL;
 
-if ( !empty($paging) ) echo '<p id="tabletop" class="paging">'.$paging.'</p>'.PHP_EOL;
+if ( !empty($paging) )
+echo '<p id="tabletop" class="paging">'.$paging.'</p>'.PHP_EOL;
 
 // end if no result
 if ( $intCount==0) {

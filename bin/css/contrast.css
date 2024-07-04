@@ -34,11 +34,11 @@ a.lastitem{margin-left:0.2rem;color:#ffffcc}
 a.lastitem:hover{color:var(--ah)}
 @media print{a.lastitem{display:none}}
 
-a.page{padding:0.1rem 0.3rem;color:var(--c);border-color:#555;border-radius:0;text-decoration:none}
-a.page.current{background-color:#000;border-color:#999;}
-a.page:hover:not(.current){color:var(--a);border-color:var(--a);text-decoration:none}
-a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
-a.page.last{border-radius:0 3px 3px 0}
+.page{padding:0.1rem 0.3rem;color:var(--c);border-color:#555;border-radius:0;text-decoration:none}
+.page.current{background-color:#000;border-color:#999;}
+.page:hover:not(.current){color:var(--a);border-color:var(--a);text-decoration:none}
+.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
+.page.last{border-radius:0 3px 3px 0}
 
 #pagelog{font-size:9pt;background-color:#000;color:#fff}
 div.lettres a{background-color:#000;color:#fff;border-color:#444}

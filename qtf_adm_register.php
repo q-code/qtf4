@@ -43,8 +43,13 @@ function renderUsers(array $ids, array $fields=['name','role','closed']) {
   $days = BAN_DAYS;
   $arrUsers = getUsersInfo( array_slice($ids,0,5), implode(',',$fields) );
   if ( count($arrUsers)===5 ) { array_pop($arrUsers); $last='<p>...</p>'; } else { $last=''; }
+  /*foreach($arrUsers as $row) {
+    $str .= '<p class="list"><span class="magnifier">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', 'bin/css/user.gif').' '.qtTrunc($row['name'],24).'</span>';
+    $str .= empty($row['closed']) ? '' : ' '.qtSvg( 'ban', 'title='.L('Banned').' '.L('day',$days[(int)$row['closed']]) );
+    $str .= ' ('.L('Role_'.$row['role']).')</p>';
+  }*/
   foreach($arrUsers as $row) {
-    $str .= '<p class="list"><span class="magnifier center">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', 'bin/css/user.gif').'</span> '.qtTrunc($row['name'],24);
+    $str .= '<p class="list magnifier">'.SUser::getPicture((int)$row['id'], 'data-magnify=0|onclick=this.dataset.magnify=this.dataset.magnify==1?0:1;', 'bin/css/user.gif').' '.qtTrunc($row['name'],24);
     $str .= empty($row['closed']) ? '' : ' '.qtSvg( 'ban', 'title='.L('Banned').' '.L('day',$days[(int)$row['closed']]) );
     $str .= ' ('.L('Role_'.$row['role']).')</p>';
   }

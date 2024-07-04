@@ -39,31 +39,30 @@ function htmlCsvLink($strUrl,$intCount=20,$pn=1)
   }
   return $strCsv;
 }
-function htmlLettres(string $baseFile, string $current='ALL', string $all='All', string $class='lettres', string $title='Username starting with ', int $size=1, bool $filterForm=true)
+function htmlLettres(string $url, string $current='ALL', string $all='All', string $title='Username starting with ', int $size=1, string $attr='class=lettres', bool $filterForm=true)
 {
-  // When $baseFile have other arguments, group argument will be appended
+  // When $url have other arguments, group argument will be appended
   // $current is the current group, $all is the label of the 'ALL' group
-  // Note: $baseFile can be urlrewrited
+  // Note: $url can be urlrewrited
   $current = strtoupper($current);
-  $and = strpos($baseFile,'?') ? '&' : '?';
+  $and = strpos($url,'?') ? '&' : '?';
   switch($size) {
     case 1: $arr = explode('.','A.B.C.D.E.F.G.H.I.J.K.L.M.N.O.P.Q.R.S.T.U.V.W.X.Y.Z.~'); break;
     case 2: $arr = explode('.','A|B.C|D.E|F.G|H.I|J.K|L.M|N.O|P.Q|R.S|T.U|V.W|X.Y|Z.~'); break;
     case 3: $arr = explode('.','A|B|C.D|E|F.G|H|I.J|K|L.M|N|O.P|Q|R.S|T|U.V|W.X|Y|Z.~'); break;
     case 4: $arr = explode('.','A|B|C|D.E|F|G|H.I|J|K|L.M|N|O|P.Q|R|S|T.U|V|W.X|Y|Z.~'); break;
   }
-  $str = '<a '.($current==='ALL' ? ' class="active"' : '').' href="'.($current==='ALL' ? 'javascript:void(0)' : $baseFile.$and.'fg=all').'">'.$all.'</a>';
+  $str = '<a '.($current==='ALL' ? ' class="active"' : '').' href="'.($current==='ALL' ? 'javascript:void(0)' : $url.$and.'fg=all').'">'.$all.'</a>';
   foreach($arr as $g) {
-    $title = $title.($g==='~' ? L('other_char') : str_replace('|',' '.L('or').' ',$g));
-    $str .= '<a'.($current===$g ? ' class="active"' : '').' href="'.($current===$g ? 'javascript:void(0)' : $baseFile.$and.'fg='.$g).'"'.(empty($title) ? '' : ' title="'.qtAttr($title).'"').'>'.str_replace('|','',$g).'</a>';
+    $str .= '<a'.($current===$g ? ' class="active"' : '').' href="'.($current===$g ? 'javascript:void(0)' : $url.$and.'fg='.$g).'" title="'.qtAttr($title.($g==='~' ? L('other_char') : str_replace('|',' '.L('or').' ',$g))).'">'.str_replace('|','',$g).'</a>';
   }
-  $group  = '<div class="'.$class.'">';
+  $group  = '<div'.attrRender($attr).'>';
   $group .= L('Show').' '.$str;
   if ( $filterForm ) {
-  $group .= ' <form method="get" action="'.$baseFile.'">';
-  $group .= '<input required type="text" value="'.($current==='ALL' || in_array($current,$arr) ? '' : qtAttr($current)).'" name="group" size="3" maxlength="10" title="'.qtAttr($title).'"/>';
+  $group .= ' <form method="get" action="'.$url.'">';
+  $group .= '<input required type="text" value="'.($current==='ALL' || in_array($current,$arr) ? '' : qtAttr($current)).'" name="fg" size="3" maxlength="10" title="'.qtAttr($title).'"/>';
   $group .= '<button type="submit" value="submit">'.qtSvg('search').'</button>';
-  $group .= qtTags(array_map('urldecode',qtExplodeUri($baseFile,'page|group')), '', 'tag=hidden');
+  $group .= qtTags(array_map('urldecode',qtExplodeUri($url,'pn|fg')), '', 'tag=hidden');
   $group .= '</form>';
   }
   $group .= '</div>';

@@ -8,7 +8,7 @@ table{table-layout:auto;width:100%;border-collapse:separate;border-spacing:0;bor
 th, td{padding:0.2rem;text-align:left;vertical-align:middle;font-weight:normal}
 form{display:inline}
 input, button, textarea, select, optgroup, option{font:inherit}
-button, .button, .clickable, .magnifier{cursor:pointer} .disabled, .active, .current{cursor:default}
+button, .button, .clickable{cursor:pointer} .disabled, .active, .current{cursor:default}
 img{border:none;vertical-align:middle}
 button.nostyle,
 button.nostyle:hover{margin:0;padding:0;background:none;border:none}
@@ -134,6 +134,12 @@ background:#ffc;border:1px solid #666;border-radius:8px;box-shadow:0 0 5px 5px #
 }
 @keyframes splashFade{0%{opacity:0}100%{opacity:1}}/*javascript triggers animation: splashFade 2s ease 1s 2 alternate;*/
 #splash-ico{margin-right:20px}
+
+/* Image magnifier */
+.magnifier{position:relative;cursor:pointer}
+.magnifier:has([data-magnify="1"])::before{content:'';display:inline-block;width:40px;height:40px;vertical-align:middle}
+[data-magnify="0"]{display:inline;height:40px;border:1px solid #FFF;border-radius:10px;cursor:pointer}
+[data-magnify="1"]{display:block;max-width:100px;max-height:100px;position:absolute;z-index:9;top:-25px;left:-15px;padding:5px;background-color:#FFF;border:solid 1px #DDD;border-radius:5px;box-shadow:2px 2px 4px #BBB;cursor:pointer}
 
 /* AJAX AUTOCOMPLETE */
 #cmd-cb-dlg{font-size:0.85rem;background-color:#fff;padding:0.2rem;border:solid 1px var(--adm-bg);border-radius:5px;box-shadow:0 0 5px #aaa}

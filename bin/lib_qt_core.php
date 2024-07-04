@@ -421,9 +421,10 @@ function qtExplodeUri(string $str='', string $skip='')
  * @param string $prefix is usualy '?'
  * @return string uri-arguments
  */
-function qtURI(string $skip='', string $prefix='?')
+function qtURI(string $skip='', string $prefix='?', bool $dropvoidprefix=true)
 {
-  return $prefix.qtImplode(qtExplodeUri('',$skip));
+  $str = qtImplode(qtExplodeUri('',$skip));
+  return empty($str) && $dropvoidprefix ? '' : $prefix.$str;
 }
 /**
  * Search a specific key value in a multifield string 'a=1;b=2;c=3'

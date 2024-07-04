@@ -10,11 +10,11 @@ a.button:focus{outline:1px solid red !important}
 p.paging{padding:0.5rem 0;text-align:right}
 .cmd-cb{color:var(--adm-bg);text-decoration:none}
 a.cmd-cb:hover{color:var(--adm-bg);text-decoration:underline}
-a.page{padding:0 0.25rem;border:solid 1px #ddd;text-decoration:none}
-a.page:hover:not(.current){border-color:var(--a);text-decoration:none}
-a.page.current{background-color:#e8e7d7;color:var(--c);cursor:default}
-a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
-a.page.last{border-radius:0 3px 3px 0}
+.page{padding:0 0.25rem;border:solid 1px #ddd;text-decoration:none}
+.page:hover:not(.current){border-color:var(--a);text-decoration:none}
+.page.current{background-color:#e8e7d7;color:var(--c);cursor:default}
+.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
+.page.last{border-radius:0 3px 3px 0}
 @media screen and (max-width:840px){ .cmd-cb.secondary + .sepcmd{display:none !important} }
 
 /* SPECIFIC */
@@ -90,8 +90,3 @@ section.code{padding:3px;margin:1px 1px 6px 1px;font-family:Courier,sans-serif;m
 #site.compact .post-img{display:none}
 #site.compact p.quotetitle,#site.compact section.quote, #site.compact div.g-p-msg p:not(p.code){display:inline}
 #site.compact .post-cmd{padding:0 0 3px 0}
-
-/* Image magnifier */
-.magnifier{position:relative}
-[data-magnify="0"]{display:inline;height:40px;border:1px solid #FFF;border-radius:10px;cursor:pointer}
-[data-magnify="1"]{display:block;max-width:150px;max-height:150px;position:absolute;z-index:9;top:-10px;left:-10px;padding:5px;background-color:#FFF;border:solid 1px #DDD;border-radius:5px;box-shadow:2px 2px 4px #BBB;cursor:pointer}

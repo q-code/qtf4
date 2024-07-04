@@ -65,11 +65,11 @@ th, td{padding:0.4rem}
 [data-content="users"] th{padding:0.4rem 0.2rem}
 [data-content="users"] td{padding:0.3rem 0.2rem}
 /* style */
-a.page{padding:0 0.2rem;border:solid 1px #ddd}
-a.page.current{background-color:#fff;color:#444;text-decoration:none}
-a.page:not(.current):hover{border-color:#0000ff;text-decoration:none;}
-a.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
-a.page.last{border-radius:0 3px 3px 0}
+.page{padding:0 0.25rem;border:solid 1px #ddd;text-decoration:none}
+.page:hover:not(.current){border-color:var(--a);text-decoration:none}
+.page.current{background-color:#fff;color:var(--c);text-decoration:none;cursor:default}
+.page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
+.page.last{border-radius:0 3px 3px 0}
 .t-conf{margin:0 0 10px 0;border-spacing:3px;background-color:#FFF;border:1px solid #AAA}
 .t-item{background-color:#FFF;border:1px solid #BBB}
 .t-sec{margin:0.5rem 0;background-color:#FFF;border:1px solid #CCC}
@@ -170,10 +170,9 @@ td.fieldname{text-align:right;font-size:0.8rem;font-weight:bold;color:#555;backg
 td.fieldhelp{font-size:0.8rem;color:#333399;background-color:inherit}
 
 /* EXTRA */
-/* image magnifier */
-.magnifier{position:relative}
-[data-magnify="0"]{display:inline-block;height:30px;vertical-align:middle;border:1px solid #FFF;border-radius:5px}
-[data-magnify="1"]{display:block;max-width:150px;max-height:150px;position:absolute;z-index:9;top:-15px;left:-15px;padding:5px;background-color:#FFF;border:solid 1px #DDD;border-radius:5px;box-shadow:2px 2px 4px #BBB}
+/* Image magnifier */
+[data-magnify="0"]{height:32px}
+.magnifier:has([data-magnify="1"])::before{width:32px;height:32px}
 /* drag and drop */
 #dlg-reorder{position:absolute;width:275px;padding:0.5rem;background-color:#FFF;border:1px solid #888;text-align:center;box-shadow:0 0 5px 5px #AAA}
 #dlg-reorder table{margin:0.4rem 0;border-spacing:3px}
