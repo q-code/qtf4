@@ -105,12 +105,12 @@ div.tags{margin:3px 0 6px 0;padding:3px 0 1px 0;width:100%}
 .pg-item #message-preview:not(:empty){margin:10px 0 0 0}
 .pg-form-edit #message-preview:not(:empty){margin:0 0 10px 0}
 #quickreply{
-  width:600px;margin:15px auto;padding:4px;
+  width:600px;margin:15px auto;padding:0.5rem;
   display:grid;
   grid-template-columns:min-content 1.5fr 1fr 1.5fr;
   grid-template-rows:min-content 1fr;
   grid-template-areas: "g-qr-icon g-qr-bbc g-qr-title g-qr-btn" "g-qr-icon g-qr-text g-qr-text g-qr-text";
-  gap:4px;
+  gap:0.3rem;
   background-color:#f3f3f3;border:solid 1px #e5e5e5;
 }
 .g-qr-icon{grid-area:g-qr-icon}
@@ -121,7 +121,7 @@ div.tags{margin:3px 0 6px 0;padding:3px 0 1px 0;width:100%}
 .g-qr-text textarea{display:block;min-height:100px;resize:vertical}
 #quickreply-footer{padding:0.2rem 0 0 0;font-size:0.8rem;text-align:center;color:var(--c)}
 #quickreply-footer a, #quickreply-footer a:hover{color:var(--c)}
-@media screen and (max-width:900px){#quickreply{width:100%}}
+@media screen and (max-width:840px){#quickreply{width:100%}}
 @media print{#quickreply{display:none}}
 
 /* edit post */

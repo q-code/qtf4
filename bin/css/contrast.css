@@ -201,10 +201,11 @@ p.post-title-l:after{background-color:transparent;content:" (" attr(data-num) ")
 section.code, section.quote{background-color:#444;color:#fff}
 #tag-ctrl{color:#FFF} #tag-ctrl:hover{color:#FFFF00}
 
-/* AJAX AUTOCOMPETE */
-#cmd-cb-dlg{background-color:#222;border:solid 2px var(--adm-bg);box-shadow: 0 0 4px 4px #222 !important;}
+/* JS DLG and AUTOCOMPETE */
+#cmd-cb-dlg{background-color:#222;border:solid 1px var(--adm-bg);box-shadow: 0 0 4px 4px #222 !important;}
+#cmd-cb-dlg span.optgroup{background-color:#444}
 #cmd-cb-dlg button{background-color:#008187;border:solid 1px var(--adm-bg);border-radius:3px}
-#cmd-cb-dlg button:hover{border-color:var(--ah)}
+#cmd-cb-dlg button:hover{color:var(--a);border-color:var(--a)}
 
 .ac-list{background-color:#000;border:solid 1px #ffff00}
 .ac-list li{border:1px solid #222}

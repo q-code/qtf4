@@ -67,25 +67,24 @@ function cbShowMore(el,dataset)
   const cbTable = document.getElementById(tableid); if ( !cbTable ) { console.log('table '+tableid+' not found'); return false; }
   if ( !cbCheckboxChecked(cbTable,tableid+'-cb[]') ) { cbShowAlert(el,noselect ?? 'Nothing selected'); return false; }
   const formid = cbTable.dataset.formid ?? 'form-items';
+  const form = document.getElementById(formid); if ( !form ) { console.log('form '+formid+' not found'); return false; }
+  const formaction = document.getElementById(formid+'-action'); if ( !formaction ) { console.log('form '+formid+'-action not found'); return false; }
   const box = document.createElement('div');
   box.id = 'cmd-cb-dlg';
   box.style = 'position:absolute;z-index:2;top:-5px;right:-1rem;display:flex;gap:0.2rem;align-items:start';
-  const select = document.createElement('select');
-  select.setAttribute('size','8');
-  select.onchange = function() {
-    document.getElementById(formid+'-action').value = select.value;
-    document.getElementById(formid).submit();
-  };
+  const select = document.createElement('p');
+  select.setAttribute('style','display:flex;flex-direction:column');
   dataset.forEach( (set)=>{
-    const optgroup = document.createElement('optgroup');
-    optgroup.label = set.optgroup;
-    set.options.forEach( (item)=>{
-      const option = document.createElement('option');
-      option.text = item.text;
-      option.value = item.value;
-      optgroup.appendChild(option);
-    });
+    const optgroup = document.createElement('span');
+    optgroup.innerText = set.optgroup;
+    optgroup.setAttribute('class','optgroup');
     select.appendChild(optgroup);
+    set.options.forEach( (item)=>{
+      const option = document.createElement('a');
+      option.innerText = item.text;
+      option.onclick = ()=>{ formaction.value = item.value; form.submit(); }
+      select.appendChild(option);
+    });
   });
   const button = cbXbutton();
   button.onclick = function(){ box.remove(); };

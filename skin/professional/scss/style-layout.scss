@@ -110,7 +110,7 @@ aside{padding:0.3rem;display:flex;gap:1rem;color:#888;border-bottom:solid 1px #B
   #optionbar input[type=text]{padding:2px 4px;border:1px solid var(--adm-bg)}
   #optionbar select{padding:2px 5px 2px 2px;border:1px solid var(--adm-bg)}
   #optionbar select:focus, #optionbar input[type=text]:focus{background-color:var(--rowlight);border-color:#000}
-#showeditor-ctrl{display:flex;width:32px;height:32px;align-items:center;justify-content:center;font-size:1.5rem;background-color:#00adab;color:#FFF;border:solid 2px white;border-radius:3px;opacity:0.8}
+#showeditor-ctrl{display:flex;width:32px;height:32px;align-items:center;justify-content:center;font-size:1.5rem;background-color:#0080fe;color:#FFF;border:solid 2px white;border-radius:3px;opacity:0.8}
   #showeditor-ctrl[data-state="0"]{transform:rotate(90deg)}
   #showeditor-ctrl[data-state="0"]:hover{transform:rotate(0deg)}
   #showeditor-ctrl[data-state="1"]{transform:rotate(0deg)}
