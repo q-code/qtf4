@@ -11,7 +11,6 @@ button:hover:not(.disabled), .button:hover:not(.disabled),
 button:focus:not(.disabled), .button:focus:not(.disabled){
   opacity:1; color:var(--btn-color); text-decoration:none;
 }
-/* Navigation buttons */
 .nav button, .nav .button{
   padding:0.4rem 0.7rem;
   opacity:1;
@@ -25,11 +24,11 @@ button:focus:not(.disabled), .button:focus:not(.disabled){
 .nav button:focus:not(.disabled), .nav .button:focus:not(.disabled){
   opacity:1; color:var(--ah);
 }
-.post-cmd{display:flex;gap:0.5rem;align-items:baseline;font-size:max(0.9rem,9pt)}
-.post-cmd .button{padding:0;opacity:1;background-color:transparent;color:var(--a);border:none;text-shadow:none}
-.post-cmd .button:hover:not(.disabled){color:var(--ah);text-decoration:none}
-
+/* Buttons specific */
+.msg-cmd{margin-right:4px;padding:0;color:var(--a);border:none;font-weight:600}
+.msg-cmd:hover{color:var(--ah)}
 .btn-prefix{margin-right:0.5rem} #btn-news .btn-prefix{margin-bottom:2px}
+/* Inputs */
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
 input,textarea{padding:3px 5px}
 input[type=radio]{margin:0 4px 0 2px;padding:0}

@@ -23,12 +23,11 @@ button:focus:not(.disabled), .button:focus:not(.disabled){
 .nav button:focus:not(.disabled), .nav .button:focus:not(.disabled){
   opacity:1; color:var(--c); text-decoration:none;
 }
-/* Buttons specific */
 .nav button, .nav .button{padding:0.4rem 0.6rem;font-weight:bold}
-.post-cmd{display:flex;gap:var(--gap);align-items:baseline;font-size:max(0.8rem,9pt)}
-.post-cmd .button{padding:3px;background-color:#f4f4f4;color:var(--c);border:1px solid #d8d7c0;border-radius:2px}
-.post-cmd .button:hover{border:1px solid var(--btn-bg);color:var(--btn-bg);text-decoration:none}
-
+/* Buttons specific */
+.msg-cmd{padding:3px 4px;background-color:#f4f4f4;color:var(--c);border:1px solid #d8d7c0;border-radius:2px}
+.msg-cmd:hover:not(.disabled){border-color:var(--btn-bg);color:var(--btn-bg)}
+/* Inputs */
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
 input,textarea{padding:3px 5px}
 input[type=radio]{margin:0 4px 0 2px;padding:0}

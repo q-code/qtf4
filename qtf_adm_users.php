@@ -190,7 +190,7 @@ L('picture').'|class=cmd-cb|data-action=userspic'
 $rowCommands = L('selection').': '.$m->build();
 
 echo PHP_EOL.'<form id="form-items" method="post" action="'.APP.'_adm_register.php"><input type="hidden" id="form-items-action" name="a" />'.PHP_EOL;
-echo '<div id="tabletop" class="table-ui top">';
+echo '<div class="table-ui top">';
 echo '<div id="t1-edits-top" class="cmds-cb" data-table="t1">'.qtSvg('corner-up-right','class=arrow-icon').$rowCommands.'</div>';
 echo '<div class="right">'.$paging.'</div></div>'.PHP_EOL;
 
@@ -265,7 +265,7 @@ while($row=$oDB->getRow())
 
 echo '</tbody>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
-echo '<div id="tablebot" class="table-ui bot">';
+echo '<div class="table-ui bot">';
 echo $rowCommands ? '<div id="t1-edits-bot" class="cmds-cb" data-table="t1">'.qtSvg('corner-down-right','class=arrow-icon').$rowCommands.'</div>' : '<div></div>';
 echo '<div class="right">'.$paging.'</div></div>'.PHP_EOL;
 echo '</form>'.PHP_EOL;
@@ -282,6 +282,6 @@ echo '<p class="right" style="padding:0.3rem 0">'.L('Show').': '.$m->build('u'.$
 // HTML END
 
 $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js" data-noselect="'.L('Nothing_selected').'"></script>';
-$oH->scripts[] = 'qtHideAfterTable("tablebot");';
+$oH->scripts[] = 'qtHideAfterTable(".table-ui.bot");';
 
 include 'qtf_adm_inc_ft.php';

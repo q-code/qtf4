@@ -96,7 +96,7 @@ if ( $oS->status==='1' || $oT->status==='1' || (SUser::role()==='V' && $_SESSION
   else                         { $def .= '|title='.L('R_member'); }
 }
 $navCommands = $oH->backButton().'<a'.attrRender($def).'>'.L('Reply').'</a>';
-echo '<div id="t1-nav-top" class="nav nav-top">'.$navCommands.'</div>
+echo '<div class="nav nav-top">'.$navCommands.'</div>
 ';
 
 // First message
@@ -159,8 +159,7 @@ if ( $oT->items>0 ) {
 // ========
 
 // BUTTON LINE AND PAGER
-
-if ( $oT->items>2 ) echo '<div id="t1-nav-top" class="nav nav-bot">'.$navCommands.'</div>';
+if ( $oT->items>2 ) echo '<div class="nav nav-bot">'.$navCommands.'</div>';
 
 // QUICK REPLY
 if ( $_SESSION[QT]['show_quick_reply']==='1' ) {

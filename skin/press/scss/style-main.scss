@@ -71,8 +71,9 @@ div.post{
 div.post-R,div.post-F,div.post-D{margin:10px 0 10px 50px}
 @media screen and (max-width:860px){div.post-R,div.post-F,div.post-D{margin:10px 0}}
 .g-p-type{grid-area:g-p-type}
-.g-p-title{grid-area:g-p-title;padding-bottom:var(--gap);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ddd}
-.g-p-msg{grid-area:g-p-msg;padding:0.5rem}
+.g-p-title{grid-area:g-p-title;display:flex;justify-content:space-between;align-items:center}
+  .post-P .g-p-title{padding-bottom:var(--gap);border-bottom:1px solid #ddd}
+.g-p-msg{grid-area:g-p-msg;padding:0.5rem 0}
 .g-p-status{grid-area:g-p-status}
 /* message content */
 .i-container{display:flex;width:35px;height:35px;align-items:center;justify-content:center;background-color:#FFF;color:#aaa;border:1px solid #DDD;border-radius:3px}

@@ -1,4 +1,4 @@
-/* Buttons colors */
+/* Buttons */
 button, .button{
   background-color:var(--btn-bg); color:var(--btn-color);
   border:var(--btn-border)
@@ -12,17 +12,16 @@ button:focus:not(.disabled), .button:focus:not(.disabled){
   background-color:#e5e5e5; color:var(--c);
   border-color:#c0c0c0;
 }
-.nav button.disabled, .nav .button.disabled{
-  color:#aaa;
-}
+.nav button.disabled, .nav .button.disabled{color:#aaa}
 .nav button:hover:not(.disabled), .nav .button:hover:not(.disabled),
-.nav button:focus:not(.disabled), .nav .button:focus:not(.disabled){
-  color:var(--c);
-}
-.post-cmd{display:flex;gap:4px;align-items:baseline;font-size:max(0.8rem,9pt)}
-.post-cmd .button{padding:1px 4px}
+.nav button:focus:not(.disabled), .nav .button:focus:not(.disabled){color:var(--c)}
+/* Buttons specific */
+.msg-cmd{opacity:0.7;background-color:var(--btn-bg);color:var(--btn-color);border-radius:3px}
+.msg-cmd:hover:not(.disabled){opacity:1;background-color:var(--btn-bg);color:var(--btn-color)}
 
 .btn-prefix{margin-right:0.5rem}#btn-news .btn-prefix{margin-bottom:2px}
+
+/* Inputs */
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
 input,textarea{padding:3px 5px}
 input[type=radio]{margin:0 4px 0 2px;padding:0}
