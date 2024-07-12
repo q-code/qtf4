@@ -255,7 +255,7 @@ if ( $_SESSION['EditByRows'] ) {
   L('Delete').'|class=cmd-cb|data-action=itemsDelete|title='.L('Delete').' '.L('item+').', '.L('reply+').' '.L('or').' '.L('attachment+')
   ], ' &middot; ');
   $rowCommands = $m->build();
-  $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js" data-noselect="'.L('Nothing_selected').'"></script>';
+  $oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js" data-noselect="'.L('Nothing_selected').'..."></script>';
   $oH->scripts[] = 'const cmdExport = document.getElementById("cmd-export-selected");
   if ( cmdExport ) {
     cmdExport.addEventListener("click", ()=>{

@@ -160,7 +160,7 @@ case 'delsecitems':
   foreach(array_keys($arrYears) as $k) $arrYears[$k] .= ' ('.L('item',$arrCount[$k]['T']).')';
 
   $frm_title = L('Delete');
-  $frm[] = '<form method="post" action="'.$oH->php.'" onsubmit="return validateForm()">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->php.'" onsubmit="if (this.deleteT.checked || this.deleteR.checked || this.deleteA.checked) return true; qtShowAlert(this.querySelector(`.row-confirm`),`'.L('Nothing_selected').'...`,`top:-5px;right:-3px`); return false;">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Items_in_section').':</p>';
   $frm[] = '<p class="ellipsis indent"><span class="bold">'.CSection::translate($s).'</span><br><span class="minor">'.L('item',$arrCount['*']['T']).', '.L('news',$arrCount['*']['A']).', '.L('reply',$arrCount['*']['R']).' &middot; #'.$s.' '.(isset($_Sections[$s]['title']) ? $_Sections[$s]['title'] : 'Domain '.$s).'</span></p>';
@@ -230,11 +230,6 @@ deleteA.addEventListener("change", () => {
   submitSum();
   if ( deleteA.checked ) updateCounts("attach");
 });
-function validateForm() {
-  if ( deleteT.checked || deleteR.checked || deleteA.checked ) return true;
-  alert("'.L('Nothing_selected').'");
-  return false;
-}
 function unConfirm() {
   deleteT.checked=false;
   deleteR.checked=false;
@@ -250,7 +245,7 @@ function updateCounts(q) {
   .then( data => { submitSum(data); } )
   .catch( err => console.log(err) );
 }
-function submitSum(n="...") { document.getElementById("submit-sum").innerHTML = n; }';
+function submitSum(n="...") { document.getElementById("submit-sum").innerHTML = n; qtHideDlg(); }';
 
   break;
 
@@ -281,7 +276,7 @@ case 'prune':
   $countU = $oDB->count( CSection::sqlCountItems($s,'unreplied','','','',$days) );
   $countUA = $countU===0 ? 0 : $oDB->count( CSection::sqlCountItems($s,'unreplied','0','A','',$days) );
   $frm_title = L('Prune');
-  $frm[] = '<form method="post" action="'.$oH->php.'" onsubmit="validateForm();">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.$oH->php.'">'.$frm_dflt_args;
   $frm[] = '<input type="hidden" id="inDay" name="d" value="'.$days.'"/>';
   $frm[] = '<article>';
   $frm[] = '<p><span class="minor">'.qtSvg('info').' '.L('Unreplied').': '.sprintf(L('unreplied_def'),$days).'</span></p>';
@@ -308,11 +303,6 @@ const inType = document.getElementById("inType");
 const inPrune = document.getElementById("inPrune");
 inType.addEventListener("change", unConfirm);
 inPrune.addEventListener("change", () =>{ submitSum(); if ( inPrune.checked ) updateCounts("unreplied"); });
-function validateForm() {
-  if ( inPurne.checked ) return true;
-  alert("'.L('Nothing_selected').'");
-  return false;
-}
 function unConfirm() {
   document.getElementById("inPrune").checked=false;
   document.getElementById("submit-sum").innerHTML = "...";
@@ -395,7 +385,7 @@ case 'moveitems':
   </select></p>';
   $frm[] = '</article>';
   $frm[] = '<p class="row-confirm">'.L('Confirm').':</p>';
-  $frm[] = '<p class="indent cblabel"><input type="checkbox" id="inMove" name="MoveT" required/> <label for="inMove">'.L('Move').' '.L('item+').'</label></p>';
+  $frm[] = '<p class="indent cblabel"><input required type="checkbox" id="inMove" name="MoveT"/> <label for="inMove">'.L('Move').' '.L('item+').'</label></p>';
   $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.$oH->exiturl.'`;">'.L('Cancel').'</button> <button type="submit" name="ok" value="ok">'.L('Move').' (<span id="submit-sum">...</span>)</button></p>';
   $frm[] = '</form>';
 

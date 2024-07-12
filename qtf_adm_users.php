@@ -281,7 +281,7 @@ echo '<p class="right" style="padding:0.3rem 0">'.L('Show').': '.$m->build('u'.$
 
 // HTML END
 
-$oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js" data-noselect="'.L('Nothing_selected').'"></script>';
+$oH->scripts[] = '<script type="text/javascript" src="bin/js/qt_table_cb.js" data-noselect="'.L('Nothing_selected').'..."></script>';
 $oH->scripts[] = 'qtHideAfterTable(".table-ui.bot");';
 
 include 'qtf_adm_inc_ft.php';

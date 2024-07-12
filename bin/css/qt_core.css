@@ -45,7 +45,6 @@ input:focus, select:focus, textarea:focus{outline:none; border:1px solid #000}
 .table-ui.bot{margin:0.3rem 0 0.6rem 0;align-items:flex-start}
 .arrow-icon{display:inline-block;width:36px;text-align:center}
 .cmds-cb .arrow-icon{transform:translateY(0.25rem)}
-.cmds-cb{position:relative}
 @media print{.table-ui .cmds-cb{visibility:hidden}}
 
 /* FORM */
@@ -147,13 +146,13 @@ background:#ffc;border:1px solid #666;border-radius:8px;box-shadow:0 0 5px 5px #
 [data-magnify="1"]{display:block;max-width:100px;max-height:100px;position:absolute;z-index:9;top:-25px;left:-15px;padding:5px;background-color:#FFF;border:solid 1px #DDD;border-radius:5px;box-shadow:2px 2px 4px #BBB;cursor:pointer}
 
 /* JS DLG and AUTOCOMPETE */
-#cmd-cb-dlg{font-size:0.85rem;background-color:#fff;padding:0.2rem;border:solid 1px var(--adm-bg);border-radius:5px;box-shadow:0 0 5px #aaa}
+#cmd-cb-dlg{font-size:0.9rem;background-color:#fff;padding:0.2rem;border:solid 1px var(--adm-bg);border-radius:5px;box-shadow:0 0 5px #aaa}
 #cmd-cb-dlg p{max-height:180px;overflow:auto;scrollbar-width:thin}
 #cmd-cb-dlg span.optgroup{background-color:#eee;font-weight:600;padding:0.1rem 0.25rem}
 #cmd-cb-dlg a{padding:0 0.3rem;color:var(--adm-bg);text-decoration:none}
 #cmd-cb-dlg a:hover{background-color:var(--adm-bg);color:white;text-decoration:none;cursor:default}
-#cmd-cb-dlg button{background-color:var(--adm-bg);border:solid 1px var(--adm-bg);border-radius:3px}
-#cmd-cb-dlg button:hover{border-color:var(--adm-bg)}
+#cmd-cb-dlg button{background-color:var(--adm-bg);color:white;border:solid 1px var(--adm-bg);border-radius:3px}
+#cmd-cb-dlg button:hover{border-color:var(--adm-bg);color:white}
 [id^="ac-wrapper"]{display:inline-block;position:relative}
 .ac-list{list-style:none;z-index:2;padding:unset;margin:unset;position:absolute;width:100%;background-color:white;box-shadow:0 0 5px #aaa}
 .ac-list li{border:1px solid #aaa; border-top:unset}

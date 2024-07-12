@@ -248,7 +248,7 @@ case 'itemsDelete':
 
   // FORM
   $frm_title = L('Delete');
-  $frm[] = '<form method="post" action="'.url($oH->php).'" onsubmit="if (this.deleteT.checked || this.deleteR.checked || this.deleteA.checked) return true; alert(`'.L('Nothing_selected').'`); return false;">'.$frm_dflt_args;
+  $frm[] = '<form method="post" action="'.url($oH->php).'" onsubmit="if (this.deleteT.checked || this.deleteR.checked || this.deleteA.checked) return true; qtShowAlert(this.querySelector(`.row-confirm`),`'.L('Nothing_selected').'...`,`top:-5px;right:-3px`); return false;">'.$frm_dflt_args;
   $frm[] = '<article>';
   $frm[] = '<p>'.L('Item+').':</p>';
   $frm[] = renderItems($ids,false,true,true);
@@ -311,7 +311,7 @@ function updateCounts(q) {
   .then( data => { submitSum(data); } )
   .catch( err => console.log(err) );
 }
-function submitSum(n="...") { document.getElementById("submit-sum").innerHTML = n; }';
+function submitSum(n="...") { document.getElementById("submit-sum").innerHTML = n; qtHideDlg(); }';
 
   break;
 

@@ -38,6 +38,31 @@ function qtToggle(childsSelector='#tgl-container', args='', parentObj='body') {
     }
   });
 }
+/* Simple Alert */
+function qtShowAlert(parentContainer,msg,shift='top:-5px;right:-3px') {
+  qtHideDlg();
+  const box = document.createElement('div');
+  box.id = 'cmd-cb-dlg';
+  box.style = 'position:absolute;z-index:2;display:flex;gap:0.25rem;align-items:center;'+shift;
+  const select = document.createElement('span');
+  select.innerText = msg;
+  const button = qtXbutton();
+  button.onclick = function(){ box.remove(); };
+  box.appendChild(select);
+  select.after(button);
+  parentContainer.style.position = 'relative';
+  parentContainer.appendChild(box);
+}
+function qtHideDlg(id='cmd-cb-dlg') {
+  const el = document.getElementById(id);
+  if ( el ) el.remove();
+}
+function qtXbutton() {
+  const button = document.createElement('button');
+  button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" style="vertical-align:-0.125em" width="0.69em" height="1em" viewBox="0 0 352 512"><path fill="currentColor" d="m242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28L75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256L9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>';
+  button.style = 'padding:1px 4px';
+  return button;
+}
 /**
  * @param {HTMLAnchorElement} a
  */
