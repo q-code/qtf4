@@ -67,7 +67,7 @@ div.post{
   grid-template-areas:"g-p-type g-p-title" "g-p-type g-p-msg" "g-p-type g-p-status";
   background-color:#f6f6f6;border:1px solid #eee;border-radius:4px;
 }
-div.post:hover{background-color:var(--bgform)}
+div.post:hover{background-color:var(--msg-bg)}
 div.post-R, div.post-F, div.post-D{margin:10px 0 10px 30px}
   @media screen and (max-width:860px){div.post-R, div.post-F, div.post-D{margin:10px 0}}
 .g-p-type{grid-area:g-p-type}

@@ -51,7 +51,7 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 #secu-txt-code{padding:4px 8px;color:#000;background-color:#DDD}
 
 /* SEARCH BAR */
-#searchbar{padding:0.5rem;justify-content:flex-end;gap:0.5rem;align-items:center;background:linear-gradient(to right, var(--btn-bg) 0%, #5fb1ff 50%)}
+#searchbar{padding:0.5rem;justify-content:flex-end;gap:0.5rem;align-items:center;background-color:#5fb1ff;background:var(--msg-gr)}
 #searchbar .img{vertical-align:baseline}
 #searchbar .button-x{padding:0.1rem 0.4rem;opacity:1;border:1px solid var(--btn-bg)}
 #searchbar .button-x:hover{border-color:#fff}
@@ -59,12 +59,12 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 @media print{#searchbar{display:none !important}}
 
 /* MSGBOX general */
-.msgbox{margin:0 auto;width:450px;background-color:var(--bgform);border:solid 1px #0080FF;border-radius:5px 5px 0 0;box-shadow:0 2px 5px #999999}
+.msgbox{margin:0 auto;width:450px;background-color:var(--msg-bg);border:solid 1px #0080FF;border-radius:5px 5px 0 0;box-shadow:0 2px 5px #999999}
 .msgbox + .msgbox{margin-top:1.5rem}
 .msgbox.short{width:350px}
 @media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:475px} .msgbox.short{width:375px}}
 @media screen and (min-width:1280px){.msgbox{width:500px}  .msgbox.short{width:400px}}
-.msgboxtitle{padding:0.75rem 1.5rem;color:#FFF;background:linear-gradient(to right, var(--btn-bg) 30%, #5fb1ff);font-size:1.6rem}
+.msgboxtitle{padding:0.75rem 1.5rem;color:#FFF;background:var(--msg-gr);font-size:1.6rem}
 .msgboxbody{padding:1.5rem}
 .msgboxbody p.list small{color:#888}
 
@@ -118,7 +118,7 @@ div.tags > i{color:#AAA}
   gap:0.3rem;
   background-color:#f0f0f0;border:solid 1px #e5e5e5;border-radius:10px;
 }
-#quickreply:hover{background-color:var(--bgform)}
+#quickreply:hover{background-color:var(--msg-bg)}
 .g-qr-icon{grid-area:g-qr-icon}
 .g-qr-title{grid-area:g-qr-title;font-weight:bold;color:#AAA;text-align:center;align-self:center}
 .g-qr-bbc{grid-area:g-qr-bbc;align-self:end}
@@ -135,7 +135,7 @@ div.edit-post{
   margin-top:10px;
   padding:var(--gap);
   display:flex;
-  gap:var(--gap);  background-color:var(--bgform);border:1px solid #ddd;border-radius:4px
+  gap:var(--gap);  background-color:var(--msg-bg);border:1px solid #ddd;border-radius:4px
 }
 div.edit-type{flex-shrink:1}
 div.edit-form{flex-grow:1}

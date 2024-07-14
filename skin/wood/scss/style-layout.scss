@@ -1,7 +1,7 @@
 /* VARIABLES */
 :root{
   --c:#444; --a:#90765e; --ah:#cc3234;
-  --bgform:#fff; --bgbanner:#b69c84;
+  --msg-bg:#fff; --ban-bg:#b69c84;
   --font:"Lucida Sans Unicode",Verdana,Arial;
   --adm-bg:#009d58; --rowlight:#e3fff3; --rowlighthover:#d0ffea;
   --btn-bg:#90765e; --btn-color:#fff;
@@ -60,10 +60,10 @@ footer p{padding-bottom:4px;text-align:center;font-size:0.9rem;color:#999} foote
 
 /* BANNER styles */
 #banner[data-layout="0"] #menulang{padding:0 0 0.5rem 0;background-color:transparent}
-#banner[data-layout="0"] nav{padding:0 3px;background-color:var(--bgbanner);border-radius:5px 5px 0 0}
+#banner[data-layout="0"] nav{padding:0 3px;background-color:var(--ban-bg);border-radius:5px 5px 0 0}
 #banner[data-layout="1"],
-#banner[data-layout="2"]{padding:5px 5px 0 5px; min-height:75px; border:2px solid var(--bgbanner); border-bottom:none; border-radius:5px 5px 0 0;background:linear-gradient(to bottom, #90765e 10%, var(--bgbanner) 80%, var(--bgbanner) 10%)}
-  @media print{#banner[data-layout="2"]{border:2px solid var(--bgbanner)}}
+#banner[data-layout="2"]{padding:5px 5px 0 5px; min-height:75px; border:2px solid var(--ban-bg); border-bottom:none; border-radius:5px 5px 0 0;background:linear-gradient(to bottom, #90765e 10%, var(--ban-bg) 80%, var(--ban-bg) 10%)}
+  @media print{#banner[data-layout="2"]{border:2px solid var(--ban-bg)}}
   #menulang a{text-decoration:none}
   #menulang a:hover{text-decoration:underline}
   #menulang{color:#aaa}
@@ -84,7 +84,7 @@ nav a.active::after{
   content:'';
   display:block;
   position:absolute;height:0.6rem;bottom:-0.3rem;width:100%;right:0;
-  background-color:var(--bgbanner);
+  background-color:var(--ban-bg);
   border-radius:5px}
   @media print{nav a.active::after{display:none}}
 

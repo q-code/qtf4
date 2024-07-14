@@ -2,7 +2,8 @@
 :root{
   --c:#444; --svg:#888;
   --a:#15C; --ah:#0000FF; --av:#3198ff;
-  --bgform:#f6f6f6; --bgbanner:#156AC2;
+  --ban-bg:#156AC2;
+  --msg-bg:#f6f6f6;
   --font:"Lucida Sans Unicode",Verdana,Arial;
   --adm-bg:#0088a1; --rowlight:#eafcff; --rowlighthover:#d7f8ff;
   --btn-bg:#1364B7; --btn-color:white;
@@ -51,7 +52,7 @@ footer a{color:#777} footer a:hover{color:#555}
 #banner[data-layout="0"]{display:block;background-color: #e2e2e2}
   #banner[data-layout="0"] #logo    {display:none}
   #banner[data-layout="0"] #menulang{margin-bottom:0.2rem;text-align:right}
-  #banner[data-layout="0"] nav      {padding-top:0.3rem;background-color:var(--bgbanner);text-align:right}
+  #banner[data-layout="0"] nav      {padding-top:0.3rem;background-color:var(--ban-bg);text-align:right}
 #banner[data-layout="1"]{display:grid; grid-template-columns:180px 1fr; grid-template-rows:auto; grid-gap:0}
   #banner[data-layout="1"] #logo    {grid-area:1 / 1 / 2 / 2}
   #banner[data-layout="1"] #menulang{grid-area:1 / 2 / 2 / 3; align-self:start; text-align:right}
@@ -63,7 +64,7 @@ footer a{color:#777} footer a:hover{color:#555}
 #logo img{vertical-align:baseline}
   /* BANNER styles */
   #banner[data-layout="1"],
-  #banner[data-layout="2"]{padding:5px 5px 0 5px;min-height:75px;background:linear-gradient(to bottom, #0C4C8C 20%, var(--bgbanner))}
+  #banner[data-layout="2"]{padding:5px 5px 0 5px;min-height:75px;background:linear-gradient(to bottom, #0C4C8C 20%, var(--ban-bg))}
   /* LANG */
   #menulang{padding-right: 3px;color:#999}
   #menulang a{text-decoration:none}

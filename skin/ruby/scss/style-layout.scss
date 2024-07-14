@@ -1,11 +1,12 @@
 /* VARIABLES */
 :root{
   --c:#444; --a:#982a2b; --ah:#cc3234;
-  --bgform:#fff; --bgbanner:#cc3234;
+  --msg-bg:#fff; --ban-bg:#cc3234;
   --font:"Trebuchet MS", Helvetica, sans-serif;
   --adm-bg:#0088a1; --rowlight:#eafcff; --rowlighthover:#d7f8ff;
   --btn-bg:#cc3234; --btn-color:#fff;
   --btn-border:2px solid #cc3234;
+  --msg-gr:linear-gradient(130deg,var(--btn-bg) 50%,#fd595b 70%,var(--btn-bg) 90%,var(--btn-bg));
 }
 
 /* LAYOUT */
@@ -61,7 +62,7 @@ footer p{padding-bottom:4px;text-align:center;font-size:0.9rem;color:#999} foote
 
 /* BANNER styles */
 #banner[data-layout="0"] #menulang{padding:0 0 0.5rem 0; background-color: transparent}
-#banner[data-layout="0"] nav{padding-top:5px;background-color:var(--bgbanner)}
+#banner[data-layout="0"] nav{padding-top:5px;background-color:var(--ban-bg)}
 #banner[data-layout="1"],
 #banner[data-layout="2"]{padding:6px 6px 0 6px; min-height:75px; border-radius:5px 5px 0 0; background:linear-gradient(130deg,var(--btn-bg) 10%,#fd595b 30%,var(--btn-bg) 50%,var(--btn-bg))}
   /* LANG */
@@ -83,7 +84,7 @@ footer p{padding-bottom:4px;text-align:center;font-size:0.9rem;color:#999} foote
     content:'';
     display:block;
     position:absolute;height:0.7rem;width:0.7rem;right:calc(50% - 0.35rem);
-    background-color:var(--bgbanner);
+    background-color:var(--ban-bg);
     transform:rotate(45deg)}
   @media print{nav a.active{color:black}}
 

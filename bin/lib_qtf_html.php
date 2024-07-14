@@ -270,8 +270,7 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
       }
       break;
     case 'replies':
-      // youreply merged in replies
-      $arr[$k] = $row['replies']==='0' ? '0' : '<span id="'.$strTableId.'re'.$row['id'].'">'.qtSvg('#ireplied').'</span>&thinsp;<span>'.qtK((int)$row['replies']).'</span>';
+      $arr[$k] = $row['replies']==='0' ? '0' : qtK((int)$row['replies']); // js add youreply svg and title
       break;
     case 'views':
       $arr[$k] = $row['views']==='0' ? '0' : qtK((int)$row['views']);

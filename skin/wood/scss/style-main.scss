@@ -18,7 +18,7 @@ a.cmd-cb:hover{color:var(--adm-bg);text-decoration:underline}
 @media screen and (max-width:840px){ .cmd-cb.secondary + .sepcmd{display:none !important} }
 
 /* SPECIFIC */
-.strongbox{padding:0.6rem;background-color:#666;color:#fff;background:linear-gradient(to bottom,#90765e 10%,var(--bgbanner) 80%,var(--bgbanner) 10%);color:#FFF;border:3px solid #b69c84;border-radius:5px}
+.strongbox{padding:0.6rem;background-color:#666;color:#fff;background:linear-gradient(to bottom,#90765e 10%,var(--ban-bg) 80%,var(--ban-bg) 10%);color:#FFF;border:3px solid #b69c84;border-radius:5px}
 .strongbox .title{margin-bottom:0.5rem;font-weight:700}
 #participants{width:220px}
   #participants table{table-layout:fixed;width:100%}

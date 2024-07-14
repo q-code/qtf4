@@ -182,7 +182,7 @@ function qtSvg(string $ref='info', string $attr='', array $mod=[])
   if ( substr($ref,-4)!=='.svg' ) $ref .= '.svg'; // referrer must use id ending with '.svg'
   $svg = qtSvgCode($ref);
   if ( $attr ) $svg = '<svg'.attrRender($attr).' '.substr($svg,4);
-  if ( $mod ) qtSvgMod($svg, $mod);
+  if ( $mod ) qtSvgMod($svg, '', $mod);
   return $svg;
 }
 function qtSvgUse(string $ref='#info', string $attr='')
@@ -217,26 +217,6 @@ function qtSvgSymbol(string $svg, string $attr='', array $mod=[])
   // mod
   if ( $mod ) qtSvgMod($svg, $attr['id'], $mod);
   $svg = str_replace(['<svg', '</svg>'], ['<symbol'.attrRender($attr), '</symbol>'], $svg);
-  return $svg;
-}
-function qtSvgSymbolOld(string $svg, string $title='', string $id='', bool $addCss=true, bool $rec = false)
-{
-  if ( substr($svg,-4)!=='.svg' ) $svg .= '.svg';// referrer must use id ending with '.svg'
-  if ( empty($id) ) $id = $svg;
-  $svg = qtSvgCode($svg);
-  // convert
-  if ( $title ) $title = '<title>'.$title.'</title>';
-  $rec = $rec ? '<rect width="24" height="24" fill="transparent"/>' : '';
-  $svg = str_replace(['<svg', '</svg>'], ['<symbol id="'.$id.'"', $rec.$title.'</symbol>'], $svg);
-  // add style width,height,style
-  if ( $addCss ) {
-    $i = strpos($svg,'>'); if ( $i===false )$i=360;
-    $def = qtExplode(substr(str_replace('"','',$svg), 0, $i),' ');
-    $w = $def['width'] ?? '1em';
-    $h = $def['height'] ?? '1em';
-    $s = $def['style'] ?? '';
-    $svg .= '<style>svg:has(use[href="#'.$id.'"]){width:'.$w.';height:'.$h.';'.$s.'}</style>';
-  }
   return $svg;
 }
 /** Returns the language path (with final /) */
@@ -421,10 +401,9 @@ function qtExplodeUri(string $str='', string $skip='')
  * @param string $prefix is usualy '?'
  * @return string uri-arguments
  */
-function qtURI(string $skip='', string $prefix='?', bool $dropvoidprefix=true)
+function qtURI(string $skip='', string $prefix='?')
 {
-  $str = qtImplode(qtExplodeUri('',$skip));
-  return empty($str) && $dropvoidprefix ? '' : $prefix.$str;
+  return $prefix.qtImplode(qtExplodeUri('',$skip));
 }
 /**
  * Search a specific key value in a multifield string 'a=1;b=2;c=3'

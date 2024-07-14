@@ -59,12 +59,12 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 @media print{#searchbar{display:none !important}}
 
 /* MSGBOX general */
-.msgbox{width:450px;margin:0 auto;background-color:var(--bgform);border:solid 1px #cc3234;box-shadow:3px 3px 4px #CCC}
+.msgbox{width:450px;margin:0 auto;background-color:var(--msg-bg);border:solid 1px #cc3234;box-shadow:3px 3px 4px #CCC}
 .msgbox + .msgbox{margin-top:1.5rem}
 .msgbox.short{width:350px}
 @media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:475px} .msgbox.short{width:375px}}
 @media screen and (min-width:1280px){.msgbox{width:500px}  .msgbox.short{width:400px}}
-.msgboxtitle{padding:0.75rem 1.5rem;color:#FFF;background:linear-gradient(130deg,var(--btn-bg) 50%,#fd595b 70%,var(--btn-bg) 90%,var(--btn-bg));font-size:1.6rem}
+.msgboxtitle{padding:0.75rem 1.5rem;color:#FFF;background:var(--msg-gr);font-size:1.6rem}
 .msgboxbody{padding:1.5rem}
 .msgboxbody p.list small{color:#888}
 

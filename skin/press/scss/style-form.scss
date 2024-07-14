@@ -58,7 +58,7 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 @media print{#searchbar{display:none !important}}
 
 /* MSGBOX general */
-.msgbox{width:450px;margin:0 auto;background-color:var(--bgform);border:1px solid var(--btn-bg);box-shadow:2px 2px 4px #DDD}
+.msgbox{width:450px;margin:0 auto;background-color:var(--msg-bg);border:1px solid var(--btn-bg);box-shadow:2px 2px 4px #DDD}
 .msgbox + .msgbox{margin-top:1.5rem}
 .msgbox.short{width:350px}
 @media screen and (min-width:1024px) and (max-width:1279px){.msgbox{width:475px} .msgbox.short{width:380px}}

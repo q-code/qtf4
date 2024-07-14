@@ -70,7 +70,7 @@ button:focus:not(.disabled), .button:focus:not(.disabled){opacity:1;text-decorat
 .msg-cmd:hover{text-decoration:none}
 
 /* INLINE (p has margin in article and msgbox) */
-svg {width:1.1em;height:1em} /* protection required, if symbol style is missing */
+svg:not([width]){width:1.1em} svg:not([height]){height:1em} /* protection required, if symbol style is missing */
 article p, .article p, p.article, .msgboxbody p{margin-bottom:0.5rem}
 p.submit, .msgboxbody p.submit{margin:1rem 0 0 0;text-align:center}
 p.list{margin-bottom:2px}
@@ -151,7 +151,7 @@ background:#ffc;border:1px solid #666;border-radius:8px;box-shadow:0 0 5px 5px #
 #cmd-cb-dlg span.optgroup{background-color:#eee;font-weight:600;padding:0.1rem 0.25rem}
 #cmd-cb-dlg a{padding:0 0.3rem;color:var(--adm-bg);text-decoration:none}
 #cmd-cb-dlg a:hover{background-color:var(--adm-bg);color:white;text-decoration:none;cursor:default}
-#cmd-cb-dlg button{background-color:var(--adm-bg);color:white;border:solid 1px var(--adm-bg);border-radius:3px}
+#cmd-cb-dlg button{padding:0.1rem 0.5rem;background-color:var(--adm-bg);color:white;border:solid 1px var(--adm-bg);border-radius:3px}
 #cmd-cb-dlg button:hover{border-color:var(--adm-bg);color:white}
 [id^="ac-wrapper"]{display:inline-block;position:relative}
 .ac-list{list-style:none;z-index:2;padding:unset;margin:unset;position:absolute;width:100%;background-color:white;box-shadow:0 0 5px #aaa}
