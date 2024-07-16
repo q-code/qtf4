@@ -130,9 +130,9 @@ aside{padding:0.5rem;display:flex;gap:1rem;background-color:#efefef;color:#888}
   #showeditor-ctrl:hover, #showeditor-ctrl:focus{opacity:1}
 
 /* CONTENT */
-a.lastitem{margin-left:2px;color:#AAA;text-decoration:none}
-a.lastitem:hover{color:var(--ah)}
-@media print{a.lastitem{display:none}}
+a.goto{margin-left:2px;color:#AAA;text-decoration:none}
+a.goto:hover{color:var(--ah)}
+@media print{a.goto{display:none}}
 i.disabled{color:#DDD}
 p.csv{margin:3px 0;text-align:right}
 img.i-sec{max-width:40px;max-height:40px}

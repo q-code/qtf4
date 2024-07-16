@@ -287,7 +287,7 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
       if ( empty($row['lastpostdate']) ) {
         $arr[$k] = '&nbsp;';
       } else {
-        $arr[$k] = qtDate($row['lastpostdate'],'$','$').'<a class="lastitem" href="'.url('qtf_item.php').'?t='.$row['id'].'#p'.$row['lastpostid'].'">'.qtSvg('#caret-square-right').'</a>';
+        $arr[$k] = qtDate($row['lastpostdate'],'$','$').'<a class="goto" href="'.url('qtf_item.php').'?t='.$row['id'].'#p'.$row['lastpostid'].'">'.qtSvg('#caret-square-right').'</a>';
         $arr[$k] .= '<br><small>'.L('by').' <a href="'.url('qtf_user.php').'?id='.$row['lastpostuser'].'" title="'.qtAttr($row['lastpostname']).'">'.$row['lastpostname'].'</a></small>';
       }
       break;

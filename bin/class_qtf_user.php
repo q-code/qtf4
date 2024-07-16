@@ -82,15 +82,15 @@ public static function logIn(string $username='', string $password='', bool $rem
   }
   return $_SESSION[QT.'_usr']['auth'];
 }
+/** remove cookies and destroy session */
 public static function logOut()
 {
-  // Remove session info (and cookie)
-  $_SESSION=array();
+  if ( isset($_COOKIE[QT.'_cookname']) ) setcookie(QT.'_cookname', '', time()-3600, '/');
+  if ( isset($_COOKIE[QT.'_cookpass']) ) setcookie(QT.'_cookpass', '', time()-3600, '/');
+  if ( isset($_COOKIE[QT.'_cooklang']) ) setcookie(QT.'_cooklang', '', time()-3600, '/');
   session_destroy();
-  if ( isset($_COOKIE[QT.'_cookname']) ) setcookie(QT.'_cookname', '', time()+60*60*24*100, '/');
-  if ( isset($_COOKIE[QT.'_cookpass']) ) setcookie(QT.'_cookpass', '', time()+60*60*24*100, '/');
-  if ( isset($_COOKIE[QT.'_cooklang']) ) setcookie(QT.'_cooklang', '', time()+60*60*24*100, '/');
 }
+
 
 // Current user access right
 
@@ -199,7 +199,7 @@ public static function loginPostProc(CDatabase $oDB)
       $oH->exiturl = APP.'_login.php?dfltname='.$name;
       $oH->exitname = L('Login');
       self::unsetSession();
-      $oH->voidPage('', '<p>'.L('Is_banned_nomore').'</p>');
+      $oH->voidPage('', '<p>'.L('Is_banned_nomore').'</p><p class="submit right"><a class="button" href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>');
     }
     else
     {
@@ -215,7 +215,7 @@ public static function loginPostProc(CDatabase $oDB)
   {
     $oH->exiturl = APP.'_register.php?a=qa&id='.self::id();
     $oH->exitname = L('Secret_question').'...';
-    $oH->voidPage('', '<h2>'.L('Welcome').' '.$name.'</h2><br><p/>'.L('Update_secret_question').'</p>');
+    $oH->voidPage('', '<h2>'.L('Welcome').' '.$name.'</h2><br><p/>'.L('Update_secret_question').'</p><p class="submit right"><a class="button" href="'.$oH->exiturl.'">'.$oH->exitname.'</a></p>');
   }
 }
 

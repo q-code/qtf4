@@ -123,9 +123,11 @@ if ( isset($_GET['memflush']) && MEMCACHE_HOST ) {
 }
 
 // ------
-// Confirm auth, in case of coockie login
+// For user not authenticated, try cookie-login
+// if config QT_REMEMBER_ME allows it and if this page is not the _login.php itself
 // ------
-if ( QT_REMEMBER_ME && SUser::confirmCookie($oDB) ) {
+if ( $oH->php!==APP.'_login.php' && QT_REMEMBER_ME && empty($bypassConfirmCookie) && SUser::confirmCookie($oDB) ){
+  // This confirmation dialog is shown if cookie-login has been launched
   include APP.'_inc_hd.php';
   CHtml::msgBox(L('Login'), 'class=msgbox login');
   echo '<h2>'.L('Welcome').' '.SUser::name().'</h2><p><a href="'.url($oH->exiturl).'">'.L('Continue').'</a> &middot; <a href="'.url(APP.'_login.php?a=out&r=in').'">'.sprintf(L('Welcome_not'),SUser::name()).'</a></p>';

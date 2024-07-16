@@ -119,9 +119,9 @@ aside{padding:0.3rem;display:flex;gap:1rem;color:#888;border-bottom:solid 1px #B
   #showeditor-ctrl:hover, #showeditor-ctrl:focus{opacity:1}
 
 /* CONTENT */
-a.lastitem{margin-left:2px;color:#AAA;text-decoration:none}
-a.lastitem:hover{color:#15C}
-@media print{a.lastitem{display:none}}
+a.goto{margin-left:2px;color:#AAA;text-decoration:none}
+a.goto:hover{color:#15C}
+@media print{a.goto{display:none}}
 i.disabled{color:#DDD}
 p.csv{margin:3px 0;text-align:right}
 img.i-sec{max-width:40px;max-height:40px}
