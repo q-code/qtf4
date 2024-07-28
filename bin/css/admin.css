@@ -1,3 +1,7 @@
+:root{
+  --adm-bg:#0000ff; /* cmd-cb-dlg */
+  --title-bg:#deebff;
+}
 
 /* TYPO */
 body{color:#444;font-family:Calibri,Arial}
@@ -15,7 +19,6 @@ textarea.content-css{font-family:'Courier New', Courier, monospace}
 p.pageversion{margin:10px 0;font-size:0.9rem}
 
 /* MAIN LAYOUT */
-:root{--adm-bg:#0000ff} /* cmd-cb-dlg */
 body{margin:0;padding:0;background-color:#EEE}
 #site.pagemsg{margin:5vw 0}
 div.pg-admin{position:relative;width:95%;margin:0 auto;padding:14px 16px;color:#000;background-color:#EEE;border-color:#FFF;border-style:solid;border-width:0 1px 1px 1px;box-shadow:0px 1px 3px 2px #CCC}
@@ -40,11 +43,9 @@ img.i-sec{max-width:40px;max-height:40px;}
 img.i-item{margin-bottom:1px;}
 
 /* INPUT buttons */
-input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
-input,textarea{padding:3px 5px}
+input,textarea,select{padding:0.25rem;background-color:white;border:solid 1px #d0d0d0}
 input[type=radio]{margin:0 4px 0 2px;padding:0}
 input[type=number]{width:60px}
-select{padding:2px 5px 2px 2px}
 a.button,button{padding:5px 10px;background-color:#1364B7;opacity:0.8;color:white;border:none;text-decoration:none;border-radius:3px}
 a.button:hover,button:hover{opacity:1}
 
@@ -68,8 +69,8 @@ th, td{padding:0.4rem}
 [data-content="users"] td{padding:0.3rem 0.2rem}
 /* style */
 .page{padding:0 0.25rem;border:solid 1px #ddd;text-decoration:none}
-.page:hover:not(.current){border-color:var(--a);text-decoration:none}
-.page.current{background-color:#fff;color:var(--c);text-decoration:none;cursor:default}
+.page:hover:not(.active){border-color:var(--a);text-decoration:none}
+.page.active{background-color:#fff;color:var(--c);text-decoration:none;cursor:default}
 .page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
 .page.last{border-radius:0 3px 3px 0}
 .t-conf{margin:0 0 10px 0;border-spacing:3px;background-color:#FFF;border:1px solid #AAA}
@@ -126,7 +127,7 @@ th, td{padding:0.4rem}
   .t-sec .c-action{width:135px;max-width:135px}
   .t-sec .c-data{width:100px;max-width:100px}
 }
-.t-sec td.group{background-color:#dcebff;border-top:1px solid #dcebff}
+.t-sec td.group{background-color:var(--title-bg);border-top:1px solid var(--title-bg)}
 .t-item .c-name{text-align:left}
 .t-item .c-icon{width:40px;max-width:40px}
 .t-item .c-pic{width:45px;}
@@ -180,7 +181,7 @@ td.fieldhelp{font-size:0.8rem;color:#333399;background-color:inherit}
 #dlg-reorder table{margin:0.4rem 0;border-spacing:3px}
 #dlg-reorder td{padding:3px 6px;width:100%;border:1px solid #888}
 [draggable="true"]{cursor:n-resize} .group .draghandler{cursor:pointer}
-tr[data-state="dragging"]{background-color:#dbf4ff}
+tr[data-state="dragging"]{background-color:var(--title-bg)}
 span.draghandler{display:inline-block;padding:2px 4px;background-color:#DDD;border:1px solid #BBB;border-radius:3px}
 span.draghandler:hover{background-color:#9eddff;border:1px solid #666}
 /* add domain/section */

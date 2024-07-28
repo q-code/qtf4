@@ -280,15 +280,15 @@ function formatItemRow(string $strTableId='t1', array $arrFLD=[], $row, $oS, arr
       $arr[$k] = '<a href="'.url('qtf_items.php').'?s='.$i.'">'.(isset($GLOBALS['_Sections'][$i]['title']) ? $GLOBALS['_Sections'][$i]['title'] : 'Section '.$i).'</a>';
       break;
     case 'firstpostname':
-      $arr[$k] = '<a href="'.url('qtf_user.php').'?id='.$row['firstpostuser'].'">'.$row['firstpostname'].'</a>';
-      $arr[$k] .= '<br><small>'.qtDate($row['firstpostdate'],'$','$').'</small>';
+      $arr[$k] = '<p><a href="'.url('qtf_user.php').'?id='.$row['firstpostuser'].'">'.$row['firstpostname'].'</a></p>';
+      $arr[$k] .= '<p>'.qtDate($row['firstpostdate'],'$','$').'</p>';
       break;
     case 'lastpostdate':
       if ( empty($row['lastpostdate']) ) {
         $arr[$k] = '&nbsp;';
       } else {
-        $arr[$k] = qtDate($row['lastpostdate'],'$','$').'<a class="goto" href="'.url('qtf_item.php').'?t='.$row['id'].'#p'.$row['lastpostid'].'">'.qtSvg('#caret-square-right').'</a>';
-        $arr[$k] .= '<br><small>'.L('by').' <a href="'.url('qtf_user.php').'?id='.$row['lastpostuser'].'" title="'.qtAttr($row['lastpostname']).'">'.$row['lastpostname'].'</a></small>';
+        $arr[$k] = '<p>'.qtDate($row['lastpostdate'],'$','$').'<a class="goto" href="'.url('qtf_item.php').'?t='.$row['id'].'#p'.$row['lastpostid'].'">'.qtSvg('#caret-square-right').'</a></p>';
+        $arr[$k] .= '<p>'.L('by').' <a href="'.url('qtf_user.php').'?id='.$row['lastpostuser'].'" title="'.qtAttr($row['lastpostname']).'">'.$row['lastpostname'].'</a></p>';
       }
       break;
     case 'status':

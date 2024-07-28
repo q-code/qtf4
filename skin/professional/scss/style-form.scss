@@ -28,9 +28,9 @@ button:focus:not(.disabled), .button:focus:not(.disabled){
 .msg-cmd:hover{box-shadow:0 0 5px #CCC;opacity:1;background-color:#e5e5e5;color:var(--c);border:1px solid #c0c0c0}
 /* Inputs */
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
-input,textarea{padding:3px 5px}
+
 input[type=radio]{margin:0 4px 0 2px;padding:0}
-select{padding:2px 5px 2px 2px}
+
 
   #jumpto{width:120px;color:#BBB} #jumpto option:disabled{color:#BBB}
 @media print{#jumpto{display:none}}

@@ -1,11 +1,13 @@
 /* Buttons */
 button, .button{
   background-color:var(--btn-bg); color:var(--btn-color);
-  border:var(--btn-border)
+  border:var(--btn-border);
+  opacity:0.8
 }
 button:hover:not(.disabled), .button:hover:not(.disabled),
 button:focus:not(.disabled), .button:focus:not(.disabled){
-  color:var(--btn-color)
+  color:var(--btn-color);
+  opacity:1;
 }
 .nav button, .nav .button{
   padding:0.3rem 0.6rem;
@@ -23,9 +25,9 @@ button:focus:not(.disabled), .button:focus:not(.disabled){
 
 /* Inputs */
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
-input,textarea{padding:3px 5px}
+
 input[type=radio]{margin:0 4px 0 2px;padding:0}
-select{padding:2px 5px 2px 2px}
+
 #jumpto{width:120px;color:#BBB} #jumpto option:disabled{color:#BBB}
 @media print{#jumpto{display:none}}
 p.row-confirm{padding-top:6px;border-top:1px solid var(--btn-bg)}
@@ -47,8 +49,8 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 /* SEARCH BAR (js toggles display:none|flex) */
 #searchbar{padding:0.7rem 0.5rem 0.5rem 0.5rem;background-color:#f0f0f0;justify-content:flex-end;gap:0.5rem;align-items:center}
 #searchbar .img{vertical-align:baseline}
-#searchbar .button-x{padding:0.1rem 0.3rem}
-@media print{#searchbar{display:none !important}}
+#searchbar .button-x{padding:0.1rem 0.4rem}
+@media print{ #searchbar{display:none !important} }
 
 /* MSGBOX general */
 .msgbox{margin:0 auto;width:450px;background-color:var(--msg-bg);border:solid 1px #e0e0e0;box-shadow:3px 3px 4px #CCC}

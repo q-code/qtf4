@@ -6,7 +6,7 @@
   --msg-bg:#f6f6f6;
   --font:"Lucida Sans Unicode",Verdana,Arial;
   --adm-bg:#0088a1; --rowlight:#eafcff; --rowlighthover:#d7f8ff;
-  --btn-bg:#1364B7; --btn-color:white;
+  --btn-bg:#1364B7; --btn-bgh:#2376ca; --btn-color:white;
   --btn-border:1px solid #1364B7;
 }
 
@@ -89,8 +89,9 @@ footer a{color:#777} footer a:hover{color:#555}
 /* MAIN */
 main{background-color:#fff}
 /* padding */
-main>div{padding:1vw 2vw}
-@media screen and (min-width:1280px){ main>div{padding:14px 28px} }
+#main-hd,#main-ct,#main-ft{padding:1vw 2vw}
+#main-ct.pg-item,#main-ct.pg-items,
+#main-ct.pg-user,#main-ct.pg-users,#main-ct.pg-search{padding:0 2vw}
 /* style */
 #main-hd{display:flex;justify-content:space-between;align-items:center}
   #ct-title{margin:0 0 15px 0}
@@ -128,7 +129,7 @@ aside{padding:0.5rem;display:flex;gap:1rem;background-color:#efefef;color:#888}
   #showeditor-ctrl:hover, #showeditor-ctrl:focus{opacity:1}
 
 /* CONTENT */
-a.goto{margin-left:2px;color:#AAA;text-decoration:none}
+a.goto{margin-left:2px;font-size:1rem;color:#AAA;text-decoration:none}
 a.goto:hover{color:#15C}
 @media print{a.goto{display:none}}
 i.disabled{color:#DDD}

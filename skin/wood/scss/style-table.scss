@@ -23,7 +23,7 @@ td.c-section, td.c-issue, td.c-info, td.c-title, td.c-firstpostname, td.c-lastpo
 
 /* SECTION table */
 .t-sec .c-icon{width:64px;max-width:64px}
-.t-sec .c-issue{width:180px;max-width:180px}
+.t-sec .c-issue{width:180px;max-width:180px} .c-issue p:nth-of-type(2), .c-firstpostname p:nth-of-type(2), .c-lastpostdate p:nth-of-type(2){font-size:0.85rem}
 .t-sec .c-items, .t-sec .c-replies{width:120px;max-width:120px}
   /* cell section grow limit */
   .t-sec .c-section{max-width:46vw}

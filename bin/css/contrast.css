@@ -12,7 +12,7 @@
   }
 
   /* TYPO */
-  body{font-size:min(110%,22px)}
+  html{font-size:min(110%,22px)} /* rem reference */
   *{box-shadow:none !important; text-shadow:none !important}
   small, .small, .minor, .error, .warning{font-size:0.9rem}
   .minor{color:#bbb}
@@ -20,7 +20,7 @@
   /* LAYOUT */
   body{background:revert;background-image:none;background-color:#222}
   #site,main{background-color:transparent;border:none}
-  #main-hd,#main-ct,#main-ft{padding:1vw 0}
+  #main-hd,#main-ft{padding:1vw 0}#main-ct{padding:0}
 
   input, textarea, select, option, .rules{background-color:#222;color:#ffffcc}
   input:focus, button:focus, textarea:focus, select:focus{outline:none; border:1px solid #ffff00}
@@ -37,8 +37,8 @@
   @media print{a.goto{display:none}}
 
   .page{padding:0.1rem 0.3rem;color:var(--c);border-color:#555;border-radius:0;text-decoration:none}
-  .page.current{background-color:#000;border-color:#999;}
-  .page:hover:not(.current){color:var(--a);border-color:var(--a);text-decoration:none}
+  .page.active{background-color:#000;border-color:#999;}
+  .page:hover:not(.active){color:var(--a);border-color:var(--a);text-decoration:none}
   .page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
   .page.last{border-radius:0 3px 3px 0}
 
@@ -87,7 +87,7 @@
   button:focus:not(.disabled), .button:focus:not(.disabled),
   .nav button:hover:not(.disabled), .nav .button:hover:not(.disabled),
   .nav button:focus:not(.disabled), .nav .button:focus:not(.disabled){
-    color:var(--a); border:var(--btn-border); border-color:var(--a)
+    color:var(--a); background-color:var(--btn-bg); border-color:var(--a);
   }
   a.bbc{color:var(--c);border:1px solid #ccc;background-color:transparent}
   a.bbc:hover{color:var(--ah);border:1px solid var(--ah);background-color:var(--bgbtn)}

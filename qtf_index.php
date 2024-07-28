@@ -70,15 +70,10 @@ foreach(array_keys($_Domains) as $idDom) {
     $mSec['descr'] = CSection::translate($idSec,'secdesc');
     // output
     $intSec++;
-    $strLastpost = '&nbsp;';
     $logofile = empty($mSec['options']) ? '' : qtExplodeGet($mSec['options'],'logo',''); // specific logo, or '' for default logo
-    if ( $mSec['items']>0 ) {
-      $strLastpost = qtDate($mSec['lastpostdate'],'$','$',true,true,true);
-      $strLastpost .= '<a class="goto" href="'.url('qtf_item.php').'?t='.$mSec['lastpostpid'].'#p'.$mSec['lastpostid'].'">'.qtSvg('#caret-square-right').'</a><br><small>'.L('by').' <a href="'.url('qtf_user.php').'?id='.$mSec['lastpostuser'].'">'.$mSec['lastpostname'].'</a></small>';
-    }
     $t->arrTd[0]->content = asImg( CSection::makeLogo($logofile,$mSec['type'],$mSec['status']), 'title='.L('Ico_section_'.$mSec['type'].'_'.$mSec['status']), url('qtf_items.php?s='.$idSec) );
-    $t->arrTd[1]->content = '<p><a class="section" href="'.url('qtf_items.php?s='.$idSec).'">'.$mSec['title'].'</a></p>'.(empty($mSec['descr']) ? '' : '<p class="sectiondesc">'.$mSec['descr'].'</p>');
-    $t->arrTd[2]->content = $strLastpost;
+    $t->arrTd[1]->content = '<p class="sectionname"><a class="section" href="'.url('qtf_items.php?s='.$idSec).'">'.$mSec['title'].'</a></p>'.(empty($mSec['descr']) ? '' : '<p class="sectiondesc">'.$mSec['descr'].'</p>');
+    $t->arrTd[2]->content =  $mSec['items']===0 ? '' : '<p>'.qtDate($mSec['lastpostdate'],'$','$',true,true,true).'<a class="goto" href="'.url('qtf_item.php').'?t='.$mSec['lastpostpid'].'#p'.$mSec['lastpostid'].'">'.qtSvg('#caret-square-right').'</a></p><p>'.L('by').' <a href="'.url('qtf_user.php').'?id='.$mSec['lastpostuser'].'">'.$mSec['lastpostname'].'</a></p>';
     $t->arrTd[3]->content = qtK($mSec['items']);
     $t->arrTd[4]->content = qtK($mSec['replies']);
     echo $t->getTDrow('class=hover');

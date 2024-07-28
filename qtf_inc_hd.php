@@ -11,6 +11,43 @@ if ( $_SESSION[QT]['board_offline'] ) $oH->log[] = 'Warning: the board is offlin
 // Check banner
 if ( !isset($_SESSION[QT]['show_banner']) ) $_SESSION[QT]['show_banner'] = '0';
 
+// menu-lang (user,lang,contrast)
+if ( !isset($hideMenuLang) ) $hideMenuLang = false;
+if ( defined('HIDE_MENU_LANG') && HIDE_MENU_LANG ) $hideMenuLang = true;
+if ( !$hideMenuLang ) {
+  $langMenu = new CMenu();
+  // user
+  $langMenu->add( '!'.qtSvg('user-'.SUser::role(), '', ['title'=>L('Role_'.SUser::role())]) );
+  $langMenu->add( SUser::id()>0 ? 'text='.SUser::name().'|id=logname|href='.url(APP.'_user.php').'?id='.SUser::id() : 'text='.L('Role_V').'|tag=span|id=logname');
+  // lang
+  if ( $_SESSION[QT]['userlang'] ) {
+    if ( is_array(LANGUAGES) && count(LANGUAGES)>1 ) {
+      $langMenu->add( '!|' );
+      foreach (LANGUAGES as $iso=>$language) {
+        $arr = explode(' ', $language, 2);
+        $langMenu->add( 'text='.$arr[0].'|id=lang-'.$iso.'|href='.url($oH->php).qtURI('lang').'&lang='.$iso.'|title='.(isset($arr[1]) ? $arr[1] : $arr[0]) );
+      }
+    } else {
+      $langMenu->add('!missing file:config/config_lang.php');
+    }
+  }
+  // contrast
+  if ( QT_CONTRAST_CSS ) {
+    $langMenu->add( 'text='.qtSvg('adjust').'|href=javascript:void(0)|id=contrast-ctrl|aria-label=High contrast|title=High contrast display|role=switch|aria-checked=false' );
+    $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', tglContrast);
+    function tglContrast(){
+      this.setAttribute('aria-checked', this.getAttribute('aria-checked')==='true' ? 'false' : 'true');
+      qtAttrStorage('contrast-ctrl','qt-contrast');
+      qtApplyStoredState('contrast');
+    }";
+  }
+}
+
+if ( QT_CONTRAST_CSS ) {
+  $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/contrast.css" disabled/>';
+  $oH->scripts[] = "qtApplyStoredState('contrast');";
+}
+
 // Menus definition
 $navMenu = new CMenu();
 if ( $_SESSION[QT]['home_menu']==='1' && !empty($_SESSION[QT]['home_url']) )
@@ -44,44 +81,6 @@ if ( QT_URLREWRITE ) {
     $navMenu->update( $k, 'href', url($navMenu->get($k,'href')) );
     $navMenu->update( $k, 'activewith', implode(' ',array_map('url',explode(' ',$navMenu->get($k,'activewith')))) );
   }
-}
-
-if ( !isset($hideMenuLang) ) $hideMenuLang = false;
-if ( defined('HIDE_MENU_LANG') && HIDE_MENU_LANG ) $hideMenuLang = true;
-
-// menu-lang (user,lang,contrast)
-if ( !$hideMenuLang ) {
-  $langMenu = new CMenu();
-  // user
-  $langMenu->add( '!'.qtSvg('user-'.SUser::role(), 'title='.L('Role_'.SUser::role())) );
-  $langMenu->add( SUser::id()>0 ? 'text='.SUser::name().'|id=logname|href='.url(APP.'_user.php').'?id='.SUser::id() : 'text='.L('Role_V').'|tag=span|id=logname');
-  // lang
-  if ( $_SESSION[QT]['userlang'] ) {
-    if ( is_array(LANGUAGES) && count(LANGUAGES)>1 ) {
-      $langMenu->add( '!|' );
-      foreach (LANGUAGES as $iso=>$language) {
-        $arr = explode(' ', $language, 2);
-        $langMenu->add( 'text='.$arr[0].'|id=lang-'.$iso.'|href='.url($oH->php).qtURI('lang').'&lang='.$iso.'|title='.(isset($arr[1]) ? $arr[1] : $arr[0]) );
-      }
-    } else {
-      $langMenu->add('!missing file:config/config_lang.php');
-    }
-  }
-  // contrast
-  if ( QT_CONTRAST_CSS ) {
-    $langMenu->add( 'text='.qtSvg('adjust').'|href=javascript:void(0)|id=contrast-ctrl|aria-label=High contrast|title=High contrast display|role=switch|aria-checked=false' );
-    $oH->scripts[] = "document.getElementById('contrast-ctrl').addEventListener('click', tglContrast);
-    function tglContrast(){
-      this.setAttribute('aria-checked', this.getAttribute('aria-checked')==='true' ? 'false' : 'true');
-      qtAttrStorage('contrast-ctrl','qt-contrast');
-      qtApplyStoredState('contrast');
-    }";
-  }
-}
-
-if ( QT_CONTRAST_CSS ) {
-  $oH->links['cssContrast'] = '<link id="contrastcss" rel="stylesheet" type="text/css" href="bin/css/contrast.css" disabled/>';
-  $oH->scripts[] = "qtApplyStoredState('contrast');";
 }
 
 // ------

@@ -142,7 +142,7 @@ echo '<form class="formsafe" method="post" action="'.$oH->php.'">
 <table class="t-conf">
 <tr>
 <th style="width:150px; text-align:right"><span class="texthead"><label for="title">'.L('Title').'</label></span></th>
-<td><input required type="text" id="title" name="title" size="32" maxlength="64" value="'.qtAttr($oS->title).'" style="background-color:#dbf4ff;"/></td>
+<td><input required type="text" id="title" name="title" size="32" maxlength="64" value="'.qtAttr($oS->title).'" style="background-color:var(--title-bg);"/></td>
 </tr>
 <tr>
 <th style="width:150px; text-align:right"><span class="texthead">'.L('Domain').'</span></th>

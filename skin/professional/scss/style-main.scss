@@ -8,8 +8,8 @@ p.paging{padding:0.5rem 0;text-align:right}
 .cmd-cb{color:var(--adm-bg);text-decoration:none}
 a.cmd-cb:hover{color:var(--adm-bg);text-decoration:underline}
 .page{padding:0 0.25rem;border:solid 1px #ddd}
-.page:hover:not(.current){border-color:var(--a);text-decoration:none}
-.page.current{background-color:#eee;color:var(--c);text-decoration:none;cursor:default}
+.page:hover:not(.active){border-color:var(--a);text-decoration:none}
+.page.active{background-color:#eee;color:var(--c);text-decoration:none;cursor:default}
 .page.first{border-radius:3px 0 0 3px;margin-left:0.5rem}
 .page.last{border-radius:0 3px 3px 0}
 @media screen and (max-width:840px){ .cmd-cb.secondary + .sepcmd{display:none !important} }
@@ -39,7 +39,7 @@ a.cmd-cb:hover{color:var(--adm-bg);text-decoration:underline}
 
 /* USER */
 #user-name{grid-area:name;order:1}
-#user-ui{grid-area:ui;order:3}
+#user-ui{grid-area:ui;order:3;display:flex;gap:0.5rem;align-items:center;justify-content:flex-end}
 #user-menu{grid-area:menu;order:2} #user-menu p{margin-bottom:0.4rem}
 #user-main{grid-area:main;order:4}
 .pg-user{display:grid;grid-template-columns: 20% auto auto auto;grid-template-areas:'name name ui ui' 'menu main main main';gap:5px}

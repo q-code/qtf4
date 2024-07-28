@@ -30,10 +30,8 @@ button:focus:not(.disabled), .button:focus:not(.disabled){
 .btn-prefix{margin-right:0.5rem}#btn-news .btn-prefix{margin-bottom:2px}
 /* Inputs */
 input,textarea,select{background-color:white;border:solid 1px #d0d0d0}
-input,textarea{padding:3px 5px}
-input[type=radio]{margin:0 4px 0 2px;padding:0}
-select{padding:2px 5px 2px 2px}
 
+input[type=radio]{margin:0 4px 0 2px;padding:0}
 
 #jumpto{width:120px;color:#BBB} #jumpto option:disabled{color:#BBB}
 @media print{#jumpto{display:none}}
@@ -55,7 +53,7 @@ fieldset.register select, fieldset.register input{margin:0 0 3px 0}
 /* SEARCH BAR */
 #searchbar{padding:0.6rem 0.5rem 0.5rem 0.5rem;background-color:#f0f0f0;justify-content:flex-end;gap:0.5rem;align-items:center}
 #searchbar .img{vertical-align:baseline}
-#searchbar .button-x{padding:0.1rem 0.3rem}
+#searchbar .button-x{padding:0.1rem 0.4rem}
 @media print{#searchbar{display:none !important}}
 
 /* MSGBOX general */

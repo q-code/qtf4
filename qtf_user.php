@@ -142,7 +142,7 @@ if ( $id<0 )  die('Wrong id in qtf_user.php');
 
 // USER name and UI
 echo '<div id="user-name"><h1>'.$row['name'].' '.SUser::getStamp($row['role']).'</h1></div>
-<div id="user-ui" class="right">';
+<div id="user-ui">';
 include 'qtf_user_ui.php';
 echo '</div>
 ';

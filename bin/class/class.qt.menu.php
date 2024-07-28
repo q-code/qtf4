@@ -36,7 +36,6 @@ class CMenu
     if ( is_string($def) || is_array($def) ) return $this->add($def);
     die(__METHOD__.' invalid argument (def)' );
   }
-
   /**
    * @param string $activeid active menu (menu-index or id/href value included in the definition)
    * @param string $activeattr attributes to apply to the active menu ('default' or your own definition)
@@ -62,7 +61,6 @@ class CMenu
     }
     return implode($this->separator,$res);
   }
-
   /**
    * @param mixed $index index of the menu (argument can be skipped)
    * @param mixed $def menu definition (compacted-string or json format)

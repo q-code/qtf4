@@ -260,7 +260,7 @@ function fileValidate(array &$arrFile=[], array $extensions=[], array $mimes=[],
     $arrFile['name'] = preg_replace('/[^a-z0-9_\-\.]/i', '_', $arrFile['name']);
   }
 }
-function makePager(string $uri, int $count, int $pagesize=50, int $currentpage=1, string $sep='', string $currentclass='current')
+function makePager(string $uri, int $count, int $pagesize=50, int $currentpage=1, string $sep='', string $currentclass='active')
 {
   // $sep (space) is inserted before each page-number
   if ( $currentpage<1 ) $currentpage=1;

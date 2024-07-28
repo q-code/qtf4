@@ -95,7 +95,7 @@ echo '<tr title="'.L('H_Site_url').'">
 ';
 echo '<tr title="'.L('H_Name_of_index').'">
 <th>'.L('Name_of_index').'</th>
-<td><input required type="text" name="index_name" maxlength="64" value="'.qtAttr($_SESSION[QT]['index_name']).'" style="background-color:#dbf4ff"/></td>
+<td><input required type="text" name="index_name" maxlength="64" value="'.qtAttr($_SESSION[QT]['index_name']).'" style="background-color:var(--title-bg)"/></td>
 </tr>
 <tr>
 <th>'.L('Name_of_index').'<br>'.L('Translations').' *</th>

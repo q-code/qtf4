@@ -174,11 +174,13 @@ function qtK(int $n, string $unit='k', string $unit2='M')
   if ( $n<1000000 ) return round(floor($n/100)/10, 1).$unit; // Thousands: 1 decimal no round-up (9999 is 9.9k not 10k)
   return round($n/1000000,2).$unit2; // Millions: 2 decimals
 }
+/** Get svg file content (or reference). Files are lowercase */
 function qtSvg(string $ref='info', string $attr='', array $mod=[])
 {
   // use id referrer (no mod allowed)
   if ( $ref[0]==='#' ) return qtSvgUse($ref,$attr);
   // use file content
+  $ref = strtolower($ref); // svg files are lowercase only
   if ( substr($ref,-4)!=='.svg' ) $ref .= '.svg'; // referrer must use id ending with '.svg'
   $svg = qtSvgCode($ref);
   if ( $attr ) $svg = '<svg'.attrRender($attr).' '.substr($svg,4);
@@ -187,11 +189,13 @@ function qtSvg(string $ref='info', string $attr='', array $mod=[])
 }
 function qtSvgUse(string $ref='#info', string $attr='')
 {
+  $ref = strtolower($ref); // svg files are lowercase only
   if ( substr($ref,-4)!=='.svg' ) $ref .= '.svg'; // referrer must use id ending with '.svg'
   return '<svg'.attrRender($attr).'><use href="'.$ref.'"></use></svg>';
 }
 function qtSvgCode(string $file)
 {
+  $file = strtolower($file); // svg files are lowercase only
   if ( !file_exists('bin/svg/'.$file) ) return '#';
   return file_get_contents('bin/svg/'.$file);
 }
@@ -211,6 +215,7 @@ function qtSvgMod(string &$svg, string $id='', array $mod=[])
 /** Convert svg [filename] to symbol (id required, uses filename if empty) */
 function qtSvgSymbol(string $svg, string $attr='', array $mod=[])
 {
+  $svg = strtolower($svg); // svg files are lowercase only
   if ( substr($svg,-4)!=='.svg' ) $svg .= '.svg'; // referrer must use id ending with '.svg'
   $attr = attrDecode($attr, '|' , 'id='.$svg);
   $svg = qtSvgCode($svg);

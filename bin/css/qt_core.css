@@ -1,17 +1,18 @@
 /* RESET */
-*, *::before, *::after{box-sizing:border-box}
-html, body{margin:0;min-width:640px}
-body{font-size:min(100%,20px);font-weight:normal;text-size-adjust:none}
-@media screen and (min-width:1280px){body{font-size:min(105%,22px)}}
-h1, h2, h3, p{margin:0}
+*, *::before, *::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:min(100%,20px)} /* rem reference */
+@media screen and (min-width:1280px){ html{font-size:min(105%,22px)} }
+body{min-width:640px;font-weight:normal;text-size-adjust:none}
+img{border:none;vertical-align:middle}
 table{table-layout:auto;width:100%;border-collapse:separate;border-spacing:0;border:none;background-color:transparent}
-th, td{padding:0.2rem;text-align:left;vertical-align:middle;font-weight:normal}
+td,th{padding:4px;text-align:left;vertical-align:middle;font-weight:normal}
 form{display:inline}
 input, button, textarea, select, optgroup, option{font:inherit}
-button, .button, .clickable{cursor:pointer} .disabled, .active, .current{cursor:default}
-img{border:none;vertical-align:middle}
+button, .button, .clickable{cursor:pointer} .disabled, .active{cursor:default}
+
+/* hack */
 button.nostyle,
-button.nostyle:hover{margin:0;padding:0;background:none;border:none}
+button.nostyle:hover{padding:0;background:none;border:none}
 
 /* FOCUS improvement */
 :hover, :focus{opacity:1}
@@ -58,8 +59,8 @@ select{max-width:260px} select[name="secret_q"]{max-width:360px}
 .cblabel .prefix_icon{vertical-align:baseline}
 /* Buttons core */
 button, .button{
-  display:inline-block;padding:0.2rem 0.4rem;opacity:0.7;
-  border-width:1px;border-radius:3px;font-weight:100;text-decoration:none
+  display:inline-block;padding:0.2rem 0.4rem;opacity:1;
+  border-width:1px;border-radius:3px;font-weight:normal;text-decoration:none
 }
 button.disabled, .button.disabled{opacity:0.5}
 button:hover:not(.disabled), .button:hover:not(.disabled),
@@ -71,14 +72,14 @@ button:focus:not(.disabled), .button:focus:not(.disabled){opacity:1;text-decorat
 
 /* INLINE (p has margin in article and msgbox) */
 svg:not([width]){width:1.1em} svg:not([height]){height:1em} /* protection required, if symbol style is missing */
-article p, .article p, p.article, .msgboxbody p{margin-bottom:0.5rem}
+article p, .article p, p.article, .msgboxbody p{margin-bottom:0.75rem}
 p.submit, .msgboxbody p.submit{margin:1rem 0 0 0;text-align:center}
 p.list{margin-bottom:2px}
 .inline-block{display:inline-block}
 .indent{margin-left:1rem} .indent2{margin-left:2rem}
 @media screen and (max-width:1024px){.indent{margin-left:0.6rem} .indent2{margin-left:1.2rem}}
-.ellipsis{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.ellipsis20{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:20ch}
+.ellipsis, .ellipsis p{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ellipsis20, .ellipsis20 p{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:20ch}
 small, .small, .minor, .error, .warning{font-size:0.85rem}
 .s80{font-size:0.8rem}
 .minor{color:#888}
