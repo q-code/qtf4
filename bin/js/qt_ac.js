@@ -1,5 +1,5 @@
 function acSplit(val) { return val.split( ";" ); }
-function acExtractLast(term) { return acSplit( term ).pop().replace(/^\s+/g,"").replace(/\s+$/g,""); }
+function acExtractLast(term) { return acSplit(term).pop().replace(/^\s+/g,"").replace(/\s+$/g,""); }
 function acInputChange(e) {
   // identify control
   focusInput = e.target;
@@ -13,9 +13,7 @@ function acInputChange(e) {
   // query the url build by the function acUrlConfig(method,value) [ must be defined in the application! ] Note: here the method is just the id of the input
   fetch( acUrlConfig(focusInput.id,value,lang) )
   .then( response => response.json() )
-  .then( data => {
-    acCreateDropdown(data);
-    } )
+  .then( data => acCreateDropdown(data) )
   .catch( err => console.log(err) );
 }
 function acButtonClick(e) {
