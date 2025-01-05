@@ -160,8 +160,8 @@ background:#ffc;border:1px solid #666;border-radius:8px;box-shadow:0 0 5px 5px #
 .ac-list button{display:block;width:100%;text-align:left;padding:0.2rem 0.3rem;border:unset;background:unset;
   opacity:0.6;color:black;background-color:#e7e7e7;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:Calibri,Arial;font-size:min(1rem,20px)}
-.ac-list button:focus,
-.ac-list button:hover{box-shadow:unset;opacity:1}
+.ac-list button:focus:not(.disabled),
+.ac-list button:hover:not(.disabled){box-shadow:unset;color:black;opacity:1}
 
 .jvalue img{margin:0 4px 0 0}
 .jinfo{font-style:italic}
