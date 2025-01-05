@@ -369,6 +369,7 @@ include APP.'_inc_hd.php';
 if ( !empty($frm_hd) ) echo $frm_hd.PHP_EOL;
 
 CHtml::msgBox($frm_title);
+if ( !empty($oH->error) ) echo '<p class="error">'.$oH->error.'</p>';
 echo implode(PHP_EOL,$frm);
 CHtml::msgBox('/');
 

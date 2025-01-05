@@ -13,8 +13,7 @@ function getSqlTimeframe($dbtype, $ti='', $prefix=' AND ', $field='t.firstpostda
   if ( !is_string($dbtype) || !is_string($ti) || !is_string($prefix) || !is_string($prefix) || empty($field) ) die(__FUNCTION__.' requires string arguments');
   // $ti can be {y|m|w|1..12|YYYY|YYYYMM} i.e. this year, this month, last week, previous month#, a specific year YYYY, a specific yearmonth YYYYMM
   $operator = '=';
-  switch($ti)
-  {
+  switch($ti) {
     case 'y':	// this year
       $strDate = date('Y');
       break;
@@ -27,8 +26,7 @@ function getSqlTimeframe($dbtype, $ti='', $prefix=' AND ', $field='t.firstpostda
       break;
     default: // $ti is the month number or a specific datemonth
       if ( !qtCtype_digit($ti) ) die(__FUNCTION__.' invalid tf argument');
-      switch(strlen($ti))
-      {
+      switch(strlen($ti)) {
         case 1:
         case 2:
           $intMonth = (int)$ti;
@@ -41,12 +39,11 @@ function getSqlTimeframe($dbtype, $ti='', $prefix=' AND ', $field='t.firstpostda
         case 6:
           $strDate = $ti;
           break;
-        default: die(__FUNCTION__.' invalid tf argument');
+        default: die(__FUNCTION__.' invalid tiargument');
       }
   }
   $len = strlen($strDate);
-  switch($dbtype)
-  {
+  switch($dbtype) {
     case 'pdo.pg':
     case 'pg': return $prefix . "SUBSTRING($field FROM 1 FOR $len) $operator '$strDate'"; break;
     case 'pdo.sqlite':
@@ -168,17 +165,12 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
 
       // support multiple qkw (arrV)
       // search in posts and in replies (no type condition)
-      if ( count($arrV)>0 )
-      {
-        for($i=0;$i<count($arrV);$i++)
-        {
-          if ( is_numeric($arrV[$i]) )
-          {
+      if ( count($arrV)>0 ) {
+        for($i=0;$i<count($arrV);$i++) {
+          if ( is_numeric($arrV[$i]) ) {
             $sqlValues[':numid'.$i] = $arrV[$i];
             $arrV[$i]='t.numid=:numid'.$i;
-          }
-          else
-          {
+          } else {
             if ( strlen($arrV[$i])<2) { $arrV[$i]=null; $result=L('Search_minimum_2'); continue; }
             $sqlValues[':like'.$i] = '%'.strtoupper($arrV[$i]).'%';
             global $oDB;
@@ -205,8 +197,7 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
       $refSections = implode(',',$refSections);
 
       $sqlWhere .= " AND t.forum IN ($refSections) AND p.type='P'";
-      if ( count($arrV)>0 )
-      {
+      if ( count($arrV)>0 ) {
         for($i=0;$i<count($arrV);$i++) {
           $sqlValues[':numid'.$i] = $arrV[$i];
           $arrV[$i]='t.numid=:numid'.$i;
@@ -221,8 +212,7 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
       // support multiple kw (arrV)
       // search in posts and in replies (no type condition)
       global $oDB;
-      for($i=0;$i<count($arrV);$i++)
-      {
+      for($i=0;$i<count($arrV);$i++) {
         if ( strlen($arrV[$i])<2) { $arrV[$i]=null; $result=L('Search_minimum_2'); continue; }
         $sqlValues[':like'.$i] = '%'.$arrV[$i].'%';
         switch($oDB->type) {
@@ -265,8 +255,7 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
       $sqlValues[':postdate_b'] = $fw;
       $sqlWhere .= sqlDateCondition(':postdate_a','t.firstpostdate',8,'>=','').' AND '.sqlDateCondition(':postdate_b','t.firstpostdate',8,'<=','');
       $sqlWhere  .= " AND p.type='P' AND ";
-      switch($oDB->type)
-      {
+      switch($oDB->type) {
         case 'pdo.pg':
         case 'pg': $sqlWhere .= '(SUBSTRING(t.firstpostdate FROM 1 FOR 8)>=:postdate_a AND SUBSTRING(t.firstpostdate FROM 1 FOR 8)<=:postdate_b)'; break;
         case 'pdo.sqlite':
@@ -288,10 +277,8 @@ function sqlQueryParts(&$sqlFrom,&$sqlWhere,&$sqlValues,&$sqlCount,&$sqlCountAlt
       $sqlWhere .= " AND p.type='P'";
 
       // Topics Tags
-      if ( count($arrV)>0 )
-      {
-        for($i=0;$i<count($arrV);++$i)
-        {
+      if ( count($arrV)>0 ) {
+        for($i=0;$i<count($arrV);++$i) {
           $sqlValues[':like'.$i] = '%'.strtoupper($arrV[$i]).'%';
           switch($oDB->type)
           {

@@ -51,7 +51,8 @@ const QT_CRUMBTRAIL = '&#8201;&middot;&#8201;'; // crumbtrail separator (should 
 const QT_SHOW_DOMAIN = false; // show domain + section name in the crumb trail bar
 const QT_CONVERT_AMP = false; // Store & as &#38; in the DB. True makes symbol &#...; NOT working. WARNING if true, & in username/password are also stored as &#38;
 const QT_LIST_ME = true; // execute the 'i-replied' search in section list
-const QT_LIST_TAG = true; // display a the tag-list under the section (can be used as search tool).
+const QT_LIST_TAG = true; // display a the tag-list under the section (can be used as search tool)
+const QT_MAX_TAGS = 24; // Maximum csv tags for an item (recommanded 24, 0=unlimited, db-limit is 4000 chars)
 const QT_JAVA_MAIL = true; // Protect e-mail by a javascript
 const QT_LOWERCASE_TAG = true; // store tags as lowercase (true recommended). With false, tags are case sensitive (ie. user likely inputs "duplicate").
 const QT_WEEKSTART = 1; // Start of the week (use code 1=monday,...,7=sunday)
