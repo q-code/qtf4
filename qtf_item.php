@@ -117,6 +117,7 @@ if ( $_SESSION[QT]['tags']!='0' && ($tagEditor || !empty($oT->descr)) ) {
     echo ' &nbsp; <a href="javascript:void(0)" id="tag-ctrl" class="tgl-ctrl" onclick="qtToggle(`#tag-container`,``,`#tags-handler`);" title="'.L('Edit').'">'.qtSvg('pen').qtSvg('angle-down').qtSvg('angle-up','class=nodisplay').'</a>'.PHP_EOL;
     echo '<div id="tag-container" style="display:none">';
     echo '<div id="ac-wrapper-tag-edit">';
+    echo '<span id="tag-edit-srv-error" style="font-size:0.9rem;padding:0.1rem;margin-right:0.5rem:background-color:white;color:#e30000"></span>';
     echo '<input required type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/>';
     echo '<button type="button" class="tag-btn" title="'.L('Reset').'" onclick="qtFocusAfter(`tag-edit`,true); return false;">'.qtSvg('backspace').'</button>&nbsp;';
     echo '<button type="button" class="tag-btn" title="'.L('Add').'" onclick="tagAdd(); asyncSaveTag('.$t.'); return false;">'.qtSvg('plus').'</button>';
@@ -221,11 +222,20 @@ if ( $_SESSION[QT]['tags']!='0' ) {
     $oH->scripts_end['ac'] = '<script type="text/javascript" src="bin/js/qt_ac.js" data-lang="'.QT_LANG.'"></script><script type="text/javascript" src="bin/js/qtf_config_ac.js"></script>';
     $oH->scripts['tags'] = '<script type="text/javascript" src="bin/js/qt_tags.js"></script>';
     $oH->scripts[] = 'function asyncSaveTag(item){
-    const tag = document.getElementById("tag-new");
-  fetch( `bin/srv_tagupdate.php?ref='.MD5(QT.session_id()).'&id=${item}&tag=${tag.value}` )
-  .catch( err => console.log(err) );
-  }';
-
+      const tag = document.getElementById("tag-new");
+      fetch( `bin/srv_tagupdate.php?ref='.MD5(QT.session_id()).'&nid=${item}&max='.(defined('QT_MAX_TAGS') ? QT_MAX_TAGS : 24).'&tag=${tag.value}` )
+      .then( response => response.json() )
+      .then( data => asyncSaveTagResponse(data) )
+      .catch( err => console.log(err) );
+      }
+      function asyncSaveTagResponse(data, target="tag-edit-srv-error") {
+        if (data.length===0 ) { console.log("void response"); return; }
+        if (data.status==="error") {
+          let d = document.getElementById(target);
+          if (d) { d.innerText = data?.info; return; }
+        }
+        console.log(data);
+      }';
     }
 
 }

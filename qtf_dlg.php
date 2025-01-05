@@ -70,7 +70,7 @@ function renderReply(int $id, string $parentType='T', string $parentStatus='1') 
   }
   return $str;
 }
-function listTags(array $ids, bool $sort=true, bool $format=true, int $max=32) {
+function listTags(array $ids, bool $sort=true, bool $format=true, int $max=QT_MAX_TAGS) {
   $arr = [];
   global $oDB;
   $oDB->query( "SELECT tags FROM TABTOPIC WHERE id IN (".implode(',',$ids).")" );
@@ -166,7 +166,7 @@ case 'itemsTags':
   $frm[] = '<input required type="text" id="tag-edit" name="tag-edit" size="15" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" data-multi="1" autocomplete="off"/><button type="reset" class="tag-btn" title="'.L('Reset').'" onclick="qtFocus(`tag-edit`)">'.qtSvg('backspace').'</button>&nbsp;<button type="submit" name="tag-ok" class="tag-btn" value="addtag" title="'.L('Add').'">'.qtSvg('plus').'</button><button type="submit" name="tag-ok" class="tag-btn" value="deltag" title="'.L('Delete_tags').'">'.qtSvg('minus').'</button>';
   $frm[] = '</div>';
   $frm[] = '</article>';
-  $frm[] = '<p class="submit right"><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button></p>';
+  $frm[] = '<p class="submit right"><span id="tag-edit-srv-error" style="font-size:0.9rem;padding:0.1rem;margin-right:0.5rem:background-color:white;color:#e30000"></span><button type="button" name="cancel" value="cancel" onclick="window.location=`'.url($oH->exiturl).'`;">'.L('Cancel').'</button></p>';
   $frm[] = '</form>';
   $oH->scripts[] = 'qtFocus(`tag-edit`);';
   $oH->scripts['tags'] = '<script type="text/javascript" src="bin/js/qt_tags.js"></script>';

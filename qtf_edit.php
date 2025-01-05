@@ -360,6 +360,7 @@ if ( $_SESSION[QT]['tags']!=='0' && ($a==='nt' || ($a==='ed' && $oP->type==='P')
     echo '<input type="hidden" id="tag-new" name="tag-new" maxlength="255" value="'.qtAttr($oT->descr).'"/>';
     echo '<input type="hidden" id="tag-dir" value="'.QT_DIR_DOC.'"/><input type="hidden" id="tag-lang" value="'.QT_LANG.'"/>';
     echo '<div id="ac-wrapper-tag-edit">';
+    echo '<span id="tag-edit-srv-error" style="font-size:0.9rem;padding:0.1rem;margin-right:0.5rem:background-color:white;color:#e30000"></span>';
     echo '<input type="text" id="tag-edit" size="12" maxlength="255" placeholder="'.L('Tags').'..." title="'.L('Edit_tags').'" autocomplete="off" data-multi="1"/><button type="reset" class="tag-btn" title="'.L('Reset').'" onclick="document.getElementById(`tag-edit`).value=``;qtFocus(`tag-edit`)">'.qtSvg('backspace').'</button>&nbsp;<button type="button" name="tag-btn" class="tag-btn" value="addtag" title="'.L('Add').'" onclick="tagAdd()">'.qtSvg('plus').'</button><button type="button" name="tag-btn" class="tag-btn" value="deltag" title="'.L('Delete_tags').'" onclick="tagDel()">'.qtSvg('minus').'</button>';
     echo '</div></div>'.PHP_EOL;
   }
